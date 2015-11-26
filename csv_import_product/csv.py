@@ -112,8 +112,7 @@ class ProductProductImportationTrace(orm.Model):
     _columns = {
         'column_ids': fields.one2many('product.product.importation.trace.column', 
             'trace_id', 'Columns'),
-        }    
-        
+        }
 
 class ProductProductImportation(orm.Model):
     ''' Importation log element

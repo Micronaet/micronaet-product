@@ -21,6 +21,7 @@ import os
 import sys
 import logging
 import openerp
+import xlrd
 import openerp.netsvc as netsvc
 import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv, expression, orm
@@ -78,46 +79,77 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         if context is None:
            context = {}
 
+        # Pool used:
+        product_pool = self.pool.get('product.product')
+        log_pool = self.pool.get('product.product.importation')
+
         # Wizard proxy:
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         from_line = wiz_proxy.from_line # 14
-        to_line = wiz_proxy.to_line #24        
+        to_line = wiz_proxy.to_line #24
+        filename = os.path.join(filename, wiz_proxy.name)
         
-        # Pool used:
-        production_pool = self.pool.get('product.product')
+        # Load trace:
+        column_trace = {}
+        for item in wiz_proxy.trace_id.column_ids:
+            column_trace[item.column] = item.field
         
         # ---------------------------------------------------------------------
         #                Open XLS document (first WS):
         # ---------------------------------------------------------------------
-        #from xlrd.sheet import ctype_text   
+        # from xlrd.sheet import ctype_text   
         wb = xlrd.open_workbook(filename)
-        #sheet_names = wb.sheet_names()[0]
-        #ws = wb.sheet_by_name(sheet_names)
-        ws = xl_workbook.sheet_by_index(0)
-        #row = ws.row(0)  # 1st row
-        i = 0
-        for row in ws.row:
-            i += 1
-            if i <= from_line:
-                continue
-            if i > to_line:    
-                break
+        ws = wb.sheet_by_index(0)
+        # row = ws.row(0)  # 1st row
+        
+        # Create import log for this import:
+        import pdb; pdb.set_trace()
+        log_id = log_pool.create(cr, uid, {
+            'name': wiz_proxy.comment,
+            #'datetime',
+            #'user_id': 
+            'trace_id': wiz_proxy.trace_id.id,
+            'note': 'File: %s\n%s' % (wiz_proxy.name, wiz_proxy.note or ''),
+            }, context=context)
 
-            print row
-            #for idx, cell_obj in enumerate(row):
+        for i in range(from_line, to_line + 1): # Note +1!
+            row = ws.row(i)
+            data = { # product record
+                'csv_import_id': log_id, # Link to log record
+                }
+            
+            # Loop on colums (trace)
+            for col, field in column_trace.iteritems():
+                # TODO check presence:
+                #for idx, cell_obj in enumerate(row):
+                data[field] = row[col - 1] # Note: start from 0
 
+            # Search product with code:
+            default_code = data.get('default_code', False)
+            if not default_code:
+                _logger.error('Error no code present in line: %s' % i)
 
-        # Context dict for pass parameter to create lavoration procedure:
-              
-        #raise osv.except_osv(
-        #    _('Error'),
-        #    _('Error reading parameter in BOM (for lavoration)'))
+            product_ids = product_pool.search(cr, uid, [
+                ('default_code', '=', default_code)], context=context)
 
-        return {}
-        #return return_view(
-        #    self, cr, uid, p_id, 'mrp.mrp_production_form_view', 
-        #    'mrp.production', context=context) 
+            if not product_ids:
+                #raise osv.except_osv(
+                #    _('Error'),
+                #    _('Error reading parameter in BOM (for lavoration)'))
+                _logger.error('%s. Error code not found, code: %s' % (
+                    i, default_code))
+                continue    
+            elif len(product_ids) > 1:
+                _logger.error('%s. Error more code (take first), code: %s' % (
+                    i, default_code))
+            
+            product_product.write(
+                cr, uid, product_id, data, context=context)[0]
 
+        return return_view(
+            self, cr, uid, log_id, 
+            'csv_import_product.product_product_importation_form_view', 
+            'product.product.importation', context=context)
 
     _columns = {
         'name': fields.char('File name', size=80, required=True),
@@ -127,9 +159,14 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', required=True),
         'price_force': fields.selection([
-            ('price', 'Price in product form'),
+            ('product', 'Price in product form'),
             ('pricelist', 'Pricelist'),            
             ], 'Force price'),            
         'note': fields.text('Note'),
+        }
+        
+    _defaults = {
+        'from_line': lambda *x: 1,
+        'price_format': lambda *x: 'product',
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
