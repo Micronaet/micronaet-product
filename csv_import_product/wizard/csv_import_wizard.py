@@ -88,6 +88,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         from_line = wiz_proxy.from_line # 14
         to_line = wiz_proxy.to_line #24
         filename = os.path.join(filename, wiz_proxy.name)
+        error = ''
+        annotation = ''
         
         # Load trace:
         column_trace = {}
@@ -109,17 +111,16 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         # Create import log for this import:
         log_id = log_pool.create(cr, uid, {
             'name': wiz_proxy.comment,
-            #'datetime'
-            #'user_id'
             'trace_id': wiz_proxy.trace_id.id,
-            'note': 'File: %s\n%s' % (wiz_proxy.name, wiz_proxy.note or ''),
+            # Extra info write at the end
             }, context=context)
 
         for i in range(from_line, to_line + 1): # Note +1!
             try:
-                row = ws.row(i)
+                row = ws.row(i)                
             except:
                 # Out of range error ends import:
+                annotation += _('Import end at line: %s\n') % i
                 break
                     
             data = { # product record
@@ -134,8 +135,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
             # Search product with code:
             default_code = data.get('default_code', False)
-            if not default_code:
-                _logger.error('Error no code present in line: %s' % i)
+            if not default_code:            
+                error += _('Error no code present in line: %s') % i
                 continue
 
             product_ids = product_pool.search(cr, uid, [
@@ -145,15 +146,26 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 #raise osv.except_osv(
                 #    _('Error'),
                 #    _('Error reading parameter in BOM (for lavoration)'))
-                _logger.error('%s. Error code not found, code: %s' % (
+                error += _('%s. Error code not found, code: %s') % (
                     i, default_code))
                 continue    
             elif len(product_ids) > 1:
                 _logger.error('%s. Error more code (take first), code: %s' % (
                     i, default_code))
             
+            # Write product 
             product_pool.write(
                 cr, uid, product_ids[0], data, context=context)
+            # TODO manage try / except log error?    
+                
+        # Update lof with extra information:    
+        log_pool.write(cr, uid, log_id, {
+            'error': error,
+            'note': 'File: %s\n\nImport note:%s\n\nOperator note %s' % (                
+                wiz_proxy.name, 
+                annotation,
+                wiz_proxy.note or ''),
+            }, context=context)
 
         return {
             'type': 'ir.actions.act_window',
