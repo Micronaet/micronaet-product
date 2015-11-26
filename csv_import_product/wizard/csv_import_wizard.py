@@ -78,6 +78,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         
         if context is None:
            context = {}
+        
+        current_lang = context.get('lang', 'it_IT')   
 
         # Pool used:
         product_pool = self.pool.get('product.product')
@@ -94,9 +96,10 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         # Load trace:
         column_trace = {}
         lang_trace = []
+        key_field = ['default_code']
 
         for item in wiz_proxy.trace_id.column_ids:
-            column_trace[item.column] = item.field
+            column_trace[item.column] = item#.field
             if item.lang_id.code not in lang_trace:
                 lang_trace.append(item.lang_id.code)
         print lang_trace        
@@ -115,6 +118,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             # Extra info write at the end
             }, context=context)
 
+        data = {} # save record to write in X lang
         for i in range(from_line, to_line + 1): # Note +1!
             try:
                 row = ws.row(i)                
@@ -122,20 +126,25 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 # Out of range error ends import:
                 annotation += _('Import end at line: %s\n') % i
                 break
-                    
-            data = { # product record
-                'csv_import_id': log_id, # Link to log record
-                }
+            
+            for lang in lang_trace: # Both language fields
+                data[lang] = { # product record
+                    'csv_import_id': log_id, # Link to log record
+                    }
             
             # Loop on colums (trace)
+            default_code = False
             for col, field in column_trace.iteritems():
                 # TODO check presence:
                 #for idx, cell_obj in enumerate(row):
-                data[field] = row[col - 1].value # Note: start from 0
+                # Note: start from 0
+                if field.field == 'default_code' # key:
+                    default_code = row[col - 1].value
+                else: # no write default code
+                    data[field.lang_id][field.field] = row[col - 1].value
 
             # Search product with code:
-            default_code = data.get('default_code', False)
-            if not default_code:            
+            if not default_code:
                 error += _('Error no code present in line: %s') % i
                 continue
 
@@ -147,17 +156,21 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 #    _('Error'),
                 #    _('Error reading parameter in BOM (for lavoration)'))
                 error += _('%s. Error code not found, code: %s') % (
-                    i, default_code))
+                    i, default_code)
                 continue    
             elif len(product_ids) > 1:
-                _logger.error('%s. Error more code (take first), code: %s' % (
-                    i, default_code))
+                error += _('%s. Error more code (take first), code: %s') % (
+                    i, default_code)
             
-            # Write product 
-            product_pool.write(
-                cr, uid, product_ids[0], data, context=context)
+            # Write product in lang:
+            for lang in lang_trace:
+                context['lang'] = lang
+                if data[lang]: # else no write operation:
+                    product_pool.write(
+                        cr, uid, product_ids[0], data[lang], context=context)
+                    
             # TODO manage try / except log error?    
-                
+        context['lang'] = current_lang
         # Update lof with extra information:    
         log_pool.write(cr, uid, log_id, {
             'error': error,
