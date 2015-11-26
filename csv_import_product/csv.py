@@ -102,15 +102,15 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('item_per_box', 'Item x pack'),
            
             ('pack_l', 'Package length'),
+            ('pack_w', 'Package widht'),
             ('pack_h', 'Package height'),
-            ('pack_p', 'Package deep'),
 
-            ('lst_price', 'List price (EUR)'),
-            ('standard_price', 'Standard (EUR)'),
+            ('lst_price', 'Sale price (* exchange = company curr.)'),
+            ('standard_price', 'Cost price (* exchange = company curr.)'),
 
             # Needed ?!?!:
-            ('usd_lst_price', 'List price (USD)'),
-            ('usd_standard_price', 'Standard (USD)'),
+            #('usd_lst_price', 'List price (USD)'),
+            #('usd_standard_price', 'Standard (USD)'),
             ], 'Field linked'),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='cascade'),
