@@ -54,22 +54,22 @@ class ProductProductImportation(orm.Model):
     _columns = {
         'name': fields.char('Log description', size=80, required=True),
         'datetime': fields.date('Import date', required=True),
-        'user_id': fields.many2one('res.users', 'User', required=True)
+        'user_id': fields.many2one('res.users', 'User', required=True),
         'note': fields.char('Note'),
         }
 
     _defaults = {
-        'datetime': lambda *x: datetime.now()
+        'datetime': lambda *x: datetime.now(),
         'user_id': lambda s, cr, uid, ctx: uid,
         }
 
 class ProductProduct(orm.Model):
     ''' Product for link import log
     '''    
-    _name = 'product.product'
+    _inherit = 'product.product'
     
     _columns = {
-        'csv_import_id': fields.one2many('product.product.importation',
+        'csv_import_id': fields.many2one('product.product.importation',
             'Log import'),
         }
 
@@ -79,7 +79,7 @@ class ProductProductImportation(orm.Model):
     _inherit = 'product.product.importation'
 
     _columns = {
-        'product_ids': fields.one2many('product.product', 'csv_import_id', 
-            'Products'),
+        'product_ids': fields.one2many('product.product', 
+            'csv_import_id', 'Products'),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

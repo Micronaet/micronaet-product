@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_product_product_importation_user,product.product.importation,model_product_product_importation,base.group_users,1,1,1,1
+

@@ -72,6 +72,11 @@ class ProductProductCsvImportWizard(orm.TransientModel):
     def action_import_csv(self, cr, uid, ids, context=None):
         ''' Import pricelist and product description
         '''
+        # TODO:
+        filename = '/home/thebrush/Scrivania/GPB/Importazioni/file/Bestluck -1.xls'
+        from_line = 14
+        to_line = 24
+        
         if context is None:
            context = {}
 
@@ -80,6 +85,27 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         
         # Pool used:
         production_pool = self.pool.get('product.product')
+        
+        # ---------------------------------------------------------------------
+        #                Open XLS document (first WS):
+        # ---------------------------------------------------------------------
+        #from xlrd.sheet import ctype_text   
+        wb = xlrd.open_workbook(filename)
+        #sheet_names = wb.sheet_names()[0]
+        #ws = wb.sheet_by_name(sheet_names)
+        ws = xl_workbook.sheet_by_index(0)
+        #row = ws.row(0)  # 1st row
+        i = 0
+        for row in ws.row:
+            i += 1
+            if i <= from_line:
+                continue
+            if i > to_line:    
+                break
+
+            print row
+            #for idx, cell_obj in enumerate(row):
+
 
         # Context dict for pass parameter to create lavoration procedure:
               
@@ -94,8 +120,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
 
     _columns = {
-        'name': fields.name('File name', size=80, readonly=True),
-        'comment': fields.name('Log comment', size=80),
+        'name': fields.char('File name', size=80, readonly=True),
+        'comment': fields.char('Log comment', size=80),
         'note': fields.text('Note', readonly=True),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
