@@ -94,6 +94,19 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         error = ''
         annotation = ''
         
+        # Return view:
+        log_view = {
+            'type': 'ir.actions.act_window',
+            'name': 'Log import',
+            'res_model': 'product.product.importation',
+            'res_id': log_id,
+            'view_type': 'form',
+            'view_mode': 'form,tree',
+            #'view_id': view_id,
+            #'target': 'new',
+            #'nodestroy': True,            
+            }
+
         # Load trace:
         column_trace = {}
         lang_trace = []
@@ -103,22 +116,27 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             column_trace[item.column] = item #.field
             if item.lang_id.code not in lang_trace:
                 lang_trace.append(item.lang_id.code)
-        print lang_trace        
         
         # ---------------------------------------------------------------------
         #                Open XLS document (first WS):
         # ---------------------------------------------------------------------
-        # from xlrd.sheet import ctype_text   
-        wb = xlrd.open_workbook(filename)
-        ws = wb.sheet_by_index(0)
+        try:
+            # from xlrd.sheet import ctype_text   
+            wb = xlrd.open_workbook(filename)
+            ws = wb.sheet_by_index(0)
+        except:
+            error = 'Error opening XLS file: %s' % (sys.exc_info())
 
         # Create import log for this import:
         log_id = log_pool.create(cr, uid, {
             'name': wiz_proxy.comment,
             'trace_id': wiz_proxy.trace_id.id,
             'exchange': wiz_proxy.exchange,
+            'error': error,
             # Extra info write at the end
             }, context=context)
+        if error:
+            return log_view
 
         from_line -= 1 # Start from 0 (different from line number)
         # to_line is correct (range subtract 1)!
@@ -185,18 +203,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             }, context=context)
 
         _logger.info('End import XLS product file: %s' % wiz_proxy.name)
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Log import',
-            'res_model': 'product.product.importation',
-            'res_id': log_id,
-            'view_type': 'form',
-            'view_mode': 'form,tree',
-            #'view_id': view_id,
-            #'target': 'new',
-            #'nodestroy': True,            
-            }
-
+        return log_view
+        
     _columns = {
         'name': fields.char('File name', size=80, required=True),
         'comment': fields.char('Log comment', size=80, required=True),
