@@ -91,8 +91,13 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         
         # Load trace:
         column_trace = {}
+        lang_trace = []
+
         for item in wiz_proxy.trace_id.column_ids:
             column_trace[item.column] = item.field
+            if item.lang_id.code not in lang_trace:
+                lang_trace.append(item.lang_id.code)
+        print lang_trace        
         
         # ---------------------------------------------------------------------
         #                Open XLS document (first WS):
@@ -111,7 +116,12 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             }, context=context)
 
         for i in range(from_line, to_line + 1): # Note +1!
-            row = ws.row(i)
+            try:
+                row = ws.row(i)
+            except:
+                # Out of range error ends import:
+                break
+                    
             data = { # product record
                 'csv_import_id': log_id, # Link to log record
                 }
@@ -126,6 +136,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             default_code = data.get('default_code', False)
             if not default_code:
                 _logger.error('Error no code present in line: %s' % i)
+                continue
 
             product_ids = product_pool.search(cr, uid, [
                 ('default_code', '=', default_code)], context=context)
@@ -144,11 +155,17 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             product_pool.write(
                 cr, uid, product_ids[0], data, context=context)
 
-        return {}
-        #return_view(
-        #    self, cr, uid, log_id, 
-        #    'csv_import_product.product_product_importation_form_view', 
-        #    'product.product.importation', context=context)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Log import',
+            'res_model': 'product.product.importation',
+            'res_id': log_id,
+            'view_type': 'form',
+            'view_mode': 'form,tree',
+            #'view_id': view_id,
+            #'target': 'new',
+            #'nodestroy': True,            
+            }
 
     _columns = {
         'name': fields.char('File name', size=80, required=True),
@@ -158,14 +175,14 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', required=True),
         'price_force': fields.selection([
-            ('product', 'Price in product form'),
-            ('pricelist', 'Pricelist'),            
+            ('product', 'Direct in product'),
+            ('pricelist', 'Create Pricelist'),
             ], 'Force price'),            
         'note': fields.text('Note'),
         }
         
     _defaults = {
         'from_line': lambda *x: 1,
-        'price_format': lambda *x: 'product',
+        'price_force': lambda *x: 'product',
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

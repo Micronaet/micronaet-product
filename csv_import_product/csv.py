@@ -68,11 +68,12 @@ class ProductProductImportationTraceColumn(orm.Model):
         ''' Get user language
         '''
         try:
-            return self.pool.get('res.users').browse(
-                cr, uid, uid, context=context).lang.id
+            lang_code = self.pool.get('res.users').browse(
+                cr, uid, uid, context=context).lang
+            return self.pool.get('res.lang').search(cr, uid, [
+                ('code', '=', lang_code)], context=context)[0]
         except:
-            return 1        
-        
+            return 1
         
     _columns = {
         'column': fields.integer('Column #', required=True),
@@ -80,29 +81,29 @@ class ProductProductImportationTraceColumn(orm.Model):
 
         'from_line': fields.integer('From line'), 
         'max_line': fields.integer('Max line'),
-        'lang_id': fields.many2one('ir.lang', 'Language', required=True),
+        'lang_id': fields.many2one('res.lang', 'Language', required=True),
         'field': fields.selection([
-            ('default_code', 'Product code'),
-            ('name', 'Product name'),
-            #('eng_name', 'Product name (eng.)'),
+            ('default_code', 'Product code'), # Key field
+            ('description_sale', 'Sale description'), # Lang
+            
+            ('default_supplier_code', 'Supplier product code'),
+            ('description_purchase', 'Supplier description'), # Lang
 
-            ('supplier_code', 'Supplier product code'),
-            ('supplier_name', 'Supplier product name'),
+            ('colour', 'Color'),
+            ('fabric', 'Pillow / Glass'),
 
-            ('color', 'Color'),
-            ('glass', 'Pillow / Glass'),
-
-            ('l', 'Length'),
-            ('w', 'Weight'),
-            ('h', 'Height'),
+            ('lenght', 'Length'),
+            ('width', 'Width'),
+            ('height', 'Height'),
+            # Weight?
             
             ('volume', 'Volume'),
             ('pack', 'Package'),
-            ('pack_item', 'Itam /pack'),
+            ('item_per_box', 'Item x pack'),
            
             ('pack_l', 'Package length'),
-            ('pack_w', 'Package weight'),
             ('pack_h', 'Package height'),
+            ('pack_p', 'Package deep'),
 
             ('lst_price', 'List price (EUR)'),
             ('standard_price', 'Standard (EUR)'),
@@ -143,11 +144,12 @@ class ProductProductImportation(orm.Model):
         
     _columns = {
         'name': fields.char('Log description', size=80, required=True),
-        'datetime': fields.date('Import date', required=True),
+        'datetime': fields.datetime('Import date', required=True),
         'user_id': fields.many2one('res.users', 'User', required=True),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='set null'),
         'note': fields.char('Note'),
+        'error': fields.char('Error'),
         }
 
     _defaults = {
@@ -162,7 +164,7 @@ class ProductProduct(orm.Model):
     
     _columns = {
         'csv_import_id': fields.many2one('product.product.importation',
-            'Log import'),
+            'Log import', ondelete='set null'),
         }
 
 class ProductProductImportation(orm.Model):
