@@ -43,7 +43,14 @@ class ProductProductImportation(orm.Model):
     ''' 
     _name = 'product.product.importation'
     _description = 'Importation log'
-    
+
+    # Button event:
+    def open_product_tree(self, cr, uid, ids, context=None):
+        ''' Open list product for importation selected
+        '''
+        # TODO 
+        return {}
+        
     _columns = {
         'name': fields.char('Log description', size=80, required=True),
         'datetime': fields.date('Import date', required=True),
@@ -65,12 +72,12 @@ class ProductProduct(orm.Model):
         'csv_import_id': fields.one2many('product.product.importation',
             'Log import'),
         }
-        
+
 class ProductProductImportation(orm.Model):
     ''' Importation log element
     ''' 
     _inherit = 'product.product.importation'
-    
+
     _columns = {
         'product_ids': fields.one2many('product.product', 'csv_import_id', 
             'Products'),

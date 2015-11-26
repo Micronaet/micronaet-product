@@ -80,7 +80,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         
         # Pool used:
         production_pool = self.pool.get('product.product')
-                
+
         # Context dict for pass parameter to create lavoration procedure:
               
         #raise osv.except_osv(
@@ -94,6 +94,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
 
     _columns = {
-        'name': fields.text('File name', readonly=True),
+        'name': fields.name('File name', size=80, readonly=True),
+        'comment': fields.name('Log comment', size=80),
+        'note': fields.text('Note', readonly=True),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
