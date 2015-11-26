@@ -51,7 +51,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         ''' Create action for return the same open wizard window
         '''
         view_id = self.pool.get('ir.ui.view').search(cr,uid,[
-            ('model', '=', 'mrp.production.create.wizard'),
+            ('model', '=', 'product.product.csv.import.wizard'),
             ('name', '=', 'Create production order') # TODO needed?
             ], context=context)
         
@@ -100,14 +100,12 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         # from xlrd.sheet import ctype_text   
         wb = xlrd.open_workbook(filename)
         ws = wb.sheet_by_index(0)
-        # row = ws.row(0)  # 1st row
-        
+
         # Create import log for this import:
-        import pdb; pdb.set_trace()
         log_id = log_pool.create(cr, uid, {
             'name': wiz_proxy.comment,
-            #'datetime',
-            #'user_id': 
+            #'datetime'
+            #'user_id'
             'trace_id': wiz_proxy.trace_id.id,
             'note': 'File: %s\n%s' % (wiz_proxy.name, wiz_proxy.note or ''),
             }, context=context)
@@ -122,7 +120,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             for col, field in column_trace.iteritems():
                 # TODO check presence:
                 #for idx, cell_obj in enumerate(row):
-                data[field] = row[col - 1] # Note: start from 0
+                data[field] = row[col - 1].value # Note: start from 0
 
             # Search product with code:
             default_code = data.get('default_code', False)
@@ -143,13 +141,14 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 _logger.error('%s. Error more code (take first), code: %s' % (
                     i, default_code))
             
-            product_product.write(
-                cr, uid, product_id, data, context=context)[0]
+            product_pool.write(
+                cr, uid, product_ids[0], data, context=context)
 
-        return return_view(
-            self, cr, uid, log_id, 
-            'csv_import_product.product_product_importation_form_view', 
-            'product.product.importation', context=context)
+        return {}
+        #return_view(
+        #    self, cr, uid, log_id, 
+        #    'csv_import_product.product_product_importation_form_view', 
+        #    'product.product.importation', context=context)
 
     _columns = {
         'name': fields.char('File name', size=80, required=True),
