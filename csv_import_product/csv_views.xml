@@ -15,8 +15,14 @@
 
                             <separator string="Product:" colspan="4"/>
                             <button name="open_product_tree" string="Products" type="object" />
-                            <field name="product_ids" colspan="4" nolabel="1"/>
-
+                            <field name="product_ids" colspan="4" nolabel="1" readonly="1">
+                                <tree string="Product:">
+                                    <field name="default_code"/>
+                                    <field name="name"/>
+                                    <field name="lst_price"/>
+                                    <field name="standard_price"/>                                    
+                                </tree>                                
+                            </field>
                             <separator string="Note" colspan="4"/>
                             <field name="note" colspan="4" nolabel="1"/>
                        </group>

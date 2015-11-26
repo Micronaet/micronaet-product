@@ -120,8 +120,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
 
     _columns = {
-        'name': fields.char('File name', size=80, readonly=True),
+        'name': fields.char('File name', size=80),
         'comment': fields.char('Log comment', size=80),
-        'note': fields.text('Note', readonly=True),
+        'note': fields.text('Note'),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
