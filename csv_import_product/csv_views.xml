@@ -19,6 +19,7 @@
                                     <field name="column"/>
                                     <field name="description"/>
                                     <field name="field"/>
+                                    <field name="lang_id"/>
                                 </tree>                                
                             </field>
                             

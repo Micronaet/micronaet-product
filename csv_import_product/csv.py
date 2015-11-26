@@ -64,17 +64,27 @@ class ProductProductImportationTraceColumn(orm.Model):
     _description = 'Columns to import'
     _order = 'column'
 
+    def _get_user_lang(self, cr, uid, context=None):
+        ''' Get user language
+        '''
+        try:
+            return self.pool.get('res.users').browse(
+                cr, uid, uid, context=context).lang.id
+        except:
+            return 1        
+        
+        
     _columns = {
         'column': fields.integer('Column #', required=True),
         'description': fields.char('Description', size=80),
 
         'from_line': fields.integer('From line'), 
         'max_line': fields.integer('Max line'),
-
+        'lang_id': fields.many2one('ir.lang', 'Language', required=True),
         'field': fields.selection([
             ('default_code', 'Product code'),
             ('name', 'Product name'),
-            ('eng_name', 'Product name (eng.)'),
+            #('eng_name', 'Product name (eng.)'),
 
             ('supplier_code', 'Supplier product code'),
             ('supplier_name', 'Supplier product name'),
@@ -103,6 +113,10 @@ class ProductProductImportationTraceColumn(orm.Model):
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='cascade'),
         }
+        
+    _defaults = {
+        'lang_id': lambda s, cr, uid, ctx: s._get_user_lang(cr, uid, ctx),
+        }    
 
 class ProductProductImportationTrace(orm.Model):
     ''' Importation log element trace of fields
