@@ -14,10 +14,15 @@
                    <group colspan="4" col="4">
                         <field name="name" />
                         <field name="comment" />
-                        <field name="trace_id" />
+
                         <field name="price_force" />
+                        <field name="exchange" />
+
                         <field name="from_line" />
                         <field name="to_line" />
+
+                        <field name="trace_id" />
+
                         <separator string="Note" colspan="4"/>
                         <field name="note" colspan="4" nolabel="1"/>
                    </group>

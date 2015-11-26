@@ -100,7 +100,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         key_field = ['default_code']
 
         for item in wiz_proxy.trace_id.column_ids:
-            column_trace[item.column] = item#.field
+            column_trace[item.column] = item #.field
             if item.lang_id.code not in lang_trace:
                 lang_trace.append(item.lang_id.code)
         print lang_trace        
@@ -116,11 +116,13 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         log_id = log_pool.create(cr, uid, {
             'name': wiz_proxy.comment,
             'trace_id': wiz_proxy.trace_id.id,
+            'exchange': wiz_proxy.exchange,
             # Extra info write at the end
             }, context=context)
 
-        import pdb; pdb.set_trace()
-        for i in range(from_line, to_line + 1): # Note +1!        
+        from_line -= 1 # Start from 0 (different from line number)
+        # to_line is correct (range subtract 1)!
+        for i in range(from_line, to_line):
             #  Prepare new record:
             data = {}
             for lang in lang_trace:
@@ -170,6 +172,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                     data[lang]['csv_import_id'] = log_id # link to log event
                     product_pool.write(
                         cr, uid, product_ids[0], data[lang], context=context)
+            _logger.info('Update product code: %s' % default_code)            
             # TODO manage try / except log error?    
 
         # End operations:    
@@ -197,8 +200,9 @@ class ProductProductCsvImportWizard(orm.TransientModel):
     _columns = {
         'name': fields.char('File name', size=80, required=True),
         'comment': fields.char('Log comment', size=80, required=True),
-        'from_line': fields.integer('From line', required=True), 
-        'to_line': fields.integer('To line', required=True), 
+        'from_line': fields.integer('From line >=', required=True), 
+        'to_line': fields.integer('To line <=', required=True), 
+        'exchange': fields.float('Exchange', digits=(16, 3), required=True), 
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', required=True),
         'price_force': fields.selection([
@@ -211,5 +215,6 @@ class ProductProductCsvImportWizard(orm.TransientModel):
     _defaults = {
         'from_line': lambda *x: 1,
         'price_force': lambda *x: 'product',
+        'exchange': lambda *x: 1.0,
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

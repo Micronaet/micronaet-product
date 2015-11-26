@@ -62,6 +62,7 @@
                             <field name="name" readonly="1" />
                             <field name="user_id" readonly="1"/>
                             <field name="trace_id" readonly="1"/>
+                            <field name="exchange" readonly="1" />
 
                             <notebook colspan="4">
                                 <page string="Product">

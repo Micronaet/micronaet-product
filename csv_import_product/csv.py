@@ -83,11 +83,11 @@ class ProductProductImportationTraceColumn(orm.Model):
         'max_line': fields.integer('Max line'),
         'lang_id': fields.many2one('res.lang', 'Language', required=True),
         'field': fields.selection([
-            ('default_code', 'Product code'), # Key field
+            ('default_code', 'Product code (key field)'), # Key field
             ('description_sale', 'Sale description'), # Lang
             
-            ('default_supplier_code', 'Supplier product code'),
-            ('description_purchase', 'Supplier description'), # Lang
+            ('default_supplier_code', 'Purchase product code'),
+            ('description_purchase', 'Purchase description'), # Lang
 
             ('colour', 'Color'),
             ('fabric', 'Pillow / Glass'),
@@ -108,6 +108,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('lst_price', 'List price (EUR)'),
             ('standard_price', 'Standard (EUR)'),
 
+            # Needed ?!?!:
             ('usd_lst_price', 'List price (USD)'),
             ('usd_standard_price', 'Standard (USD)'),
             ], 'Field linked'),
@@ -144,12 +145,13 @@ class ProductProductImportation(orm.Model):
         
     _columns = {
         'name': fields.char('Log description', size=80, required=True),
-        'datetime': fields.datetime('Import date', required=True),
-        'user_id': fields.many2one('res.users', 'User', required=True),
+        'datetime': fields.datetime('Import date'),
+        'user_id': fields.many2one('res.users', 'User'),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='set null'),
         'note': fields.char('Note'),
         'error': fields.char('Error'),
+        'exchange': fields.float('Exchange', digits=(16, 3)), 
         }
 
     _defaults = {
