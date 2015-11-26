@@ -99,7 +99,6 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             'type': 'ir.actions.act_window',
             'name': 'Log import',
             'res_model': 'product.product.importation',
-            'res_id': log_id,
             'view_type': 'form',
             'view_mode': 'form,tree',
             #'view_id': view_id,
@@ -135,6 +134,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             'error': error,
             # Extra info write at the end
             }, context=context)
+        log_view['res_id'] = log_id    
+        
         if error:
             return log_view
 
@@ -198,7 +199,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         # Update lof with extra information:    
         log_pool.write(cr, uid, log_id, {
             'error': error,
-            'note': 'File: %s\nImport note:\n%s\nOperator note:\n%s' % (                
+            'note': 'File: %s \nImport note:\n%s \nOperator note: \n%s' % (                
                 wiz_proxy.name, annotation, wiz_proxy.note or ''),
             }, context=context)
 

@@ -92,7 +92,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('colour', 'Color'),
             ('fabric', 'Pillow / Glass'),
 
-            ('lenght', 'Length'),
+            ('length', 'Length'),
             ('width', 'Width'),
             ('height', 'Height'),
             # Weight?
@@ -102,7 +102,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('item_per_box', 'Item x pack'),
            
             ('pack_l', 'Package length'),
-            ('pack_w', 'Package widht'),
+            ('pack_p', 'Package width'),
             ('pack_h', 'Package height'),
 
             ('lst_price', 'Sale price (* exchange = company curr.)'),
