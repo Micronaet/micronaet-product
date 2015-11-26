@@ -73,15 +73,15 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         ''' Import pricelist and product description
         '''
         # TODO:
-        filename = '/home/thebrush/Scrivania/GPB/Importazioni/file/Bestluck -1.xls'
-        from_line = 14
-        to_line = 24
+        filename = '/home/thebrush/Scrivania/GPB/Importazioni/file'
         
         if context is None:
            context = {}
 
         # Wizard proxy:
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
+        from_line = wiz_proxy.from_line # 14
+        to_line = wiz_proxy.to_line #24        
         
         # Pool used:
         production_pool = self.pool.get('product.product')
@@ -120,8 +120,16 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
 
     _columns = {
-        'name': fields.char('File name', size=80),
-        'comment': fields.char('Log comment', size=80),
+        'name': fields.char('File name', size=80, required=True),
+        'comment': fields.char('Log comment', size=80, required=True),
+        'from_line': fields.integer('From line', required=True), 
+        'to_line': fields.integer('To line', required=True), 
+        'trace_id': fields.many2one('product.product.importation.trace',
+            'Trace', required=True),
+        'price_force': fields.selection([
+            ('price', 'Price in product form'),
+            ('pricelist', 'Pricelist'),            
+            ], 'Force price'),            
         'note': fields.text('Note'),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

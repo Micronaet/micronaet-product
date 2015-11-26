@@ -38,6 +38,83 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class ProductProductImportationTrace(orm.Model):
+    ''' Importation log element trace of fields
+    ''' 
+    _name = 'product.product.importation.trace'
+    _description = 'File trace'
+
+    _columns = {
+        'name': fields.char('Record trace', size=80, required=True),
+        'filename': fields.char('Default filename', size=80),
+        'format': fields.selection([
+            ('xls', 'XLS (old file)'),
+            ], 'format'),            
+        'note': fields.char('Note'),
+        }
+
+    _defaults = {
+        'format': lambda *x: 'xls',
+        }
+
+class ProductProductImportationTraceColumn(orm.Model):
+    ''' Importation log element trace of fields
+    ''' 
+    _name = 'product.product.importation.trace.column'
+    _description = 'Columns to import'
+    _order = 'column'
+
+    _columns = {
+        'column': fields.integer('Column #', required=True),
+        'description': fields.char('Description', size=80),
+
+        'from_line': fields.integer('From line'), 
+        'max_line': fields.integer('Max line'),
+
+        'field': fields.selection([
+            ('default_code', 'Product code'),
+            ('name', 'Product name'),
+            ('eng_name', 'Product name (eng.)'),
+
+            ('supplier_code', 'Supplier product code'),
+            ('supplier_name', 'Supplier product name'),
+
+            ('color', 'Color'),
+            ('glass', 'Pillow / Glass'),
+
+            ('l', 'Length'),
+            ('w', 'Weight'),
+            ('h', 'Height'),
+            
+            ('volume', 'Volume'),
+            ('pack', 'Package'),
+            ('pack_item', 'Itam /pack'),
+           
+            ('pack_l', 'Package length'),
+            ('pack_w', 'Package weight'),
+            ('pack_h', 'Package height'),
+
+            ('lst_price', 'List price (EUR)'),
+            ('standard_price', 'Standard (EUR)'),
+
+            ('usd_lst_price', 'List price (USD)'),
+            ('usd_standard_price', 'Standard (USD)'),
+            ], 'Field linked'),
+        'trace_id': fields.many2one('product.product.importation.trace',
+            'Trace', ondelete='cascade'),
+        }
+
+class ProductProductImportationTrace(orm.Model):
+    ''' Importation log element trace of fields
+    ''' 
+    _inherit = 'product.product.importation.trace'
+
+    _columns = {
+        'column_ids': fields.one2many('product.product.importation.trace.column', 
+            'trace_id', 'Columns'),
+        }    
+        
+
 class ProductProductImportation(orm.Model):
     ''' Importation log element
     ''' 
@@ -55,6 +132,8 @@ class ProductProductImportation(orm.Model):
         'name': fields.char('Log description', size=80, required=True),
         'datetime': fields.date('Import date', required=True),
         'user_id': fields.many2one('res.users', 'User', required=True),
+        'trace_id': fields.many2one('product.product.importation.trace',
+            'Trace', ondelete='set null'),
         'note': fields.char('Note'),
         }
 
