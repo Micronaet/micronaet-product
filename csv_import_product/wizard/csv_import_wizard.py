@@ -87,6 +87,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
         # Wizard proxy:
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
+        _logger.info('Start import XLS product file: %s' % wiz_proxy.name)
         from_line = wiz_proxy.from_line # 14
         to_line = wiz_proxy.to_line #24
         filename = os.path.join(filename, wiz_proxy.name)
@@ -118,8 +119,13 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             # Extra info write at the end
             }, context=context)
 
-        data = {} # save record to write in X lang
-        for i in range(from_line, to_line + 1): # Note +1!
+        import pdb; pdb.set_trace()
+        for i in range(from_line, to_line + 1): # Note +1!        
+            #  Prepare new record:
+            data = {}
+            for lang in lang_trace:
+                data[lang] = {}
+                
             try:
                 row = ws.row(i)                
             except:
@@ -127,21 +133,16 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 annotation += _('Import end at line: %s\n') % i
                 break
             
-            for lang in lang_trace: # Both language fields
-                data[lang] = { # product record
-                    'csv_import_id': log_id, # Link to log record
-                    }
-            
             # Loop on colums (trace)
             default_code = False
             for col, field in column_trace.iteritems():
                 # TODO check presence:
                 #for idx, cell_obj in enumerate(row):
                 # Note: start from 0
-                if field.field == 'default_code' # key:
+                if field.field == 'default_code': # key:
                     default_code = row[col - 1].value
                 else: # no write default code
-                    data[field.lang_id][field.field] = row[col - 1].value
+                    data[field.lang_id.code][field.field] = row[col - 1].value
 
             # Search product with code:
             if not default_code:
@@ -166,20 +167,21 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             for lang in lang_trace:
                 context['lang'] = lang
                 if data[lang]: # else no write operation:
+                    data[lang]['csv_import_id'] = log_id # link to log event
                     product_pool.write(
                         cr, uid, product_ids[0], data[lang], context=context)
-                    
             # TODO manage try / except log error?    
+
+        # End operations:    
         context['lang'] = current_lang
         # Update lof with extra information:    
         log_pool.write(cr, uid, log_id, {
             'error': error,
-            'note': 'File: %s\n\nImport note:%s\n\nOperator note %s' % (                
-                wiz_proxy.name, 
-                annotation,
-                wiz_proxy.note or ''),
+            'note': 'File: %s\nImport note:\n%s\nOperator note:\n%s' % (                
+                wiz_proxy.name, annotation, wiz_proxy.note or ''),
             }, context=context)
 
+        _logger.info('End import XLS product file: %s' % wiz_proxy.name)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Log import',
