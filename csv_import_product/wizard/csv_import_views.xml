@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       <!-- product.product.csv.import.wizard -->
+       <record id="product_product_csv_import_wizard_view" model="ir.ui.view">
+            <field name="name">CSV Import</field>
+            <field name="model">product.product.csv.import.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Product CSV import" version="7.0">
+                   <header>
+                       <button string="Cancel" special="cancel" />
+                       <button name="action_import_csv" string="Import" type="object" icon="gtk-jump-to" class="oe_highlight" />
+                   </header>
+                   <group colspan="4" col="4">
+                        <field name="name" />
+                   </group>
+                </form>
+            </field>
+      </record>
+
+    <act_window
+        id="act_window_mrp_production_create_wizard_view"
+        name="Import product"
+        view_mode="form"
+        target="new"
+        res_model="product.product.csv.import.wizard"
+        key2="client_action_multi"
+        context="{}"
+        src_model="product.product"/>
+
+    <record model="ir.actions.act_window" id="act_window_product_product_csv_import_wizard_view">
+        <field name="name">Import CSV</field>
+        <field name="res_model">product.product.csv.import.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="product_product_csv_import_wizard_view"/>
+    </record>
+    </data>
+</openerp>
+
