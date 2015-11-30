@@ -62,7 +62,7 @@ class ProductProductImportationTraceColumn(orm.Model):
     ''' 
     _name = 'product.product.importation.trace.column'
     _description = 'Columns to import'
-    _order = 'column'
+    #_order = 'column'
 
     def _get_user_lang(self, cr, uid, context=None):
         ''' Get user language
