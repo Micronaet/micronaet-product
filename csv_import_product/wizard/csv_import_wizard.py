@@ -74,11 +74,9 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         ''' Import pricelist and product description
         '''
         # TODO:
-        filename = '/home/thebrush/Scrivania/GPB/Importazioni/file'
+        filename = '/home/administrator/photo/xls'
         
-        if context is None:
-           context = {}
-        
+        context = context or {}        
         current_lang = context.get('lang', 'it_IT')   
 
         # Pool used:
@@ -128,7 +126,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
         # Create import log for this import:
         log_id = log_pool.create(cr, uid, {
-            'name': wiz_proxy.comment,
+            'name': wiz_proxy.comment or 'No comment',
             'trace_id': wiz_proxy.trace_id.id,
             'exchange': wiz_proxy.exchange,
             'error': error,
@@ -208,7 +206,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         
     _columns = {
         'name': fields.char('File name', size=80, required=True),
-        'comment': fields.char('Log comment', size=80, required=True),
+        'comment': fields.char('Log comment', size=80, required=False),
         'from_line': fields.integer('From line >=', required=True), 
         'to_line': fields.integer('To line <=', required=True), 
         'exchange': fields.float('Exchange', digits=(16, 3), required=True), 
