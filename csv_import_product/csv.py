@@ -102,6 +102,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('pack', 'Package'),
             ('item_per_box', 'Item x pack'),
            
+            ('package_type', 'Package type'),
             ('pack_l', 'Package length'),
             ('pack_p', 'Package width'),
             ('pack_h', 'Package height'),
@@ -163,11 +164,11 @@ class ProductProductImportation(orm.Model):
         }
         
     _columns = {
-        'name': fields.char('Log description', size=80, required=True),
+        # No required is automated:
+        'name': fields.char('Log description', size=80),
         'datetime': fields.datetime('Import date'),
         'user_id': fields.many2one('res.users', 'User'),
-        'partner_id': fields.many2one('res.partner', 'Supplier', 
-            required=True),
+        'partner_id': fields.many2one('res.partner', 'Supplier'),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='set null'),
         'note': fields.char('Note'),

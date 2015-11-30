@@ -125,9 +125,11 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             error = 'Error opening XLS file: %s' % (sys.exc_info())
 
         # Create import log for this import:
+        partner_id = wiz_proxy.partner_id.id
         log_id = log_pool.create(cr, uid, {
             'name': wiz_proxy.comment or 'No comment',
             'trace_id': wiz_proxy.trace_id.id,
+            'partner_id': partner_id,
             'exchange': wiz_proxy.exchange,
             'error': error,
             # Extra info write at the end
@@ -161,7 +163,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                     if field.field == 'default_code': # key:
                         default_code = row[col - 1].value
                     else: # no write default code
-                        data[field.lang_id.code][field.field] = row[col - 1].value
+                        data[field.lang_id.code][
+                            field.field] = row[col - 1].value
 
                 # Search product with code:
                 if not default_code:
@@ -187,7 +190,10 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 for lang in lang_trace:
                     context['lang'] = lang
                     if data[lang]: # else no write operation:
+                        # Add fixed field (always present):
                         data[lang]['csv_import_id'] = log_id # link to log event
+                        data[lang]['first_supplier_id'] = partner_id
+                        
                         product_pool.write(
                             cr, uid, product_ids[0], data[lang], 
                             context=context)
@@ -223,6 +229,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         'exchange': fields.float('Exchange', digits=(16, 3), required=True), 
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', required=True),
+        'partner_id': fields.many2one('res.partner',
+            'Supplier', required=True),
         'price_force': fields.selection([
             ('product', 'Direct in product'),
             ('pricelist', 'Create Pricelist'),
