@@ -89,6 +89,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('default_supplier_code', 'Purchase product code'),
             ('description_purchase', 'Purchase description'), # Lang
 
+            #('colour_code', 'Color'),
             ('colour', 'Color'),
             ('fabric', 'Pillow / Glass'),
 
@@ -111,6 +112,10 @@ class ProductProductImportationTraceColumn(orm.Model):
             # Needed ?!?!:
             #('usd_lst_price', 'List price (USD)'),
             #('usd_standard_price', 'Standard (USD)'),
+            
+            # Not used now:
+            ('weight', 'Weight'),
+            ('weight_net', 'Weight net'),            
             ], 'Field linked'),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='cascade'),
