@@ -166,6 +166,8 @@ class ProductProductImportation(orm.Model):
         'name': fields.char('Log description', size=80, required=True),
         'datetime': fields.datetime('Import date'),
         'user_id': fields.many2one('res.users', 'User'),
+        'partner_id': fields.many2one('res.partner', 'Supplier', 
+            required=True),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='set null'),
         'note': fields.char('Note'),

@@ -21,6 +21,7 @@
                         <field name="from_line" />
                         <field name="to_line" />
 
+                        <field name="partner_id" />
                         <field name="trace_id" />
 
                         <separator string="Note" colspan="4"/>

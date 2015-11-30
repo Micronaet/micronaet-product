@@ -64,7 +64,7 @@
                             <field name="trace_id" readonly="1"/>
                             <field name="exchange" readonly="1" />
                             <notebook colspan="4">
-                                <page string="Product">
+                                <page string="Open list">
                                     <group colspan="4" col="4">
                                         <separator string="Product:" colspan="4"/>
                                         <button name="open_product_tree" string="Products" type="object" />

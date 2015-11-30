@@ -138,8 +138,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             return log_view
 
         from_line -= 1 # Start from 0 (different from line number)
-        # to_line is correct (range subtract 1)!
-        for i in range(from_line, to_line):
+        for i in range(from_line, to_line or 10000):
             #  Prepare new record:
             data = {}
             for lang in lang_trace:
@@ -220,7 +219,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         'name': fields.char('File name', size=80, required=True),
         'comment': fields.char('Log comment', size=80, required=False),
         'from_line': fields.integer('From line >=', required=True), 
-        'to_line': fields.integer('To line <=', required=True), 
+        'to_line': fields.integer('To line <='),#, required=True), 
         'exchange': fields.float('Exchange', digits=(16, 3), required=True), 
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', required=True),
