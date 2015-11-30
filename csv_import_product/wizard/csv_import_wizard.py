@@ -57,7 +57,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         
         return {
             'type': 'ir.actions.act_window',
-            'name': "Wizard create production order",
+            'name': 'Wizard create production order',
             'res_model': 'mrp.production.create.wizard',
             'res_id': ids[0],
             'view_type': 'form',
@@ -152,53 +152,65 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 annotation += _('Import end at line: %s\n') % i
                 break
             
-            # Loop on colums (trace)
-            default_code = False
-            for col, field in column_trace.iteritems():
-                # TODO check presence:
-                #for idx, cell_obj in enumerate(row):
-                # Note: start from 0
-                if field.field == 'default_code': # key:
-                    default_code = row[col - 1].value
-                else: # no write default code
-                    data[field.lang_id.code][field.field] = row[col - 1].value
+            try:
+                # Loop on colums (trace)
+                default_code = False
+                for col, field in column_trace.iteritems():
+                    # TODO check presence:
+                    #for idx, cell_obj in enumerate(row):
+                    # Note: start from 0
+                    if field.field == 'default_code': # key:
+                        default_code = row[col - 1].value
+                    else: # no write default code
+                        data[field.lang_id.code][field.field] = row[col - 1].value
 
-            # Search product with code:
-            if not default_code:
-                error += _('Error no code present in line: %s') % i
-                continue
+                # Search product with code:
+                if not default_code:
+                    error += _(
+                        'Error no code present in line: <b>%s</b></br>') % i
+                    continue
 
-            product_ids = product_pool.search(cr, uid, [
-                ('default_code', '=', default_code)], context=context)
+                product_ids = product_pool.search(cr, uid, [
+                    ('default_code', '=', default_code)], context=context)
 
-            if not product_ids:
-                #raise osv.except_osv(
-                #    _('Error'),
-                #    _('Error reading parameter in BOM (for lavoration)'))
-                error += _('%s. Error code not found, code: %s') % (
-                    i, default_code)
-                continue    
-            elif len(product_ids) > 1:
-                error += _('%s. Error more code (take first), code: %s') % (
-                    i, default_code)
-            
-            # Write product in lang:
-            for lang in lang_trace:
-                context['lang'] = lang
-                if data[lang]: # else no write operation:
-                    data[lang]['csv_import_id'] = log_id # link to log event
-                    product_pool.write(
-                        cr, uid, product_ids[0], data[lang], context=context)
-            _logger.info('Update product code: %s' % default_code)            
-            # TODO manage try / except log error?    
+                if not product_ids:
+                    error += _(
+                        '%s. Error code not found, code: <b>%s</b></br>') % (
+                            i, default_code)
+                    continue    
+                elif len(product_ids) > 1:
+                    error += _(
+                        '''%s. Error more code (take first), 
+                            code: <b>%s</b></br>''') % (
+                                i, default_code)
+                
+                # Write product in lang:
+                for lang in lang_trace:
+                    context['lang'] = lang
+                    if data[lang]: # else no write operation:
+                        data[lang]['csv_import_id'] = log_id # link to log event
+                        product_pool.write(
+                            cr, uid, product_ids[0], data[lang], 
+                            context=context)
+                _logger.info('Update product code: %s' % default_code)            
+            except:
+                error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
+                    i, default_code, sys.exc_info())
+                    
 
         # End operations:    
         context['lang'] = current_lang
         # Update lof with extra information:    
         log_pool.write(cr, uid, log_id, {
             'error': error,
-            'note': 'File: %s \nImport note:\n%s \nOperator note: \n%s' % (                
-                wiz_proxy.name, annotation, wiz_proxy.note or ''),
+            'note': '''
+                File: <b>%s</b></br>
+                Import note: <i>%s</i></br>
+                Operator note:</br><i>%s</i>
+                ''' % (
+                    wiz_proxy.name, 
+                    annotation, 
+                    wiz_proxy.note or ''),
             }, context=context)
 
         _logger.info('End import XLS product file: %s' % wiz_proxy.name)

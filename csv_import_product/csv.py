@@ -115,7 +115,8 @@ class ProductProductImportationTraceColumn(orm.Model):
             
             # Not used now:
             ('weight', 'Weight'),
-            ('weight_net', 'Weight net'),            
+            ('weight_net', 'Weight net'),
+            
             ], 'Field linked'),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='cascade'),
@@ -146,8 +147,20 @@ class ProductProductImportation(orm.Model):
     def open_product_tree(self, cr, uid, ids, context=None):
         ''' Open list product for importation selected
         '''
-        # TODO 
-        return {}
+        log_proxy = self.browse(cr, uid, ids, context=context)[0]
+        item_ids = [item.id for item in log_proxy.product_ids]
+        return {        
+            'type': 'ir.actions.act_window',
+            'name': 'Product ',
+            'res_model': 'product.product',
+            'res_id': item_ids,
+            'domain': [('id', 'in', item_ids)],
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            #'view_id': view_id, # product.product_product_tree_view
+            #'target': 'new',
+            #'nodestroy': True,
+        }
         
     _columns = {
         'name': fields.char('Log description', size=80, required=True),
