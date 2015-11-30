@@ -82,6 +82,8 @@ class ProductProductImportationTraceColumn(orm.Model):
         'from_line': fields.integer('From line'), 
         'max_line': fields.integer('Max line'),
         'lang_id': fields.many2one('res.lang', 'Language', required=True),
+        'need_exchange': fields.boolean('Need exchange', 
+            help='Requested in import wizard  (* exchange = company curr.)'),
         'field': fields.selection([
             ('default_code', 'Product code (key field)'), # Key field
             ('description_sale', 'Sale description'), # Lang
@@ -100,15 +102,16 @@ class ProductProductImportationTraceColumn(orm.Model):
             
             ('volume', 'Volume'),
             ('pack', 'Package'),
-            ('item_per_box', 'Item x pack'),
+            #('item_per_box', 'Item x pack'),
+            ('q_x_pack', 'Q. x pack'),
            
             ('package_type', 'Package type'),
             ('pack_l', 'Package length'),
             ('pack_p', 'Package width'),
             ('pack_h', 'Package height'),
 
-            ('lst_price', 'Sale price (* exchange = company curr.)'),
-            ('standard_price', 'Cost price (* exchange = company curr.)'),
+            ('lst_price', 'Sale price'),
+            ('standard_price', 'Cost price'),
 
             # Needed ?!?!:
             #('usd_lst_price', 'List price (USD)'),

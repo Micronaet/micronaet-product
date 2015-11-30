@@ -126,11 +126,12 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
         # Create import log for this import:
         partner_id = wiz_proxy.partner_id.id
+        exchange = wiz_proxy.exchange or 1.0
         log_id = log_pool.create(cr, uid, {
             'name': wiz_proxy.comment or 'No comment',
             'trace_id': wiz_proxy.trace_id.id,
             'partner_id': partner_id,
-            'exchange': wiz_proxy.exchange,
+            'exchange': exchange,
             'error': error,
             # Extra info write at the end
             }, context=context)
@@ -162,7 +163,10 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                     # Note: start from 0
                     if field.field == 'default_code': # key:
                         default_code = row[col - 1].value
-                    else: # no write default code
+                    elif field.need_exchange: # no write default code
+                        data[field.lang_id.code][
+                            field.field] = exchange * row[col - 1].value
+                    else:
                         data[field.lang_id.code][
                             field.field] = row[col - 1].value
 
