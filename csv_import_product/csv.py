@@ -140,6 +140,7 @@ class ProductProductImportation(orm.Model):
     ''' 
     _name = 'product.product.importation'
     _description = 'Importation log'
+    _order = 'datetime desc'
 
     # Button event:
     def open_product_tree(self, cr, uid, ids, context=None):
