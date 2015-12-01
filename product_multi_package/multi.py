@@ -39,6 +39,8 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 class ProductMultiPackaging(orm.Model):
+    ''' Object for manage multi pack in product
+    '''
     _name = 'product.multi.packaging'
     _description = 'Multi packaging'
     _rec_name = 'sequence'
@@ -50,8 +52,10 @@ class ProductMultiPackaging(orm.Model):
         'name': fields.char('Description', size=80),
         'number': fields.integer('Tot.',
             help='The total number of this package.'),
-        'ul_id': fields.many2one('product.ul', 'Package Logistic Unit', required=True),
-        'product_tmpl_id': fields.many2one('product.template', 'Product', select=1, ondelete='cascade', required=True),
+        'ul_id': fields.many2one('product.ul', 'Package Logistic Unit', 
+            required=True),
+        'product_tmpl_id': fields.many2one('product.template', 
+            'Product', select=1, ondelete='cascade'),
         #'ean': fields.char('EAN', size=14, 
         #    help='The EAN code of the package unit.'),
         'code': fields.char('Code', 
@@ -69,7 +73,7 @@ class ProductMultiPackaging(orm.Model):
         'number': lambda *x: 1,
         }    
 
-class ProductProduct(orm.Model):
+class ProductTemplate(orm.Model):
     ''' Add relation fields
     '''
     _inherit = 'product.template'
