@@ -52,9 +52,11 @@ class ProductMultiPackaging(orm.Model):
         'name': fields.char('Description', size=80),
         'number': fields.integer('Tot.',
             help='The total number of this package.'),
-        'ul_id': fields.many2one('product.ul', 'Package Logistic Unit', 
+        'ul_id': fields.many2one('product.ul', 'Package', 
             required=True),
-        'product_tmpl_id': fields.many2one('product.template', 
+        #'product_tmpl_id': fields.many2one('product.template', 
+        #    'Product', select=1, ondelete='cascade'),
+        'product_id': fields.many2one('product.product', 
             'Product', select=1, ondelete='cascade'),
         #'ean': fields.char('EAN', size=14, 
         #    help='The EAN code of the package unit.'),
@@ -73,14 +75,14 @@ class ProductMultiPackaging(orm.Model):
         'number': lambda *x: 1,
         }    
 
-class ProductTemplate(orm.Model):
+class ProductProduct(orm.Model):
     ''' Add relation fields
     '''
-    _inherit = 'product.template'
+    _inherit = 'product.product'
     
     _columns = {
         'multi_pack_ids': fields.one2many(
-            'product.multi.packaging', 'product_tmpl_id', 'Multipack',
+            'product.multi.packaging', 'product_id', 'Multipack',
             help='Multipack for package one item'),
 
         # TODO colls in product? > campo function
