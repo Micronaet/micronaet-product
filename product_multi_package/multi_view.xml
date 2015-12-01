@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+        <record model="ir.ui.view" id="product_normal_form_multipack_view">
+            <field name="name">product.template.multipack.form</field>
+            <field name="model">product.template</field>            
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <!--<field name="inherit_id" ref="product.product_normal_form_view"/>-->
+            <field name="arch" type="xml">
+                <field name="packaging_ids" position="before">
+                    <field name="multi_pack_ids">
+                        <tree string="Multipack" editable="bottom">
+                            <field name="sequence" />
+                            <field name="ul_id" />
+                            <field name="code" />
+                            <field name="name" />
+                            <field name="number" />
+                            <field name="height" />
+                            <field name="width" />
+                            <field name="length" />
+                            <field name="weight" />
+                        </tree>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <field name="sequence" />
+                                    <field name="ul_id" />
+                                    <field name="code" />
+                                    <field name="name" />
+                                    <field name="number" />
+                                    <field name="height" />
+                                    <field name="width" />
+                                    <field name="length" />
+                                    <field name="weight" />
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
+
