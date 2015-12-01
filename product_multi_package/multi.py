@@ -47,7 +47,7 @@ class ProductMultiPackaging(orm.Model):
     _order = 'sequence'
     
     _columns = {
-        'sequence': fields.integer('Sequence', 
+        'sequence': fields.integer('Seq.', 
             help='Sequence order when displaying a list of packaging.'),
         'name': fields.char('Description', size=80),
         'number': fields.integer('Tot.',
@@ -67,7 +67,7 @@ class ProductMultiPackaging(orm.Model):
         'width': fields.float('Width', help='Width of the pack'),
         'length': fields.float('Length', help='Length of the pack'),
 
-        'weight': fields.float('Total Package Weight',
+        'weight': fields.float('Weight',
             help='The weight of a full package, pallet or box.'),
         }
         
