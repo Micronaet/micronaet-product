@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+        <record model="ir.ui.view" id="product_delivery_field_view">
+            <field name="name">Extra fields</field>
+            <field name="model">product.product</field>            
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="lenght" position="after">
+                    <field name="seat_height"/>
+                    <field name="diameter"/>
+                </field>
+                <field name="weight_packaging" position="after">
+                    <field name="pz_x_container"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+
