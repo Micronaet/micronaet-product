@@ -33,7 +33,9 @@
         'product',
         ],
     'init_xml' : [], 
-    'update_xml' : [],
+    'data' : [
+        'product_delivery_field_view.xml',
+        ],
     'demo_xml' : [],
     'active' : False, 
     'installable' : True, 
