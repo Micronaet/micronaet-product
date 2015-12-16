@@ -110,7 +110,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         key_field = ['default_code']
 
         for item in wiz_proxy.trace_id.column_ids:
-            column_trace[item.column] = item #.field
+            column_trace[item.name] = item #.field
             if item.lang_id.code not in lang_trace:
                 lang_trace.append(item.lang_id.code)
         

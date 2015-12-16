@@ -16,7 +16,7 @@
                             <separator string="Column:" colspan="4"/>
                             <field name="column_ids" colspan="4" nolabel="1">
                                 <tree string="Product:" editable="bottom">
-                                    <field name="column"/>
+                                    <field name="name"/>
                                     <field name="description"/>
                                     <field name="field"/>
                                     <field name="need_exchange" />

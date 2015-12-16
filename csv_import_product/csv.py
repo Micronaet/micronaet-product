@@ -62,7 +62,7 @@ class ProductProductImportationTraceColumn(orm.Model):
     ''' 
     _name = 'product.product.importation.trace.column'
     _description = 'Columns to import'
-    _order = 'column'
+    _order = 'name'
 
     def _get_user_lang(self, cr, uid, context=None):
         ''' Get user language
@@ -76,7 +76,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             return 1
         
     _columns = {
-        'column': fields.integer('Column #', required=True),
+        'name': fields.integer('Column #', required=True),
         'description': fields.char('Description', size=80),
 
         'from_line': fields.integer('From line'), 
@@ -98,12 +98,15 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('length', 'Length'),
             ('width', 'Width'),
             ('height', 'Height'),
+            ('seat_height', 'Seat Height'),
+            ('diameter', 'Diameter'),
             # Weight?
             
             ('volume', 'Volume'),
             ('pack', 'Package'),
             #('item_per_box', 'Item x pack'),
             ('q_x_pack', 'Q. x pack'),
+            ('pz_x_container', 'Pieces per container'),
            
             ('package_type', 'Package type'),
             ('pack_l', 'Package length'),
