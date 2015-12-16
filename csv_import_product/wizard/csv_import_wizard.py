@@ -75,6 +75,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         '''
         # TODO:
         filename = '/home/administrator/photo/xls'
+        _logger.info('Start import from path: %s' % filename)
         
         context = context or {}        
         current_lang = context.get('lang', 'it_IT')   
@@ -122,7 +123,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             wb = xlrd.open_workbook(filename)
             ws = wb.sheet_by_index(0)
         except:
-            error = 'Error opening XLS file: %s' % (sys.exc_info())
+            error = 'Error opening XLS file: %s' % (sys.exc_info(), )
 
         # Create import log for this import:
         partner_id = wiz_proxy.partner_id.id
