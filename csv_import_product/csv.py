@@ -92,8 +92,8 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('description_purchase', 'Purchase description'), # Lang
 
             #('colour_code', 'Color'),
-            ('colour', 'Color'),
-            ('fabric', 'Pillow / Glass'),
+            ('colour', 'Supplier colour'),
+            ('fabric', 'Material'),
 
             ('length', 'Length'),
             ('width', 'Width'),
@@ -106,7 +106,9 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('pack', 'Package'),
             #('item_per_box', 'Item x pack'),
             ('q_x_pack', 'Q. x pack'),
+            ('colls', 'Colls'),
             ('pz_x_container', 'Pieces per container'),
+            ('item_per_camion', 'Pieces per camion'),
            
             ('package_type', 'Package type'),
             ('pack_l', 'Package length'),
@@ -115,6 +117,7 @@ class ProductProductImportationTraceColumn(orm.Model):
 
             ('lst_price', 'Sale price'),
             ('standard_price', 'Cost price'),
+
 
             # Needed ?!?!:
             #('usd_lst_price', 'List price (USD)'),
