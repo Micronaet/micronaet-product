@@ -18,11 +18,11 @@
 ###############################################################################
 
 {
-    'name': 'CSV Import product wizard',
+    'name': 'CSV Import inventory wizard',
     'version': '0.1',
     'category': 'ETL',
     'description': '''
-        Import wizard for supplier product.
+        Import wizard for import inventory product.
         ''',
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
@@ -31,6 +31,7 @@
         'base',
         'product',
         'csv_base_log',
+        'stock',
         ],
     'init_xml': [],
     'demo': [],

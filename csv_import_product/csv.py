@@ -142,16 +142,28 @@ class ProductProductImportationTrace(orm.Model):
     _inherit = 'product.product.importation.trace'
 
     _columns = {
-        'column_ids': fields.one2many('product.product.importation.trace.column', 
+        'column_ids': fields.one2many(
+            'product.product.importation.trace.column', 
             'trace_id', 'Columns'),
         }
 
+class ProductProduct(orm.Model):
+    ''' Product for link import log
+    '''    
+    _inherit = 'product.product'
+    
+    _columns = {
+        'csv_import_id': fields.many2one('product.product.importation',
+            'Log import', ondelete='set null'),
+        }
+
+# -----------------------------------------------------------------------------
+#                                Add extra part for log:
+# -----------------------------------------------------------------------------
 class ProductProductImportation(orm.Model):
     ''' Importation log element
     ''' 
-    _name = 'product.product.importation'
-    _description = 'Importation log'
-    _order = 'datetime desc'
+    _inherit = 'product.product.importation'
 
     # Button event:
     def open_product_tree(self, cr, uid, ids, context=None):
@@ -173,39 +185,10 @@ class ProductProductImportation(orm.Model):
         }
         
     _columns = {
-        # No required is automated:
-        'name': fields.char('Log description', size=80),
-        'datetime': fields.datetime('Import date'),
-        'user_id': fields.many2one('res.users', 'User'),
         'partner_id': fields.many2one('res.partner', 'Supplier'),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='set null'),
-        'note': fields.char('Note'),
-        'error': fields.char('Error'),
         'exchange': fields.float('Exchange', digits=(16, 3)), 
-        }
-
-    _defaults = {
-        'datetime': lambda *x: datetime.now(),
-        'user_id': lambda s, cr, uid, ctx: uid,
-        }
-
-class ProductProduct(orm.Model):
-    ''' Product for link import log
-    '''    
-    _inherit = 'product.product'
-    
-    _columns = {
-        'csv_import_id': fields.many2one('product.product.importation',
-            'Log import', ondelete='set null'),
-        }
-
-class ProductProductImportation(orm.Model):
-    ''' Importation log element
-    ''' 
-    _inherit = 'product.product.importation'
-
-    _columns = {
         'product_ids': fields.one2many('product.product', 
             'csv_import_id', 'Products'),
         }

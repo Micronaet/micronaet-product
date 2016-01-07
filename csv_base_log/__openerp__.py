@@ -30,14 +30,12 @@
     'depends': [
         'base',
         'product',
-        'csv_base_log',
         ],
     'init_xml': [],
     'demo': [],
     'data': [
         'security/ir.model.access.csv',
         'csv_views.xml',
-        'wizard/csv_import_views.xml',
         ],
     'active': False,
     'installable': True,
