@@ -54,7 +54,7 @@
        <record id="product_product_importation_form_view" model="ir.ui.view">
             <field name="name">Log import product</field>
             <field name="model">product.product.importation</field>
-            <field name="inherit_id" ref="csv_base_log.product_product_importation_form_view"/>
+            <field name="inherit_id" ref="base_log.product_product_importation_form_view"/>
             <field name="arch" type="xml">
                 <field name="user_id" position="after"/>
                     <field name="trace_id" readonly="1"/>
@@ -83,7 +83,7 @@
       <record id="product_product_importation_tree_view" model="ir.ui.view">
           <field name="name">Log import product</field>
           <field name="model">product.product.importation</field>
-          <field name="inherit_id" ref="csv_base_log.product_product_importation_tree_view"/>
+          <field name="inherit_id" ref="base_log.product_product_importation_tree_view"/>
           <field name="arch" type="xml">
               <field name="name" position="after">
                   <field name="trace_id"/>
@@ -92,7 +92,7 @@
           </field>
     </record>
         <menuitem 
-            parent="csv_base_log.menu_product_import_root" 
+            parent="base_log.menu_product_import_root" 
             id="menu_product_import_trace" 
             action="action_product_product_importation_trace"
             name="Import trace"

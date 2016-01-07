@@ -30,7 +30,7 @@
     'depends': [
         'base',
         'product',
-        'csv_base_log',
+        'base_log',
         'stock',
         ],
     'init_xml': [],
