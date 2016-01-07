@@ -1,5 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-access_product_product_importation_user,product.product.importation,model_product_product_importation,base.group_user,1,1,1,1
-access_product_product_importation_trace_user,product.product.importation.trace,model_product_product_importation_trace,base.group_user,1,1,1,1
-access_product_product_importation_trace_column_user,product.product.importation.trace.column,model_product_product_importation_trace_column,base.group_user,1,1,1,1
-

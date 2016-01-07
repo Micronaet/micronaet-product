@@ -52,7 +52,7 @@
     </record>
 
     <menuitem 
-        parent="menu_product_import_root" 
+        parent="base_log.menu_product_import_root" 
         id="menu_product_import_wizard" 
         action="act_window_product_product_csv_import_wizard_view"
         name="Import wizard"
