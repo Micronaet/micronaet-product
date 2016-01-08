@@ -39,10 +39,10 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
-class ProductProductImportation(orm.Model):
+class LogImportation(orm.Model):
     ''' Importation log element
     ''' 
-    _name = 'product.product.importation'
+    _name = 'log.importation'
     _description = 'Importation log'
     _order = 'datetime desc'
 

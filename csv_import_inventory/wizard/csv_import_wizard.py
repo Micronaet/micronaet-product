@@ -39,10 +39,10 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-class ProductProductCsvImportWizard(orm.TransientModel):
+class StockInventoryCsvImportWizard(orm.TransientModel):
     ''' Wizard to import CSV product updating price
     '''    
-    _name = 'product.product.csv.import.wizard'
+    _name = 'stock.inventory.csv.import.wizard'
 
     # ---------------
     # Utility funtion
@@ -82,11 +82,12 @@ class ProductProductCsvImportWizard(orm.TransientModel):
 
         # Pool used:
         product_pool = self.pool.get('product.product')
+        product_pool = self.pool.get('stock.inventory')
         log_pool = self.pool.get('product.product.importation')
 
         # Wizard proxy:
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        _logger.info('Start import XLS product file: %s' % wiz_proxy.name)
+        _logger.info('Start import XLS inventory file: %s' % wiz_proxy.name)
         from_line = wiz_proxy.from_line # 14
         to_line = wiz_proxy.to_line #24
         filename = os.path.join(filename, wiz_proxy.name)

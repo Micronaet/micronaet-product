@@ -153,17 +153,17 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
     
     _columns = {
-        'csv_import_id': fields.many2one('product.product.importation',
+        'csv_import_id': fields.many2one('log.importation',
             'Log import', ondelete='set null'),
         }
 
 # -----------------------------------------------------------------------------
 #                                Add extra part for log:
 # -----------------------------------------------------------------------------
-class ProductProductImportation(orm.Model):
+class LogImportation(orm.Model):
     ''' Importation log element
     ''' 
-    _inherit = 'product.product.importation'
+    _inherit = 'log.importation'
 
     # Button event:
     def open_product_tree(self, cr, uid, ids, context=None):

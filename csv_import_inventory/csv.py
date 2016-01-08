@@ -40,7 +40,7 @@ _logger = logging.getLogger(__name__)
 
 class StockInventory(orm.Model):
     ''' Product for link import log
-    '''    
+    '''
     _inherit = 'stock.inventory'
     
     _columns = {
