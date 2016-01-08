@@ -64,6 +64,25 @@ class ProductProductImportationTraceColumn(orm.Model):
     _description = 'Columns to import'
     _order = 'name'
 
+    _float_list = (
+        'length',
+        'width',
+        'height',
+        'seat_height',
+        'diameter',            
+        'volume',
+        'pack',
+        #'item_per_box',
+        'q_x_pack',
+        #'colls', 'Colls'),
+        'pz_x_container',
+        'pack_l',
+        'pack_p',
+        'pack_h',
+        #'weight',
+        #'weight_net',
+        )
+
     def _get_user_lang(self, cr, uid, context=None):
         ''' Get user language
         '''
@@ -79,7 +98,12 @@ class ProductProductImportationTraceColumn(orm.Model):
         'name': fields.integer('Column #', required=True),
         'description': fields.char('Description', size=80),
 
-        'from_line': fields.integer('From line'), 
+        'type': fields.selection([
+            ('string', 'String'),
+            ('float', 'Float'),
+            #('int', 'Integer'),
+            ], 'Type', required=True),
+        'from_line': fields.integer('From line'),
         'max_line': fields.integer('Max line'),
         'lang_id': fields.many2one('res.lang', 'Language', required=True),
         'need_exchange': fields.boolean('Need exchange', 
@@ -134,6 +158,7 @@ class ProductProductImportationTraceColumn(orm.Model):
         
     _defaults = {
         'lang_id': lambda s, cr, uid, ctx: s._get_user_lang(cr, uid, ctx),
+        'type': lambda *x: 'string',
         }    
 
 class ProductProductImportationTrace(orm.Model):

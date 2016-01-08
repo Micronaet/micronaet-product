@@ -19,6 +19,7 @@
                                     <field name="name"/>
                                     <field name="description"/>
                                     <field name="field"/>
+                                    <!--<field name="type"/>-->
                                     <field name="need_exchange" />
                                     <field name="lang_id"/>
                                 </tree>                                
