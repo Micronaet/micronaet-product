@@ -93,8 +93,8 @@
     </record>
     <menuitem 
         parent="base_log.menu_product_import_root" 
-        id="menu_product_import_trace" 
-        action="action_log_importation_trace"
+        id="menu_product_import_trace_item" 
+        action="action_product_product_importation_trace"
         name="Import trace"
         sequence="15"            
         />

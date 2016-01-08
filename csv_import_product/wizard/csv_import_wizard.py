@@ -168,6 +168,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                         data[field.lang_id.code][
                             field.field] = exchange * row[col - 1].value
                     else:
+                        import pdb; pdb.set_trace()
                         data[field.lang_id.code][
                             field.field] = row[col - 1].value
 
