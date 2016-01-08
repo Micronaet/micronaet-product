@@ -65,22 +65,13 @@ class ProductProductImportationTraceColumn(orm.Model):
     _order = 'name'
 
     _float_list = (
-        'length',
-        'width',
-        'height',
-        'seat_height',
-        'diameter',            
-        'volume',
-        'pack',
-        #'item_per_box',
-        'q_x_pack',
-        #'colls', 'Colls'),
-        'pz_x_container',
-        'pack_l',
-        'pack_p',
-        'pack_h',
-        #'weight',
-        #'weight_net',
+        'length', 'width', 'height',
+        'diameter', 'volume',
+        'pack', 'q_x_pack',
+        'seat_height', 'pz_x_container',
+        'pack_l', 'pack_p', 'pack_h',
+        #'item_per_box', 'colls', 
+        #'weight', 'weight_net',
         )
 
     def _get_user_lang(self, cr, uid, context=None):
