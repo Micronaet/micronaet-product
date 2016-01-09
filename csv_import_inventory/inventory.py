@@ -59,6 +59,13 @@ class StockInventory(orm.Model):
         log_pool = self.pool.get('product.product.importation')
 
         inventory_proxy = self.browse(cr, uid, ids, context=context)[0]
+        
+        if not inventory_proxy.filename:        
+            raise osv.except_osv(
+                _('Import error'), 
+                _('Need a file name to import in path %s' % filename),
+                )  
+          
         inventory_product = {} # converter key=product ID, value=item ID
         for item in inventory_proxy.line_ids
             inventory_product[item.product_id.id] = item.id

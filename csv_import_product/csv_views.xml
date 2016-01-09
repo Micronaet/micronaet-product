@@ -58,12 +58,12 @@
             <field name="inherit_id" ref="base_log.log_importation_form_view"/>
             <field name="arch" type="xml">
                 <field name="user_id" position="after">
-                    <field name="trace_id" readonly="1"/>
-                    <field name="partner_id" readonly="1"/>
-                    <field name="exchange" readonly="1" />
+                    <field name="trace_id" readonly="1" attrs="{'invisible': [('trace_id', '=', False)]}"/>
+                    <field name="partner_id" readonly="1" attrs="{'invisible': [('partner_id', '=', False)]}"/>
+                    <field name="exchange" readonly="1" attrs="{'invisible': [('exchange', '=', False)]}" />
                 </field>    
                 <xpath expr="//notebook/page[1]" position="before">
-                    <page string="Open list">
+                    <page string="Open list" attrs="{'invisible': [('product_ids', 'in', [[], (), False])]}">
                         <group colspan="4" col="4">
                             <separator string="Product:" colspan="4"/>
                             <button name="open_product_tree" string="Products" type="object" />
@@ -87,7 +87,7 @@
           <field name="inherit_id" ref="base_log.log_importation_tree_view"/>
           <field name="arch" type="xml">
               <field name="name" position="after">
-                  <field name="trace_id"/>
+                  <field name="trace_id"/> <!--TODO parametrize with context?!?-->
                   <field name="partner_id" />
               </field>    
           </field>
