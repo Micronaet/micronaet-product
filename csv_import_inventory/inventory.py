@@ -49,6 +49,7 @@ class StockInventory(orm.Model):
     def action_import_product_from_csv(self, cr, uid, ids, context=None):
         ''' Import detail button
         '''
+        import pdb; pdb.set_trace()
         filename = '/home/administrator/photo/xls' # TODO parametrize
         max_line = 10000
         _logger.info('Start import from path: %s' % filename)
@@ -56,7 +57,7 @@ class StockInventory(orm.Model):
         # Pool used:
         line_pool = self.pool.get('stock.inventory.line')
         product_pool = self.pool.get('product.product')
-        log_pool = self.pool.get('product.product.importation')
+        log_pool = self.pool.get('log.importation')
 
         inventory_proxy = self.browse(cr, uid, ids, context=context)[0]
         
@@ -65,9 +66,9 @@ class StockInventory(orm.Model):
                 _('Import error'), 
                 _('Need a file name to import in path %s' % filename),
                 )  
-          
+
         inventory_product = {} # converter key=product ID, value=item ID
-        for item in inventory_proxy.line_ids
+        for item in inventory_proxy.line_ids:
             inventory_product[item.product_id.id] = item.id
         
         # ---------------------------------------------------------------------
@@ -91,7 +92,7 @@ class StockInventory(orm.Model):
             'inventory_id': inventory_proxy.id,
             'name': '%s [%s]' % (
                 inventory_proxy.name or 'No name',
-                datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+                datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)),
             'error': error,
             # Note: Extra info write at the end
             }, context=context)
@@ -150,7 +151,7 @@ class StockInventory(orm.Model):
                         #'product_uom_id': TODO use default correct for product!
                         }, context=context)
                 _logger.info('Product %s set to: %s' % (
-                    default_code, product_qty)
+                    default_code, product_qty))
             except:
                 error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
                     i, default_code, sys.exc_info())
@@ -174,16 +175,16 @@ class StockInventory(orm.Model):
         
             
     _columns = {
-        'fielname': fields.char(
+        'filename': fields.char(
             'Inventory filename', size=80), 
-        'csv_import_id': fields.many2one('product.product.importation',
+        'csv_import_id': fields.many2one('log.importation',
             'Log import', ondelete='set null'),
         }
 
-class ProductProductImportation(orm.Model):
+class LogImportation(orm.Model):
     ''' Importation log element
     ''' 
-    _inherit = 'product.product.importation'
+    _inherit = 'log.importation'
 
     _columns = {
         'inventory_id': fields.many2one('stock.inventory', 'Inventory'),
