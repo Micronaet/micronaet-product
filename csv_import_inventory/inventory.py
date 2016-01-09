@@ -21,6 +21,7 @@ import os
 import sys
 import logging
 import openerp
+import xlrd
 import openerp.netsvc as netsvc
 import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv, expression, orm
@@ -49,17 +50,17 @@ class StockInventory(orm.Model):
     def action_import_product_from_csv(self, cr, uid, ids, context=None):
         ''' Import detail button
         '''
-        import pdb; pdb.set_trace()
         filename = '/home/administrator/photo/xls' # TODO parametrize
         max_line = 10000
         _logger.info('Start import from path: %s' % filename)
-        
+
         # Pool used:
         line_pool = self.pool.get('stock.inventory.line')
         product_pool = self.pool.get('product.product')
         log_pool = self.pool.get('log.importation')
 
         inventory_proxy = self.browse(cr, uid, ids, context=context)[0]
+        error = annotation = ''
         
         if not inventory_proxy.filename:        
             raise osv.except_osv(
@@ -84,6 +85,10 @@ class StockInventory(orm.Model):
             ws = wb.sheet_by_index(0)
         except:
             error = 'Error opening XLS file: %s' % (sys.exc_info(), )
+            raise osv.except_osv(
+                _('Open file error'), 
+                _('Cannot found file: %s' % filename),
+                )  
 
         # ----------------------------------
         # Create import log for this import:
@@ -101,7 +106,6 @@ class StockInventory(orm.Model):
             _logger.error('Error import product: %s' % (sys.exc_info(), ))
             return False
         
-        error = annotation = ''
         for i in range(0, max_line):
             try:
                 row = ws.row(i) # generate error at end
@@ -145,6 +149,7 @@ class StockInventory(orm.Model):
                         }, context=context)                        
                 else: # create line
                     line_pool.create(cr, uid, {
+                        'product_id': product_id,
                         'inventory_id': inventory_proxy.id,
                         'product_qty': product_qty,
                         'location_id': inventory_proxy.location_id.id,
@@ -158,13 +163,12 @@ class StockInventory(orm.Model):
                     
 
         log_pool.write(cr, uid, log_id, {
-            'inventory_id': inventory_proxy.id,
             'error': error,
             'note': '''
                 File: <b>%s</b></br>
                 Import note: <i>%s</i></br>
                 ''' % (
-                    wiz_proxy.name, 
+                    filename, 
                     annotation,
                     ),
             }, context=context)
