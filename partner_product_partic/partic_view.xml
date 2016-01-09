@@ -6,8 +6,9 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
+                <!--TODO move in a picture button-->
                 <xpath expr="/form/sheet/notebook/page[@string='Contacts']" position="after">
-                    <page string="Product partic.">
+                    <page string="Product partic." attrs="{'invisible': [('is_company', '=', False)]}">
                         <field name="partic_ids" colspan="4">
                             <tree editable="bottom">
                                 <field name="product_id" />
@@ -28,7 +29,58 @@
                 </xpath>
             </field>
         </record>
-
+        <record model="ir.ui.view" id="view_partner_product_partic_form">
+            <field name="name">res.partner.product.partic.form</field>
+            <field name="model">res.partner.product.partic</field>
+            <field name="arch" type="xml">
+                <form string="Partner product partic" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="partner_id"/>
+                            <field name="product_id"/>
+                            <field name="partner_code" />                                  
+                            <field name="partner_description" />
+                        </group>
+                    <sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_partner_product_partic_tree">
+            <field name="name">res.partner.product.partic.tree</field>
+            <field name="model">res.partner.product.partic</field>
+            <field name="arch" type="xml">
+                <tree string="Partner product partic" editable="bottom">
+                    <field name="partner_id" />
+                    <field name="product_id" />
+                    <field name="partner_code" />                                  
+                    <field name="partner_description" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_partner_product_partic_search">
+            <field name="name">res.partner.product.partic.search</field>
+            <field name="model">res.partner.product.partic</field>
+            <field name="arch" type="xml">
+                <search string="Partner product partic" version="7.0">        
+                   <search string="Partner product partic">
+                        <field name="partner_id" filter_domain="[('partner_id','=',self)]"/>
+                        <field name="product_id" filter_domain="[('product_id','=',self)]"/>
+                        <group expand="0" string="Group By">
+                            <filter name="group_partner" string="Partner" context="{'group_by': 'partner_id'}"/>
+                            <filter name="group_partner" string="Product" context="{'group_by': 'product_id'}"/>
+                        </group>                
+                   </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_partner_product_partic_form">
+            <field name="name">Partner product partic</field>
+            <field name="res_model">res.partner.product.partic</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_partner_product_partic_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
     </data>
 </openerp>
 

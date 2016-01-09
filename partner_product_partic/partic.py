@@ -35,11 +35,13 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
 class ResPartnerProductPartic(osv.osv):
     ''' Add product partic obj
     '''    
-    _inherit = 'res.partner.product.partic'
+    _name = 'res.partner.product.partic'
+    _description = 'Partner product partic'
+    _rec_name = 'partner_code'
+    _order = 'product_id'
 
     # -------------------------------------------------------------------------
     #                                 Columns
