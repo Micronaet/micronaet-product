@@ -160,25 +160,27 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 # Loop on colums (trace)
                 default_code = False
                 for col, field in column_trace.iteritems():
-                    # TODO check presence:
-                    #for idx, cell_obj in enumerate(row):
-                    # Note: start from 0
-                    try:                
-                        if field.field == 'default_code': # key:
-                            default_code = row[col - 1].value
-                        elif field.field in column_pool._float_list or field.need_exchange:
-                            f = row[col - 1].value or 0.0
-                            if type(f) not in (float, int) :
-                                import pdb; pdb.set_trace()
-                                f = float(f.replace(',', '.'))
-                                
-                            data[field.lang_id.code][
-                                field.field] = f
-                        if field.need_exchange:
-                            data[field.lang_id.code][
-                                field.field] *= exchange #* row[col - 1].value
+                    try:        
+                        v = row[col - 1].value
                     except: 
-                        import pdb; pdb.set_trace()            
+                        error += _(
+                            '''%s. Col %s, field <b>%s</b>, not present!</br>
+                            ''') % (i, col, field.field)
+                        continue        
+                        
+                    if field.field == 'default_code': # key:
+                        default_code = v
+                    # Float field or exchange field (so float):    
+                    elif field.field in column_pool._float_list or \
+                            field.need_exchange:
+                        f = v or 0.0
+                        if type(f) not in (float, int) :
+                            f = float(f.replace(',', '.'))
+                            
+                        data[field.lang_id.code][field.field] = f
+                    if field.need_exchange:
+                        data[field.lang_id.code][
+                            field.field] *= exchange
 
                 # Search product with code:
                 if not default_code:
@@ -213,10 +215,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                             context=context)
                 _logger.info('Update product code: %s' % default_code)            
             except:
-                import pdb; pdb.set_trace()
                 error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
                     i, default_code, sys.exc_info())
-                    
 
         # End operations:    
         context['lang'] = current_lang
