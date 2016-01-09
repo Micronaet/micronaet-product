@@ -54,10 +54,14 @@ class StockInventory(orm.Model):
         _logger.info('Start import from path: %s' % filename)
         
         # Pool used:
+        line_pool = self.pool.get('stock.inventory.line')
         product_pool = self.pool.get('product.product')
         log_pool = self.pool.get('product.product.importation')
 
-        inventory_proxy = self.browse(cr, uid, ids, context=context)[0] 
+        inventory_proxy = self.browse(cr, uid, ids, context=context)[0]
+        inventory_product = {} # converter key=product ID, value=item ID
+        for item in inventory_proxy.line_ids
+            inventory_product[item.product_id.id] = item.id
         
         # ---------------------------------------------------------------------
         #                Open XLS document (first WS):
@@ -77,18 +81,18 @@ class StockInventory(orm.Model):
         # Create import log for this import:
         # ----------------------------------
         log_id = log_pool.create(cr, uid, {
-            'name': wiz_proxy.comment or 'No comment',
+            'inventory_id': inventory_proxy.id,
+            'name': '%s [%s]' % (
+                inventory_proxy.name or 'No name',
+                datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
             'error': error,
-            # Extra info write at the end
+            # Note: Extra info write at the end
             }, context=context)
-        log_view['res_id'] = log_id # Save record ID to open after import
-        if error:
-            return log_view
-        
-        # ------------------------
-        # Create inventory header:
-        # ------------------------
 
+        if error:
+            _logger.error('Error import product: %s' % (sys.exc_info(), ))
+            return False
+        
         error = annotation = ''
         for i in range(0, max_line):
             try:
@@ -124,36 +128,42 @@ class StockInventory(orm.Model):
                         '''%s. Error more code (take first), 
                             code: <b>%s</b></br>''') % (
                                 i, default_code)
-                data = {                
-                    'csv_import_id': log_id # link to log event
-                    
-                        
-                product_pool.write(cr, uid, product_ids[0], data, 
-                    context=context)
-                _logger.info('Update product code: %s' % default_code)            
+                
+                product_id = product_ids[0]
+                if product_id in inventory_product: # Update line
+                    line_pool.write(cr, uid, inventory_product[product_id], {
+                        'product_qty': product_qty,
+                        'location_id': inventory_proxy.location_id.id,
+                        }, context=context)                        
+                else: # create line
+                    line_pool.create(cr, uid, {
+                        'inventory_id': inventory_proxy.id,
+                        'product_qty': product_qty,
+                        'location_id': inventory_proxy.location_id.id,
+                        #'product_uom_id': TODO use default correct for product!
+                        }, context=context)
+                _logger.info('Product %s set to: %s' % (
+                    default_code, product_qty)
             except:
                 error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
                     i, default_code, sys.exc_info())
                     
 
-        # End operations:    
-        context['lang'] = current_lang
-        # Update lof with extra information:            
         log_pool.write(cr, uid, log_id, {
-            'inventory_id': inventory_id, # Link
+            'inventory_id': inventory_proxy.id,
             'error': error,
             'note': '''
                 File: <b>%s</b></br>
                 Import note: <i>%s</i></br>
-                Operator note:</br><i>%s</i>
                 ''' % (
                     wiz_proxy.name, 
-                    annotation, 
-                    wiz_proxy.note or ''),
+                    annotation,
+                    ),
             }, context=context)
 
-        _logger.info('End import XLS product file: %s' % wiz_proxy.name)
-        return log_view
+        _logger.info('End import XLS inventory file: %s' % (
+            inventory_proxy.filename))
+        return True
         
             
     _columns = {
