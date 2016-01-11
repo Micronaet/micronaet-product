@@ -70,6 +70,7 @@ class ProductProductImportationTraceColumn(orm.Model):
         'pack', 'q_x_pack',
         'seat_height', 'pz_x_container',
         'pack_l', 'pack_p', 'pack_h',
+        'standard_price',
         #'item_per_box', 'colls', 
         #'weight', 'weight_net',
         )
