@@ -57,22 +57,24 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
+                <field name="active" position="after">
+                    <field name="use_partic"/>
+                </field>
                 <xpath expr="//div[@name='buttons']" position="inside">
 			        <button 
 			            class="oe_inline oe_stat_button" 
 			            type="action" 
-			            attrs="{'invisible': [('is_company', '=', False)]}" 
+			            attrs="{'invisible': ['|',('use_partic','=',False),('is_company', '=', False)]}" 
 			            name="%(action_partner_product_partic_form)d" 
-			            icon="fa-star" 
+			            icon="fa-list" 
 			            context="{'search_default_partner_id': active_id}">
-			            Product part.
-				        <!--field string="Product part." name="product_part" widget="statinfo" readonly="1"/-->
+				        <div>Price partic.</div><!--label for="partic_ids"/>field string="Product part." name="product_part" widget="statinfo" readonly="1"/-->
 			        </button>
 			    </xpath>
 			                
                 <!--TODO move in a picture button-->
                 <xpath expr="/form/sheet/notebook/page[@string='Contacts']" position="after">
-                    <page string="Product partic." attrs="{'invisible': [('is_company', '=', False)]}">
+                    <page string="Product partic." attrs="{'invisible': ['|',('use_partic','=',False),('is_company', '=', False)]}">
                         <field name="partic_ids" colspan="4">
                             <tree editable="bottom">
                                 <field name="product_id" />

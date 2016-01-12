@@ -62,6 +62,8 @@ class ResPartner(osv.osv):
     _inherit = 'res.partner'
         
     _columns = {
+        'use_partic': fields.boolean('Use partic.', 
+            help='Customer use partic. for product descriptions'),
         'partic_ids': fields.one2many(
             'res.partner.product.partic', 'partner_id', 'Product partic.'), 
         }
