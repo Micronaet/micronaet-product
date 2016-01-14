@@ -2,14 +2,12 @@
 ##############################################################################
 #
 #    OpenERP module
-#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) 
-#    
+#    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) and the
 #    Italian OpenERP Community (<http://www.openerp-italia.com>)
 #
-#############################################################################
-#
+#    ########################################################################
 #    OpenERP, Open Source Management Solution	
-#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
+#    Copyright (C) 2004-2008 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -26,27 +24,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import sys
-import os
-from openerp.osv import osv, fields
-from datetime import datetime, timedelta
-import logging
+
+import partic
 
 
-_logger = logging.getLogger(__name__)
-
-class ResPartnerProductPartic(osv.osv):
-    ''' Add product partic obj
-    '''    
-    _inherit = 'res.partner.product.partic'
-
-    # -------------------------------------------------------------------------
-    #                                 Columns
-    # -------------------------------------------------------------------------
-    _columns = {
-        'partner_code': fields.char('Partner code', size=18, required=True), 
-        'partner_description': fields.char('Partner description', size=60,
-            help='Description in partner\'s language'
-            ),
-        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

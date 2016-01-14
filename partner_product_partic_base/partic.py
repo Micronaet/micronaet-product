@@ -38,15 +38,29 @@ _logger = logging.getLogger(__name__)
 class ResPartnerProductPartic(osv.osv):
     ''' Add product partic obj
     '''    
-    _inherit = 'res.partner.product.partic'
+    _name = 'res.partner.product.partic'
+    _description = 'Partner product partic'
+    _rec_name = 'product_id'
+    _order = 'product_id'
 
     # -------------------------------------------------------------------------
     #                                 Columns
     # -------------------------------------------------------------------------
     _columns = {
-        'partner_code': fields.char('Partner code', size=18, required=True), 
-        'partner_description': fields.char('Partner description', size=60,
-            help='Description in partner\'s language'
-            ),
+        'partner_id': fields.many2one('res.partner', 'Partner'), 
+        'product_id': fields.many2one('product.product', 'Product', 
+            required=True), 
+        }
+
+class ResPartner(osv.osv):
+    ''' Add product partic in partner
+    '''    
+    _inherit = 'res.partner'
+        
+    _columns = {
+        'use_partic': fields.boolean('Use partic.', 
+            help='Customer use partic. for product descriptions'),
+        'partic_ids': fields.one2many(
+            'res.partner.product.partic', 'partner_id', 'Product partic.'), 
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -33,10 +33,10 @@
     'depends': [
         'base',
         'product',
-        'partner_product_partic_base',
         ],
     'init_xml': [], 
     'data': [
+        'security/ir.model.access.csv',
         'partic_view.xml',
         ],
     'demo_xml': [],
