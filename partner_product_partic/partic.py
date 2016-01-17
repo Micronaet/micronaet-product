@@ -29,6 +29,7 @@
 import sys
 import os
 from openerp.osv import osv, fields
+import openerp.addons.decimal_precision as dp
 from datetime import datetime, timedelta
 import logging
 
@@ -48,5 +49,9 @@ class ResPartnerProductPartic(osv.osv):
         'partner_description': fields.char('Partner description', size=60,
             help='Description in partner\'s language'
             ),
+        'partner_price': fields.float('Price', 
+            digits_compute=dp.get_precision('Product Price')),     
+        'price_from_date': fields.date('From date'),
+        'price_to_date': fields.date('To date'),    
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
