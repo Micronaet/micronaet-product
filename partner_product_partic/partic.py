@@ -26,15 +26,26 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import sys
 import os
-from openerp.osv import osv, fields
-import openerp.addons.decimal_precision as dp
-from datetime import datetime, timedelta
+import sys
 import logging
-
+import openerp
+import openerp.netsvc as netsvc
+import openerp.addons.decimal_precision as dp
+from openerp.osv import fields, osv, expression, orm
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+from openerp import SUPERUSER_ID#, api
+from openerp import tools
+from openerp.tools.translate import _
+from openerp.tools.float_utils import float_round as round
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
+    DEFAULT_SERVER_DATETIME_FORMAT, 
+    DATETIME_FORMATS_MAP, 
+    float_compare)
 
 _logger = logging.getLogger(__name__)
+
 
 class ResPartnerProductPartic(osv.osv):
     ''' Add product partic obj
@@ -54,4 +65,43 @@ class ResPartnerProductPartic(osv.osv):
         'price_from_date': fields.date('From date'),
         'price_to_date': fields.date('To date'),    
         }
+
+class SaleOrderLine(orm.Model):
+    """ Model name: SaleOrderLine
+    """
+    
+    # override onchange product for check before in partner partic
+    def product_id_change_with_wh(self, cr, uid, ids, pricelist, product, qty=0,
+            uom=False, qty_uos=0, uos=False, name='', partner_id=False,
+            lang=False, update_tax=True, date_order=False, packaging=False, 
+            fiscal_position=False, flag=False, warehouse_id=False, 
+            context=None):
+            
+        # Change original function:    
+        res = super(SaleOrderLine, self).product_id_change_with_wh(
+            cr, uid, ids, pricelist, product, qty=qty,
+            uom=uom, qty_uos=qty_uos, uos=uos, name=name, 
+            partner_id=partner_id, lang=lang, update_tax=update_tax, 
+            date_order=date_order, packaging=packaging, 
+            fiscal_position=fiscal_position, flag=flag, 
+            warehouse_id=warehouse_id, context=context)
+            
+        # Check if there's partner-product partic
+        if product and partner_id:
+            partic_pool = self.pool.get('res.partner.product.partic')
+            partic_ids = partic_pool.search(cr, uid, [
+                ('partner_id', '=', partner_id),
+                ('product_id', '=', product),
+                ('partner_price', '>', 0),
+                ], context=context)
+            if partic_ids:
+                partic_proxy = partic_pool.browse(
+                    cr, uid, partic_ids, context=context)[0]   
+                if 'value' not in res:
+                    res['value'] = {}
+                res['value']['price_unit'] = partic_proxy.partner_price
+        return res
+    
+    _inherit = 'sale.order.line'
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

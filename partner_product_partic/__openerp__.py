@@ -34,6 +34,7 @@
         'base',
         'product',
         'partner_product_partic_base',
+        'sale_stock',
         ],
     'init_xml': [], 
     'data': [
