@@ -39,6 +39,17 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+class LogImportationMode(orm.Model):
+    ''' Importation log element
+    ''' 
+    _name = 'log.importation.mode'
+    _description = 'Importation mode'
+
+    _columns = {
+        # No required is automated:
+        'name': fields.char('Type of log', size=50),
+        }
+
 class LogImportation(orm.Model):
     ''' Importation log element
     ''' 
@@ -51,8 +62,13 @@ class LogImportation(orm.Model):
         'name': fields.char('Log description', size=80),
         'datetime': fields.datetime('Import date'),
         'user_id': fields.many2one('res.users', 'User'),
+        'mode_id': fields.many2one('log.importation.mode', 'Mode'), # required!
         'note': fields.char('Note'),
         'error': fields.char('Error'),
+        
+        # FIle information:
+        'filename': fields.char('Filename', size=80),
+        'fullname': fields.char('Fullname', size=180),
         }
 
     _defaults = {
