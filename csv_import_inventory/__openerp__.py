@@ -36,7 +36,7 @@
     'init_xml': [],
     'demo': [],
     'data': [
-        'data/mode_date.xml',
+        'data/mode_data.xml',
         'inventory_views.xml',
         ],
     'active': False,

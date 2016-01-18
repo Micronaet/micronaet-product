@@ -179,6 +179,7 @@ class StockInventory(orm.Model):
         
             
     _columns = {
+        'filename': fields.char('Filename', size=80),
         'csv_import_id': fields.many2one('log.importation',
             'Log import', ondelete='set null'),
         }

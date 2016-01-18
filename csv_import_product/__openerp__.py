@@ -36,7 +36,7 @@
     'demo': [],
     'data': [
         # Start up data:
-        'mode_data.xml',
+        'data/mode_data.xml',
 
         'security/ir.model.access.csv',
         'csv_views.xml',
