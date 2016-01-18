@@ -45,7 +45,7 @@ class ResPartnerProductPartic(osv.osv):
     #                                 Columns
     # -------------------------------------------------------------------------
     _columns = {
-        'partner_code': fields.char('Partner code', size=40, required=True), 
+        'partner_code': fields.char('Partner code', size=40), 
         'partner_description': fields.char('Partner description', size=60,
             help='Description in partner\'s language'
             ),
