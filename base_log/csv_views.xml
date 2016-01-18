@@ -12,6 +12,7 @@
                             <field name="datetime" readonly="1" />
                             <field name="name" readonly="1" />
                             <field name="user_id" readonly="1"/>
+                            <field name="mode_id" readonly="1"/>
                             <notebook colspan="4">
                                 <page string="Note">
                                     <group colspan="4" col="4">
@@ -39,6 +40,7 @@
                   <field name="datetime" />
                   <field name="name" />
                   <field name="user_id" />
+                  <field name="mode_id" />
               </tree>
           </field>
     </record>

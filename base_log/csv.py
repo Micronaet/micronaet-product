@@ -48,6 +48,7 @@ class LogImportationMode(orm.Model):
     _columns = {
         # No required is automated:
         'name': fields.char('Type of log', size=50),
+        'note': fields.text('Note'),
         }
 
 class LogImportation(orm.Model):

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       <record model="log.importation.mode" id="log_importation_mode_product">
+           <field name="name">Product extra data</field>
+           <field name="note">Product extra data from import CSV procedure</field>
+       </record>
+    </data>
+</openerp>
+

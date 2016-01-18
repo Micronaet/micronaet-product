@@ -35,6 +35,9 @@
     'init_xml': [],
     'demo': [],
     'data': [
+        # Start up data:
+        'mode_data.xml',
+
         'security/ir.model.access.csv',
         'csv_views.xml',
         'wizard/csv_import_views.xml',
