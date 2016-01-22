@@ -32,6 +32,7 @@
         'product',
         'base_log',
         'stock',
+        'purchase',
         ],
     'init_xml': [],
     'demo': [],

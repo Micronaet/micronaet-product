@@ -1,6 +1,21 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+    <!--purchase.oredr-->
+    <record model="ir.ui.view" id="view_purchase_order_import_form">
+        <field name="name">purchase.order.import</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <group name="import_block" colspan="4" col="4">
+                    <field name="filename" />
+                    <button name="action_import_product_from_csv" string="Import" type="object" />
+                </group>    
+            </xpath>
+        </field>
+    </record>
+
     <!--stock.inventory-->
     <record model="ir.ui.view" id="view_stock_inventory_import_form">
         <field name="name">stock.inventory.import</field>

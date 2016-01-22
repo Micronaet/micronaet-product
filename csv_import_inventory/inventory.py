@@ -39,6 +39,150 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class PurchaseORder(orm.Model):
+    ''' Product for link import log
+    '''
+    _inherit = 'purchase.order'
+
+    # -------------
+    # Button event:
+    # -------------
+    def action_import_product_from_csv(self, cr, uid, ids, context=None):
+        ''' Import detail button
+        '''
+        filename = '/home/administrator/photo/xls' # TODO parametrize
+        max_line = 10000
+        _logger.info('Start import from path: %s' % filename)
+
+        # Pool used:
+        line_pool = self.pool.get('purchase.order.line')
+        product_pool = self.pool.get('product.product')
+        log_pool = self.pool.get('log.importation')
+
+        purchase_proxy = self.browse(cr, uid, ids, context=context)[0]
+        error = annotation = ''
+        
+        if not purchase_proxy.filename:        
+            raise osv.except_osv(
+                _('Import error'), 
+                _('Need a file name to import in path %s' % filename),
+                )  
+
+        purchase_product = {} # converter key=product ID, value=item ID
+        for item in purchase_proxy.line_ids:
+            purchase_product[item.product_id.id] = item.id
+        
+        # ---------------------------------------------------------------------
+        #                Open XLS document (first WS):
+        # ---------------------------------------------------------------------
+        # ----------------
+        # Read excel file:
+        # ----------------
+        try:
+            filename = os.path.join(filename, purchase_proxy.filename)
+            # from xlrd.sheet import ctype_text   
+            wb = xlrd.open_workbook(filename)
+            ws = wb.sheet_by_index(0)
+        except:
+            error = 'Error opening XLS file: %s' % (sys.exc_info(), )
+            raise osv.except_osv(
+                _('Open file error'), 
+                _('Cannot found file: %s' % filename),
+                )  
+
+        # ----------------------------------
+        # Create import log for this import:
+        # ----------------------------------
+        log_id = log_pool.create(cr, uid, {
+            'purchase_id': purchase_proxy.id,
+            'name': '%s [%s]' % (
+                purchase_proxy.name or 'No name',
+                datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)),
+            'error': error,
+            # Note: Extra info write at the end
+            }, context=context)
+
+        if error:
+            _logger.error('Error import product: %s' % (sys.exc_info(), ))
+            return False
+        
+        for i in range(0, max_line):
+            try:
+                row = ws.row(i) # generate error at end
+            except:
+                # Out of range error ends import:
+                annotation += _('Import end at line: %s\n') % i
+                break
+
+            try:
+                # Loop on colums (trace)
+                default_code = row[0].value
+                product_qty = row[1].value # TODO check if is float!
+                #TODO lot = row[2].value 
+                
+                # Search product with code:
+                if not default_code:
+                    error += _(
+                        'Error no code present in line: <b>%s</b></br>') % i
+                    continue # jump
+
+                product_ids = product_pool.search(cr, uid, [
+                    ('default_code', '=', default_code)], context=context)
+
+                if not product_ids:
+                    error += _(
+                        '%s. Error code not found, code: <b>%s</b></br>') % (
+                            i, default_code)
+                    continue # jump
+
+                elif len(product_ids) > 1:
+                    error += _(
+                        '''%s. Error more code (take first), 
+                            code: <b>%s</b></br>''') % (
+                                i, default_code)
+                
+                product_id = product_ids[0]
+                if product_id in purchase_product: # Update line
+                    line_pool.write(cr, uid, purchase_product[product_id], {
+                        'product_qty': product_qty,
+                        'location_id': purchase_proxy.location_id.id,
+                        }, context=context)                        
+                else: # create line
+                    line_pool.create(cr, uid, {
+                        'product_id': product_id,
+                        'purchase_id': purchase_proxy.id,
+                        'product_qty': product_qty,
+                        'location_id': purchase_proxy.location_id.id,
+                        #'product_uom_id': TODO use default correct for product!
+                        }, context=context)
+                _logger.info('Product %s set to: %s' % (
+                    default_code, product_qty))
+            except:
+                error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
+                    i, default_code, sys.exc_info())
+                    
+
+        log_pool.write(cr, uid, log_id, {
+            'error': error,
+            'note': '''
+                File: <b>%s</b></br>
+                Import note: <i>%s</i></br>
+                ''' % (
+                    filename, 
+                    annotation,
+                    ),
+            }, context=context)
+
+        _logger.info('End import XLS purchase file: %s' % (
+            purchase_proxy.filename))
+        return True
+            
+    _columns = {
+        'filename': fields.char('Filename', size=80),
+        'csv_import_id': fields.many2one('log.importation',
+            'Log import', ondelete='set null'),
+        }
+
 class StockInventory(orm.Model):
     ''' Product for link import log
     '''
@@ -191,5 +335,7 @@ class LogImportation(orm.Model):
 
     _columns = {
         'inventory_id': fields.many2one('stock.inventory', 'Inventory'),
+        'purchase_id': fields.many2one('purchase.order', 'Purchase'),
+        #'picking_id': fields.many2one('stock.picking', 'Picking'),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
