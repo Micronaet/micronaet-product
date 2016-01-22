@@ -69,9 +69,9 @@ class PurchaseORder(orm.Model):
                 )  
 
         purchase_product = {} # converter key=product ID, value=item ID
-        for item in purchase_proxy.line_ids:
+        for item in purchase_proxy.order_line:
             purchase_product[item.product_id.id] = item.id
-        
+
         # ---------------------------------------------------------------------
         #                Open XLS document (first WS):
         # ---------------------------------------------------------------------
@@ -149,10 +149,13 @@ class PurchaseORder(orm.Model):
                         }, context=context)                        
                 else: # create line
                     line_pool.create(cr, uid, {
+                        'name': default_code,
+                        'date_planned': '2015-12-31',
                         'product_id': product_id,
-                        'purchase_id': purchase_proxy.id,
+                        'order_id': purchase_proxy.id,
                         'product_qty': product_qty,
                         'location_id': purchase_proxy.location_id.id,
+                        'price_unit': 1.0,
                         #'product_uom_id': TODO use default correct for product!
                         }, context=context)
                 _logger.info('Product %s set to: %s' % (
@@ -161,15 +164,13 @@ class PurchaseORder(orm.Model):
                 error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
                     i, default_code, sys.exc_info())
                     
-
         log_pool.write(cr, uid, log_id, {
             'error': error,
             'note': '''
                 File: <b>%s</b></br>
                 Import note: <i>%s</i></br>
                 ''' % (
-                    filename, 
-                    annotation,
+                    filename, annotation,
                     ),
             }, context=context)
 
@@ -213,8 +214,8 @@ class StockInventory(orm.Model):
                 )  
 
         inventory_product = {} # converter key=product ID, value=item ID
-        for item in inventory_proxy.line_ids:
-            inventory_product[item.product_id.id] = item.id
+        #for item in inventory_proxy.order_line:
+        #    inventory_product[item.product_id.id] = item.id
         
         # ---------------------------------------------------------------------
         #                Open XLS document (first WS):
