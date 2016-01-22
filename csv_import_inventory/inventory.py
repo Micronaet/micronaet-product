@@ -39,7 +39,20 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-class PurchaseORder(orm.Model):
+class ProductProduct(orm.Model):
+    ''' Link product to inventory purchase order
+    '''
+    _inherit = 'product.product'
+    
+    _columns = {
+        'purchase_id': fields.many2one(
+            'purchase.order', 'Purchase inventory'),
+        'inventory_start': fields.float(
+            'Inventory start', digits=(16, 3)),
+        'inventory_date': fields.date('Inventory date'),    
+        }
+
+class PurchaseOrder(orm.Model):
     ''' Product for link import log
     '''
     _inherit = 'purchase.order'
@@ -50,7 +63,8 @@ class PurchaseORder(orm.Model):
     def action_import_product_from_csv(self, cr, uid, ids, context=None):
         ''' Import detail button
         '''
-        filename = '/home/administrator/photo/xls' # TODO parametrize
+        #import pdb; pdb.set_trace()
+        filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
         max_line = 10000
         _logger.info('Start import from path: %s' % filename)
 
@@ -117,7 +131,11 @@ class PurchaseORder(orm.Model):
             try:
                 # Loop on colums (trace)
                 default_code = row[0].value
-                product_qty = row[1].value # TODO check if is float!
+                try:
+                    product_qty = row[1].value # TODO check if is float!
+                except:
+                    product_qty = 0
+                    _logger.warning('Keep 0 the value: %s' % product_qty)    
                 #TODO lot = row[2].value 
                 
                 # Search product with code:
@@ -128,36 +146,45 @@ class PurchaseORder(orm.Model):
 
                 product_ids = product_pool.search(cr, uid, [
                     ('default_code', '=', default_code)], context=context)
-
                 if not product_ids:
                     error += _(
                         '%s. Error code not found, code: <b>%s</b></br>') % (
                             i, default_code)
                     continue # jump
-
                 elif len(product_ids) > 1:
                     error += _(
                         '''%s. Error more code (take first), 
                             code: <b>%s</b></br>''') % (
-                                i, default_code)
-                
+                                i, default_code)                
                 product_id = product_ids[0]
-                if product_id in purchase_product: # Update line
-                    line_pool.write(cr, uid, purchase_product[product_id], {
-                        'product_qty': product_qty,
-                        'location_id': purchase_proxy.location_id.id,
-                        }, context=context)                        
-                else: # create line
-                    line_pool.create(cr, uid, {
-                        'name': default_code,
-                        'date_planned': '2015-12-31',
-                        'product_id': product_id,
-                        'order_id': purchase_proxy.id,
-                        'product_qty': product_qty,
-                        'location_id': purchase_proxy.location_id.id,
-                        'price_unit': 1.0,
-                        #'product_uom_id': TODO use default correct for product!
-                        }, context=context)
+                
+                if product_qty:
+                    if product_id in purchase_product: # Update line
+                        line_pool.write(cr, uid, purchase_product[product_id], {
+                            'product_qty': product_qty,
+                            'location_id': purchase_proxy.location_id.id,
+                            }, context=context)                        
+                    else: # create line
+                        line_pool.create(cr, uid, {
+                            'name': default_code,
+                            'date_planned': '2015-12-31',
+                            'product_id': product_id,
+                            'order_id': purchase_proxy.id,
+                            'product_qty': product_qty,
+                            'location_id': purchase_proxy.location_id.id,
+                            'price_unit': 1.0,
+                            #'product_uom_id': TODO use default correct for product!
+                            }, context=context)
+                # for no product qty doesn't create purchase row, only update
+                # date in product ref.            
+                
+                # Some fast info in product:
+                product_pool.write(cr, uid, product_id, {
+                    'purchase_id': ids[0],
+                    'inventory_start': product_qty,
+                    'inventory_date': datetime.now().strftime('%Y-01-01'),
+                    }, context=context)
+
                 _logger.info('Product %s set to: %s' % (
                     default_code, product_qty))
             except:
