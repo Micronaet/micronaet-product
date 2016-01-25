@@ -63,9 +63,8 @@ class PurchaseOrder(orm.Model):
     def action_import_product_from_csv(self, cr, uid, ids, context=None):
         ''' Import detail button
         '''
-        #import pdb; pdb.set_trace()
         filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
-        max_line = 10000
+        max_line = 15000
         _logger.info('Start import from path: %s' % filename)
 
         # Pool used:
@@ -135,8 +134,12 @@ class PurchaseOrder(orm.Model):
                     product_qty = row[1].value # TODO check if is float!
                 except:
                     product_qty = 0
-                    _logger.warning('Keep 0 the value: %s' % product_qty)    
+                    #_logger.warning('Keep 0 the value: %s' % product_qty)    
                 #TODO lot = row[2].value 
+                
+                if not product_qty:
+                    _logger.warning('%s. Jumped line: %s' % (i, default_code))
+                    continue
                 
                 # Search product with code:
                 if not default_code:
@@ -157,12 +160,12 @@ class PurchaseOrder(orm.Model):
                             code: <b>%s</b></br>''') % (
                                 i, default_code)                
                 product_id = product_ids[0]
-                
+
                 if product_qty:
                     if product_id in purchase_product: # Update line
                         line_pool.write(cr, uid, purchase_product[product_id], {
                             'product_qty': product_qty,
-                            'location_id': purchase_proxy.location_id.id,
+                            #'location_id': purchase_proxy.location_id.id,
                             }, context=context)                        
                     else: # create line
                         line_pool.create(cr, uid, {
@@ -171,8 +174,8 @@ class PurchaseOrder(orm.Model):
                             'product_id': product_id,
                             'order_id': purchase_proxy.id,
                             'product_qty': product_qty,
-                            'location_id': purchase_proxy.location_id.id,
-                            'price_unit': 1.0,
+                            #'location_id': purchase_proxy.location_id.id,
+                            'price_unit': '.', # TODO accept0? 1.0,
                             #'product_uom_id': TODO use default correct for product!
                             }, context=context)
                 # for no product qty doesn't create purchase row, only update
