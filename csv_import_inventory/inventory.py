@@ -118,7 +118,7 @@ class PurchaseOrder(orm.Model):
         if error:
             _logger.error('Error import product: %s' % (sys.exc_info(), ))
             return False
-        
+
         for i in range(0, max_line):
             try:
                 row = ws.row(i) # generate error at end
@@ -129,7 +129,17 @@ class PurchaseOrder(orm.Model):
 
             try:
                 # Loop on colums (trace)
-                default_code = row[0].value
+                try:
+                    default_code = str(row[0].value).replace('.0', '')
+                except:
+                    default = ''    
+                # Search product with code:
+                if not default_code:
+                    _logger.error('Product %s not found' % row[0].value)
+                    error += _(
+                        'Error no code present in line: <b>%s</b></br>') % i
+                    continue # jump
+
                 try:
                     product_qty = float(row[1].value)
                 except:
@@ -143,11 +153,6 @@ class PurchaseOrder(orm.Model):
                     #    i, default_code, row[1].value))
                     continue
                 
-                # Search product with code:
-                if not default_code:
-                    error += _(
-                        'Error no code present in line: <b>%s</b></br>') % i
-                    continue # jump
 
                 product_ids = product_pool.search(cr, uid, [
                     ('default_code', '=', default_code)], context=context)
@@ -190,8 +195,8 @@ class PurchaseOrder(orm.Model):
                     'inventory_date': datetime.now().strftime('%Y-01-01'),
                     }, context=context)
 
-                _logger.info('Product %s set to: %s' % (
-                    default_code, product_qty))
+                _logger.info('%s. Product %s set to: %s' % (
+                    i, default_code, product_qty))
             except:
                 error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
                     i, default_code, sys.exc_info())
