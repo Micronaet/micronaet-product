@@ -66,6 +66,7 @@ class PurchaseOrder(orm.Model):
         filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
         max_line = 15000
         _logger.info('Start import from path: %s' % filename)
+        import pdb; pdb.set_trace()
 
         # Pool used:
         line_pool = self.pool.get('purchase.order.line')
@@ -131,14 +132,15 @@ class PurchaseOrder(orm.Model):
                 # Loop on colums (trace)
                 default_code = row[0].value
                 try:
-                    product_qty = row[1].value # TODO check if is float!
+                    product_qty = float(row[1].value)
                 except:
                     product_qty = 0
                     #_logger.warning('Keep 0 the value: %s' % product_qty)    
                 #TODO lot = row[2].value 
                 
                 if not product_qty:
-                    _logger.warning('%s. Jumped line: %s' % (i, default_code))
+                    _logger.warning('%s. Jumped line: %s [%s]' % (
+                        i, default_code, row[1].value))
                     continue
                 
                 # Search product with code:
@@ -175,7 +177,7 @@ class PurchaseOrder(orm.Model):
                             'order_id': purchase_proxy.id,
                             'product_qty': product_qty,
                             #'location_id': purchase_proxy.location_id.id,
-                            'price_unit': '.', # TODO accept0? 1.0,
+                            'price_unit': 0.0, # TODO accept0? 1.0,
                             #'product_uom_id': TODO use default correct for product!
                             }, context=context)
                 # for no product qty doesn't create purchase row, only update
