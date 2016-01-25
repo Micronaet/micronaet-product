@@ -139,8 +139,9 @@ class PurchaseOrder(orm.Model):
                 #TODO lot = row[2].value 
                 
                 if not product_qty:
-                    _logger.warning('%s. Jumped line: %s [%s]' % (
-                        i, default_code, row[1].value))
+                    # XXX not warning log 
+                    #_logger.warning('%s. Jumped line: %s [%s]' % (
+                    #    i, default_code, row[1].value))
                     continue
                 
                 # Search product with code:
