@@ -134,11 +134,6 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('lst_price', 'Sale price'),
             ('standard_price', 'Cost price'),
 
-
-            # Needed ?!?!:
-            #('usd_lst_price', 'List price (USD)'),
-            #('usd_standard_price', 'Standard (USD)'),
-            
             # Not used now:
             ('weight', 'Weight'),
             ('weight_net', 'Weight net'),

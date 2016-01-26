@@ -147,8 +147,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             #  Prepare new record:
             data = {}
             for lang in lang_trace:
-                data[lang] = {}
-                
+                data[lang] = {}                
             try:
                 row = ws.row(i)                
             except:
@@ -157,7 +156,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 break
             
             try:
-                # Loop on colums (trace)
+                # Loop on colums (trace)                
                 default_code = False
                 for col, field in column_trace.iteritems():
                     try:        
@@ -168,9 +167,15 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                             ''') % (i, col, field.field)
                         continue        
                         
+                    # ---------------------------------------------------------    
+                    #       Default_code:
+                    # ---------------------------------------------------------    
                     if field.field == 'default_code': # key:
                         default_code = v
-                    # Float field or exchange field (so float):    
+                    
+                    # ---------------------------------------------------------    
+                    #       Float field or exchange field (so float):    
+                    # ---------------------------------------------------------    
                     elif field.field in column_pool._float_list or \
                             field.need_exchange:
                         f = v or 0.0
@@ -178,6 +183,12 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                             f = float(f.replace(',', '.'))
                             
                         data[field.lang_id.code][field.field] = f
+                    # ---------------------------------------------------------                        
+                    #       String elements:
+                    # ---------------------------------------------------------    
+                    else: 
+                        data[field.lang_id.code][field.field] = v
+                            
                     if field.need_exchange:
                         data[field.lang_id.code][
                             field.field] *= exchange

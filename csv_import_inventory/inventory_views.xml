@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    <!--purchase.oredr-->
+    <!--purchase.order-->
     <record model="ir.ui.view" id="view_purchase_order_import_form">
         <field name="name">purchase.order.import</field>
         <field name="model">purchase.order</field>
