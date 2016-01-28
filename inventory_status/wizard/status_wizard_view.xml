@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_product_product_stock_status_wizard" model="ir.ui.view">
+            <field name="name">Product status</field>
+            <field name="model">product.product.status.stock.wizard</field>
+            <field name="arch" type="xml">
+              <form string="Stock status">
+                  <group>
+                       <field name="status_inventory"/>
+                       <field name="status_movement"/>
+                       
+                       <field name="status_order_in"/>
+                       <field name="status_order_out"/>
+                       
+                       <field name="status_load_in"/>
+                       <field name="status_load_out"/>
+                  </group>
+                  <footer>
+                        <button string="Close" class="oe_highlight" special="cancel" />
+                  </footer>
+              </form>
+            </field>
+        </record>
+
+        <record id="action_product_product_status_wizard" model="ir.actions.act_window">
+            <field name="name">Product status</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product.fabric.report.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_product_stock_status_wizard"/>
+            <field name="target">new</field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_product_product_button_status_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="qty_available" position="before">
+                    <button name="%(action_product_product_status_wizard)d" string="Status" type="action" />
+                </field>    
+            </field>
+        </record>
+    </data>
+</openerp>
