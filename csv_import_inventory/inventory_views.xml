@@ -16,7 +16,7 @@
         </field>
     </record>
     <!--purchase.order-->
-    <record model="ir.ui.view" id="view_purchase_order_import_form">
+    <!--<record model="ir.ui.view" id="view_purchase_order_import_form">
         <field name="name">purchase.order.import</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
@@ -28,7 +28,7 @@
                 </group>    
             </xpath>
         </field>
-    </record>
+    </record>-->
 
     <!--stock.inventory-->
     <record model="ir.ui.view" id="view_stock_inventory_import_form">

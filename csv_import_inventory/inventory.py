@@ -66,7 +66,6 @@ class PurchaseOrder(orm.Model):
         filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
         max_line = 15000
         _logger.info('Start import from path: %s' % filename)
-        import pdb; pdb.set_trace()
 
         # Pool used:
         line_pool = self.pool.get('purchase.order.line')
