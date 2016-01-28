@@ -167,13 +167,19 @@ class PurchaseOrder(orm.Model):
                             code: <b>%s</b></br>''') % (
                                 i, default_code)                
                 product_id = product_ids[0]
+                product_proxy.browse(cr, uid, product_id, context=context)
 
+                state = 'create'
+                import pdb; pdb.set_trace()
                 if product_qty:
                     if product_id in purchase_product: # Update line
                         line_pool.write(cr, uid, purchase_product[product_id], {
                             'product_qty': product_qty,
+                            'price_unit': 0.0, # TODO accept? 1.0,
+                            'product_uom': product_proxy.uom_id.id
                             #'location_id': purchase_proxy.location_id.id,
                             }, context=context)                        
+                        state = 'update'
                     else: # create line
                         line_pool.create(cr, uid, {
                             'name': default_code,
@@ -183,11 +189,11 @@ class PurchaseOrder(orm.Model):
                             'product_qty': product_qty,
                             #'location_id': purchase_proxy.location_id.id,
                             'price_unit': 0.0, # TODO accept0? 1.0,
-                            #'product_uom_id': TODO use default correct for product!
+                            'product_uom': product_proxy.uom_id.id
                             }, context=context)
                 # for no product qty doesn't create purchase row, only update
                 # date in product ref.            
-                
+         
                 # Some fast info in product:
                 product_pool.write(cr, uid, product_id, {
                     'purchase_id': ids[0],
@@ -195,8 +201,8 @@ class PurchaseOrder(orm.Model):
                     'inventory_date': datetime.now().strftime('%Y-01-01'),
                     }, context=context)
 
-                _logger.info('%s. Product %s set to: %s' % (
-                    i, default_code, product_qty))
+                _logger.info('%s. Product %s %s to: %s' % (
+                    i, default_code, state, product_qty))
             except:
                 error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
                     i, default_code, sys.exc_info())

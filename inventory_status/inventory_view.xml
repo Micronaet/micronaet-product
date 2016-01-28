@@ -21,12 +21,14 @@
              <field name="model">sale.order.line</field>
              <field name="arch" type="xml">
                  <tree string="Sale order line" editable="bottom">        
-                     <field name="order_id" />
-                     <field name="name" />
-                     <field name="product_uom_qty" />
-                     <field name="delivered_qty" />
-                     <field name="product_uom" />                     
-                     <field name="state" />
+                     <field name="order_id" readonly="1"/>
+                     <field name="name" readonly="1" />
+                     <field name="product_id" readonly="1" /> 
+                     <field name="product_uom" readonly="1" />                     
+                     <field name="product_uom_qty" readonly="1" />
+                     <field name="product_uom_maked_sync_qty" readonly="1" />
+                     <field name="delivered_qty" readonly="1" />
+                     <field name="state" readonly="1" />
                  </tree>
              </field>
          </record>
@@ -39,6 +41,11 @@
              <field name="context">{}</field>
              <field name="domain">[]</field>
          </record>
+         <menuitem 
+             parent="sale.menu_sale_order" 
+             id="menu_action_sale_order_line_analysys" 
+             action="action_sale_order_line"/>
+         
     </data>
 </openerp>
 
