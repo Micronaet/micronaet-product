@@ -167,10 +167,10 @@ class PurchaseOrder(orm.Model):
                             code: <b>%s</b></br>''') % (
                                 i, default_code)                
                 product_id = product_ids[0]
-                product_proxy.browse(cr, uid, product_id, context=context)
+                product_proxy = product_pool.browse(
+                    cr, uid, product_id, context=context)
 
                 state = 'create'
-                import pdb; pdb.set_trace()
                 if product_qty:
                     if product_id in purchase_product: # Update line
                         line_pool.write(cr, uid, purchase_product[product_id], {

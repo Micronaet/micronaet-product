@@ -1,6 +1,20 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+    <record model="ir.ui.view" id="view_product_startup_inventory_form">
+        <field name="name">product.product.startup.q.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="virtual_available" position="after">
+                <group name="startup_inventory_group" attrs="{'invisible':[('inventory_start', '>', 0)]}" colspan="4">
+                    <separator string="Start up"  colspan="4"/>
+                    <field name="inventory_start" />    
+                    <field name="inventory_date" />    
+                </group>
+            </field>
+        </field>
+    </record>
     <!--purchase.order-->
     <record model="ir.ui.view" id="view_purchase_order_import_form">
         <field name="name">purchase.order.import</field>
