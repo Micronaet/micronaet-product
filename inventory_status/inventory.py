@@ -43,6 +43,40 @@ class ProductProduct(orm.Model):
     '''   
     _inherit = 'product.product'
     
+    def button_export_inventory(self, cr, uid, ids, context=None):
+        ''' Export on file:
+        '''
+        def clean_ascii(value):
+            res = ''
+            for c in value:
+                if ord(c) < 127:
+                    res += c
+                else:
+                    res += '#'    
+            return res    
+            
+        filename = '/home/administrator/photo/xls/esistenze.csv'
+        f_out = open(filename, 'w')
+        
+        _logger.info('Start export inventory: %s' % filename)
+        product_ids = self.search(cr, uid, [], context=context)
+        for product in self.browse(cr, uid, product_ids, context=context):
+            value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
+                product.default_code,
+                product.name,
+                product.mx_net_qty,
+                product.mx_oc_out,
+                product.mx_of_in,
+                product.mx_lord_qty,
+                0,
+                '/',
+                'GPB',
+                ))
+            f_out.write(value)
+        f_out.close()    
+        _logger.info('End export inventory')
+        return
+    
     # button event:
     def get_sale_order_line_status(self, cr, uid, ids, context=None):
         ''' Open sol list
@@ -184,8 +218,9 @@ class ProductProduct(orm.Model):
             # Partner exclusion
             # TODO ('partner_id', 'not in', exclude_partner_ids),            
             # check data date
-            ('date', '>=', from_date), # XXX correct for virtual?
-            ('date', '<=', to_date),            
+            # TODO Restore date (for start up period not)
+            #('date', '>=', from_date), # XXX correct for virtual?
+            #('date', '<=', to_date),            
             # TODO state filter
             ])
 

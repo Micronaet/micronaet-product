@@ -24,6 +24,8 @@
                 <!--<button name="336" string="- aggiornamento"-->
                 <label for="qty_available" position="before">
                     <group>
+                       <button name="button_export_inventory" string="Export state" type="object" />
+                       <newline/>
                        <field name="mx_net_qty"/>
                        <field name="mx_lord_qty"/>
 
