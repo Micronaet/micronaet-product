@@ -37,7 +37,7 @@
     'data': [
         #'security/ir.model.access.csv',    
         'inventory_view.xml',
-        'wizard/status_wizard_view.xml',
+        #'wizard/status_wizard_view.xml',
         ],
     'active': False,
     'installable': True,

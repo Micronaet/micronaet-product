@@ -76,7 +76,7 @@ class ProductProduct(orm.Model):
             res[item_id] -= remain
         return res
         
-    def get_inventory_values(self, cr, uid, product_ids, context=None):
+    def _get_inventory_values(self, cr, uid, product_ids, fields, args, context=None):
         ''' Get information
         '''
         res = {}
@@ -112,12 +112,14 @@ class ProductProduct(orm.Model):
         # ------------------
         for item_id in product_ids:
             res[item_id] = {
-                'status_inventory': 0.0,
-                'status_movement': 0.0,
-                'status_order_in': 0.0,
-                'status_order_out': 0.0,
-                'status_load_in': 0.0,
-                'status_load_out': 0.0,
+                'mx_inv_qty': 0.0,
+                'mx_mm_qty': 0.0,
+                'mx_of_in': 0.0,
+                'mx_oc_out': 0.0,
+                'mx_bf_in': 0.0,
+                'mx_bc_out': 0.0,
+                'mx_net_qty': 0.0,
+                'mx_lord_qty': 0.0,
                 }
 
         # ---------------------------------------------------------------------
@@ -146,7 +148,7 @@ class ProductProduct(orm.Model):
         
         for line in move_pool.browse(cr, uid, line_ids, context=context):
             res[line.product_id.id][
-                'status_order_out'] += line.product_uom_qty
+                'mx_oc_out'] += line.product_uom_qty
 
         # ---------------------------------------------------------------------
         # OF. Get load picking
@@ -174,10 +176,10 @@ class ProductProduct(orm.Model):
         for line in move_pool.browse(cr, uid, line_ids, context=context):
             if line.state == 'assigned': # OF
                 res[line.product_id.id][
-                    'status_order_in'] += line.product_uom_qty
+                    'mx_of_in'] += line.product_uom_qty
             else: #done
                 res[line.product_id.id][
-                    'status_load_in'] += line.product_uom_qty
+                    'mx_bf_in'] += line.product_uom_qty
         
         # ---------------------------------------------------------------------
         # Get order to delivery
@@ -195,16 +197,57 @@ class ProductProduct(orm.Model):
                 continue
             
             res[line.product_id.id][
-                'status_order_out'] += line.product_uom_qty
-        return res        
+                'mx_oc_out'] += line.product_uom_qty
+        
+        # Update with calculated fields        
+        for key in res:
+            res[key]['mx_net_qty'] = \
+                res[key]['mx_bf_in'] - res[key]['mx_bc_out'] #+ inv
+            res[key]['mx_lord_qty'] = \
+                res[key]['mx_net_qty'] - res[key]['mx_oc_out'] + \
+                res[key]['mx_of_in']                    
+        return res
 
     _columns = {
-        'status_ordered': fields.function(
-             _get_status_ordered, method=True, type='float', string='Ordered', 
-             store=False),
-        #'status_virtual': fields.function(
-        #     _get_status_ordered, method=True, type='float', 
-        #     string='Virtual available', store=False, multi=True),
+        #'status_ordered': fields.function(
+        #     _get_status_ordered, method=True, type='float', string='Ordered', 
+        #     store=False),
+        
+        'mx_inv_qty': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='Inventory', 
+            store=False, multi=True),
+        'mx_mm_qty': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='Movement', 
+            store=False, multi=True),
+
+        'mx_bf_in': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='BF in ', 
+            store=False, multi=True),
+        'mx_bc_out': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='BC out', 
+            store=False, multi=True),    
+
+        'mx_of_in': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='OF in', 
+            store=False, multi=True),
+        'mx_oc_out': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='OC out', 
+            store=False, multi=True),
+        
+        'mx_net_qty': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='Total Net', 
+            store=False, multi=True),
+        'mx_lord_qty': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='Total Lord', 
+            store=False, multi=True),        
         }
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
