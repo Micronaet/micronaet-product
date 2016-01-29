@@ -102,6 +102,7 @@ class ProductProduct(orm.Model):
             exclude_partner_ids.append(item.id)            
         # Append also this company partner (for inventory)    
         exclude_partner_ids.append(company_proxy.partner_id.id)
+        stock_location_id = company_proxy.stock_location_id.id
         
         # Year filter:
         from_date = datetime.now().strftime('%Y-01-01 00:00:00')    
@@ -121,6 +122,26 @@ class ProductProduct(orm.Model):
                 'mx_net_qty': 0.0,
                 'mx_lord_qty': 0.0,
                 }
+
+        # ---------------------------------------------------------------------
+        # Inventory adjustement
+        # ---------------------------------------------------------------------
+        if stock_location_id:
+            line_ids = move_pool.search(cr, uid, [
+                ('inventory_id', '!=', False),
+                ('date', '>=', from_date), 
+                ('date', '<=', to_date), 
+                ])
+            
+            for line in move_pool.browse(cr, uid, line_ids, context=context):
+                if line.location_id.id == stock_location_id:
+                    res[line.product_id.id][
+                        'mx_inv_qty'] -= line.product_uom_qty
+                elif line.location_dest_id.id == stock_location_id:                        
+                    res[line.product_id.id][
+                        'mx_inv_qty'] += line.product_uom_qty
+        else:    
+            _logger.error('No stock location set up in Company!!!')
 
         # ---------------------------------------------------------------------
         # BC. Get unload picking
@@ -148,7 +169,7 @@ class ProductProduct(orm.Model):
         
         for line in move_pool.browse(cr, uid, line_ids, context=context):
             res[line.product_id.id][
-                'mx_oc_out'] += line.product_uom_qty
+                'mx_bc_out'] += line.product_uom_qty
 
         # ---------------------------------------------------------------------
         # OF. Get load picking
@@ -202,7 +223,8 @@ class ProductProduct(orm.Model):
         # Update with calculated fields        
         for key in res:
             res[key]['mx_net_qty'] = \
-                res[key]['mx_bf_in'] - res[key]['mx_bc_out'] #+ inv
+                res[key]['mx_bf_in'] - res[key]['mx_bc_out'] +\
+                res[key]['mx_inv_qty'] 
             res[key]['mx_lord_qty'] = \
                 res[key]['mx_net_qty'] - res[key]['mx_oc_out'] + \
                 res[key]['mx_of_in']                    

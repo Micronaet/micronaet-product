@@ -1,11 +1,29 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <!--<record model="ir.ui.view" id="view_product_no_org_inv_tree">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="virtual_available" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>-->
+        
         <record model="ir.ui.view" id="view_product_product_button_status_form">
             <field name="name">product.product.form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
-            <field name="arch" type="xml">                
+            <field name="arch" type="xml">        
+                <label for="qty_available" position="attributes">        
+                    <attribute name="invisible">1</attribute>
+                </label>
+                <label for="incoming_qty" position="attributes">        
+                    <attribute name="invisible">1</attribute>
+                </label>
                 <field name="qty_available" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
@@ -15,8 +33,9 @@
                 <field name="incoming_qty" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
-                <field name="qty_available" position="before">
-                  <group>
+                <!--<button name="336" string="- aggiornamento"-->
+                <label for="qty_available" position="before">
+                    <group>
                        <field name="mx_net_qty"/>
                        <field name="mx_lord_qty"/>
 
@@ -28,8 +47,8 @@
                        
                        <field name="mx_bf_in"/>
                        <field name="mx_bc_out"/>
-                  </group>
-                </field>    
+                    </group>
+                </label>    
             </field>
         </record>
          
