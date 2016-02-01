@@ -63,6 +63,7 @@ class ProductProduct(orm.Model):
         for product in self.browse(cr, uid, product_ids, context=context):
             value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
                 product.default_code,
+                product.statistic_category, # TODO remove
                 product.name,
                 product.mx_net_qty,
                 product.mx_oc_out,
