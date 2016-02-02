@@ -309,4 +309,7 @@ class ProductProduct(orm.Model):
             store=False, multi=True),        
         }
         
+    _defaults = {
+        'web_published': lambda *x: True,
+        }    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <search string="Product">
                     <field name="name" string="Product" filter_domain="['|',('default_code','ilike',self),('name','ilike',self)]"/>
-                    <field name="defaut_code" string="Code" filter_domain="[('default_code','ilike',self)]"/>
+                    <field name="default_code" string="Code" filter_domain="[('default_code','ilike',self)]"/>
                     <field name="statistic_category" string="Stat. category" filter_domain="[('statistic_category','ilike',self)]"/>
                     <separator/>
                     <filter name="web_published_on" string="On web" domain="[('web_published','=',True)]"/>                    
