@@ -30,8 +30,8 @@
             <field name="arch" type="xml">            
                 <tree string="Web product status" editable="bottom">
                      <field name="web_published" />
-                     <field name="name" readonly="1"/>
                      <field name="default_code" readonly="1"/>
+                     <field name="name" readonly="1"/>
                      
                      <field name="mx_inv_qty" readonly="1"/>
                      <field name="mx_mm_qty" readonly="1"/>
