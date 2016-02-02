@@ -35,7 +35,7 @@
                      
                      <field name="mx_inv_qty" readonly="1"/>
                      <field name="mx_mm_qty" readonly="1"/>
-                     <button name="dummy_temp" string="MM load" type="object" icon="gtk-goto-last"/>
+                     <button name="dummy_temp" string="MM load" type="object" icon="gtk-goto-first"/>
                      <button name="dummy_temp" string="MM unload" type="object" icon="gtk-goto-last" />
 
                      <field name="mx_bf_in" readonly="1"/>
