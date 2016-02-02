@@ -61,7 +61,7 @@ class ProductProduct(orm.Model):
         _logger.info('Start export inventory: %s' % filename)
         product_ids = self.search(cr, uid, [], context=context)
         for product in self.browse(cr, uid, product_ids, context=context):
-            value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
+            value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (
                 product.default_code,
                 product.statistic_category, # TODO remove
                 product.name,
