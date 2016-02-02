@@ -1,6 +1,45 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+
+        <record model="ir.ui.view" id="view_web_product_state_for_web_tree">
+            <field name="name">product.product.web.publish.tree</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">  
+                <tree string="Web product status" editable="bottom">
+                     <field name="web_published" />
+                     
+                     <field name="mx_inv_qty"/>
+                     <field name="mx_mm_qty"/>
+
+                     <field name="mx_bf_in"/>
+                     <field name="mx_bc_out"/>
+
+                     <field name="mx_of_in"/>
+                     <field name="mx_oc_out"/>
+                     
+                     <field name="mx_net_qty"/>
+                     <field name="mx_lord_qty"/>
+                </tree> 
+            </field>
+        </record>    
+        <record model="ir.actions.act_window" id="action_web_product_state">
+            <field name="name">Web product state</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_web_product_state_for_web_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>        
+        <menuitem 
+            parent="product.menu_products" 
+            id="menu_web_product_state" 
+            action="action_web_product_state"
+            />
+        
+    
         <record model="ir.ui.view" id="view_product_product_button_status_form">
             <field name="name">product.product.form</field>
             <field name="model">product.product</field>
