@@ -1,36 +1,61 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-
-        <record model="ir.ui.view" id="view_web_product_state_for_web_tree">
+        <record id="product_product_search_view" model="ir.ui.view">
+            <field name="name">product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <search string="Product">
+                    <field name="name" string="Product" filter_domain="['|',('default_code','ilike',self),('name','ilike',self)]"/>
+                    <field name="defaut_code" string="Code" filter_domain="[('default_code','ilike',self)]"/>
+                    <field name="statistic_category" string="Stat. category" filter_domain="[('statistic_category','ilike',self)]"/>
+                    <separator/>
+                    <filter name="web_published_on" string="On web" domain="[('web_published','=',True)]"/>                    
+                    <filter name="web_published_off" string="Not on web" domain="[('web_published','=',False)]"/>                    
+                    <group  expand='0' string='Group by...'>
+                       <filter string='Publishing' domain="[]" context="{'group_by' : 'web_published'}"/>
+                       <filter string='Statistic category' domain="[]" context="{'group_by' : 'statistic_category'}"/>
+                       <filter string='Unit of Measure' icon="terp-mrp" domain="[]" context="{'group_by' : 'uom_id'}"/>
+                       <filter string='Type' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_web_product_state_web_publish_tree">
             <field name="name">product.product.web.publish.tree</field>
             <field name="model">product.product</field>
             <field name="priority" eval="40" />
-            <field name="arch" type="xml">  
+            <field name="arch" type="xml">            
                 <tree string="Web product status" editable="bottom">
                      <field name="web_published" />
+                     <field name="name" readonly="1"/>
+                     <field name="default_code" readonly="1"/>
                      
-                     <field name="mx_inv_qty"/>
-                     <field name="mx_mm_qty"/>
+                     <field name="mx_inv_qty" readonly="1"/>
+                     <field name="mx_mm_qty" readonly="1"/>
 
-                     <field name="mx_bf_in"/>
-                     <field name="mx_bc_out"/>
+                     <field name="mx_bf_in" readonly="1"/>
+                     <field name="mx_bc_out" readonly="1"/>
 
-                     <field name="mx_of_in"/>
-                     <field name="mx_oc_out"/>
+                     <field name="mx_of_in" readonly="1"/>
+                     <field name="mx_oc_out" readonly="1"/>
                      
-                     <field name="mx_net_qty"/>
-                     <field name="mx_lord_qty"/>
+                     <field name="mx_net_qty" readonly="1"/>
+                     <field name="mx_lord_qty" readonly="1"/>
                 </tree> 
             </field>
-        </record>    
+        </record>   
+
         <record model="ir.actions.act_window" id="action_web_product_state">
             <field name="name">Web product state</field>
             <field name="res_model">product.product</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_web_product_state_for_web_tree"/>
-            <field name="context">{}</field>
+            <field name="view_id" ref="view_web_product_state_web_publish_tree"/>
+            <field name="search_view_id" ref="product_product_search_view"/>
+            <field name="context">{'search_default_web_published_on': True}</field>
             <field name="domain">[]</field>
         </record>        
         <menuitem 

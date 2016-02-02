@@ -270,7 +270,7 @@ class ProductProduct(orm.Model):
         #'status_ordered': fields.function(
         #     _get_status_ordered, method=True, type='float', string='Ordered', 
         #     store=False),
-        'web_publised': fields.boolean('Web published'),
+        'web_published': fields.boolean('Web published'),
         
         'mx_inv_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
