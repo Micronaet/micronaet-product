@@ -43,6 +43,14 @@ class ProductProduct(orm.Model):
     '''   
     _inherit = 'product.product'
     
+    # --------
+    # Utility:
+    # --------
+    def dummy_temp(self, cr, uid, ids, context=None):
+        ''' Temp button for associate event till no correct association
+        '''
+        return True
+        
     def button_export_inventory(self, cr, uid, ids, context=None):
         ''' Export on file:
         '''
@@ -78,7 +86,9 @@ class ProductProduct(orm.Model):
         _logger.info('End export inventory')
         return
     
-    # button event:
+    # -------------
+    # Button event:
+    # -------------
     def get_sale_order_line_status(self, cr, uid, ids, context=None):
         ''' Open sol list
         '''        
@@ -111,6 +121,9 @@ class ProductProduct(orm.Model):
             res[item_id] -= remain
         return res
         
+    # ----------------
+    # Fields function:    
+    # ----------------
     def _get_inventory_values(self, cr, uid, product_ids, fields, args, context=None):
         ''' Get information
         '''
@@ -259,7 +272,7 @@ class ProductProduct(orm.Model):
         # Update with calculated fields        
         for key in res:
             res[key]['mx_net_qty'] = \
-                res[key]['mx_bf_in'] - res[key]['mx_bc_out'] +\
+                res[key]['mx_bf_in'] - res[key]['mx_bc_out'] + \
                 res[key]['mx_inv_qty'] 
             res[key]['mx_lord_qty'] = \
                 res[key]['mx_net_qty'] - res[key]['mx_oc_out'] + \

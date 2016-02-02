@@ -35,12 +35,18 @@
                      
                      <field name="mx_inv_qty" readonly="1"/>
                      <field name="mx_mm_qty" readonly="1"/>
+                     <button name="dummy_temp" string="MM load" type="object" icon="gtk-goto-last"/>
+                     <button name="dummy_temp" string="MM unload" type="object" icon="gtk-goto-last" />
 
                      <field name="mx_bf_in" readonly="1"/>
+                     <button name="dummy_temp" string="BF in" type="object" icon="gtk-goto-last" />
                      <field name="mx_bc_out" readonly="1"/>
+                     <button name="dummy_temp" string="BF out" type="object" icon="gtk-goto-last" />
 
                      <field name="mx_of_in" readonly="1"/>
+                     <button name="dummy_temp" string="OF in" type="object" icon="gtk-goto-last" />
                      <field name="mx_oc_out" readonly="1"/>
+                     <button name="dummy_temp" string="OF out" type="object" icon="gtk-goto-last" />
                      
                      <field name="mx_net_qty" readonly="1"/>
                      <field name="mx_lord_qty" readonly="1"/>
