@@ -67,7 +67,8 @@ class ProductProduct(orm.Model):
         f_out = open(filename, 'w')
         
         _logger.info('Start export inventory: %s' % filename)
-        product_ids = self.search(cr, uid, [], context=context)
+        product_ids = self.search(cr, uid, [
+            ('web_published', '=', True)], context=context)
         for product in self.browse(cr, uid, product_ids, context=context):
             value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % ( #|%s
                 product.default_code,
