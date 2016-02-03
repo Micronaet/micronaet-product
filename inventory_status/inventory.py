@@ -63,7 +63,7 @@ class ProductProduct(orm.Model):
                     res += '#'    
             return res    
             
-        filename = '/home/administrator/photo/xls/esistenze.csv'
+        filename = '/home/administrator/photo/xls/giacenze.csv'
         f_out = open(filename, 'w')
         
         _logger.info('Start export inventory: %s' % filename)
