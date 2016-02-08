@@ -35,8 +35,8 @@
                      
                      <field name="mx_inv_qty" readonly="1"/>
                      <field name="mx_mm_qty" readonly="1"/>
-                     <button name="dummy_temp" string="MM load" type="object" icon="gtk-goto-first"/>
-                     <button name="dummy_temp" string="MM unload" type="object" icon="gtk-goto-last" />
+                     <button name="get_movements_type" string="MM load" type="object" icon="gtk-goto-first" context="{'type_of_movement': 'in'}"/>
+                     <button name="get_movements_type" string="MM unload" type="object" icon="gtk-goto-last" context="{'type_of_movement': 'out'}" />
 
                      <field name="mx_bf_in" readonly="1"/>
                      <button name="dummy_temp" string="BF in" type="object" icon="gtk-goto-last" />

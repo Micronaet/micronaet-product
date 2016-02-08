@@ -46,6 +46,74 @@ class ProductProduct(orm.Model):
     # --------
     # Utility:
     # --------
+    def get_stock_movement_from_in_to_out(self, cr, uid, product_id, loc_in, 
+            loc_out, context=None):
+        ''' Return movement for product and move type passed
+        '''
+        # TODO
+        #move_pool = self.pool.get('stock.move')
+        #move_ids = move_pool.search(cr, uid, [
+        #    ('location_id', '=', loc_in),
+        #    ('location_desc_id', '=', loc_out),
+        #    ('product_id', '=', product_id),
+        #    ], context=context)
+        return []#move_ids
+        
+    def get_stock_movement_from_type(self, cr, uid, product_id, type_id, 
+            context=None):
+        ''' Return movement for product and move type passed
+        '''
+        type_pool = self.pool.get('stock.picking.type')
+        type_proxy = type_pool.browse(cr, uid, type_id, context=context)
+        
+        return [] # TODO
+        #return self.get_stock_movement_from_in_to_out(
+        #    cr, uid, product_id,
+        #    type_proxy.default_location_src_id.id, 
+        #    type_proxy.default_location_dest_id.id, 
+        #    context=context)
+        
+    def get_movements_type(self, cr, uid, ids, context=None):
+        ''' Open movements with type passed as:
+            context field: 'type_of_movement':  
+                'in', 'out', 'of', 'oc',
+        '''  
+        context = context or {}
+        
+        company_pool = self.pool.get('res.company')
+        company_ids = company_pool.search(cr, uid, [], context=context)
+        company_proxy = company_pool.browse(cr, uid, company_ids, 
+            context=context)[0]
+            
+        move = context.get('type_of_movement', False)
+        if move == 'in':
+            # TODO loop
+            item_ids = set()
+            for element in company_proxy.stock_report_load_ids:
+                item_ids.update(set(
+                    self.get_stock_movement_from_type(
+                        cr, uid, ids[0], element, 
+                        context=context)))
+            item_ids = list(item_ids)            
+        elif move == 'out':
+            pass       
+        
+        if not item_ids:
+            return True
+        
+        return {
+        'type': 'ir.actions.act_window',
+        'name': 'Order line status',
+        'res_model': 'stock.move',
+        #'res_id': ids[0],
+        'view_type': 'form',
+        'view_mode': 'tree,form',
+        #'view_id': view_id,
+        #'target': 'new',
+        #'nodestroy': True,
+        'domain': [('id', 'in', item_ids)],
+        }   
+        
     def dummy_temp(self, cr, uid, ids, context=None):
         ''' Temp button for associate event till no correct association
         '''
