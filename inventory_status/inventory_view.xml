@@ -35,18 +35,18 @@
                      
                      <field name="mx_inv_qty" readonly="1"/>
                      <field name="mx_mm_qty" readonly="1"/>
-                     <button name="get_movements_type" string="MM load" type="object" icon="gtk-goto-first" context="{'type_of_movement': 'in'}"/>
-                     <button name="get_movements_type" string="MM unload" type="object" icon="gtk-goto-last" context="{'type_of_movement': 'out'}" />
+                     <button name="get_movements_in" string="MM load" type="object" icon="gtk-goto-first" />
+                     <button name="get_movements_out" string="MM unload" type="object" icon="gtk-goto-last" />
 
                      <field name="mx_bf_in" readonly="1"/>
                      <button name="dummy_temp" string="BF in" type="object" icon="gtk-goto-last" />
                      <field name="mx_bc_out" readonly="1"/>
-                     <button name="dummy_temp" string="BF out" type="object" icon="gtk-goto-last" />
+                     <button name="dummy_temp" string="BC out" type="object" icon="gtk-goto-last" />
 
                      <field name="mx_of_in" readonly="1"/>
-                     <button name="dummy_temp" string="OF in" type="object" icon="gtk-goto-last" />
+                     <button name="get_movements_of" string="OF in" type="object" icon="gtk-goto-last" />
                      <field name="mx_oc_out" readonly="1"/>
-                     <button name="dummy_temp" string="OF out" type="object" icon="gtk-goto-last" />
+                     <button name="get_movements_oc" string="OC out" type="object" icon="gtk-goto-last" />
                      
                      <field name="mx_net_qty" readonly="1"/>
                      <field name="mx_lord_qty" readonly="1"/>
@@ -137,10 +137,10 @@
              <field name="context">{}</field>
              <field name="domain">[]</field>
          </record>
-         <menuitem 
+         <!--<menuitem 
              parent="sale.menu_sale_order" 
              id="menu_action_sale_order_line_analysys" 
-             action="action_sale_order_line"/>         
+             action="action_sale_order_line"/>-->
     </data>
 </openerp>
 

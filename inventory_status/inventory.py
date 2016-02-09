@@ -73,19 +73,19 @@ class ProductProduct(orm.Model):
         #    type_proxy.default_location_dest_id.id, 
         #    context=context)
         
-    def get_movements_type(self, cr, uid, ids, context=None):
+    def get_movements_type(self, cr, uid, ids, move, context=None):
         ''' Open movements with type passed as:
             context field: 'type_of_movement':  
                 'in', 'out', 'of', 'oc',
         '''  
         context = context or {}
         
+        # Get parameter from company:
         company_pool = self.pool.get('res.company')
         company_ids = company_pool.search(cr, uid, [], context=context)
         company_proxy = company_pool.browse(cr, uid, company_ids, 
             context=context)[0]
             
-        move = context.get('type_of_movement', False)
         if move == 'in':
             # TODO loop
             item_ids = set()
@@ -94,25 +94,59 @@ class ProductProduct(orm.Model):
                     self.get_stock_movement_from_type(
                         cr, uid, ids[0], element, 
                         context=context)))
-            item_ids = list(item_ids)            
+            item_ids = list(item_ids)     
+            return {
+            'type': 'ir.actions.act_window',
+            'name': 'Order line status',
+            'res_model': 'stock.move',
+            #'res_id': ids[0],
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            #'view_id': view_id,
+            #'target': 'new',
+            #'nodestroy': True,
+            'domain': [('id', 'in', item_ids)],
+            }   
+                   
         elif move == 'out':
+            pass
+        elif move == 'of':
             pass       
+        elif move == 'oc':
+            sol_pool = self.pool.get('sale.order.line')
+            # TODO filter for open order
+            sol_ids = sol_pool.search(cr, uid, [
+                ('product_id', '=', ids[0])], context=context)
+            item_ids = []
+            import pdb; pdb.set_trace()
+            for sol in sol_pool.browse(cr, uid, sol_ids, context=context):
+                if sol.product_uom_qty - sol.delivered_qty > 0.0:
+                    import pdb; pdb.set_trace()
+                    item_ids.append(sol.id)
+            
+            return {
+            'type': 'ir.actions.act_window',
+            'name': 'Order line status',
+            'res_model': 'sale.order.line',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'domain': [('id', 'in', item_ids)],
+            }   
+                   
         
         if not item_ids:
             return True
+
+    def get_movements_oc(self, cr, uid, ids, context=None):
+        self.get_movements_type(cr, uid, ids, 'oc', context=context)
+    def get_movements_of(self, cr, uid, ids, context=None):
+        self.get_movements_type(cr, uid, ids, 'of', context=context)
+    def get_movements_in(self, cr, uid, ids, context=None):
+        self.get_movements_type(cr, uid, ids, 'in', context=context)
+    def get_movements_out(self, cr, uid, ids, context=None):
+        self.get_movements_type(cr, uid, ids, 'out', context=context)
+
         
-        return {
-        'type': 'ir.actions.act_window',
-        'name': 'Order line status',
-        'res_model': 'stock.move',
-        #'res_id': ids[0],
-        'view_type': 'form',
-        'view_mode': 'tree,form',
-        #'view_id': view_id,
-        #'target': 'new',
-        #'nodestroy': True,
-        'domain': [('id', 'in', item_ids)],
-        }   
         
     def dummy_temp(self, cr, uid, ids, context=None):
         ''' Temp button for associate event till no correct association
