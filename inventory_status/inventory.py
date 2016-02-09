@@ -370,7 +370,7 @@ class ProductProduct(orm.Model):
                 continue
             
             res[line.product_id.id][
-                'mx_oc_out'] += line.product_uom_qty
+                'mx_oc_out'] += remain
         
         # Update with calculated fields        
         for key in res:
