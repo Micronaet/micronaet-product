@@ -145,7 +145,6 @@ class ProductProduct(orm.Model):
         self.get_movements_type(cr, uid, ids, 'in', context=context)
     def get_movements_out(self, cr, uid, ids, context=None):
         self.get_movements_type(cr, uid, ids, 'out', context=context)
-
         
         
     def dummy_temp(self, cr, uid, ids, context=None):
@@ -298,9 +297,16 @@ class ProductProduct(orm.Model):
         # BC. Get unload picking
         # ---------------------------------------------------------------------
         out_picking_type_ids = []
+        
+        # Delivery out:
         for item in company_proxy.stock_report_unload_ids:
             out_picking_type_ids.append(item.id)
             
+        # MRP out
+        for item in company_proxy.stock_report_mrp_out_ids:
+            if item.id not in out_picking_type_ids:
+                out_picking_type_ids.append(item.id)
+
         pick_ids = pick_pool.search(cr, uid, [
             # type pick filter   
             ('picking_type_id', 'in', out_picking_type_ids),
@@ -326,8 +332,15 @@ class ProductProduct(orm.Model):
         # OF. Get load picking
         # ---------------------------------------------------------------------
         in_picking_type_ids = []
+        
+        # Purchase delivery in:
         for item in company_proxy.stock_report_load_ids:
             in_picking_type_ids.append(item.id)
+
+        # MRP delivery in:
+        for item in company_proxy.stock_report_mrp_in_ids:
+            if item.id not in in_picking_type_ids:
+                in_picking_type_ids.append(item.id)
             
         pick_ids = pick_pool.search(cr, uid, [     
             # type pick filter   
@@ -399,11 +412,11 @@ class ProductProduct(orm.Model):
 
         'mx_bf_in': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='BF in ', 
+            string='BF in (MRP in)', 
             store=False, multi=True),
         'mx_bc_out': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='BC out', 
+            string='BC out (MRP out)', 
             store=False, multi=True),    
 
         'mx_of_in': fields.function(

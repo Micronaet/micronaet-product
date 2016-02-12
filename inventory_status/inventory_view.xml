@@ -96,17 +96,17 @@
                     <group>
                        <button name="button_export_inventory" string="Export state" type="object" />
                        <newline/>
-                       <field name="mx_net_qty"/>
-                       <field name="mx_lord_qty"/>
+                       <field name="mx_net_qty" readonly="1"/>
+                       <field name="mx_lord_qty" readonly="1"/>
 
-                       <field name="mx_inv_qty"/>
-                       <!--<field name="mx_mm_qty"/>-->
+                       <field name="mx_inv_qty" readonly="1"/>
+                       <!--<field name="mx_mm_qty" readonly="1"/>-->
                        
-                       <field name="mx_of_in"/>
-                       <field name="mx_oc_out"/>
+                       <field name="mx_of_in" readonly="1"/>
+                       <field name="mx_oc_out" readonly="1"/>
                        
-                       <field name="mx_bf_in"/>
-                       <field name="mx_bc_out"/>
+                       <field name="mx_bf_in" readonly="1"/>
+                       <field name="mx_bc_out" readonly="1"/>
                     </group>
                 </label>    
             </field>
