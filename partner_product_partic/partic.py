@@ -69,6 +69,7 @@ class ResPartnerProductPartic(osv.osv):
 class SaleOrderLine(orm.Model):
     """ Model name: SaleOrderLine
     """
+    _inherit = 'sale.order.line'
     
     # override onchange product for check before in partner partic
     def product_id_change_with_wh(self, cr, uid, ids, pricelist, product, qty=0,
@@ -88,12 +89,41 @@ class SaleOrderLine(orm.Model):
             
         # Check if there's partner-product partic
         if product and partner_id:
+            # -----------------------------------------------------------------    
+            # Search in customer-product partic:
+            # -----------------------------------------------------------------    
             partic_pool = self.pool.get('res.partner.product.partic')
             partic_ids = partic_pool.search(cr, uid, [
                 ('partner_id', '=', partner_id),
                 ('product_id', '=', product),
                 ('partner_price', '>', 0),
                 ], context=context)
+                
+            # -----------------------------------------------------------------    
+            # Try to check with parent code if present for this company:    
+            # -----------------------------------------------------------------    
+            if not partic_ids:
+                # Try parent code:
+                product_pool = self.pool.get('product.product')
+                product_proxy = product_pool.browse(
+                    cr, uid, product, context=context)
+                parent_code =  product_proxy.company_id.partic_parent_len or 0
+                if parent_code:
+                    default_code = product_proxy.default_code[0:parent_code]                
+                    product_ids = product_pool.search(cr, uid, [
+                        ('default_code', '=', default_code)], context=context)
+                    if product_ids:
+                        if len(product_ids) > 1:
+                            _logger.warning('More than one: %s' % default_code)
+                        partic_ids = partic_pool.search(cr, uid, [
+                            ('partner_id', '=', partner_id),
+                            ('product_id', '=', product_ids[0]),
+                            ('partner_price', '>', 0),
+                            ], context=context)
+                            
+            # -----------------------------------------------------------------
+            # Get price (product or parent):
+            # -----------------------------------------------------------------
             if partic_ids:
                 partic_proxy = partic_pool.browse(
                     cr, uid, partic_ids, context=context)[0]   
@@ -102,6 +132,5 @@ class SaleOrderLine(orm.Model):
                 res['value']['price_unit'] = partic_proxy.partner_price
         return res
     
-    _inherit = 'sale.order.line'
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -38,6 +38,15 @@ _logger = logging.getLogger(__name__)
 class ResPartnerProductPartic(osv.osv):
     ''' Add product partic obj
     '''    
+    _inherit = 'res.company'
+    
+    _columns = {
+        'partic_parent_len': fields.integer('Partic parent len'), 
+        }
+
+class ResPartnerProductPartic(osv.osv):
+    ''' Add product partic obj
+    '''    
     _name = 'res.partner.product.partic'
     _description = 'Partner product partic'
     _rec_name = 'product_id'
