@@ -158,24 +158,18 @@ class ProductProduct(orm.Model):
             }   
         elif move == 'of':
             pass       
+            
         elif move == 'oc':
-            sol_pool = self.pool.get('sale.order.line')
-            # TODO filter for open order
-            sol_ids = sol_pool.search(cr, uid, [
-                ('product_id', '=', ids[0]),
-                ('order_id.state', 'not in', ('cancel', 'send', 'draft')),
-                # TODO no pricelist!!!
-                ], context=context)
-            item_ids = []
-            for sol in sol_pool.browse(cr, uid, sol_ids, context=context):
-                if sol.product_uom_qty - sol.delivered_qty > 0.0:
-                    item_ids.append(sol.id)
+            product_proxy = self.browse(cr, uid, ids, context=context)[0]
+            item_ids = [item.id for item in product_proxy.mx_oc_ids]
+
             try:        
                 tree_view = model_pool.get_object_reference(
                     cr, uid, 'inventory_status', 
                     'view_sale_order_line_tree')[1]
             except:
                 tree_view = False        
+                
             return {
             'type': 'ir.actions.act_window',
             'name': 'Order line status',
