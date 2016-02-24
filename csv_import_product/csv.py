@@ -101,6 +101,8 @@ class ProductProductImportationTraceColumn(orm.Model):
         'need_exchange': fields.boolean('Need exchange', 
             help='Requested in import wizard  (* exchange = company curr.)'),
         'field': fields.selection([
+            ('name', 'Name'),
+
             ('default_code', 'Product code (key field)'), # Key field
             ('description_sale', 'Sale description'), # Lang
             

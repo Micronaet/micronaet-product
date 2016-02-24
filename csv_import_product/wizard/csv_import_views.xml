@@ -25,6 +25,10 @@
                         <field name="to_line" />
 
                         <field name="with_new" />
+                        <group attrs="{'invisible': [('with_new', '=', False)]}" colspan="4">
+                            <field name="cost_id" attrs="{'required': [('with_new', '=', True)]}"/>
+                            <field name="revenue_id" attrs="{'required': [('with_new', '=', True)]}"/>
+                        </group>
 
                         <separator string="Note" colspan="4"/>
                         <field name="note" colspan="4" nolabel="1"/>

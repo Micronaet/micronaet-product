@@ -91,6 +91,9 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         from_line = wiz_proxy.from_line # 14
         to_line = wiz_proxy.to_line #24
         with_new = wiz_proxy.with_new
+        cost_id = wiz_proxy.cost_id.id
+        revenue_id = wiz_proxy.revenue_id.id
+        
         filename = os.path.join(filename, wiz_proxy.name)        
         error = ''
         annotation = ''
@@ -222,6 +225,14 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                     product_id = product_pool.create(cr, uid, {
                         'name': default_code, # will be update after
                         'default_code': default_code,
+                        'type': 'product',
+                        'property_account_income': revenue_id, 
+                        'property_account_expense': cost_id,
+                        #'categ_id'
+                        # taxes_id
+                        # supplier_taxes_id
+                        # uom_id product.uom
+                        
                         }, context=context)
 
                 # Write product in lang:
@@ -233,7 +244,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                         data[lang]['first_supplier_id'] = partner_id
                         
                         product_pool.write(
-                            cr, uid, product_ids[0], data[lang], 
+                            cr, uid, product_id, data[lang], 
                             context=context)
                 _logger.info('Update product code: %s' % default_code)            
             except:
@@ -273,6 +284,12 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             ('pricelist', 'Create Pricelist'),
             ], 'Force price'),            
         'with_new': fields.boolean('Create product'),
+        'cost_id': fields.many2one('account.account', 'Cost'),
+        'revenue_id': fields.many2one('account.account', 'Revenue'), 
+        # taxes_id cost
+        # taxes_id revenue
+        # uom
+        
         # TODO extra fields for new:
         'note': fields.text('Note'),
         }
