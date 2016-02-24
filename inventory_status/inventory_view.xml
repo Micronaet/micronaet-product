@@ -120,21 +120,33 @@
                 </field>
                 <!--<button name="336" string="- aggiornamento"-->
                 <label for="qty_available" position="before">
-                    <group>
+                    <group colspan="4" col="3">
                        <button name="button_export_inventory" string="Export state" type="object" />
                        <newline/>
+                       
                        <field name="mx_net_qty" readonly="1"/>
+                       <newline/>
                        <field name="mx_lord_qty" readonly="1"/>
+                       <newline/>
 
                        <field name="mx_inv_qty" readonly="1"/>
+                       <button name="get_movements_inv" string="Inv in" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_inv_qty', '=', 0)]}"/>
                        <!--<field name="mx_mm_qty" readonly="1"/>-->
                        
                        <field name="mx_of_in" readonly="1"/>
+                       <button name="get_movements_of" string="OF in" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_of_in', '=', 0)]}" />
+
                        <field name="mx_oc_out" readonly="1"/>
+                       <button name="get_movements_oc" string="OC out" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_oc_out', '=', 0)]}" />
                        
                        <field name="mx_bf_in" readonly="1"/>
+                       <button name="get_movements_in" string="BF in" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_bf_in', '=', 0)]}" />
+
                        <field name="mx_bc_out" readonly="1"/>
+                       <button name="get_movements_out" string="BC out" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_bc_out', '=', 0)]}"/>
                     </group>
+
+
                 </label>    
             </field>
         </record>
