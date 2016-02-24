@@ -90,7 +90,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         _logger.info('Start import XLS product file: %s' % wiz_proxy.name)
         from_line = wiz_proxy.from_line # 14
         to_line = wiz_proxy.to_line #24
-        filename = os.path.join(filename, wiz_proxy.name)
+        with_new = wiz_proxy.with_new
+        filename = os.path.join(filename, wiz_proxy.name)        
         error = ''
         annotation = ''
         
@@ -202,17 +203,27 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 product_ids = product_pool.search(cr, uid, [
                     ('default_code', '=', default_code)], context=context)
 
-                if not product_ids:
-                    error += _(
-                        '%s. Error code not found, code: <b>%s</b></br>') % (
-                            i, default_code)
-                    continue    
-                elif len(product_ids) > 1:
-                    error += _(
-                        '''%s. Error more code (take first), 
-                            code: <b>%s</b></br>''') % (
-                                i, default_code)
-                
+                if product_ids:
+                    product_id = product_ids[0]
+                    if len(product_ids) > 1:
+                        error += _(
+                            '''%s. Error more code (take first), 
+                                code: <b>%s</b></br>''') % (
+                                    i, default_code)
+                else:                
+                    if not with_new:
+                        error += _(
+                            '%s. Error code not found, code: <b>%s</b></br>'
+                            ) % (i, default_code)                                
+                        continue   
+
+                    # Create product:
+                    _logger.info('Create product code: %s' % default_code)            
+                    product_id = product_pool.create(cr, uid, {
+                        'name': default_code, # will be update after
+                        'default_code': default_code,
+                        }, context=context)
+
                 # Write product in lang:
                 for lang in lang_trace:
                     context['lang'] = lang
@@ -261,6 +272,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             ('product', 'Direct in product'),
             ('pricelist', 'Create Pricelist'),
             ], 'Force price'),            
+        'with_new': fields.boolean('Create product'),
+        # TODO extra fields for new:
         'note': fields.text('Note'),
         }
         
