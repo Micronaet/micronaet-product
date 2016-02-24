@@ -65,8 +65,9 @@
                      <button name="get_movements_in" string="MM load" type="object" icon="gtk-goto-first" />
                      <button name="get_movements_out" string="MM unload" type="object" icon="gtk-goto-last" />-->
 
+                     <button name="get_movements_inv" string="Inv in" type="object" icon="gtk-goto-last" />
                      <field name="mx_bf_in" readonly="1"/>
-                     <button name="dummy_temp" string="BF in" type="object" icon="gtk-goto-last" />
+                     <button name="get_movements_in" string="BF in" type="object" icon="gtk-goto-last" />
                      <field name="mx_bc_out" readonly="1"/>
                      <button name="get_movements_out" string="BC out" type="object" icon="gtk-goto-last" />
 

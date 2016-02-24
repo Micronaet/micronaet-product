@@ -104,37 +104,53 @@ class ProductProduct(orm.Model):
             context=context)[0]
         model_pool = self.pool.get('ir.model.data')
         
-        if move == 'in':
-            # TODO loop
-            item_ids = set()
-            for element in company_proxy.stock_report_load_ids:
-                item_ids.update(set(
-                    self.get_stock_movement_from_type(
-                        cr, uid, ids[0], element, 
-                        context=context)))
-            item_ids = list(item_ids)
+        if move == 'in': # BF
+            product_proxy = self.browse(cr, uid, ids, context=context)[0]
+            item_ids = [item.id for item in product_proxy.mx_bf_ids]
+            
+            try:
+                tree_view = model_pool.get_object_reference(
+                    cr, uid, 'inventory_status', 
+                    'view_stock_move_ref_form')[1]
+            except:
+                tree_view = False        
             
             return {
-            'type': 'ir.actions.act_window',
-            'name': 'Order line status',
-            'res_model': 'sale.order.line',
-            #'res_id': ids[0],
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            #'views': [
-            #    #(form_view or False, 'form'),
-            #    (tree_view or False, 'tree'), 
-            #    #(False, 'kanban'),
-            #    #(False, 'calendar'), 
-            #    #(False, 'graph'),
-            #    ],
-            #'view_id': view_id,
-            #'target': 'new',
-            #'nodestroy': True,
-            'domain': [('id', 'in', item_ids)],
-            }   
+                'type': 'ir.actions.act_window',
+                'name': 'Stock move status',
+                'res_model': 'stock.move',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'views': [
+                    (tree_view or False, 'tree'), 
+                    ],
+                'domain': [('id', 'in', item_ids)],
+                }   
+
+        elif move == 'inv': # INV
+            product_proxy = self.browse(cr, uid, ids, context=context)[0]
+            item_ids = [item.id for item in product_proxy.mx_inv_ids]
+            
+            try:
+                tree_view = model_pool.get_object_reference(
+                    cr, uid, 'inventory_status', 
+                    'view_stock_move_ref_form')[1]
+            except:
+                tree_view = False        
+            
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Stock move status',
+                'res_model': 'stock.move',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'views': [
+                    (tree_view or False, 'tree'), 
+                    ],
+                'domain': [('id', 'in', item_ids)],
+                }   
                    
-        elif move == 'out':
+        elif move == 'out': # BC
             product_proxy = self.browse(cr, uid, ids, context=context)[0]
             item_ids = [item.id for item in product_proxy.mx_bc_ids]
             
@@ -146,18 +162,38 @@ class ProductProduct(orm.Model):
                 tree_view = False        
             
             return {
-            'type': 'ir.actions.act_window',
-            'name': 'Stock move status',
-            'res_model': 'stock.move',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'views': [
-                (tree_view or False, 'tree'), 
-                ],
-            'domain': [('id', 'in', item_ids)],
-            }   
+                'type': 'ir.actions.act_window',
+                'name': 'Stock move status',
+                'res_model': 'stock.move',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'views': [
+                    (tree_view or False, 'tree'), 
+                    ],
+                'domain': [('id', 'in', item_ids)],
+                }   
         elif move == 'of':
-            pass       
+            product_proxy = self.browse(cr, uid, ids, context=context)[0]
+            item_ids = [item.id for item in product_proxy.mx_of_ids]
+            
+            try:
+                tree_view = model_pool.get_object_reference(
+                    cr, uid, 'inventory_status', 
+                    'view_stock_move_ref_form')[1]
+            except:
+                tree_view = False        
+            
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Stock move status',
+                'res_model': 'stock.move',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'views': [
+                    (tree_view or False, 'tree'), 
+                    ],
+                'domain': [('id', 'in', item_ids)],
+                }   
             
         elif move == 'oc':
             product_proxy = self.browse(cr, uid, ids, context=context)[0]
@@ -171,23 +207,21 @@ class ProductProduct(orm.Model):
                 tree_view = False        
                 
             return {
-            'type': 'ir.actions.act_window',
-            'name': 'Order line status',
-            'res_model': 'sale.order.line',
-            'view_type': 'form',
-            'views': [
-                #(form_view or False, 'form'),
-                (tree_view or False, 'tree'), 
-                #(False, 'kanban'),
-                #(False, 'calendar'), 
-                #(False, 'graph'),
-                ],
-            'view_mode': 'tree,form',
-            'domain': [('id', 'in', item_ids)],
-            }
-        
-        if not item_ids:
-            return True
+                'type': 'ir.actions.act_window',
+                'name': 'Order line status',
+                'res_model': 'sale.order.line',
+                'view_type': 'form',
+                'views': [
+                    #(form_view or False, 'form'),
+                    (tree_view or False, 'tree'), 
+                    #(False, 'kanban'),
+                    #(False, 'calendar'), 
+                    #(False, 'graph'),
+                    ],
+                'view_mode': 'tree,form',
+                'domain': [('id', 'in', item_ids)],
+                }
+        return True # XXX do nothing (error)
 
     def get_movements_oc(self, cr, uid, ids, context=None):
         return self.get_movements_type(cr, uid, ids, 'oc', context=context)
@@ -200,6 +234,9 @@ class ProductProduct(orm.Model):
         
     def get_movements_out(self, cr, uid, ids, context=None):
         return self.get_movements_type(cr, uid, ids, 'out', context=context)
+
+    def get_movements_inv(self, cr, uid, ids, context=None):
+        return self.get_movements_type(cr, uid, ids, 'inv', context=context)
         
     def dummy_temp(self, cr, uid, ids, context=None):
         ''' Temp button for associate event till no correct association
@@ -338,6 +375,9 @@ class ProductProduct(orm.Model):
                 # one2many fields: 
                 'mx_bc_ids': [],
                 'mx_oc_ids': [],
+                'mx_of_ids': [],
+                'mx_bf_ids': [],
+                'mx_inv_ids': [],
                 }
 
         # ---------------------------------------------------------------------
@@ -351,6 +391,8 @@ class ProductProduct(orm.Model):
                 ])
             
             for line in move_pool.browse(cr, uid, line_ids, context=context):
+                res[line.product_id.id]['mx_inv_ids'].append(line.id)
+                
                 if line.location_id.id == stock_location_id:
                     res[line.product_id.id][
                         'mx_inv_qty'] -= line.product_uom_qty
@@ -394,9 +436,8 @@ class ProductProduct(orm.Model):
         for line in move_pool.browse(cr, uid, line_ids, context=context):
             res[line.product_id.id][
                 'mx_bc_out'] += line.product_uom_qty
-        # one2many field:  
-        res[line.product_id.id][
-            'mx_bc_ids'] = line_ids
+            # one2many field:  
+            res[line.product_id.id]['mx_bc_ids'].append(line.id) # XXX line_ids
 
         # ---------------------------------------------------------------------
         # OF. Get load picking
@@ -433,9 +474,11 @@ class ProductProduct(orm.Model):
             if line.state == 'assigned': # OF
                 res[line.product_id.id][
                     'mx_of_in'] += line.product_uom_qty
+                res[line.product_id.id]['mx_of_ids'].append(line.id)
             else: #done
                 res[line.product_id.id][
                     'mx_bf_in'] += line.product_uom_qty
+                res[line.product_id.id]['mx_bf_ids'].append(line.id)
         
         # ---------------------------------------------------------------------
         # Get order to delivery
@@ -518,6 +561,21 @@ class ProductProduct(orm.Model):
         'mx_oc_ids': fields.function(
             _get_inventory_values, method=True, type='one2many', 
             string='OC movement', relation='sale.order.line',
+            store=False, multi=True),
+
+        'mx_of_ids': fields.function(
+            _get_inventory_values, method=True, type='one2many', 
+            string='OF movement', relation='stock.move',
+            store=False, multi=True),
+
+        'mx_bf_ids': fields.function(
+            _get_inventory_values, method=True, type='one2many', 
+            string='BF movement', relation='stock.move',
+            store=False, multi=True),
+
+        'mx_inv_ids': fields.function(
+            _get_inventory_values, method=True, type='one2many', 
+            string='Inv. movement', relation='stock.move',
             store=False, multi=True),
         }
         
