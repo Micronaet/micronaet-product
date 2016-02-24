@@ -102,6 +102,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             help='Requested in import wizard  (* exchange = company curr.)'),
         'field': fields.selection([
             ('name', 'Name'),
+            ('ean13', 'EAN 13'),
 
             ('default_code', 'Product code (key field)'), # Key field
             ('description_sale', 'Sale description'), # Lang

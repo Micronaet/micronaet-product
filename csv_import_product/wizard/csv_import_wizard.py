@@ -231,8 +231,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                         #'categ_id'
                         # taxes_id
                         # supplier_taxes_id
-                        # uom_id product.uom
-                        
+                        # uom_id product.uom                        
                         }, context=context)
 
                 # Write product in lang:
