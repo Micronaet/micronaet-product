@@ -38,6 +38,7 @@
     'data': [
         #'security/ir.model.access.csv',    
         'inventory_view.xml',
+        'scheduler.xml',
         #'wizard/status_wizard_view.xml',
         ],
     'active': False,
