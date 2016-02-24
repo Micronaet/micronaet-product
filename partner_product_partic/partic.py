@@ -86,6 +86,7 @@ class SaleOrderLine(orm.Model):
             date_order=date_order, packaging=packaging, 
             fiscal_position=fiscal_position, flag=flag, 
             warehouse_id=warehouse_id, context=context)
+        # TODO check parent also in pricelist (not for now!!)    
             
         # Check if there's partner-product partic
         if product and partner_id:

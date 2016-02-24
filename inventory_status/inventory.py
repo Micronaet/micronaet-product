@@ -77,7 +77,7 @@ class ProductProduct(orm.Model):
         ''' Open movements with type passed as:
             context field: 'type_of_movement':  
                 'in', 'out', 'of', 'oc',
-        '''  
+        '''
         context = context or {}
         
         # Get parameter from company:
@@ -85,7 +85,6 @@ class ProductProduct(orm.Model):
         company_ids = company_pool.search(cr, uid, [], context=context)
         company_proxy = company_pool.browse(cr, uid, company_ids, 
             context=context)[0]
-            
         if move == 'in':
             # TODO loop
             item_ids = set()
@@ -95,13 +94,24 @@ class ProductProduct(orm.Model):
                         cr, uid, ids[0], element, 
                         context=context)))
             item_ids = list(item_ids)     
+            
+            model_pool = self.pool.get('ir.model.data')
+            tree_view = models_pool.get_object_reference(
+                cr, uid, 'inventory_status', 'view_sale_order_line_tree')
             return {
             'type': 'ir.actions.act_window',
             'name': 'Order line status',
-            'res_model': 'stock.move',
+            'res_model': 'sale.order.line',
             #'res_id': ids[0],
             'view_type': 'form',
             'view_mode': 'tree,form',
+            'views': [
+                #(form_view or False, 'form'),
+                (tree_view or False, 'tree'), 
+                #(False, 'kanban'),
+                #(False, 'calendar'), 
+                #(False, 'graph'),
+                ],
             #'view_id': view_id,
             #'target': 'new',
             #'nodestroy': True,
@@ -116,12 +126,13 @@ class ProductProduct(orm.Model):
             sol_pool = self.pool.get('sale.order.line')
             # TODO filter for open order
             sol_ids = sol_pool.search(cr, uid, [
-                ('product_id', '=', ids[0])], context=context)
+                ('product_id', '=', ids[0]),
+                ('order_id.state', 'not in', ('cancel', 'send', 'draft')),
+                # TODO no pricelist!!!
+                ], context=context)
             item_ids = []
-            import pdb; pdb.set_trace()
             for sol in sol_pool.browse(cr, uid, sol_ids, context=context):
                 if sol.product_uom_qty - sol.delivered_qty > 0.0:
-                    import pdb; pdb.set_trace()
                     item_ids.append(sol.id)
             
             return {
@@ -131,21 +142,22 @@ class ProductProduct(orm.Model):
             'view_type': 'form',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', item_ids)],
-            }   
-                   
+            }
         
         if not item_ids:
             return True
 
     def get_movements_oc(self, cr, uid, ids, context=None):
-        self.get_movements_type(cr, uid, ids, 'oc', context=context)
-    def get_movements_of(self, cr, uid, ids, context=None):
-        self.get_movements_type(cr, uid, ids, 'of', context=context)
-    def get_movements_in(self, cr, uid, ids, context=None):
-        self.get_movements_type(cr, uid, ids, 'in', context=context)
-    def get_movements_out(self, cr, uid, ids, context=None):
-        self.get_movements_type(cr, uid, ids, 'out', context=context)
+        return self.get_movements_type(cr, uid, ids, 'oc', context=context)
         
+    def get_movements_of(self, cr, uid, ids, context=None):
+        return self.get_movements_type(cr, uid, ids, 'of', context=context)
+        
+    def get_movements_in(self, cr, uid, ids, context=None):
+        return self.get_movements_type(cr, uid, ids, 'in', context=context)
+        
+    def get_movements_out(self, cr, uid, ids, context=None):
+        return self.get_movements_type(cr, uid, ids, 'out', context=context)
         
     def dummy_temp(self, cr, uid, ids, context=None):
         ''' Temp button for associate event till no correct association
@@ -164,7 +176,8 @@ class ProductProduct(orm.Model):
                     res += '#'    
             return res    
             
-        filename = '/home/administrator/photo/xls/esistenze.csv'
+        filename = '/home/administrator/photo/xls/esistenze.csv'        
+        publish = '/home/administrator/ftp_pm.sh' 
         f_out = open(filename, 'w')
         
         _logger.info('Start export inventory: %s' % filename)
@@ -185,8 +198,15 @@ class ProductProduct(orm.Model):
                 ))
             f_out.write(value)
         f_out.close()    
+        _logger.info('Publish inventory')
+        try:
+            os.system(publish)  
+        except:
+            _logger.error('Error publishing...')
+            return False
+                
         _logger.info('End export inventory')
-        return
+        return True
     
     # -------------
     # Button event:
