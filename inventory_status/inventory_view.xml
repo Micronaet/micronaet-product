@@ -1,6 +1,33 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record id="view_stock_move_ref_form" model="ir.ui.view">
+            <field name="name">stock.move.ref.form</field>
+            <field name="model">stock.move</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <tree string="Stock move">
+	                <field name="create_date" readonly="1" />
+	                <field name="partner_id" readonly="1"/>
+	                <field name="picking_id" readonly="1"/>
+	                <field name="ddt_id" readonly="1"/>
+	                <field name="product_id" readonly="1"/>
+	                <field name="product_uom_qty" readonly="1"/>
+	                <field name="product_uom" string="UM" readonly="1"/>
+	                <field name="product_uos_qty" invisible="1" />
+	                <field name="product_uos" invisible="1" />
+	                <field name="location_id" invisible="1" />
+	                <field name="date_expected" invisible="1"/>
+	                <field name="availability" invisible="1" />
+	                <field name="reserved_availability" invisible="1" />
+	                <field name="location_dest_id" invisible="1"/>
+	                <field name="remaining_qty" invisible="1" />
+	                <field name="string_availability_info" invisible="1"/>
+	                <field name="state" readonly="1"/>
+                </tree>    
+            </field>
+        </record>
+                
         <record id="product_product_search_view" model="ir.ui.view">
             <field name="name">product.product.search</field>
             <field name="model">product.product</field>
@@ -41,7 +68,7 @@
                      <field name="mx_bf_in" readonly="1"/>
                      <button name="dummy_temp" string="BF in" type="object" icon="gtk-goto-last" />
                      <field name="mx_bc_out" readonly="1"/>
-                     <button name="dummy_temp" string="BC out" type="object" icon="gtk-goto-last" />
+                     <button name="get_movements_out" string="BC out" type="object" icon="gtk-goto-last" />
 
                      <field name="mx_of_in" readonly="1"/>
                      <button name="get_movements_of" string="OF in" type="object" icon="gtk-goto-last" />
@@ -69,8 +96,7 @@
             id="menu_web_product_state" 
             action="action_web_product_state"
             />
-        
-    
+            
         <record model="ir.ui.view" id="view_product_product_button_status_form">
             <field name="name">product.product.form</field>
             <field name="model">product.product</field>
@@ -118,7 +144,7 @@
              <field name="arch" type="xml">
                  <tree string="Sale order line" editable="bottom">        
                      <field name="order_id" readonly="1"/>
-                     <!--<field name="partner_id" readonly="1"/>-->
+                     <field name="partner_id" readonly="1"/>
                      <field name="name" readonly="1" />
                      <field name="product_id" readonly="1" /> 
                      <field name="product_uom" readonly="1" />                     

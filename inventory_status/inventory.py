@@ -38,6 +38,23 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class StockMove(orm.Model):
+    ''' Model name: Stock move ref.
+    '''   
+    _inherit = 'stock.move'
+    
+    _columns = {
+        'ddt_id': fields.related(
+            'picking_id', 'ddt_id', 
+            type='many2one', relation='stock.ddt', 
+            string='DDT', store=False), 
+        'partner_id': fields.related(
+            'picking_id', 'partner_id', 
+            type='many2one', relation='res.partner', 
+            string='Partner', store=False), 
+        }
+    
+
 class ProductProduct(orm.Model):
     ''' Model name: ProductProduct
     '''   
@@ -85,6 +102,8 @@ class ProductProduct(orm.Model):
         company_ids = company_pool.search(cr, uid, [], context=context)
         company_proxy = company_pool.browse(cr, uid, company_ids, 
             context=context)[0]
+        model_pool = self.pool.get('ir.model.data')
+        
         if move == 'in':
             # TODO loop
             item_ids = set()
@@ -93,11 +112,8 @@ class ProductProduct(orm.Model):
                     self.get_stock_movement_from_type(
                         cr, uid, ids[0], element, 
                         context=context)))
-            item_ids = list(item_ids)     
+            item_ids = list(item_ids)
             
-            model_pool = self.pool.get('ir.model.data')
-            tree_view = models_pool.get_object_reference(
-                cr, uid, 'inventory_status', 'view_sale_order_line_tree')
             return {
             'type': 'ir.actions.act_window',
             'name': 'Order line status',
@@ -105,13 +121,13 @@ class ProductProduct(orm.Model):
             #'res_id': ids[0],
             'view_type': 'form',
             'view_mode': 'tree,form',
-            'views': [
-                #(form_view or False, 'form'),
-                (tree_view or False, 'tree'), 
-                #(False, 'kanban'),
-                #(False, 'calendar'), 
-                #(False, 'graph'),
-                ],
+            #'views': [
+            #    #(form_view or False, 'form'),
+            #    (tree_view or False, 'tree'), 
+            #    #(False, 'kanban'),
+            #    #(False, 'calendar'), 
+            #    #(False, 'graph'),
+            #    ],
             #'view_id': view_id,
             #'target': 'new',
             #'nodestroy': True,
@@ -119,7 +135,27 @@ class ProductProduct(orm.Model):
             }   
                    
         elif move == 'out':
-            pass
+            product_proxy = self.browse(cr, uid, ids, context=context)[0]
+            item_ids = [item.id for item in product_proxy.mx_bc_ids]
+            
+            try:
+                tree_view = model_pool.get_object_reference(
+                    cr, uid, 'inventory_status', 
+                    'view_stock_move_ref_form')[1]
+            except:
+                tree_view = False        
+            
+            return {
+            'type': 'ir.actions.act_window',
+            'name': 'Stock move status',
+            'res_model': 'stock.move',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'views': [
+                (tree_view or False, 'tree'), 
+                ],
+            'domain': [('id', 'in', item_ids)],
+            }   
         elif move == 'of':
             pass       
         elif move == 'oc':
@@ -134,12 +170,24 @@ class ProductProduct(orm.Model):
             for sol in sol_pool.browse(cr, uid, sol_ids, context=context):
                 if sol.product_uom_qty - sol.delivered_qty > 0.0:
                     item_ids.append(sol.id)
-            
+            try:        
+                tree_view = model_pool.get_object_reference(
+                    cr, uid, 'inventory_status', 
+                    'view_sale_order_line_tree')[1]
+            except:
+                tree_view = False        
             return {
             'type': 'ir.actions.act_window',
             'name': 'Order line status',
             'res_model': 'sale.order.line',
             'view_type': 'form',
+            'views': [
+                #(form_view or False, 'form'),
+                (tree_view or False, 'tree'), 
+                #(False, 'kanban'),
+                #(False, 'calendar'), 
+                #(False, 'graph'),
+                ],
             'view_mode': 'tree,form',
             'domain': [('id', 'in', item_ids)],
             }
@@ -246,7 +294,8 @@ class ProductProduct(orm.Model):
     # ----------------
     # Fields function:    
     # ----------------
-    def _get_inventory_values(self, cr, uid, product_ids, fields, args, context=None):
+    def _get_inventory_values(self, cr, uid, product_ids, fields, args, 
+            context=None):
         ''' Get information
         '''
         res = {}
@@ -291,6 +340,10 @@ class ProductProduct(orm.Model):
                 'mx_bc_out': 0.0,
                 'mx_net_qty': 0.0,
                 'mx_lord_qty': 0.0,
+                
+                # one2many fields: 
+                'mx_bc_ids': [],
+                'mx_oc_ids': [],
                 }
 
         # ---------------------------------------------------------------------
@@ -347,6 +400,9 @@ class ProductProduct(orm.Model):
         for line in move_pool.browse(cr, uid, line_ids, context=context):
             res[line.product_id.id][
                 'mx_bc_out'] += line.product_uom_qty
+        # one2many field:  
+        res[line.product_id.id][
+            'mx_bc_ids'] = line_ids
 
         # ---------------------------------------------------------------------
         # OF. Get load picking
@@ -397,6 +453,7 @@ class ProductProduct(orm.Model):
             # Header state
             if line.order_id.state in ('cancel', 'draft', 'sent'): #done?
                 continue # TODO better!!            
+                
             # Check delivered:
             remain = line.product_uom_qty - line.delivered_qty
             if remain <= 0.0:
@@ -404,6 +461,8 @@ class ProductProduct(orm.Model):
             
             res[line.product_id.id][
                 'mx_oc_out'] += remain
+            # Update o2m field:    
+            res[line.product_id.id]['mx_oc_ids'].append(line.id)
         
         # Update with calculated fields        
         for key in res:
@@ -456,6 +515,16 @@ class ProductProduct(orm.Model):
             _get_inventory_values, method=True, type='float', 
             string='Total Lord', 
             store=False, multi=True),        
+        
+        'mx_bc_ids': fields.function(
+            _get_inventory_values, method=True, type='one2many', 
+            string='BC movement', relation='stock.move',
+            store=False, multi=True),
+
+        'mx_oc_ids': fields.function(
+            _get_inventory_values, method=True, type='one2many', 
+            string='OC movement', relation='sale.order.line',
+            store=False, multi=True),
         }
         
     _defaults = {

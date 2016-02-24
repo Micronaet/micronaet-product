@@ -31,7 +31,10 @@
         'base',
         'product',
         'sale',
+        'stock',
         'sale_delivery_partial',
+        'sale_order_line_stat', # partner_id field
+        'l10n_it_ddt', 
         ],
     'init_xml': [],
     'demo': [],

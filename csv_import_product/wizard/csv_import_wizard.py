@@ -158,7 +158,6 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 # Out of range error ends import:
                 annotation += _('Import end at line: %s\n') % i
                 break
-            
             try:
                 # Loop on colums (trace)                
                 default_code = False
