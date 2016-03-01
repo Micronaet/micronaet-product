@@ -478,8 +478,8 @@ class ProductProduct(orm.Model):
                 res[line.product_id.id][
                     'mx_of_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_of_ids'].append(line.id)
-                res[line.product_id.id]['mx_of_date'] += '%s ' % (
-                    line.date_planned)
+                #res[line.product_id.id]['mx_of_date'] += '%s ' % (
+                #    line.date_planned)
             else: # done   BF
                 res[line.product_id.id][
                     'mx_bf_in'] += line.product_uom_qty
