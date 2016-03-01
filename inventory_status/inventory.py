@@ -378,6 +378,9 @@ class ProductProduct(orm.Model):
                 'mx_of_ids': [],
                 'mx_bf_ids': [],
                 'mx_inv_ids': [],
+                
+                # text info:
+                'mx_of_date': '',
                 }
 
         # ---------------------------------------------------------------------
@@ -475,7 +478,9 @@ class ProductProduct(orm.Model):
                 res[line.product_id.id][
                     'mx_of_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_of_ids'].append(line.id)
-            else: #done
+                res[line.product_id.id]['mx_of_date'] += '%s ' % (
+                    line.date_planned)
+            else: # done   BF
                 res[line.product_id.id][
                     'mx_bf_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_bf_ids'].append(line.id)
@@ -517,6 +522,7 @@ class ProductProduct(orm.Model):
         #     store=False),
         'web_published': fields.boolean('Web published'),
         
+        # Quantity
         'mx_inv_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
             string='Inventory', 
@@ -553,6 +559,7 @@ class ProductProduct(orm.Model):
             string='Total Lord', 
             store=False, multi=True),        
         
+        # Many2one
         'mx_bc_ids': fields.function(
             _get_inventory_values, method=True, type='one2many', 
             string='BC movement', relation='stock.move',
@@ -577,6 +584,11 @@ class ProductProduct(orm.Model):
             _get_inventory_values, method=True, type='one2many', 
             string='Inv. movement', relation='stock.move',
             store=False, multi=True),
+        
+        # Text information:
+        'mx_of_date': fields.function(
+            _get_inventory_values, method=True, type='char', size=100, 
+            string='OF date', store=False, multi=True),        
         }
         
     _defaults = {

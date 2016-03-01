@@ -83,6 +83,8 @@ class SaleOrderLine(orm.Model):
             type='float', string='Stock net', store=False), 
         'mx_lord_qty': fields.related('product_id', 'mx_lord_qty', 
             type='float', string='Stock lord', store=False),
+        'mx_of_date': fields.related('product_id', 'mx_of_date', 
+            type='char', size=100, string='OF date', store=False),
         #'mx_inv_qty': fields.function(
         #'mx_mm_qty': fields.function(
         #'mx_bf_in': fields.function(
