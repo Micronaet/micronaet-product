@@ -93,9 +93,10 @@ class ProductProductMovedWizard(orm.TransientModel):
             'view_mode': 'tree,form',
             'views': [
                 (tree_view or False, 'tree'), 
-                (search_view or False, 'tree'), 
+                (search_view or False, 'search'), 
                 ],
             'domain': [('id', 'in', move_ids)],
+            'context': {'search_default_product_group': True},
             }
 
     _columns = {
