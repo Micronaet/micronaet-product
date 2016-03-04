@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="view_stock_move_packed_form" model="ir.ui.view">
+            <field name="name">stock.move.packed.tree</field>
+            <field name="model">stock.move</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <tree string="Stock move">
+	                <field name="create_date" readonly="1" />
+	                <field name="partner_id" readonly="1"/>
+	                <field name="picking_id" readonly="1"/>
+	                <field name="ddt_id" readonly="1"/>
+	                <field name="product_id" readonly="1"/>
+	                <field name="product_uom_qty" readonly="1" sum="total"/>
+	                <field name="product_uom" string="UM" readonly="1"/>
+	                <field name="product_uos_qty" invisible="1" />
+	                <field name="product_uos" invisible="1" />
+	                <field name="location_id" invisible="1" />
+	                <field name="location_dest_id" invisible="1"/>
+	                <field name="date_expected" invisible="1"/>
+	                <field name="state" readonly="1"/>
+                </tree>    
+            </field>
+        </record>
+                
+        <record id="product_product_search_view" model="ir.ui.view">
+            <field name="name">product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <search string="Product">
+                    <field name="name" string="Product" filter_domain="['|',('default_code','ilike',self),('name','ilike',self)]"/>
+                    <separator/>
+                    <group  expand='0' string='Group by...'>
+                       <filter string='Product' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'product_id'}"/>
+                       <filter string='Partner' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</openerp>
+

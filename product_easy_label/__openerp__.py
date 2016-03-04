@@ -18,22 +18,24 @@
 ###############################################################################
 
 {
-    'name': '',
+    'name': 'Product label for Zebra printer',
     'version': '0.1',
-    'category': '',
-    'description': '''        
+    'category': 'Report',
+    'description': ''' 
+        Create label for product in Zebra printers       
         ''',
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
     'depends': [
         'base',
+        'product',
         ],
     'init_xml': [],
     'demo': [],
     'data': [
-        #'security/ir.model.access.csv',    
-        #'_view.xml',
+        'label_view.xml',
+        'report/easy_label_report.xml',
         ],
     'active': False,
     'installable': True,
