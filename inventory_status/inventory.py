@@ -263,6 +263,12 @@ class ProductProduct(orm.Model):
         product_ids = self.search(cr, uid, [
             ('web_published', '=', True)], context=context)
         for product in self.browse(cr, uid, product_ids, context=context):
+            of_status = '/' # TODO check date and publish
+            #for of in product.mx_of_ids:
+            #    of_status += '%s %s\n' % (
+            #        int(of.product_uom_qty),
+            #        (of.picking_id.min_date or '?')[:10],
+            #        )
             value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % ( #|%s
                 product.default_code,
                 #product.statistic_category, # TODO remove
@@ -272,7 +278,7 @@ class ProductProduct(orm.Model):
                 product.mx_of_in,
                 product.mx_lord_qty,
                 0,
-                '/',
+                of_status,
                 'GPB',
                 ))
             f_out.write(value)
