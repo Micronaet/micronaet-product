@@ -90,10 +90,11 @@ class ProductProductMovedWizard(orm.TransientModel):
             'name': 'Stock move status',
             'res_model': 'stock.move',
             'view_type': 'form',
-            'view_mode': 'tree,form',
+            'view_mode': 'tree',
+            'search_view_id': search_view,
             'views': [
                 (tree_view or False, 'tree'), 
-                (search_view or False, 'search'), 
+                #(search_view or False, 'search'), 
                 ],
             'domain': [('id', 'in', move_ids)],
             'context': {'search_default_product_group': True},
