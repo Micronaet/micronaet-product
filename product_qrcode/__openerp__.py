@@ -18,22 +18,24 @@
 ###############################################################################
 
 {
-    'name': '',
+    'name': 'Product QR code web link',
     'version': '0.1',
     'category': '',
     'description': '''        
+        Add for each product a QR code for open web page
         ''',
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
     'depends': [
         'base',
+        'product',
         ],
     'init_xml': [],
     'demo': [],
     'data': [
         #'security/ir.model.access.csv',    
-        #'_view.xml',
+        'qrcode_view.xml',
         ],
     'active': False,
     'installable': True,
