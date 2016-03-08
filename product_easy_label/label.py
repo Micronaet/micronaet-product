@@ -38,4 +38,24 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class ProductProduct(orm.Model):
+    """ Model name: ProductProduct
+    """    
+    _inherit = 'product.product'
+
+    def print_label_on(self, cr, uid, ids, context=None):
+        ''' No print
+        '''
+        return self.write(cr, uid, ids, {
+            'print_label': True}, context=context)
+
+    def print_label_off(self, cr, uid, ids, context=None):
+        ''' No print
+        '''
+        return self.write(cr, uid, ids, {
+            'print_label': False}, context=context)
+            
+    _columns = {
+        'print_label': fields.boolean('Print label'),
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

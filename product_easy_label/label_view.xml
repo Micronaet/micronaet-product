@@ -1,7 +1,31 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-
+         <record model="ir.ui.view" id="view_product_product_label_form">
+             <field name="name">product.product.form</field>
+             <field name="model">product.product</field>
+             <field name="inherit_id" ref="product.product_normal_form_view"/>
+             <field name="arch" type="xml">
+                 <field name="name" position="after">
+                     <field name="print_label" invisible="1"/>
+                     <button name="print_label_on" string="Print label" type="object" icon="STOCK_DND_MULTIPLE" attrs="{'invisible':[('print_label','=',True)]}"/>
+                     <button name="print_label_off" string="Print label" type="object" icon="gtk-undo" attrs="{'invisible':[('print_label','=',False)]}"/>
+                 </field>
+             </field>
+         </record>
+         
+         <record model="ir.ui.view" id="view_product_product_label_tree">
+             <field name="name">product.product.form</field>
+             <field name="model">product.product</field>
+             <field name="inherit_id" ref="product.product_product_tree_view"/>
+             <field name="arch" type="xml">
+                 <field name="name" position="before">
+                     <field name="print_label" invisible="1"/>
+                     <button name="print_label_on" string="Print label" type="object" icon="STOCK_DND_MULTIPLE" attrs="{'invisible':[('print_label','=',True)]}"/>
+                     <button name="print_label_off" string="Print label" type="object" icon="gtk-undo" attrs="{'invisible':[('print_label','=',False)]}"/>
+                 </field>
+             </field>
+         </record>
     </data>
 </openerp>
 
