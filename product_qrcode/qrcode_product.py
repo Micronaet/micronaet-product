@@ -51,8 +51,9 @@ class ProductProductImage(osv.osv):
     '''
     _inherit = 'product.product'        
     
-    # Utility:
-    
+    # -------------------------------------------------------------------------
+    #                                   Utility:
+    # -------------------------------------------------------------------------
     def qrcode_code(self, code):
         code = code.upper()
         code = code.replace(' ', '_')
@@ -63,7 +64,7 @@ class ProductProductImage(osv.osv):
         folder_path = os.path.expanduser(root_path)
         filename = os.path.join(folder_path, code)
         return '%s.%s' % (filename, extension)
-        
+
     def prepare_qr_code(self, cr, uid, ids, context=None):
         ''' Create QR code for list of product passed
         '''        
