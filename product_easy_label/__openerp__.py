@@ -30,6 +30,7 @@
     'depends': [
         'base',
         'product',
+        'product_qrcode',
         ],
     'init_xml': [],
     'demo': [],
