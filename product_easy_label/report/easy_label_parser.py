@@ -51,7 +51,15 @@ class Parser(report_sxw.rml_parse):
             'get_date': self.get_date,
             
             'get_filter_description': self.get_filter_description,
+            'get_objects': self.get_objects,
         })
+
+    def get_objects(self, ):
+        product_pool = self.pool.get('product.product')
+        product_ids = product_pool.search(self.cr, self.uid, [
+            ('print_label', '=', True)])            
+        
+        return product_pool.browse(self.cr, self.uid, product_ids)
         
     def get_filter_description(self, ):
         return self.filter_description
