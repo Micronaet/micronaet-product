@@ -335,7 +335,17 @@ class ProductProduct(orm.Model):
             context=None):
         ''' Get information
         '''
+        _logger.warning('>>> START INVENTORY <<<<<<<<<<<<<<<<<<<<<<<<<<')
         res = {}
+        context = context or {}
+
+        # Read parameter for inventory:
+        user_id = context.get('uid', uid)
+        user = self.pool.get('res.users').browse(
+            cr, uid, user_id, context=context)
+        no_inventory_status = user.no_inventory_status
+        _logger.warning('USER: %s' % user_id)
+        
 
         # pool used:
         product_pool = self.pool.get('product.product')
@@ -386,9 +396,12 @@ class ProductProduct(orm.Model):
                 'mx_inv_ids': [],
                 
                 # text info:
-                'mx_of_date': '',
+                'mx_of_date': '',           
                 }
-
+        if no_inventory_status:
+            _logger.warning('>>> STOP NO INVENTORY <<<<<<<<<<<<<<<<<<<<<<<<<<')
+            return res
+            
         # ---------------------------------------------------------------------
         # Inventory adjustement
         # ---------------------------------------------------------------------
@@ -520,6 +533,8 @@ class ProductProduct(orm.Model):
             res[key]['mx_lord_qty'] = \
                 res[key]['mx_net_qty'] - res[key]['mx_oc_out'] + \
                 res[key]['mx_of_in']                    
+                
+        _logger.warning('>>> STOP INVENTORY <<<<<<<<<<<<<<<<<<<<<<<<<<')
         return res
 
     _columns = {
@@ -600,4 +615,38 @@ class ProductProduct(orm.Model):
     _defaults = {
         'web_published': lambda *x: True,
         }    
+
+class ResUsers(orm.Model):
+    """ Model name: SaleOrder
+    """    
+    _inherit = 'res.users'
+   
+    _columns = {
+        'no_inventory_status': fields.boolean('No inventory status'),
+        }
+
+# TODO move away:
+class SaleOrder(orm.Model):
+    """ Model name: SaleOrder
+    """    
+    _inherit = 'sale.order'
+   
+    def set_context_no_inventory(self, cr, uid, ids, context=None):
+        ''' Set no inventory in res.users parameter
+        '''
+        _logger.info('Stop inventory for user: %s' % uid)
+        self.pool.get('res.users').write(cr, uid, [uid], {
+            'no_inventory_status': True,
+            }, context=context)
+        return     
+
+    def set_context_yes_inventory(self, cr, uid, ids, context=None):
+        ''' Set no inventory in res.users parameter
+        '''    
+        _logger.info('Start inventory for user: %s' % uid)
+        self.pool.get('res.users').write(cr, uid, [uid], {
+            'no_inventory_status': False,
+            }, context=context)
+        return     
+       
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

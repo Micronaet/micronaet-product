@@ -1,6 +1,19 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+         <!--TODO move away-->
+         <!--<record model="ir.ui.view" id="view_sale_order_stop_inventory__form">
+             <field name="name">sale.order.form</field>
+             <field name="model">sale.order</field>
+             <field name="inherit_id" ref="sale.view_order_form"/>
+             <field name="arch" type="xml">
+                 <field name="name" position="after">
+                     <button name="set_context_no_inventory" string="No inventory" type="object" />
+                     <button name="set_context_yes_inventory" string="Yes inventory" type="object" />
+                 </field>
+             </field>
+         </record>-->
+
         <record id="view_stock_move_ref_form" model="ir.ui.view">
             <field name="name">stock.move.ref.form</field>
             <field name="model">stock.move</field>
@@ -145,8 +158,6 @@
                        <field name="mx_bc_out" readonly="1"/>
                        <button name="get_movements_out" string="BC out" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_bc_out', '=', 0)]}"/>
                     </group>
-
-
                 </label>    
             </field>
         </record>
