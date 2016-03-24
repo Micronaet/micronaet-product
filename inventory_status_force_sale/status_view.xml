@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_sale_order_force_inventory_form">
+            <field name="name">sale.order.force.inventory.button.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/header/field[@name='state']" position="before">
+                    <field name="no_inventory_status" invisible="1"/>
+                    <button name="with_inventory_status" string="Stock status" type="object" attrs="{'invisible':[('no_inventory_status','=',False)]}" icon="STOCK_MEDIA_PLAY" />
+                    <button name="without_inventory_status" string="No stock status" type="object" attrs="{'invisible':[('no_inventory_status','=',True)]}" icon="terp-gtk-media-pause"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
+
