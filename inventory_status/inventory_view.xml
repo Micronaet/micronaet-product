@@ -23,7 +23,7 @@
                  </field> 
              </field>
          </record>
-         <record model="ir.ui.view" id="view_res_users_form">
+         <record model="ir.ui.view" id="view_res_users__modif_form">
              <field name="name">res.users.no_inventory.form</field>
              <field name="model">res.users</field>
              <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
