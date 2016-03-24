@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_product_product_button_status_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">        
+                <label for="qty_available" position="before">
+                    <group colspan="4" col="3">
+                        <field name="no_inventory_status" invisible="1"/>
+                        <button name="with_inventory_status" string="Stock status" type="object" attrs="{'invisible':[('no_inventory_status','=',False)]}" icon="STOCK_MEDIA_PLAY" />
+                        <button name="without_inventory_status" string="No stock status" type="object" attrs="{'invisible':[('no_inventory_status','=',True)]}" icon="terp-gtk-media-pause"/>
+                    </group>    
+                </label>
+            </field>
+        </record>
+    </data>
+</openerp>
+
