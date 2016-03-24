@@ -30,6 +30,7 @@
     'depends': [
         'base',
         'product',
+        'quotation_photo',
         ],
     'init_xml': [],
     'demo': [],

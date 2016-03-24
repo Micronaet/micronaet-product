@@ -21,6 +21,24 @@
                  </field> 
              </field>
          </record>
+
+        <record model="ir.ui.view" id="view_product_product_button_photo_status_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">        
+                <field name="type" position="before">
+                    <group colspan="4" col="2">
+                        <field name="default_photo" widget="image" colspan="2" nolabel="1" attrs="{'invisible':[('always_show_photo','=',False)]}"/>
+                        <newline />
+                        <button name="set_context_no_photo" string="Proto OFF" type="object" attrs="{'invisible':[('always_show_photo','=',False)]}" icon="terp-gtk-media-pause"/>
+                        <button name="set_context_yes_photo" string="Photo ON" type="object" attrs="{'invisible':[('always_show_photo','=',True)]}" icon="STOCK_MEDIA_PLAY" />
+                        <field name="always_show_photo" invisible="1"/>
+                    </group>    
+                </field>
+            </field>
+        </record>
+         
     </data>
 </openerp>
 

@@ -48,4 +48,50 @@ class ResUsers(orm.Model):
             'Always show photo', help='In product form show product photo'),
         }
 
+class ProductProduct(orm.Model):
+    """ Model name: Product
+    """    
+    _inherit = 'product.product'
+   
+    def set_context_no_photo(self, cr, uid, ids, context=None):
+        ''' Set no inventory in res.users parameter
+        '''
+        self.pool.get('res.users').write(cr, uid, [uid], {
+            'always_show_photo': False,
+            }, context=context)
+        return     
+
+    def set_context_yes_photo(self, cr, uid, ids, context=None):
+        ''' Set no inventory in res.users parameter
+        '''    
+        self.pool.get('res.users').write(cr, uid, [uid], {
+            'always_show_photo': True,
+            }, context=context)
+        return    
+
+    # ----------------
+    # Fields function:                
+    # ----------------
+    def _get_user_always_show_photo_status(self, cr, uid, ids, fields, args, 
+            context=None):
+        ''' Fields function for calculate status for inventory for logget user
+        '''
+        context = context or {}
+        res = {}
+        if len(ids) > 1:
+            return
+        user_id = context.get('uid', False)
+        res[ids[0]] = False
+        if user_id: 
+            res[ids[0]] = self.pool.get('res.users').browse(
+                cr, uid, user_id, context=context).always_show_photo
+        return res
+    
+    _columns = {
+        'always_show_photo': fields.function(
+            _get_user_always_show_photo_status, method=True, 
+            type='boolean', string='Show photo',
+            store=False), 
+       }
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
