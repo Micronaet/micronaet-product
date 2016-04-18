@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_sale_order_delivery_stock_load_inventory_form">
+            <field name="name">sale.order.delivery.noinventory.tree</field>
+            <field name="inherit_id" ref="delivery_load_report.view_sale_order_delivery_form"/>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <field name="uncovered_state" position="after">
+                    <field name="no_inventory_status" invisible="1"/>
+                    <button name="with_inventory_status" string="Stock status" type="object" attrs="{'invisible':[('no_inventory_status','=',False)]}" icon="STOCK_MEDIA_PLAY" />
+                    <button name="without_inventory_status" string="No stock status" type="object" attrs="{'invisible':[('no_inventory_status','=',True)]}" icon="terp-gtk-media-pause"/>                    
+                </field>
+            </field>
+        </record>        
+    </data>
+</openerp>
+
