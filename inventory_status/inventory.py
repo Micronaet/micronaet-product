@@ -363,7 +363,7 @@ class ProductProduct(orm.Model):
             cr, uid, company_ids, context=context)[0]
         
         # Exclude partner list:
-        exclude_partner_ids = [] # Used?
+        exclude_partner_ids = [] # NOT USED TO REMOVE!!!!!!
         for item in company_proxy.stock_explude_partner_ids:
             exclude_partner_ids.append(item.id)            
         # Append also this company partner (for inventory)    
