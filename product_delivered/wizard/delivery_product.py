@@ -56,20 +56,21 @@ class ProductProductMovedWizard(orm.TransientModel):
         picking_pool = self.pool.get('stock.picking')
         
         wiz_proxy = self.browse(cr, uid, ids)[0]
-        domain = []
 
+        domain = []
         domain.append(('picking_type_id', '=', wiz_proxy.type_id.id))
-                    
         if wiz_proxy.from_date:
             domain.append(('date', '>=', wiz_proxy.from_date))
-
         if wiz_proxy.to_date:
             domain.append(('date', '<=', wiz_proxy.to_date))
-        
         pick_ids = picking_pool.search(cr, uid, domain, context=context)
-        move_ids = move_pool.search(cr, uid, [
-            ('picking_id', 'in', pick_ids)], context=context)
 
+        domain_move = [('picking_id', 'in', pick_ids)]
+        if wiz_proxy.code:
+            domain_move.append(('product_id.default_code', 'ilike', wiz_proxy.code))
+        if wiz_proxy.start_code:
+            domain_move.append(('product_id.default_code', '=like', '%s%s' % (wiz_proxy.start_code, '%')))
+        move_ids = move_pool.search(cr, uid, domain_move, context=context)
         # Search view and open:
         model_pool = self.pool.get('ir.model.data')
         try:
@@ -79,12 +80,13 @@ class ProductProductMovedWizard(orm.TransientModel):
         except:
             tree_view = False        
         try:
+            # DOESN'T WORK!!!
             search_view = model_pool.get_object_reference(
                 cr, uid, 'product_delivered', 
                 'product_product_search_view')[1]
         except:
             search_view = False
-            
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Stock move status',
@@ -103,6 +105,8 @@ class ProductProductMovedWizard(orm.TransientModel):
     _columns = {
         'from_date': fields.date('From >=', help='Date >='),
         'to_date': fields.date('To <=', help='Date <='),
+        'code': fields.char('Code', size=24), 
+        'start_code': fields.char('Start code', size=24), 
         'type_id': fields.many2one(
             'stock.picking.type', 'Picking type', required=True), 
         }

@@ -17,6 +17,9 @@
                             <separator string="Date filter:" colspan="4" />
                             <field name="from_date" />
                             <field name="to_date" />
+                            <separator string="Code filter:" colspan="4" />
+                            <field name="start_code" />
+                            <field name="code" />
                         </group>
                     </sheet>
                 </form>
