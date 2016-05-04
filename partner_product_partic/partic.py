@@ -109,7 +109,7 @@ class SaleOrderLine(orm.Model):
                 product_proxy = product_pool.browse(
                     cr, uid, product, context=context)
                 parent_code =  product_proxy.company_id.partic_parent_len or 0
-                if parent_code:
+                if parent_code and product_proxy.default_code:
                     default_code = product_proxy.default_code[0:parent_code]                
                     product_ids = product_pool.search(cr, uid, [
                         ('default_code', '=', default_code)], context=context)
