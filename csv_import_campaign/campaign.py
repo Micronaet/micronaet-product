@@ -118,10 +118,9 @@ class ProductProduct(orm.Model):
                     load_data[product_id] += qty   
             
             # Update product on database:
-            import pdb; pdb.set_trace()
             for product_id, qty in load_data.iteritems():            
                 self.write(cr, uid, product_id, {
-                    'mx_campaign_out': qty,
+                    'mx_campain_out': qty,
                     }, context=context)
         except:
             _logger.error('Error read filename: %s' % filename)
@@ -131,7 +130,7 @@ class ProductProduct(orm.Model):
         
     _columns = {
         'mx_campain_out': fields.float(
-            'Campaing OF', digits=(16, 3)),
+            'Campain OF', digits=(16, 3)),
         }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
