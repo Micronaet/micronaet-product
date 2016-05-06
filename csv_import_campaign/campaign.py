@@ -43,6 +43,7 @@ class ProductProduct(orm.Model):
     """    
     _inherit = 'product.product'
     
+    # Scheduled action:    
     def scheduled_import_campaign(self, cr, uid,
             script, filename, header=1, separator='$|$', context=None):
         ''' Scheduled event that launch campaign read status and import in
@@ -120,17 +121,25 @@ class ProductProduct(orm.Model):
             # Update product on database:
             for product_id, qty in load_data.iteritems():            
                 self.write(cr, uid, product_id, {
-                    'mx_campain_out': qty,
+                    'mx_campaign_out': qty,
                     }, context=context)
         except:
             _logger.error('Error read filename: %s' % filename)
         
         _logger.info('End import campaign status')
         return True
+
+    # Scheduled action:    
+    def button_import_campaign_web(self, cr, uid, ids, context=None):
+        ''' Manually launch operations
+        '''
+        return True
+        # TODO launch operation reading parameters from scheduler:
+        return self.scheduled_import_campaign(cr, uid,
+            script, filename, header=1, separator='$|$', context=context)        
         
     _columns = {
-        'mx_campain_out': fields.float(
-            'Campain OF', digits=(16, 3)),
+        'mx_campaign_out': fields.float(
+            '(Campaign OC)', digits=(16, 2)),
         }
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
