@@ -122,13 +122,10 @@ class ProductProduct(orm.Model):
         
         _logger.info('End import campaign status')
         return True
-    
-    
+        
     _columns = {
         'mx_campain_out': fields.float(
             'Campaing OF', digits=(16, config(int['price_accuracy']))))
         }
-    
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
