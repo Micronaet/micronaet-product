@@ -30,12 +30,14 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
+        'product',
         ],
     'init_xml': [],
     'demo': [],
     'data': [
         #'security/ir.model.access.csv',    
         'campaign_view.xml',
+        'scheduler.xml',
         ],
     'active': False,
     'installable': True,

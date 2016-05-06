@@ -43,7 +43,7 @@ class ProductProduct(orm.Model):
     """    
     _inherit = 'product.product'
     
-    def scheduled_import_campaign(self, cr, uid, ids, 
+    def scheduled_import_campaign(self, cr, uid,
             script, filename, header=1, separator='$|$', context=None):
         ''' Scheduled event that launch campaign read status and import in
             product field
@@ -53,14 +53,14 @@ class ProductProduct(orm.Model):
             header: num of line for header
         '''
         _logger.info('Start import campaign: script=%s filename=%s' % (
-            script, filename)
+            script, filename))
         
         # -----------------------
         # Get CSV files from web:    
         # -----------------------
         try:
             script = os.path.expanduser(script)
-            os.shell(script)
+            os.system(script)
         except:
             _logger.error('Error launching import script: %s' % script)    
             
@@ -81,7 +81,9 @@ class ProductProduct(orm.Model):
                     header -= 1
                     continue   
                     
-                line = line.strip().split(separator)
+                # Clean line:    
+                line = line.strip()[1:-1]
+                line = line.split(separator)
                 # save total colums for test
                 if not tot_col: 
                     tot_col = len(line)
@@ -97,25 +99,29 @@ class ProductProduct(orm.Model):
                 to_date = line[2]
                 code = line[3]
                 description = line[4]
-                qty = line[5]
+                qty = float(line[5])
 
                 # save total (update after)
                 product_ids = self.search(cr, uid, [
                     ('default_code', '=', code)], context=context)
-                if product_ids:
-                    if len(product_ids) > 1:
-                        _logger.warning('Double code: %s' % code)
-                    product_id = product_ids[0]    
-                    if product_id not in load_data:
-                        load_data[product_id] = [qty, product.id]
-                    else:
-                        load_data[product_id][0] += qty   
+
+                if not product_ids:
+                    _logger.error('Code not found code: %s' % code)
+                    continue
+                   
+                if len(product_ids) > 1:
+                    _logger.warning('Double code: %s' % code)
+                product_id = product_ids[0]    
+                if product_id not in load_data:
+                    load_data[product_id] = qty
+                else:
+                    load_data[product_id] += qty   
             
             # Update product on database:
-            for key, data in load_data.iteritems():            
-                qty, product_id = data
-                self.write(cr, uid, prodcut_id, {
-                    'mx_campaign_out'_ qty,
+            import pdb; pdb.set_trace()
+            for product_id, qty in load_data.iteritems():            
+                self.write(cr, uid, product_id, {
+                    'mx_campaign_out': qty,
                     }, context=context)
         except:
             _logger.error('Error read filename: %s' % filename)
@@ -125,7 +131,7 @@ class ProductProduct(orm.Model):
         
     _columns = {
         'mx_campain_out': fields.float(
-            'Campaing OF', digits=(16, config(int['price_accuracy']))))
+            'Campaing OF', digits=(16, 3)),
         }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
