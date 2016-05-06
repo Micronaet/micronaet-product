@@ -113,15 +113,21 @@ class ProductProduct(orm.Model):
                 if len(product_ids) > 1:
                     _logger.warning('Double code: %s' % code)
                 product_id = product_ids[0]    
+                detail = '%s: %s (%s - %s)\n' % (
+                    qty, campaign, from_date, to_date)
                 if product_id not in load_data:
-                    load_data[product_id] = qty
+                    load_data[product_id] = [qty, detail]
                 else:
-                    load_data[product_id] += qty   
+                    load_data[product_id][0] += qty
+                    load_data[product_id][1] += detail
+                    
             
             # Update product on database:
-            for product_id, qty in load_data.iteritems():            
+            for product_id, data in load_data.iteritems():            
+                qty, detail = data
                 self.write(cr, uid, product_id, {
                     'mx_campaign_out': qty,
+                    'mx_campaign_detail': detail,
                     }, context=context)
         except:
             _logger.error('Error read filename: %s' % filename)
@@ -141,5 +147,6 @@ class ProductProduct(orm.Model):
     _columns = {
         'mx_campaign_out': fields.float(
             '(Campaign OC)', digits=(16, 2)),
+        'mx_campaign_detail': fields.text('Campaign detail'),    
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
