@@ -35,6 +35,7 @@
         'sale_delivery_partial',
         'sale_order_line_stat', # partner_id field
         'l10n_it_ddt', 
+        'mx_close_order', # for close parameters
         ],
     'init_xml': [],
     'demo': [],
