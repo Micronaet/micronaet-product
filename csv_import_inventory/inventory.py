@@ -60,6 +60,7 @@ class PurchaseOrder(orm.Model):
     # -------------
     # Button event:
     # -------------
+    # TODO Migrate in a new module?
     def action_import_product_from_csv(self, cr, uid, ids, context=None):
         ''' Import detail button
         '''
@@ -144,6 +145,11 @@ class PurchaseOrder(orm.Model):
                     product_qty = float(row[1].value)
                 except:
                     product_qty = 0
+
+                try:
+                    price_unit = float(row[2].value)
+                except:
+                    price_unit = 0
                     #_logger.warning('Keep 0 the value: %s' % product_qty)    
                 #TODO lot = row[2].value 
                 
@@ -175,7 +181,7 @@ class PurchaseOrder(orm.Model):
                     if product_id in purchase_product: # Update line
                         line_pool.write(cr, uid, purchase_product[product_id], {
                             'product_qty': product_qty,
-                            'price_unit': 0.0, # TODO accept? 1.0,
+                            'price_unit': price_unit, # TODO accept? 1.0,
                             'product_uom': product_proxy.uom_id.id
                             #'location_id': purchase_proxy.location_id.id,
                             }, context=context)                        
@@ -188,18 +194,19 @@ class PurchaseOrder(orm.Model):
                             'order_id': purchase_proxy.id,
                             'product_qty': product_qty,
                             #'location_id': purchase_proxy.location_id.id,
-                            'price_unit': 0.0, # TODO accept0? 1.0,
+                            'price_unit': price_unit, # TODO accept0? 1.0,
                             'product_uom': product_proxy.uom_id.id
                             }, context=context)
                 # for no product qty doesn't create purchase row, only update
                 # date in product ref.            
          
+                # TODO currently used for import order so stopped:
                 # Some fast info in product:
-                product_pool.write(cr, uid, product_id, {
-                    'purchase_id': ids[0],
-                    'inventory_start': product_qty,
-                    'inventory_date': datetime.now().strftime('%Y-01-01'),
-                    }, context=context)
+                #product_pool.write(cr, uid, product_id, {
+                #    'purchase_id': ids[0],
+                #    'inventory_start': product_qty,
+                #    'inventory_date': datetime.now().strftime('%Y-01-01'),
+                #    }, context=context)
 
                 _logger.info('%s. Product %s %s to: %s' % (
                     i, default_code, state, product_qty))
