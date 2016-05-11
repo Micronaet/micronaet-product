@@ -200,13 +200,12 @@ class PurchaseOrder(orm.Model):
                 # for no product qty doesn't create purchase row, only update
                 # date in product ref.            
          
-                # TODO currently used for import order so stopped:
                 # Some fast info in product:
-                #product_pool.write(cr, uid, product_id, {
-                #    'purchase_id': ids[0],
-                #    'inventory_start': product_qty,
-                #    'inventory_date': datetime.now().strftime('%Y-01-01'),
-                #    }, context=context)
+                product_pool.write(cr, uid, product_id, {
+                    'purchase_id': ids[0],
+                    'inventory_start': product_qty,
+                    'inventory_date': datetime.now().strftime('%Y-01-01'),
+                    }, context=context)
 
                 _logger.info('%s. Product %s %s to: %s' % (
                     i, default_code, state, product_qty))

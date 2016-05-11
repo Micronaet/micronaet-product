@@ -18,11 +18,11 @@
 ###############################################################################
 
 {
-    'name': 'CSV Import order wizard',
+    'name': 'CSV Import inventory wizard',
     'version': '0.1',
     'category': 'ETL',
     'description': '''
-        Import wizard for import order product.
+        Import wizard for import inventory product.
         ''',
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
@@ -31,14 +31,14 @@
         'base',
         'product',
         'base_log',
-        'sale',
+        'stock',
         'purchase',
         ],
     'init_xml': [],
     'demo': [],
     'data': [
         'data/mode_data.xml',
-        'order_views.xml',
+        'inventory_views.xml',
         ],
     'active': False,
     'installable': True,
