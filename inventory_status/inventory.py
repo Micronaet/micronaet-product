@@ -510,7 +510,7 @@ class ProductProduct(orm.Model):
         sol_ids = sol_pool.search(cr, uid, [
             ('product_id', 'in', product_ids),
             ('mx_closed', '=', False), # Forced as closed
-            ('order_id.state', 'not in', ('cancel', 'draft', 'sent'))
+            ('order_id.state', 'not in', ('cancel', 'draft', 'sent')),
             ])
             
         for line in sol_pool.browse(cr, uid, sol_ids):
@@ -518,7 +518,7 @@ class ProductProduct(orm.Model):
             # XXX moved in search clause
             #if line.order_id.state in ('cancel', 'draft', 'sent'): #done?
             #    continue # TODO better!!            
-                
+
             # Check delivered:
             remain = line.product_uom_qty - line.delivered_qty
             if remain <= 0.0:
