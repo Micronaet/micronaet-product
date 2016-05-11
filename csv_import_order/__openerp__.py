@@ -18,7 +18,7 @@
 ###############################################################################
 
 {
-    'name': 'CSV Import inventory wizard',
+    'name': 'CSV Import order wizard',
     'version': '0.1',
     'category': 'ETL',
     'description': '''

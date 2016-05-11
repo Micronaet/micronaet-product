@@ -1,72 +1,34 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    <record model="ir.ui.view" id="view_product_startup_inventory_form">
-        <field name="name">product.product.startup.q.form</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view"/>
-        <field name="arch" type="xml">
-            <field name="virtual_available" position="after">
-                <group name="startup_inventory_group" attrs="{'invisible':[('inventory_start', '>', 0)]}" colspan="4">
-                    <separator string="Start up"  colspan="4"/>
-                    <field name="inventory_start" />    
-                    <field name="inventory_date" />    
-                </group>
-            </field>
-        </field>
-    </record>
-    <!--purchase.order-->
-    <record model="ir.ui.view" id="view_purchase_order_import_form">
-        <field name="name">purchase.order.import</field>
-        <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//notebook" position="before">
-                <group name="import_block" colspan="4" col="4">
-                    <field name="filename" />
-                    <button name="action_import_product_from_csv" string="Import" type="object" />
-                </group>    
-            </xpath>
-        </field>
-    </record>
-
-    <!--stock.inventory-->
-    <record model="ir.ui.view" id="view_stock_inventory_import_form">
-        <field name="name">stock.inventory.import</field>
-        <field name="model">stock.inventory</field>
-        <field name="inherit_id" ref="stock.view_inventory_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//notebook" position="before">
-                <group name="import_block" colspan="4" col="4">
-                    <field name="filename" />
-                    <button name="action_import_product_from_csv" string="Import" type="object" />
-                </group>    
-            </xpath>
-        </field>
-    </record>
-
-    <!-- Log adjustement: product.product.import-->
-    <record id="product_product_importation_form_view" model="ir.ui.view">
-            <field name="name">Log import product</field>
-            <field name="model">log.importation</field>
-            <field name="inherit_id" ref="base_log.log_importation_form_view"/>
+        <!--purchase.order-->
+        <record model="ir.ui.view" id="view_purchase_order_import_form">
+            <field name="name">purchase.order.import</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
-                <field name="user_id" position="after">
-                    <field name="inventory_id" readonly="1" attrs="{'invisible': [('inventory_id', '=', False)]}"/>
-                </field>    
+                <xpath expr="//notebook" position="before">
+                    <group name="import_block" colspan="4" col="4">
+                        <field name="filename" />
+                        <button name="action_import_product_from_csv" string="Import" type="object" />
+                    </group>    
+                </xpath>
             </field>
-      </record>
-      
-      <record id="product_product_importation_tree_view" model="ir.ui.view">
-          <field name="name">Log import product</field>
-          <field name="model">log.importation</field>
-          <field name="inherit_id" ref="base_log.log_importation_tree_view"/>
-          <field name="arch" type="xml">
-              <field name="name" position="after">
-                  <field name="inventory_id" /> <!--TODO parametrized with context-->
-              </field>    
-          </field>
-    </record>
+        </record>
+        <!--sale.order-->
+        <record model="ir.ui.view" id="view_sale_order_import_form">
+            <field name="name">sale.order.import</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="before">
+                    <group name="import_block" colspan="4" col="4">
+                        <field name="filename" />
+                        <button name="action_import_product_from_csv" string="Import" type="object" />
+                    </group>    
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>
 
