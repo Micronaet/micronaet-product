@@ -281,7 +281,6 @@ class SaleOrder(orm.Model):
         if error:
             _logger.error('Error import order: %s' % (sys.exc_info(), ))
             return False
-        import pdb; pdb.set_trace()
         for i in range(0, max_line):
             try:
                 row = ws.row(i) # generate error at end
