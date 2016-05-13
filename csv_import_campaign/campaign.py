@@ -74,6 +74,15 @@ class ProductProduct(orm.Model):
             load_data = {}
             tot_col = False
             i = 0
+            
+            # Reset all data value:
+            product_ids = self.search(cr, uid, [
+                ('mx_campaign_out', '!=', False)], context=context)
+            self.write(cr, uid, product_ids, {
+                'mx_campaign_out': False,
+                'mx_campaign_detail': False,
+                }, context=context)    
+                
             for line in csv_in:
                 i += 1
                 
