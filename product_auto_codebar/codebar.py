@@ -60,6 +60,21 @@ class ProductProduct(orm.Model):
     def generate_barcode_ean13(self, cr, uid, ids, context=None):
         ''' Create EAN code, not duplicated and not in exclude list
         '''
+        def generate_code(value):
+            ''' Add extra char
+            '''
+            # TODO 
+            return value
+            
+        # Pool used:
+        exclude_pool = self.pool.get('product.codebar.exclude')
+        
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        if current_proxy.ean13:
+            raise osv.except_osv(
+                _('Error'), 
+                _('EAN yet present, delete and press button again'))
+            
         company_pool = self.pool.get('res.company')
         company_ids = company_pool.search(cr, uid, [], context=context)
         company_proxy = company_pool.browse(
@@ -69,10 +84,59 @@ class ProductProduct(orm.Model):
             raise osv.except_osv(
                 _('Error'), 
                 _('Setup fixed part in company form'))
+                
+        # Load list of ean code yet present and black list
+        product_ids = self.search(
+            cr, uid, [('ean13_product', '!=', False)], context=context)
+        black_list = [item.ean13_product for self.browse(
+            cr, uid, product_ids, context=context]
+            
+        exclude_ids = exclude_pool.search(cr, uid, [], context=context)
+        exclude_proxy = exclude_pool.search(
+            cr, uid, exclude_ids, context=context)
+        black_list.extend([item.name for item in exclude_proxy])
         
+        for i in range(0, 10000):
+            code = '%00001d' % i
+            if code not in exclude_proxy:
+                self.write(cr, uid, ids, {
+                    'ean13', generate_code('%s%s' % (
+                        fixed, code)),
+                    }, context=context)
+        
+        return True
+
+    # -------------------------------------------------------------------------
+    #                        Fields function:
+    # -------------------------------------------------------------------------
+    # Field function:
+    def _get_part_ean_code(self, cr, uid, ids, fields, args, context=None):
+        ''' Fields function for calculate 
+        '''
+        res = {}
+        for item in self.browse(cr, uid, ids, context=context):
+            if item.ean13:
+                res[item.id] = item.ean13[7:12]
+            else:
+                res[item.id] = False
                 
         return True
 
+    # Store function:
+    def _get_product_ean_changed(self, cr, uid, ids, context=None):
+        ''' Return changed product (store function
+        '''
+        return ids
+        
+    _columns = {
+        'ean13_product': fields.function(
+            _get_part_ean_code, method=True, 
+            type='char', string='EAN13 product part', 
+            store={
+                'product.product': (_get_product_ean_chaged, ['ean13'], 10),
+                }),                        
+        }
+        
 class ResCompany(orm.Model):
     """ Model name: Company
     """
@@ -80,7 +144,7 @@ class ResCompany(orm.Model):
 
     _columns = {
         'codebar_fixed': fields.char('Codebar fixed', size=7, 
-            help='Fixed part, ex: 8012345 for 8012345678901'), 
+            help='Fixed part, ex: 8012345 for 8012345678901'),
         }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
