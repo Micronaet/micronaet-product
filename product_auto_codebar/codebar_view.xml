@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_res_company_codebar_part_form">
+            <field name="name">res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[@string='Configuration']/group" position="before">
+                    <group string="Codebar">
+                        <field name="codebar_fixed" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_product_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>            
+            <field name="arch" type="xml">
+                <field name="ean13" position="after">
+                    <button name="generate_barcode_ean13" string="Generate EAN" type="object" attrs="{'invisible':[('ean_13','!=',False)]}" />
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
+
