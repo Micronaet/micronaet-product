@@ -79,9 +79,26 @@ class ProductProduct(orm.Model):
     """
     _inherit = 'product.product'
 
-    # Button events:    
-    def generate_barcode_ean13(self, cr, uid, ids, context=None):
-        ''' Create EAN code, not duplicated and not in exclude list
+    def create(self, cr, uid, vals, context=None):
+        """ Create a new record for a model ClassName
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param vals: provides a data for new record
+            @param context: context arguments, like lang, time zone
+            
+            @return: returns a id of new record
+        """
+        if vals.get('ean13_auto', False) and not vals.get('ean13', False):
+            # Generate if not present and checked auto boolean:
+            vals['ean13'] = self._get_ean13_auto(cr, uid, context=context)
+        vals['ean13_auto'] = False
+            
+        return super(ProductProduct, self).create(
+            cr, uid, vals, context=context)
+    
+    # Utility button:
+    def _get_ean13_auto(self, cr, uid, context=None):
+        ''' Get an EAN 13 code 
         '''
         def generate_code(value):
             ''' Add extra char
@@ -90,21 +107,14 @@ class ProductProduct(orm.Model):
             EAN = barcode.get_barcode_class('ean13')
             if len(value) != 12:
                 raise osv.except_osv(
-                    _('Error'), 
+                    _('Error'),
                     _('EAN before control must be 12 char!'))
-                
-            ean13 = EAN(value)            
+            ean13 = EAN(value)
             return ean13.get_fullcode()
-            
+
         # Pool used:
         exclude_pool = self.pool.get('product.codebar.exclude')
-        
-        current_proxy = self.browse(cr, uid, ids, context=context)[0]
-        if current_proxy.ean13:
-            raise osv.except_osv(
-                _('Error'), 
-                _('EAN yet present, delete and press button again'))
-            
+
         company_pool = self.pool.get('res.company')
         company_ids = company_pool.search(cr, uid, [], context=context)
         company_proxy = company_pool.browse(
@@ -128,8 +138,23 @@ class ProductProduct(orm.Model):
         for i in range(1, 10000):
             code = '%05d' % i
             if code not in black_list:
-                ean13 = generate_code('%s%s' % (fixed, code))
-                self.write(cr, uid, ids, {'ean13': ean13}, context=context)        
+                return generate_code('%s%s' % (fixed, code))
+        return ''
+    
+    # Button events:    
+    def generate_barcode_ean13(self, cr, uid, ids, context=None):
+        ''' Create EAN code, not duplicated and not in exclude list
+        '''            
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        if current_proxy.ean13:
+            raise osv.except_osv(
+                _('Error'), 
+                _('EAN yet present, delete and press button again'))
+        
+        ean13 = self._get_ean13_auto(cr, uid, context=context)
+        if ean13:
+            return self.write(cr, uid, ids, {
+                'ean13': ean13, }, context=context)        
         return True
 
     # -------------------------------------------------------------------------
@@ -144,17 +169,17 @@ class ProductProduct(orm.Model):
             if item.ean13:
                 res[item.id] = item.ean13[7:12]
             else:
-                res[item.id] = False
-                
-        return True
+                res[item.id] = ''                
+        return res
 
     # Store function:
     def _get_product_ean_changed(self, cr, uid, ids, context=None):
         ''' Return changed product (store function
         '''
         return ids
-        
+
     _columns = {
+        'ean13_auto': fields.boolean('Auto EAN'),
         'ean13_product': fields.function(
             _get_part_ean_code, method=True, 
             type='char', string='EAN13 product part', 
@@ -162,6 +187,10 @@ class ProductProduct(orm.Model):
                 'product.product': (_get_product_ean_changed, ['ean13'], 10),
                 }),                        
         }
+        
+    _defaults = {
+        'ean13_auto': lambda *x: True,
+        }    
         
 class ResCompany(orm.Model):
     """ Model name: Company
