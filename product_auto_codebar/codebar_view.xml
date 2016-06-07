@@ -24,6 +24,30 @@
                 </field>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_product_codebar_exclude_tree">
+            <field name="name">product.codebar.exclude.tree</field>
+            <field name="model">product.codebar.exclude</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <tree string="Exclude list" editable="bottom" >        
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_product_codebar">
+            <field name="name">Barcode exclude list</field>
+            <field name="res_model">product.codebar.exclude</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_codebar_exclude_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        <menuitem 
+            parent="product.menu_products" 
+            id="menu_action_product_codebar_exlude_tree" 
+            action="action_product_codebar"
+            sequence="40"/>
     </data>
 </openerp>
 
