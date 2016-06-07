@@ -63,8 +63,15 @@ class ProductProduct(orm.Model):
         def generate_code(value):
             ''' Add extra char
             '''
-            # TODO 
-            return value
+            import barcode
+            EAN = barcode.get_barcode_class('ean13')
+            if len(value) != 12:
+                raise osv.except_osv(
+                    _('Error'), 
+                    _('EAN before control must be 12 char!'))
+                
+            ean13 = EAN(value)            
+            return ean13.get_fullcode()
             
         # Pool used:
         exclude_pool = self.pool.get('product.codebar.exclude')
@@ -88,8 +95,8 @@ class ProductProduct(orm.Model):
         # Load list of ean code yet present and black list
         product_ids = self.search(
             cr, uid, [('ean13_product', '!=', False)], context=context)
-        black_list = [item.ean13_product for self.browse(
-            cr, uid, product_ids, context=context]
+        black_list = [item.ean13_product for item in self.browse(
+            cr, uid, product_ids, context=context)]
             
         exclude_ids = exclude_pool.search(cr, uid, [], context=context)
         exclude_proxy = exclude_pool.search(
@@ -133,7 +140,7 @@ class ProductProduct(orm.Model):
             _get_part_ean_code, method=True, 
             type='char', string='EAN13 product part', 
             store={
-                'product.product': (_get_product_ean_chaged, ['ean13'], 10),
+                'product.product': (_get_product_ean_changed, ['ean13'], 10),
                 }),                        
         }
         
