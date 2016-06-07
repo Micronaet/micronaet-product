@@ -45,6 +45,29 @@ class ProductProduct(orm.Model):
     _name = 'product.codebar.exclude'
     _description = 'Code excluded'
         
+    # Onchange function:
+    def onchange_exclude_name(self, cr, uid, ids, name, context=None):
+        res = {}
+        if len(name) != 5:
+            res['warning'] = {
+                'title': 'Wrong format',
+                'message': 'Exclude format must be: 00001 (only code part)',
+                }
+
+        try:
+            if int(name) <= 0:
+                res['warning'] = {
+                    'title': 'Wrong format',
+                    'message': 'Exclude format must be int number',
+                    }
+        except:
+            res['warning'] = {
+                'title': 'Wrong format',
+                'message': 'Error checking format',
+                }            
+            
+        return res
+        
     _columns = {
         'name': fields.char('Exclude', size=5, required=True,
             help='Only code part, ex: 67890 for 8012345678901'), 
@@ -87,10 +110,10 @@ class ProductProduct(orm.Model):
         company_proxy = company_pool.browse(
             cr, uid, company_ids, context=context)[0]
         fixed = company_proxy.codebar_fixed
-        if not fixed:
+        if not fixed or len(fixed) != 7:
             raise osv.except_osv(
                 _('Error'), 
-                _('Setup fixed part in company form'))
+                _('Setup fixed part in company form (must be 7 char)'))
                 
         # Load list of ean code yet present and black list
         product_ids = self.search(
@@ -99,18 +122,14 @@ class ProductProduct(orm.Model):
             cr, uid, product_ids, context=context)]
             
         exclude_ids = exclude_pool.search(cr, uid, [], context=context)
-        exclude_proxy = exclude_pool.search(
+        exclude_proxy = exclude_pool.browse(
             cr, uid, exclude_ids, context=context)
         black_list.extend([item.name for item in exclude_proxy])
-        
-        for i in range(0, 10000):
-            code = '%00001d' % i
-            if code not in exclude_proxy:
-                self.write(cr, uid, ids, {
-                    'ean13', generate_code('%s%s' % (
-                        fixed, code)),
-                    }, context=context)
-        
+        for i in range(1, 10000):
+            code = '%05d' % i
+            if code not in black_list:
+                ean13 = generate_code('%s%s' % (fixed, code))
+                self.write(cr, uid, ids, {'ean13': ean13}, context=context)        
         return True
 
     # -------------------------------------------------------------------------
