@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_base_fiam_pricelist_product_custom_duty_user","product.custom.duty","model_product_custom_duty","base.group_user",1,1,1,1
+"access_base_fiam_pricelist_product_custom_duty_tax_user","product.custom.duty.tax","model_product_custom_duty_tax","base.group_user",1,1,1,1
+
