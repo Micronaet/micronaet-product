@@ -70,7 +70,9 @@ class ProductProductExtra(orm.Model):
     _inherit = 'product.product'
 
     _columns = {
-        'duty_id':fields.many2one('product.custom.duty', 'Custom duty'),
+        'duty_id': fields.many2one('product.custom.duty', 'Custom duty'),
+        'duty_code': fields.related(
+            'duty_id', 'code', type='char', string='Duty code', readonly=True), 
         #'dazi': fields.float('Dazi (USD)', digits=(16, 2)),
         #'dazi_eur': fields.function(_get_full_calculation, method=True,
         #    type='float', string='Dazi (EUR)', digits=(16, 2), store=False,

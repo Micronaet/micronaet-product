@@ -2,7 +2,17 @@
 <openerp>
     <data>
     <!--product.product-->
-    
+    <record model="ir.ui.view" id="view_product_product_duty_form">
+        <field name="name">product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <field name="uom_id" position="after">
+                <field name="duty_id" />
+                <field name="duty_code" />
+            </field>
+        </field>
+    </record>
     <!-- product.custom.duty: -->
     <record id='product_custom_duty_search' model='ir.ui.view'>
         <field name='name'>Product custom duty search</field>
