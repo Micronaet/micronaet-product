@@ -38,4 +38,43 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+
+class ProductCustomDutyTax(orm.Model):
+    '''Cost for country to import in Italy
+    '''
+    _name = 'product.custom.duty.tax'
+    _description = 'Product custom duty tax'
+    _rec_name = 'tax'
+
+    _columns = {
+        'tax': fields.float('% Tax', digits=(8, 3)),
+        'country_id':fields.many2one('res.country', 'Country', required=True),
+        'duty_id':fields.many2one('product.custom.duty', 'Duty code'),
+        }
+
+class ProductCustomDuty(orm.Model):
+    '''Anagrafic to calculate product custom duty depending of his category
+       (using % of tax per supplier cost)
+    '''
+    _name = 'product.custom.duty'
+    _description = 'Product custom duty'
+
+    _columns = {
+        'name': fields.char('Custom duty', size=100, required=True),
+        'code': fields.char('Code', size=24),
+        'tax_ids': fields.one2many(
+            'product.custom.duty.tax', 'duty_id', '% Tax'),
+        }
+
+class ProductProductExtra(orm.Model):
+    _inherit = 'product.product'
+
+    _columns = {
+        'duty_id':fields.many2one('product.custom.duty', 'Custom duty'),
+        #'dazi': fields.float('Dazi (USD)', digits=(16, 2)),
+        #'dazi_eur': fields.function(_get_full_calculation, method=True,
+        #    type='float', string='Dazi (EUR)', digits=(16, 2), store=False,
+        #    multi="total_cost"),
+        }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
