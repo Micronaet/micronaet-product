@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+    <!--stock.inventory-->
+    <!--<record model="ir.ui.view" id="view_stock_inventory_import_form">
+        <field name="name">stock.inventory.import</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="stock.view_inventory_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <group name="import_block" colspan="4" col="4">
+                    <field name="filename" />
+                    <button name="action_import_product_from_csv" string="Import" type="object" />
+                </group>    
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_product_importation_form_view" model="ir.ui.view">
+            <field name="name">Log import product</field>
+            <field name="model">log.importation</field>
+            <field name="inherit_id" ref="base_log.log_importation_form_view"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="inventory_id" readonly="1" attrs="{'invisible': [('inventory_id', '=', False)]}"/>
+                </field>    
+            </field>
+      </record>
+      
+      <record id="product_product_importation_tree_view" model="ir.ui.view">
+          <field name="name">Log import product</field>
+          <field name="model">log.importation</field>
+          <field name="inherit_id" ref="base_log.log_importation_tree_view"/>
+          <field name="arch" type="xml">
+              <field name="name" position="after">
+                  <field name="inventory_id" />
+              </field>    
+          </field>
+    </record>-->
+    </data>
+</openerp>
+

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       <record model="log.importation.mode" id="log_importation_mode_inventory_partial">
+           <field name="name">Inventory partial</field>
+           <field name="note">Import partial inventory during year (file: code | q)</field>
+       </record>
+    </data>
+</openerp>
+
