@@ -99,7 +99,6 @@ class ProductProductImportInventory(orm.Model):
             }   
             
         # Create object:
-        import pdb; pdb.set_trace()
         cl_proxy = picking_pool.create(cr, uid, header_data, context=context)
         
         # Update SL data:
@@ -170,13 +169,13 @@ class ProductProductImportInventory(orm.Model):
                     
                 # Update with stock:
                 mx_net_qty = product_proxy.mx_net_qty # for speed
-                gap_qty = product_qty - mx_net_qty
+                gap_qty = mx_net_qty - product_qty
                 
-                if gap_qty > 0:
+                if gap_qty < 0:
                     document = 'SL'
                     picking_id = sl_proxy
                     type_picking = type_sl
-                elif gap_qty < 0:
+                elif gap_qty > 0:
                     document = 'CL'
                     picking_id = cl_proxy
                     type_picking = type_cl
@@ -200,7 +199,8 @@ class ProductProductImportInventory(orm.Model):
                             type_picking.default_location_dest_id.id,
                             
                         'price_unit': 1.0, # TODO for stock evaluation
-                        'product_uom': product_proxy.uom_id.id
+                        'product_uom': product_proxy.uom_id.id,
+                        'state': 'done',
                         }, context=context)
 
                 note += '%s. %s from %s to %s [%s %s]\n' % (
@@ -215,14 +215,15 @@ class ProductProductImportInventory(orm.Model):
                 error += _('%s. Import error code: %s [%s]\n') % (
                     i, default_code, sys.exc_info())
                     
-        self.write(cr, uid, log_id, {
+        self.write(cr, uid, ids, {
             'error': error,
             'note': 'File: %s\n%s' % (
                 filename, note),
+            'inventory_cl_id': cl_proxy,
+            'inventory_sl_id': sl_proxy,    
             }, context=context)
 
-        _logger.info('End import XLS purchase file: %s' % (
-            purchase_proxy.filename))
+        _logger.info('End import XLS purchase file: %s' % fullname)
         return True
 
     _columns = {
