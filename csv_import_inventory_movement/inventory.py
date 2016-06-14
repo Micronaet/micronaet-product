@@ -94,7 +94,7 @@ class ProductProductImportInventory(orm.Model):
             'date': date,
             'min_date': date,
             'date_done': date,
-            'origin': fullname,
+            'origin': _('CL from: %s') % fullname,
             'state': 'done', # forced
             }   
             
@@ -102,9 +102,13 @@ class ProductProductImportInventory(orm.Model):
         cl_proxy = picking_pool.create(cr, uid, header_data, context=context)
         
         # Update SL data:
-        header_data['picking_type_id'] = type_sl.id
-        header_data['name'] = seq_pool.get_id(
-            cr, uid, seq_sl_id, 'id', context=context)
+        header_data.update({
+            'picking_type_id': type_sl.id,
+            'name': seq_pool.get_id(
+                cr, uid, seq_sl_id, 'id', context=context),
+            'origin': _('SL from: %s') % fullname,
+            })
+            
         sl_proxy = picking_pool.create(cr, uid, header_data, context=context)
 
         # ---------------------------------------------------------------------
@@ -171,11 +175,11 @@ class ProductProductImportInventory(orm.Model):
                 mx_net_qty = product_proxy.mx_net_qty # for speed
                 gap_qty = mx_net_qty - product_qty
                 
-                if gap_qty < 0:
+                if gap_qty > 0:
                     document = 'SL'
                     picking_id = sl_proxy
                     type_picking = type_sl
-                elif gap_qty > 0:
+                elif gap_qty < 0:
                     document = 'CL'
                     picking_id = cl_proxy
                     type_picking = type_cl
@@ -203,7 +207,7 @@ class ProductProductImportInventory(orm.Model):
                         'state': 'done',
                         }, context=context)
 
-                note += '%s. %s from %s to %s [%s %s]\n' % (
+                note += '%s|. |\'%s| from |\'%s| to |\'%s| [|%s|%s|]\n' % (
                     i, 
                     default_code, 
                     mx_net_qty,
