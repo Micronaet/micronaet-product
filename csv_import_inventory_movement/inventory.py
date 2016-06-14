@@ -42,7 +42,10 @@ _logger = logging.getLogger(__name__)
 class ProductProductImportInventory(orm.Model):
     ''' Importation log element
     ''' 
-    _inherit = 'product.product.import.inventory'
+    _name = 'product.product.import.inventory'
+    _description = 'Inventory partial import'
+    _rec_name = 'fullname'
+    _order = 'date desc'
 
     # -------------
     # Button event:
@@ -56,6 +59,7 @@ class ProductProductImportInventory(orm.Model):
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
 
         filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
+        import pdb; pdb.set_trace()
         
         # ----------------
         # Read parameters:
@@ -155,7 +159,7 @@ class ProductProductImportInventory(orm.Model):
                     cr, uid, product_ids, context=context)[0]
                     
                 # Update with stock:
-                gap_qty = product_qty - product_proxy.mx_net_qty:
+                gap_qty = product_qty - product_proxy.mx_net_qty
                 
                 if gap_qty >= 0:
                     document = 'SL'
@@ -205,6 +209,7 @@ class ProductProductImportInventory(orm.Model):
         return True
 
     _columns = {
+        'date': fields.date('Date'),
         'fullname': fields.char(
             'File name', size=80, required=True), 
         'max_line': fields.integer('Max line'), 
@@ -221,6 +226,8 @@ class ProductProductImportInventory(orm.Model):
         }
         
     _defaults = {
+        'date': lambda *x: datetime.now().strftime(
+            DEFAULT_SERVER_DATETIME_FORMAT),
         'max_line': lambda *x: 15000,
         }
      

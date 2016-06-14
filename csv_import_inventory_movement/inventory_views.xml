@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <openerp>
   <data>
-    <!--product_product_import_inventory-->
+    <!--product.product.import.inventory-->
     <record model="ir.ui.view" id="view_import_inventory_form">
         <field name="name">product_product_import_inventory.form</field>
-        <field name="model">product_product_import_inventory</field>
+        <field name="model">product.product.import.inventory</field>
         <field name="arch" type="xml">
             <tree string="String">
                 <!--<field name="date" />-->
@@ -17,10 +17,13 @@
     </record>        
     <record model="ir.ui.view" id="view_import_inventory_tree">
         <field name="name">product_product_import_inventory.tree</field>
-        <field name="model">product_product_import_inventory</field>
+        <field name="model">product.product.import.inventory</field>
         <field name="arch" type="xml">
             <form string="String" version="7.0">        
-                <sheet>
+                <header>
+                    <button name="action_import_product_from_csv" string="Import" type="object" attrs="{'invisible':[('inventory_cl_id', '=', False)]}"/>
+                </header>
+                <sheet>                    
                     <group col="4" colspan="4">
                         <field name="fullname" />
                         <field name="max_line" />
@@ -38,12 +41,12 @@
                         <separator string="Error:" colspan="4"/>
                         <field name="error" nolabel="1" colspan="4"/>
                     </group>                        
-                <sheet>        
+                </sheet>
             </form>
         </field>
     </record>
     <record model="ir.actions.act_window" id="action_import_inventory_tree">
-        <field name="name">Inventory addjust</field>
+        <field name="name">Inventory adjust</field>
         <field name="res_model">product.product.import.inventory</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -54,7 +57,9 @@
     <menuitem 
         parent="stock.menu_stock_configuration" 
         id="menu_import_inventory" 
-        action="action_import_inventory_tree"/>
+        action="action_import_inventory_tree"
+        sequence="50"
+        />
   </data>
 </openerp>
 
