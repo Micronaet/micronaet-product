@@ -54,12 +54,13 @@ class ProductProductImportInventory(orm.Model):
         ''' Import detail button
         '''
         # Pool used:
+        picking_pool = self.pool.get('stock.picking')
         move_pool = self.pool.get('stock.move')
         product_pool = self.pool.get('product.product')
+        seq_pool = self.pool.get('ir.sequence')
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
 
         filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
-        import pdb; pdb.set_trace()
         
         # ----------------
         # Read parameters:
@@ -67,9 +68,11 @@ class ProductProductImportInventory(orm.Model):
         # From import procedure:
         fullname = current_proxy.fullname
         max_line = current_proxy.max_line or 15000
-        type_cl_id = current_proxy.cl_picking_type_id.id
-        type_sl_id = current_proxy.sl_picking_type_id.id
-        
+        type_cl = current_proxy.cl_picking_type_id
+        type_sl = current_proxy.sl_picking_type_id
+        seq_cl_id = current_proxy.cl_picking_type_id.sequence_id.id
+        seq_sl_id = current_proxy.sl_picking_type_id.sequence_id.id
+
         # Calculated:
         date = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
 
@@ -85,18 +88,25 @@ class ProductProductImportInventory(orm.Model):
         # Header creation:        
         # ----------------
         header_data = {
+            'name': seq_pool.get_id(cr, uid, seq_cl_id, 'id', context=context),
             'partner_id': 1, # TODO
-            'picking_type_id': type_cl_id,            
+            'picking_type_id': type_cl.id,            
             'date': date,
             'min_date': date,
             'date_done': date,
             'origin': fullname,
-            }        
+            'state': 'done', # forced
+            }   
             
         # Create object:
-        cl_proxy = self.create(cr, uid, ids, header_data, context=context)
-        data['picking_type_id'] = type_sl_id
-        sl_proxy = self.create(cr, uid, ids, header_data, context=context)
+        import pdb; pdb.set_trace()
+        cl_proxy = picking_pool.create(cr, uid, header_data, context=context)
+        
+        # Update SL data:
+        header_data['picking_type_id'] = type_sl.id
+        header_data['name'] = seq_pool.get_id(
+            cr, uid, seq_sl_id, 'id', context=context)
+        sl_proxy = picking_pool.create(cr, uid, header_data, context=context)
 
         # ---------------------------------------------------------------------
         #                Open XLS document (first WS):
@@ -161,30 +171,35 @@ class ProductProductImportInventory(orm.Model):
                 # Update with stock:
                 gap_qty = product_qty - product_proxy.mx_net_qty
                 
-                if gap_qty >= 0:
+                if gap_qty > 0:
                     document = 'SL'
-                    picking = sl_proxy
-                else:
+                    picking_id = sl_proxy
+                    type_picking = type_sl
+                elif gap_qty < 0:
                     document = 'CL'
-                    picking = cl_proxy
+                    picking_id = cl_proxy
+                    type_picking = type_cl
                     gap_qty = -gap_qty # positive quantity        
+                else:
+                    pass                    
 
-                move_pool.create(cr, uid, {
-                    'name': default_code,
-                    #'date_planned': '2015-12-31',
-                    'product_id': product_ids[0],
-                    'picking_id': picking.id,
-                    'product_uom_qty': gap_qty,
-                    'date': date,
-                    'date_expected': date,
-                    'location_id': 
-                        picking.picking_type_id.default_location_src_id.id,
-                    'location_dest_id': 
-                        picking.picking_type_id.default_location_dest_id.id,
-                        
-                    'price_unit': 1.0, # TODO for stock evaluation
-                    'product_uom': product_proxy.uom_id.id
-                    }, context=context)
+                if gap_qty:
+                    move_pool.create(cr, uid, {
+                        'name': default_code,
+                        #'date_planned': '2015-12-31',
+                        'product_id': product_ids[0],
+                        'picking_id': picking_id,
+                        'product_uom_qty': gap_qty,
+                        'date': date,
+                        'date_expected': date,
+                        'location_id': 
+                            type_picking.default_location_src_id.id,
+                        'location_dest_id': 
+                            type_picking.default_location_dest_id.id,
+                            
+                        'price_unit': 1.0, # TODO for stock evaluation
+                        'product_uom': product_proxy.uom_id.id
+                        }, context=context)
 
                 note += '%s. %s from %s to %s [%s %s]\n' % (
                     i, 
@@ -192,7 +207,7 @@ class ProductProductImportInventory(orm.Model):
                     product_proxy.mx_net_qty,
                     product_qty,
                     document,
-                    gap_qty,
+                    gap_qty if gap_qty else 'No move!!',
                     )
             except:
                 error += _('%s. Import error code: %s [%s]\n') % (
