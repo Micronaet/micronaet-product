@@ -31,8 +31,8 @@
     'depends': [
         'base',
         'product',
-        'base_log',
         'stock',
+        'inventory_status',
         ],
     'init_xml': [],
     'demo': [],
