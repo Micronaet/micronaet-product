@@ -169,7 +169,8 @@ class ProductProductImportInventory(orm.Model):
                     cr, uid, product_ids, context=context)[0]
                     
                 # Update with stock:
-                gap_qty = product_qty - product_proxy.mx_net_qty
+                mx_net_qty = product_proxy.mx_net_qty # for speed
+                gap_qty = product_qty - mx_net_qty
                 
                 if gap_qty > 0:
                     document = 'SL'
@@ -181,6 +182,7 @@ class ProductProductImportInventory(orm.Model):
                     type_picking = type_cl
                     gap_qty = -gap_qty # positive quantity        
                 else:
+                    document = 'NO DOC'
                     pass                    
 
                 if gap_qty:
@@ -204,7 +206,7 @@ class ProductProductImportInventory(orm.Model):
                 note += '%s. %s from %s to %s [%s %s]\n' % (
                     i, 
                     default_code, 
-                    product_proxy.mx_net_qty,
+                    mx_net_qty,
                     product_qty,
                     document,
                     gap_qty if gap_qty else 'No move!!',
