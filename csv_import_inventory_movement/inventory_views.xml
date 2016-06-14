@@ -21,7 +21,7 @@
         <field name="arch" type="xml">
             <form string="String" version="7.0">        
                 <header>
-                    <button name="action_import_product_from_csv" string="Import" type="object" attrs="{'invisible':[('inventory_cl_id', '=', False)]}"/>
+                    <button name="action_import_product_from_csv" string="Import" type="object" attrs="{'invisible':[('inventory_cl_id', '!=', False)]}" class="oe_highlight"/>
                 </header>
                 <sheet>                    
                     <group col="4" colspan="4">
