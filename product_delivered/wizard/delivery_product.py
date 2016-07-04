@@ -40,10 +40,11 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-class StockMove(orm.Model):
-    ''' Utility function
-    '''
-    _inherit = 'stock.move'
+class ProductProductMovedWizard(orm.TransientModel):
+    ''' Procurements depend on sale
+    '''    
+    _name = 'product.product.moved.wizard'
+    _description = 'Product moved'
     
     # -------
     # Utilty:
@@ -71,24 +72,21 @@ class StockMove(orm.Model):
                 ('product_id.default_code', '=like', '%s%s' % (
                     wiz_proxy.start_code, '%')))
         return domain_move            
-        
-    
-class ProductProductMovedWizard(orm.TransientModel):
-    ''' Procurements depend on sale
-    '''    
-    _name = 'product.product.moved.wizard'
-    _description = 'Product moved'
-    
+
     # --------------
     # Button events:
     # --------------        
     def open_move_report(self, cr, uid, ids, context=None):
         ''' 
         '''    
+        move_pool = self.pool.get('stock.move')
+
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        
+        domain = move_pool.get_domain_moves_from_wizard(
+            cr, uid, wiz_proxy, context=context)
+                    
         datas = {
-            'wiz_proxy': wiz_proxy,
+            'domain': domain,
             }
             
         return {

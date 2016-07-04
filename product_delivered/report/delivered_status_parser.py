@@ -58,9 +58,7 @@ class Parser(report_sxw.rml_parse):
         # ---------------
         # Load move data:
         # ---------------        
-        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        domain = move_pool.get_domain_moves_from_wizard(
-            cr, uid, wiz_proxy, context=context)
+        domain = data.get('domain', [])
         move_ids = move_pool.search(cr, uid, domain, context=context)
         
         move = [move for move in move_pool.browse(
