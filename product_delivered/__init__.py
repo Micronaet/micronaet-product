@@ -18,6 +18,7 @@
 #
 ###############################################################################
 from . import delivery
+from . import report
 from . import wizard
 
 
