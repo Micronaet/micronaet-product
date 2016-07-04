@@ -22,7 +22,7 @@
                             <field name="start_code" />
                             <field name="code" />
                             <separator string="Report:" colspan="4" />
-                            <field name="report_code_break'" />
+                            <field name="report_code_break" />
                             <field name="report_detailed" />                            
                         </group>
                     </sheet>

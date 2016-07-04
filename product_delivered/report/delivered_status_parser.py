@@ -60,7 +60,7 @@ class Parser(report_sxw.rml_parse):
         # ---------------        
         domain = data.get('domain', [])
         partial = data.get('report_code_break', 6)
-        detailed = datal.get('report_detailed', False)
+        detailed = data.get('report_detailed', False)
         
         move_ids = move_pool.search(cr, uid, domain, context=context)
         
