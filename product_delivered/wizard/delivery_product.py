@@ -82,20 +82,17 @@ class ProductProductMovedWizard(orm.TransientModel):
         move_pool = self.pool.get('stock.move')
 
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        domain = move_pool.get_domain_moves_from_wizard(
+        domain = self.get_domain_moves_from_wizard(
             cr, uid, wiz_proxy, context=context)
                     
-        datas = {
-            'domain': domain,
-            }
+        datas = {'domain': domain}
             
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'delivered_status_report',
             'datas': datas,
             }
-            
-        
+                    
     def open_move(self, cr, uid, ids, context=None):
         ''' Open moved from pick
         ''' 
