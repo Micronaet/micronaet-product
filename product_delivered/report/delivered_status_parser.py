@@ -59,6 +59,9 @@ class Parser(report_sxw.rml_parse):
         # Load move data:
         # ---------------        
         domain = data.get('domain', [])
+        partial = data.get('report_code_break', 6)
+        detailed = datal.get('report_detailed', False)
+        
         move_ids = move_pool.search(cr, uid, domain, context=context)
         
         moves = [move for move in move_pool.browse(
@@ -69,7 +72,6 @@ class Parser(report_sxw.rml_parse):
         last_code = False
         total = 0.0
         res = []
-        partial = 6
         for move in moves:
             default_code = move.product_id.default_code
             if last_code == False: # first loop only
@@ -81,7 +83,8 @@ class Parser(report_sxw.rml_parse):
                 res.append(('total', (total, last_code[:partial])))
                 last_code = default_code[:partial]
                 total = move.product_uom_qty
-            res.append(('data', move))
+            if detailed:    
+                res.append(('data', move))
 
         if last_code: # add last record:
             res.append(('total', (total, last_code[:partial])))

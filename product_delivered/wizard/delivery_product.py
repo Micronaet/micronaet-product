@@ -85,7 +85,11 @@ class ProductProductMovedWizard(orm.TransientModel):
         domain = self.get_domain_moves_from_wizard(
             cr, uid, wiz_proxy, context=context)
                     
-        datas = {'domain': domain}
+        datas = {
+            'domain': domain,
+            'report_code_break': wiz_proxy.report_code_break,
+            'report_detailed': wiz_proxy.report_detailed,
+            }
             
         return {
             'type': 'ir.actions.report.xml',
@@ -99,7 +103,7 @@ class ProductProductMovedWizard(orm.TransientModel):
         move_pool = self.pool.get('stock.move')
         
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        domain = move_pool.get_domain_moves_from_wizard(
+        domain = self.get_domain_moves_from_wizard(
             cr, uid, wiz_proxy, context=context)
         move_ids = move_pool.search(cr, uid, domain, context=context)
         
@@ -141,5 +145,15 @@ class ProductProductMovedWizard(orm.TransientModel):
         'start_code': fields.char('Start code', size=24), 
         'type_id': fields.many2one(
             'stock.picking.type', 'Picking type', required=True), 
+        
+        # Report fields:    
+        'report_detailed': fields.boolean('Report detailed'),    
+        'report_code_break': fields.integer('Code break', required=True,
+            help='Break and write total when product change x char of code'), 
         }
+    
+    _defaults = {
+        'report_detailed': lambda *x: True,
+        'report_code_break': lambda *x: 6,
+        }    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
