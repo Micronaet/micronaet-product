@@ -40,20 +40,29 @@ class Parser(report_sxw.rml_parse):
     counters = {}
     last_record = 0
     
-    def __init__(self, cr, uid, name, context):
-        
+    def __init__(self, cr, uid, name, context):        
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
             'get_objects': self.get_objects,
             'get_datetime': self.get_datetime,
         })
 
-    def get_objects(self, ):
-        product_pool = self.pool.get('product.product')
-        product_ids = product_pool.search(self.cr, self.uid, [
-            ('print_label', '=', True)])            
+    def get_objects(self, data):
+        ''' Get report from wizard filters
+        '''
+        # Readability:
+        cr = self.cr
+        uid = self.uid
+        context = {}
         
-        return product_pool.browse(self.cr, self.uid, product_ids)
+        # Load move data:
+        move_pool = self.pool.get('stock.move')
+        move_ids = product_pool.search(cr, uid, [            
+            ], context=context)            
+        
+        # Create total blocks:
+        
+        return move_pool.browse(cr, uid, move_ids, context=context)
         
     def get_datetime(self):
         ''' Return datetime obj

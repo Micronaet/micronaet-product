@@ -40,23 +40,17 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-class ProductProductMovedWizard(orm.TransientModel):
-    ''' Procurements depend on sale
-    '''    
-    _name = 'product.product.moved.wizard'
-    _description = 'Product moved'
+class StockMove(orm.Model):
+    ''' Utility function
+    '''
+    _inherit = 'stock.move'
     
-    # --------------
-    # Button events:
-    # --------------
-    def open_move(self, cr, uid, ids, context=None):
-        ''' Open moved from pick
-        ''' 
-        move_pool = self.pool.get('stock.move')
-        picking_pool = self.pool.get('stock.picking')
-        
-        wiz_proxy = self.browse(cr, uid, ids)[0]
-
+    # -------
+    # Utilty:
+    # -------
+    def get_domain_moves_from_wizard(self, wiz_proxy):
+        ''' Utility used to create domain from wizard selection and report
+        '''
         domain = []
         domain.append(('picking_type_id', '=', wiz_proxy.type_id.id))
         if wiz_proxy.from_date:
@@ -67,10 +61,50 @@ class ProductProductMovedWizard(orm.TransientModel):
 
         domain_move = [('picking_id', 'in', pick_ids)]
         if wiz_proxy.code:
-            domain_move.append(('product_id.default_code', 'ilike', wiz_proxy.code))
+            domain_move.append(
+                ('product_id.default_code', 'ilike', wiz_proxy.code))
         if wiz_proxy.start_code:
-            domain_move.append(('product_id.default_code', '=like', '%s%s' % (wiz_proxy.start_code, '%')))
-        move_ids = move_pool.search(cr, uid, domain_move, context=context)
+            domain_move.append(
+                ('product_id.default_code', '=like', '%s%s' % (
+                    wiz_proxy.start_code, '%')))
+        return domain_move            
+        
+    
+class ProductProductMovedWizard(orm.TransientModel):
+    ''' Procurements depend on sale
+    '''    
+    _name = 'product.product.moved.wizard'
+    _description = 'Product moved'
+    
+    # --------------
+    # Button events:
+    # --------------        
+    def open_move_report(self, cr, uid, ids, context=None):
+        ''' 
+        '''    
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
+        
+        datas = {
+            'wiz_proxy': wiz_proxy,
+            }
+            
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'delivered_status_report',
+            'datas': datas,
+            }
+            
+        
+    def open_move(self, cr, uid, ids, context=None):
+        ''' Open moved from pick
+        ''' 
+        move_pool = self.pool.get('stock.move')
+        picking_pool = self.pool.get('stock.picking')
+        
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
+        domain = move_pool.get_domain_moves_from_wizard(wiz_proxy)
+        move_ids = move_pool.search(cr, uid, domain, context=context)
+        
         # Search view and open:
         model_pool = self.pool.get('ir.model.data')
         try:

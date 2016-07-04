@@ -7,8 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Stock moves from type" version="7.0">
                     <head>
-                        <button string="Cancel" special="cancel" colspan="2" />         
-                        <button name="open_move" type="object" string="Moves" icon="gtk-go" colspan="2" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" colspan="2" />
+                        <button name="open_move" type="object" string="Moves" icon="gtk-go" colspan="1" class="oe_highlight"/>
+                        <button name="open_move_report" type="object" string="Print" icon="gtk-print" colspan="1" />
                     </head>
                     <sheet>
                         <group colspan="4" col="4">
