@@ -48,9 +48,12 @@ class StockMove(orm.Model):
     # -------
     # Utilty:
     # -------
-    def get_domain_moves_from_wizard(self, wiz_proxy):
+    def get_domain_moves_from_wizard(self, cr, uid, wiz_proxy, context=None):
         ''' Utility used to create domain from wizard selection and report
         '''
+        # Pool used:
+        picking_pool = self.pool.get('stock.picking')
+
         domain = []
         domain.append(('picking_type_id', '=', wiz_proxy.type_id.id))
         if wiz_proxy.from_date:
@@ -99,10 +102,10 @@ class ProductProductMovedWizard(orm.TransientModel):
         ''' Open moved from pick
         ''' 
         move_pool = self.pool.get('stock.move')
-        picking_pool = self.pool.get('stock.picking')
         
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        domain = move_pool.get_domain_moves_from_wizard(wiz_proxy)
+        domain = move_pool.get_domain_moves_from_wizard(
+            cr, uid, wiz_proxy, context=context)
         move_ids = move_pool.search(cr, uid, domain, context=context)
         
         # Search view and open:

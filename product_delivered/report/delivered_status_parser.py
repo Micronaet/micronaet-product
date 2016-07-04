@@ -47,19 +47,46 @@ class Parser(report_sxw.rml_parse):
     def get_objects(self, data):
         ''' Get report from wizard filters
         '''
+        # Pool used:
+        move_pool = self.pool.get('stock.move')
+
         # Readability:
         cr = self.cr
         uid = self.uid
         context = {}
         
+        # ---------------
         # Load move data:
-        move_pool = self.pool.get('stock.move')
-        move_ids = product_pool.search(cr, uid, [            
-            ], context=context)            
+        # ---------------        
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
+        domain = move_pool.get_domain_moves_from_wizard(
+            cr, uid, wiz_proxy, context=context)
+        move_ids = move_pool.search(cr, uid, domain, context=context)
+        
+        move = [move for move in move_pool.browse(
+            cr, uid, move_ids, context=context)]        
+        move = sorted(move, key=lambda x: x.product_id.default_code)
         
         # Create total blocks:
+        last_code = False
+        total = 0.0
+        res = []
+        for item in move:
+            default_code = item.product_id.default_code
+            if last_code == False: # first loop only
+                last_code = default_code 
+                
+            if last_code == default_code:
+                res.append(('data', item))
+                total += move.product_uom_qty
+            else:
+                res.append(('total', total))
+                total = move.product_uom_qty
+
+        if res: # add last record:
+            res.append(('total', total))
         
-        return move_pool.browse(cr, uid, move_ids, context=context)
+        return res
         
     def get_datetime(self):
         ''' Return datetime obj
