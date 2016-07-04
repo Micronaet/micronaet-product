@@ -78,13 +78,13 @@ class Parser(report_sxw.rml_parse):
             if last_code == default_code[:partial]:
                 total += move.product_uom_qty
             else:
-                res.append(('total', total))
+                res.append(('total', (total, last_code[:partial])))
                 last_code = default_code[:partial]
                 total = move.product_uom_qty
             res.append(('data', move))
 
-        if res: # add last record:
-            res.append(('total', total))
+        if last_code: # add last record:
+            res.append(('total', (total, last_code[:partial])))
         
         return res
         
