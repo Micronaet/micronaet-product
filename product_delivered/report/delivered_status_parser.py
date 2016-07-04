@@ -37,9 +37,6 @@ _logger = logging.getLogger(__name__)
 
 
 class Parser(report_sxw.rml_parse):
-    counters = {}
-    last_record = 0
-    
     def __init__(self, cr, uid, name, context):        
         super(Parser, self).__init__(cr, uid, name, context)
         self.localcontext.update({
