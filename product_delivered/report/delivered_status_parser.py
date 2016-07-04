@@ -73,7 +73,7 @@ class Parser(report_sxw.rml_parse):
         total = 0.0
         res = []
         for move in moves:
-            default_code = move.product_id.default_code
+            default_code = move.product_id.default_code or ''
             if last_code == False: # first loop only
                 last_code = default_code[:partial]
                 
