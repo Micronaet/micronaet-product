@@ -81,6 +81,8 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
     
     _columns = {
+        'has_multipackage': fields.boolean('Has multipackage', 
+            help='If product has multipackage not use pack variant mode'),
         'multi_pack_ids': fields.one2many(
             'product.multi.packaging', 'product_id', 'Multipack',
             help='Multipack for package one item'),

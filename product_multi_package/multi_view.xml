@@ -9,7 +9,8 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <field name="packaging_ids" position="before">
-                    <field name="multi_pack_ids">
+                    <field name="has_multipackage" />
+                    <field name="multi_pack_ids" attrs="{'invisible':[('has_multipackage', '=', False)]}">
                         <tree string="Multipack">
                             <field name="sequence" />
                             <field name="ul_id" />
