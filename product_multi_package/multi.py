@@ -86,7 +86,6 @@ class ProductProduct(orm.Model):
         'multi_pack_ids': fields.one2many(
             'product.multi.packaging', 'product_id', 'Multipack',
             help='Multipack for package one item'),
-
         # TODO colls in product? > campo function
         }
         

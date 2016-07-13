@@ -97,8 +97,9 @@ class ProductProduct(orm.Model):
             cr, uid, vals, context=context)
     
     # Utility button:
-    def _get_ean13_auto(self, cr, uid, context=None):
+    def _get_ean13_auto(self, cr, uid, black_list=None, context=None):
         ''' Get an EAN 13 code 
+            Passed black list for initialize this list (used in package)
         '''
         def generate_code(value):
             ''' Add extra char
@@ -112,6 +113,8 @@ class ProductProduct(orm.Model):
             ean13 = EAN(value)
             return ean13.get_fullcode()
 
+        if black_list in None:
+            black_list = []
         # Pool used:
         exclude_pool = self.pool.get('product.codebar.exclude')
 
@@ -128,14 +131,14 @@ class ProductProduct(orm.Model):
         # Load list of ean code yet present and black list
         product_ids = self.search(
             cr, uid, [('ean13_product', '!=', False)], context=context)
-        black_list = [item.ean13_product for item in self.browse(
-            cr, uid, product_ids, context=context)]
+        black_list.extend([item.ean13_product for item in self.browse(
+            cr, uid, product_ids, context=context)])
             
         exclude_ids = exclude_pool.search(cr, uid, [], context=context)
         exclude_proxy = exclude_pool.browse(
             cr, uid, exclude_ids, context=context)
         black_list.extend([item.name for item in exclude_proxy])
-        for i in range(1, 10000):
+        for i in range(1, 100000):
             code = '%05d' % i
             if code not in black_list:
                 return generate_code('%s%s' % (fixed, code))
