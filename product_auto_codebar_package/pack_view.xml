@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="product.product_packaging_form_view"/>
             <field name="arch" type="xml">
                 <field name="ean" position="after">
-                   <button name="generate_barcode_ean13" string="Generate EAN" type="object" attrs="{'invisible':[('ean13','=',True)]}" colspan="2"/>                    
+                   <button name="generate_barcode_ean13" string="Generate EAN" type="object" attrs="{'invisible':[('ean','=',True)]}" colspan="2"/>                    
                 </field>
             </field>
         </record>
@@ -18,7 +18,7 @@
             <field name="inherit_id" ref="product.product_packaging_form_view_without_product"/>
             <field name="arch" type="xml">
                 <field name="ean" position="after">
-                   <button name="generate_barcode_ean13" string="Generate EAN" type="object" attrs="{'invisible':[('ean13','=',True)]}" colspan="2"/>                    
+                   <button name="generate_barcode_ean13" string="Generate EAN" type="object" attrs="{'invisible':[('ean','=',True)]}" colspan="2"/>                    
                 </field>
             </field>
         </record>

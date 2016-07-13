@@ -113,7 +113,7 @@ class ProductProduct(orm.Model):
             ean13 = EAN(value)
             return ean13.get_fullcode()
 
-        if black_list in None:
+        if black_list is None:
             black_list = []
         # Pool used:
         exclude_pool = self.pool.get('product.codebar.exclude')
