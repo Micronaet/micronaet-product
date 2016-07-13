@@ -29,7 +29,8 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
-        'product_auto_codebar',
+        'product',
+        'product_auto_codebar', # for ean generation mechanism
         ],
     'init_xml': [],
     'demo': [],

@@ -39,5 +39,30 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+class ProductPackaging(orm.Model):
+    """ Model name: ProductPackaging
+    """
+    _inherit = 'product.packaging'
+    
+    # --------------
+    # Button events:    
+    # --------------
+    def generate_barcode_ean13(self, cr, uid, ids, context=None):
+        ''' Create EAN code, not duplicated and not in exclude list
+        '''
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        if current_proxy.ean:
+            raise osv.except_osv(
+                _('Error'), 
+                _('EAN yet present, delete and press button again'))
+                
+        # TODO generate start up black list:
+        black_list = []
+        ean13 = self.pool.get('product.product')._get_ean13_auto(
+            cr, uid, black_list, context=context)
+        if ean13:
+            return self.write(cr, uid, ids, {
+                'ean': ean13}, context=context)        
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -144,7 +144,9 @@ class ProductProduct(orm.Model):
                 return generate_code('%s%s' % (fixed, code))
         return ''
     
+    # --------------
     # Button events:    
+    # --------------
     def generate_barcode_ean13(self, cr, uid, ids, context=None):
         ''' Create EAN code, not duplicated and not in exclude list
         '''            
