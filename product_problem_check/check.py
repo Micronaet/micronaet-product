@@ -67,6 +67,31 @@ class ProductProduct(orm.Model):
         '''
         product_ids = []
         return product_ids
+        
+    def show_product_detail_check_product(self, cr, uid, ids, context=None):
+        ''' Open view form
+        '''
+        model_pool = self.pool.get('ir.model.data')
+        tree_view_id = model_pool.get_object_reference(
+            cr, uid,
+            'product_problem_check', 
+            'view_product_product_check_tree')[1]
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Product detail'),
+            'view_type': 'form',
+            'view_mode': 'form', # tree
+            'res_id': ids[0],
+            'res_model': 'product.product',
+            'view_id': False,#tree_view_id,
+            'views': [(False, 'form')], #(tree_view_id, 'tree'), 
+            #'domain': [('id', 'in', ids)],
+            'context': 'top', # 'new'
+            'nodestroy': False,
+            }
+
+        
     
      
     

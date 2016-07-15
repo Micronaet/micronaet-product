@@ -21,6 +21,7 @@
 	                <field name="bom_len" readonly="1"/>
 	                <field name="state" invisible="1"/>
 	                <field name="product_tmpl_id" invisible="1" on_change="1" required="1"/>
+	                <button name="show_product_detail_check_product" string="Detail" type="object" />
                 </tree>
              </field>
          </record>      
