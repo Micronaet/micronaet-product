@@ -59,7 +59,7 @@ class ModuleWizard(orm.TransientModel):
         elif mode == 'bom':                    
             return (
                 product_pool.check_product_bom_presence(
-                    cr, uid, with_report=False, context=context)
+                    cr, uid, with_report=False, context=context),
                 _('Result for BOM check'),
                 )
         elif mode == 'multi':

@@ -75,10 +75,10 @@ class ProductMultiPackaging(orm.Model):
         'number': lambda *x: 1,
         }    
 
-class ProductProduct(orm.Model):
+class ProductTemplate(orm.Model):
     ''' Add relation fields
     '''
-    _inherit = 'product.product'
+    _inherit = 'product.template'
     
     _columns = {
         'has_multipackage': fields.boolean('Has multipackage', 
@@ -88,6 +88,7 @@ class ProductProduct(orm.Model):
             help='Multipack for package one item'),
         # TODO colls in product? > campo function
         }
+
         
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -104,7 +104,7 @@ class ProductProduct(orm.Model):
                 continue
             
             # Check no elements BOM:
-            if len(bom.bom_line_ids) = 0:
+            if not len(bom.bom_line_ids):
                 product_error_ids.append(product.id)                
         
         if with_report:
