@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+        <record id="aeroo_product_product_bom_check_report_id" model="ir.actions.report.xml">
+            <field name="name">Check BOM report</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">product.product</field>
+            <field name="report_name">product_check_bom_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-odt</field>
+            <field name="parser_loc">product_problem_check/report/check_bom_parser.py</field>
+            <field name="report_rml">product_problem_check/report/check_bom_report.odt</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+        </record>
+        <ir_set>
+            <field eval="'action'" name="key"/>
+            <field eval="'client_print_multi'" name="key2"/>
+            <field eval="['product.product']" name="models"/>
+            <field name="name">action_product_check_bom_report</field>
+            <field eval="'ir.actions.report.xml,'+str(aeroo_product_product_bom_check_report_id)" name="value"/>
+            <field eval="True" name="isobject"/>
+            <field eval="True" name="replace"/>
+        </ir_set>
+    </data>
+</openerp>

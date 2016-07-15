@@ -46,6 +46,9 @@ class ModuleWizard(orm.TransientModel):
     '''
     _name = 'product.product.check.bom.wizard'
 
+    # --------
+    # Utility:
+    # --------
     def _get_product_list(self, cr, uid, mode, context=None):
         ''' Check data depend on mode
         '''
@@ -74,6 +77,19 @@ class ModuleWizard(orm.TransientModel):
     # --------------------
     # Wizard button event:
     # --------------------    
+    def print_report(self, cr, uid, mode, context=None):
+        ''' Print report for bom
+        '''
+        datas = {}
+        report_name = 'product_check_bom_report'
+        
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': report_name,
+            'datas': datas,
+            }
+
+        
     def action_check_product_mode(self, cr, uid, ids, context=None):
         ''' Event for button done
         '''

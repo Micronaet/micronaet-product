@@ -17,9 +17,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from . import check
-from . import report
-from . import wizard
-
+from . import check_bom_parser
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

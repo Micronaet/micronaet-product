@@ -37,7 +37,8 @@
     'demo': [],
     'data': [
         'check_view.xml',
-        'wizard/check_wizard_view.xml',
+        'report/delivered_status_report.xml',
+        'wizard/check_wizard_view.xml',        
         ],
     'active': False,
     'installable': True,
