@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+         <!--product.product-->
+         <record model="ir.ui.view" id="view_product_product_check_tree">
+             <field name="name">product.product.check.form</field>
+             <field name="model">product.product</field>
+             <field name="priority" eval="30"/>
+             <field name="arch" type="xml">
+                <tree string="Product Variants" editable="bottom">
+	                <field name="default_code"/>
+	                <field name="name" readonly="1"/>
+	                <!--<field name="internal_manufacture" invisible="1" modifiers="{'tree_invisible': true}"/>
+	                <button name="do_nothing" string="Internal manufacture" type="object" icon="terp-product" attrs="{'invisible': [('internal_manufacture', '=', False)]}" modifiers="{'invisible': [['internal_manufacture', '=', false]]}"/>-->
+	                <field name="lst_price" readonly="1" />
+	                <field name="price" readonly="1" />
+	                <field name="uom_id" readonly="1" />
+	                <field name="ean13" readonly="1" />
+	                <!--<field name="first_supplier_id" />
+	                <field name="first_code" modifiers="{'readonly': true}"/>-->
+	                <field name="bom_len" readonly="1"/>
+	                <field name="state" invisible="1"/>
+	                <field name="product_tmpl_id" invisible="1" on_change="1" required="1"/>
+                </tree>
+             </field>
+         </record>      
+    </data>
+</openerp>
+

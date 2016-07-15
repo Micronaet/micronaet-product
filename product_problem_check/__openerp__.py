@@ -31,11 +31,12 @@
         'base',
         'product',
         'mrp',
-        'production_family', # for family no check
+        'production_family', # for family no check        
         ],
     'init_xml': [],
     'demo': [],
     'data': [
+        'check_view.xml',
         'wizard/check_wizard_view.xml',
         ],
     'active': False,

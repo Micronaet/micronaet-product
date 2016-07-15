@@ -81,6 +81,12 @@ class ModuleWizard(orm.TransientModel):
         (product_ids, message) = self._get_product_list(
             cr, uid, wiz_proxy.mode, context=context)
 
+        model_pool = self.pool.get('ir.model.data')
+        tree_view_id = model_pool.get_object_reference(
+            cr, uid,
+            'product_problem_check', 
+            'view_product_product_check_tree')[1]
+
         return {
             'type': 'ir.actions.act_window',
             'name': message,
@@ -88,8 +94,8 @@ class ModuleWizard(orm.TransientModel):
             'view_mode': 'tree,form',
             #'res_id': 1,
             'res_model': 'product.product',
-            'view_id': False,
-            'views': [(False, 'tree'), (False, 'form')],
+            'view_id': tree_view_id,
+            'views': [(tree_view_id, 'tree'), (False, 'form')],
             'domain': [('id', 'in', product_ids)],
             'context': context,
             'target': 'current', # 'new'
