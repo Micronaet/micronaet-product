@@ -38,17 +38,34 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-
-class ProductPackage(orm.Model):
-    """ Model name: ProductPackage
+class ProductProduct(orm.Model):
+    """ Model name: ProductProduct
     """    
-    _inherit = 'product.packaging'
+    _inherit = 'product.product'
     
-    # TODO use as related?
-    _columns = {
-        'pack_l': fields.float('L. Imb.', digits=(16, 2)),
-        'pack_h': fields.float('H. Imb.', digits=(16, 2)),
-        'pack_p': fields.float('P. Imb.', digits=(16, 2)),
-        'pack_volume': fields.float('Volume', digits=(16, 2)), # TODO related?
-        }    
+    # --------
+    # Utility:
+    # --------
+    def check_product_default_code_presence(self, cr, uid, context=None):
+        ''' Check product code presence
+        '''
+        product_ids = self.search(cr, uid, [
+            ('default_code', '=', False),
+            ], context=context)
+        return product_ids
+        
+    def check_product_bom_presence(self, cr, uid, context=None):
+        ''' Check BOM presence
+        '''
+        product_ids = []
+        return product_ids
+
+    def check_product_double_code_presence(self, cr, uid, context=None):
+        ''' Check product double code
+        '''
+        product_ids = []
+        return product_ids
+    
+     
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
