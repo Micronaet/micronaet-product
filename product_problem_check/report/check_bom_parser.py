@@ -59,6 +59,6 @@ class Parser(report_sxw.rml_parse):
         # ---------------
         (product_ids, report_data) = product_pool.check_product_bom_presence(
             cr, uid, with_report=True, context=context)
-        
-        return report_data
+        res = sorted(report_data.iteritems(), key=lambda x: x[0].default_code)
+        return res
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
