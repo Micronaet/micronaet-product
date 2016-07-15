@@ -77,7 +77,7 @@ class ModuleWizard(orm.TransientModel):
     # --------------------
     # Wizard button event:
     # --------------------    
-    def print_report(self, cr, uid, mode, context=None):
+    def action_print_report(self, cr, uid, mode, context=None):
         ''' Print report for bom
         '''
         datas = {}
@@ -88,7 +88,6 @@ class ModuleWizard(orm.TransientModel):
             'report_name': report_name,
             'datas': datas,
             }
-
         
     def action_check_product_mode(self, cr, uid, ids, context=None):
         ''' Event for button done

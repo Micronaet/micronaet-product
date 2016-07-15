@@ -47,7 +47,7 @@ class Parser(report_sxw.rml_parse):
         ''' Get report from wizard filters
         '''
         # Pool used:
-        move_pool = self.pool.get('stock.move')
+        product_pool = self.pool.get('product.product')
 
         # Readability:
         cr = self.cr
@@ -56,38 +56,9 @@ class Parser(report_sxw.rml_parse):
         
         # ---------------
         # Load move data:
-        # ---------------        
-        '''domain = data.get('domain', [])
-        partial = data.get('report_code_break', 6)
-        detailed = data.get('report_detailed', False)
+        # ---------------
+        (product_ids, report_data) = product_pool.check_product_bom_presence(
+            cr, uid, with_report=True, context=context)
         
-        move_ids = move_pool.search(cr, uid, domain, context=context)
-        
-        moves = [move for move in move_pool.browse(
-            cr, uid, move_ids, context=context)]        
-        moves = sorted(moves, key=lambda x: x.product_id.default_code)
-        
-        # Create total blocks:
-        last_code = False
-        total = 0.0
-        res = []
-        for move in moves:
-            default_code = move.product_id.default_code or ''
-            if last_code == False: # first loop only
-                last_code = default_code[:partial]
-                
-            if last_code == default_code[:partial]:
-                total += move.product_uom_qty
-            else:
-                res.append(('total', (total, last_code[:partial])))
-                last_code = default_code[:partial]
-                total = move.product_uom_qty
-            if detailed:    
-                res.append(('data', move))
-
-        if last_code: # add last record:
-            res.append(('total', (total, last_code[:partial])))
-        
-        return res'''
-
+        return report_data
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

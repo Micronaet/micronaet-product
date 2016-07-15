@@ -82,18 +82,15 @@ class ProductProduct(orm.Model):
         for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
             product = bom.product_id
             
-            # Report data creation:
-            if with_report:
-                if product not in report_data:
-                    report_data[product] = []
-                report_data[product].append(bom)
-            
             # Jump cost boms:
             if not bom.sql_import:
                 continue 
 
             # Jump product yet in error (multi BOM error):
             if product.id in product_error_ids:
+                if product not in report_data:
+                    report_data[product] = []
+                report_data[product].append(bom)
                 continue 
             
             # Test multi BOM:
@@ -101,10 +98,16 @@ class ProductProduct(orm.Model):
                 product_ids.remove(product.id)
             except:
                 product_error_ids(product.id) 
+                if product not in report_data:
+                    report_data[product] = []
+                report_data[product].append(bom)
                 continue
             
             # Check no elements BOM:
             if not len(bom.bom_line_ids):
+                if product not in report_data:
+                    report_data[product] = []
+                report_data[product].append(bom)
                 product_error_ids.append(product.id)                
         
         if with_report:
