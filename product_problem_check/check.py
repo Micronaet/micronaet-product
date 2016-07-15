@@ -49,10 +49,12 @@ class ProductProduct(orm.Model):
     def check_product_default_code_presence(self, cr, uid, context=None):
         ''' Check product code presence
         '''
-        product_ids = self.search(cr, uid, [
+        return self.search(cr, uid, [
             ('default_code', '=', False),
+            ('is_family', '=', False),
+            ('active', '=', True),
+            #('type', '!=', 'service'),
             ], context=context)
-        return product_ids
         
     def check_product_bom_presence(self, cr, uid, context=None):
         ''' Check BOM presence

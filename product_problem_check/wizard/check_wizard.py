@@ -46,23 +46,40 @@ class ModuleWizard(orm.TransientModel):
     '''
     _name = 'product.product.check.bom.wizard'
 
+    def _get_product_list(self, cr, uid, mode, context=None):
+        ''' Check data depend on mode
+        '''
+        product_pool = self.pool.get('product.product')        
+        if mode == 'code':    
+            return (
+                product_pool.check_product_default_code_presence(
+                    cr, uid, context=context),                
+                _('Result for no code check'),
+                )
+        elif mode == 'bom':                    
+            return (
+                #product_ids = product_pool.check_product_default_code_presence(
+                #    cr, uid, context=context)                
+                _('Result for BOM check'),
+                )
+        elif mode == 'multi':
+            return (
+                #product_ids = product_pool.check_product_default_code_presence(
+                #    cr, uid, context=context)                
+                _('Result for BOM check'),
+                ) 
+        else:
+            raise osv.except_osv(_('Error'), _('Mode error'))
+        
     # --------------------
     # Wizard button event:
-    # --------------------
+    # --------------------    
     def action_check_product_mode(self, cr, uid, ids, context=None):
         ''' Event for button done
         '''
-        if context is None:
-            context = {}
-        
-        product_pool = self.pool.get('product.product')
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        mode = wiz_proxy.mode
-        
-        if mode == 'code':    
-            product_ids = product_pool.check_product_default_code_presence(
-                cr, uid, context=context)
-            message = _('Result for BOM check')
+        (product_ids, message) = self._get_product_list(
+            cr, uid, wiz_proxy.mode, context=context)
 
         return {
             'type': 'ir.actions.act_window',
@@ -71,18 +88,20 @@ class ModuleWizard(orm.TransientModel):
             'view_mode': 'tree,form',
             #'res_id': 1,
             'res_model': 'product.product',
-            #'view_id': view_id, # False
+            'view_id': False,
             'views': [(False, 'tree'), (False, 'form')],
-            'domain': product_ids,
+            'domain': [('id', 'in', product_ids)],
             'context': context,
-            #'target': 'current', # 'new'
+            'target': 'current', # 'new'
             'nodestroy': False,
             }
 
     _columns = {
         'mode': fields.selection([
             ('code', 'Default code not present'),
-            ], 'Check', required=True),
+            ('bom', 'No BOM present for production'),
+            ('multi', 'Multicode present for product'),
+            ], 'Check mode', required=True),
         'note': fields.text('Comment'),
         }
         

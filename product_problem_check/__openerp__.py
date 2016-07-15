@@ -31,6 +31,7 @@
         'base',
         'product',
         'mrp',
+        'production_family', # for family no check
         ],
     'init_xml': [],
     'demo': [],
