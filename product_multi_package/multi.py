@@ -56,7 +56,7 @@ class ProductMultiPackaging(orm.Model):
             required=True),
         #'product_tmpl_id': fields.many2one('product.template', 
         #    'Product', select=1, ondelete='cascade'),
-        'product_id': fields.many2one('product.product', 
+        'product_id': fields.many2one('product.template', 
             'Product', select=1, ondelete='cascade'),
         #'ean': fields.char('EAN', size=14, 
         #    help='The EAN code of the package unit.'),
@@ -88,7 +88,5 @@ class ProductTemplate(orm.Model):
             help='Multipack for package one item'),
         # TODO colls in product? > campo function
         }
-
-        
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

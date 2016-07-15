@@ -27,14 +27,12 @@
           <field name="view_mode">form</field>
           <field name="target">new</field>
           <field name="view_id" ref="product_product_check_wizard_view"/>
-      </record>
-      
+      </record>      
       <menuitem 
           parent="product.menu_products" 
           id="menu_product_product_check_wizard" 
           action="action_product_product_check_wizard_form"
           sequence="40"
-          />
-      
+          />      
     </data>
 </openerp>
