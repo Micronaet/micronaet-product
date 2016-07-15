@@ -76,9 +76,8 @@ class ProductProduct(orm.Model):
             HAVING 
                 count(*) > 1;    
             """
-        default_codes = [
-            item for cr.execute(query)]
-        import pdb; pdb.set_trace()    
+        cr.execute(query)    
+        default_codes = [item[0] for item in cr.fetchall()]
         product_ids = self.search(cr, uid, [
             ('default_code', 'in', default_codes)], context=context)    
         return product_ids
