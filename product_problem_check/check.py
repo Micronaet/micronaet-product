@@ -56,12 +56,61 @@ class ProductProduct(orm.Model):
             #('type', '!=', 'service'),
             ], context=context)
         
-    def check_product_bom_presence(self, cr, uid, context=None):
+    def check_product_bom_presence(self, cr, uid, with_report=False, 
+            context=None):
         ''' Check BOM presence
-        '''
+            Return product_id with problems
+            If with_report return also report database for print
+        '''        
+        # Find nanufactured products:
+        product_ids = self.search(cr, uid, [
+            ('internal_manufacture', '=', True),
+            ('is_family', '=', False),
+            ('active', '=', True),
+            ], context=context)
         
-        product_ids = []
-        return product_ids
+        # Get bom elements:    
+        bom_pool = self.pool.get('mrp.bom')
+        bom_ids = bom_pool.search(cr, uid, [
+            ('product_id', 'in', product_ids), # no other boms
+            #('sql_import', '=', True), # Only for production bom
+            ], context=context)
+        
+        # Prepare data report or product check list:
+        report_data = {}
+        product_error_ids = []
+        for bom in bom_pool.browse(cr, uid, bom_ids, context=context):
+            product = bom.product_id
+            
+            # Report data creation:
+            if with_report:
+                if product not in report_data:
+                    report_data[product] = []
+                report_data[product].append(bom)
+            
+            # Jump cost boms:
+            if not bom.sql_import:
+                continue 
+
+            # Jump product yet in error (multi BOM error):
+            if product.id in product_error_ids:
+                continue 
+            
+            # Test multi BOM:
+            try:
+                product_ids.remove(product.id)
+            except:
+                product_error_ids(product.id) 
+                continue
+            
+            # Check no elements BOM:
+            if len(bom.bom_line_ids) = 0:
+                product_error_ids.append(product.id)                
+        
+        if with_report:
+            return product_error_ids, report_data
+        else:        
+            return product_error_ids
 
     def check_product_double_code_presence(self, cr, uid, context=None):
         ''' Check product double code
