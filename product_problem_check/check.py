@@ -59,13 +59,28 @@ class ProductProduct(orm.Model):
     def check_product_bom_presence(self, cr, uid, context=None):
         ''' Check BOM presence
         '''
+        
         product_ids = []
         return product_ids
 
     def check_product_double_code_presence(self, cr, uid, context=None):
         ''' Check product double code
         '''
-        product_ids = []
+        query = """
+            SELECT 
+                default_code
+            FROM 
+                product_product
+            GROUP BY
+                default_code
+            HAVING 
+                count(*) > 1;    
+            """
+        default_codes = [
+            item for cr.execute(query)]
+        import pdb; pdb.set_trace()    
+        product_ids = self.search(cr, uid, [
+            ('default_code', 'in', default_codes)], context=context)    
         return product_ids
         
     def show_product_detail_check_product(self, cr, uid, ids, context=None):
@@ -87,12 +102,9 @@ class ProductProduct(orm.Model):
             'view_id': False,#tree_view_id,
             'views': [(False, 'form')], #(tree_view_id, 'tree'), 
             #'domain': [('id', 'in', ids)],
-            'context': 'top', # 'new'
+            #'context': {},
+            'target': 'current',
             'nodestroy': False,
             }
-
-        
-    
-     
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

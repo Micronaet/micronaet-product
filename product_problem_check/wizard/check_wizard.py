@@ -64,9 +64,9 @@ class ModuleWizard(orm.TransientModel):
                 )
         elif mode == 'multi':
             return (
-                #product_ids = product_pool.check_product_default_code_presence(
-                #    cr, uid, context=context)                
-                _('Result for BOM check'),
+                product_ids = product_pool.check_product_double_code_presence(
+                    cr, uid, context=context):
+                _('Result for multi code check'),
                 ) 
         else:
             raise osv.except_osv(_('Error'), _('Mode error'))
