@@ -52,21 +52,31 @@ class ProductPricelistVersion(orm.Model):
         product_pool = self.pool.get('product.product')
         
         version_proxy = self.browse(cr, uid, ids, context=context)[0]
+        i = 0
         for item in version_proxy.items_id:
+            i += 1
             product_ids = product_pool.search(cr, uid, [
                 ('id', '=', item.product_id.id)], context=context)
             if not product_ids:
-                _logger.error('Code: %s not found!' % (
-                    item.product_id.default_code, ))
+                _logger.error('%s. Code: %s not found!' % (
+                    i,
+                    item.product_id.default_code, 
+                    ))
                 continue
 
             if len(product_ids) > 1:
-                _logger.error('Code: %s > found more than one' % (
-                    item.product_id.default_code, ))
+                _logger.warning('%s. Code: %s > found more than one' % (
+                    i,
+                    item.product_id.default_code, 
+                    ))
             
             product_pool.write(cr, uid, product_ids, {
                 'lst_price': item.price_surcharge, # TODO change !!!!!
                 }, context=context)
+            _logger.info('%s. Code: %s updated' % (
+                i,
+                item.product_id.default_code, 
+                ))
         return True    
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
