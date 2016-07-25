@@ -74,6 +74,51 @@ class ProductProductImportationTraceColumn(orm.Model):
         #'item_per_box', 'colls', 
         #'weight', 'weight_net',
         )
+    def _get_field_list(self, cr, uid, context=None):
+        ''' Keep list in function for update in other modules
+        '''
+        return [
+        ('name', 'Name'),
+        ('ean13', 'EAN 13'),
+        ('supplier_ean13', 'Supplier EAN 13'),
+
+        ('default_code', 'Product code (key field)'), # Key field
+        ('description_sale', 'Sale description'), # Lang
+        
+        ('default_supplier_code', 'Purchase product code'),
+        ('description_purchase', 'Purchase description'), # Lang
+
+        ('colour_code', 'Supplier color code'),
+        ('colour', 'Supplier colour'),
+        ('fabric', 'Supplier material'),
+
+        ('length', 'Length'),
+        ('width', 'Width'),
+        ('height', 'Height'),
+        ('seat_height', 'Seat Height'),
+        ('diameter', 'Diameter'),
+        # Weight?
+        
+        ('volume', 'Volume'),
+        ('pack', 'Package'),
+        #('item_per_box', 'Item x pack'),
+        ('q_x_pack', 'Q. x pack'),
+        ('colls', 'Colls'),
+        ('pz_x_container', 'Pieces per container'),
+        ('item_per_camion', 'Pieces per camion'),
+       
+        ('package_type', 'Package type'),
+        ('pack_l', 'Package length'),
+        ('pack_p', 'Package width'),
+        ('pack_h', 'Package height'),
+
+        ('lst_price', 'Sale price'),
+        ('standard_price', 'Cost price'),
+
+        # Not used now:
+        ('weight', 'Weight'),
+        ('weight_net', 'Weight net'),        
+        ]
 
     def _get_user_lang(self, cr, uid, context=None):
         ''' Get user language
@@ -100,49 +145,7 @@ class ProductProductImportationTraceColumn(orm.Model):
         'lang_id': fields.many2one('res.lang', 'Language', required=True),
         'need_exchange': fields.boolean('Need exchange', 
             help='Requested in import wizard  (* exchange = company curr.)'),
-        'field': fields.selection([
-            ('name', 'Name'),
-            ('ean13', 'EAN 13'),
-            ('supplier_ean13', 'Supplier EAN 13'),
-
-            ('default_code', 'Product code (key field)'), # Key field
-            ('description_sale', 'Sale description'), # Lang
-            
-            ('default_supplier_code', 'Purchase product code'),
-            ('description_purchase', 'Purchase description'), # Lang
-
-            ('colour_code', 'Supplier color code'),
-            ('colour', 'Supplier colour'),
-            ('fabric', 'Supplier material'),
-
-            ('length', 'Length'),
-            ('width', 'Width'),
-            ('height', 'Height'),
-            ('seat_height', 'Seat Height'),
-            ('diameter', 'Diameter'),
-            # Weight?
-            
-            ('volume', 'Volume'),
-            ('pack', 'Package'),
-            #('item_per_box', 'Item x pack'),
-            ('q_x_pack', 'Q. x pack'),
-            ('colls', 'Colls'),
-            ('pz_x_container', 'Pieces per container'),
-            ('item_per_camion', 'Pieces per camion'),
-           
-            ('package_type', 'Package type'),
-            ('pack_l', 'Package length'),
-            ('pack_p', 'Package width'),
-            ('pack_h', 'Package height'),
-
-            ('lst_price', 'Sale price'),
-            ('standard_price', 'Cost price'),
-
-            # Not used now:
-            ('weight', 'Weight'),
-            ('weight_net', 'Weight net'),
-            
-            ], 'Field linked'),
+        'field': fields.selection(_get_field_list, 'Field linked'),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='cascade'),
         }
