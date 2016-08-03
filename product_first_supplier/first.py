@@ -45,7 +45,9 @@ class ProductProductPurchase(orm.Model):
 
     _columns = {
         'first_supplier_id': fields.many2one('res.partner', 'First supplier'),
-        'default_supplier': fields.char('Fornitore default', size=64),
         'default_supplier_code': fields.char('Codice forn. default', size=40),
+        
+        # XXX No more used:
+        'default_supplier': fields.char('Fornitore default', size=64),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
