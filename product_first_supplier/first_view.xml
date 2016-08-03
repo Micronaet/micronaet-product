@@ -1,29 +1,29 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-        <record id='product_product_form_view_first_supplier_fields' model='ir.ui.view'>
-            <field name='name'>Product first supplier</field>
-            <field name='model'>product.product</field>
+        <record id="product_product_form_view_first_supplier_fields" model="ir.ui.view">
+            <field name="name">Product first supplier</field>
+            <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view" />
-            <field name='arch' type='xml'>
+            <field name="arch" type="xml">
                <field name="seller_ids" position="after">
                     <group colspan="4" col="2">
                         <separator string="Info fornitura" colspan="2"/>
                         <field name="default_supplier" />
                         <field name="default_supplier_code" />
-                        <field name='first_supplier_id' />
+                        <field name="first_supplier_id" />
                    </group>     
                </field>
            </field>
         </record>   
 
-        <record id='product_product_tree_view_first_supplier_fields' model='ir.ui.view'>
-            <field name='name'>Product tree first supplier</field>
-            <field name='model'>product.product</field>
+        <record id="product_product_tree_view_first_supplier_fields" model="ir.ui.view">
+            <field name="name">Product tree first supplier</field>
+            <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_product_tree_view"/>
-            <field name='arch' type='xml'>
-               <field name='state' position="before">
-                    <field name='first_supplier_id' />
+            <field name="arch" type="xml">
+               <field name="state" position="before">
+                    <field name="first_supplier_id" />
                </field>     
             </field>
         </record>
