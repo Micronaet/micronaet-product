@@ -59,6 +59,8 @@ class ProductProductImportInventory(orm.Model):
         product_pool = self.pool.get('product.product')
         seq_pool = self.pool.get('ir.sequence')
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        user_proxy = self.pool.get('res.users').browse(
+            cr, uid, uid, context=context)
 
         filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
         
@@ -89,7 +91,7 @@ class ProductProductImportInventory(orm.Model):
         # ----------------
         header_data = {
             'name': seq_pool.get_id(cr, uid, seq_cl_id, 'id', context=context),
-            'partner_id': 1, # TODO
+            'partner_id': user_proxy.partner_id.id, #ex 1, # TODO
             'picking_type_id': type_cl.id,            
             'date': date,
             'min_date': date,
