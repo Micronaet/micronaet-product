@@ -30,6 +30,7 @@
                         <field name="cl_picking_type_id" />
                         <field name="sl_picking_type_id" />
                         <!--<field name="date" />-->
+                        <button name="set_inventory_start" string="Set inventory start" type="object" />
                     </group>
                     <group col="4" colspan="4" attrs="{'invisible':[('inventory_cl_id', '=', False)]}">
                         <field name="inventory_cl_id" />

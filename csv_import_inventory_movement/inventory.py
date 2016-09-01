@@ -46,6 +46,7 @@ class ProductProductImportInventory(orm.Model):
     _description = 'Inventory partial import'
     _rec_name = 'fullname'
     _order = 'date desc'
+    filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
 
     # -------------
     # Button event:
@@ -62,8 +63,6 @@ class ProductProductImportInventory(orm.Model):
         user_proxy = self.pool.get('res.users').browse(
             cr, uid, uid, context=context)
 
-        filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
-        
         # ----------------
         # Read parameters:
         # ----------------
@@ -84,7 +83,7 @@ class ProductProductImportInventory(orm.Model):
                 _('Import error'), 
                 _('Need a file name to import in path %s' % fullname),
                 )
-        _logger.info('Start import from path: %s' % filename)
+        _logger.info('Start import from path: %s' % self.filename)
 
         # ----------------
         # Header creation:        
@@ -120,7 +119,7 @@ class ProductProductImportInventory(orm.Model):
 
         # Read excel filename:
         try:
-            filename = os.path.join(filename, fullname)
+            filename = os.path.join(self.filename, fullname)
             wb = xlrd.open_workbook(filename)
             ws = wb.sheet_by_index(0)
         except:
