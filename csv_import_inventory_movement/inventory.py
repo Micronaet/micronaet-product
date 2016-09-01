@@ -89,41 +89,40 @@ class ProductProductImportInventory(orm.Model):
                 
         _logger.info('Start import from path: %s' % self.filename)        
         for i in range(0, max_line):
-            import pdb; pdb.set_trace()
             try:
                 row = ws.row(i) # generate error at end
             except:
-                log_file.write('%s | Row error|\n' % i
+                log_file.write('%s | Row error|\n' % i)
                 break
             # Loop on colums (trace)
             try:
                 default_code = str(row[0].value).replace('.0', '')
             except:
-                log_file.write('%s | Code error|%s\n' % (i, row)
+                log_file.write('%s | Code error|%s\n' % (i, row))
                 break
                 
             # Search product with code:
             if not default_code:
-                log_file.write('%s | No code|%s\n' % (i, row)
+                log_file.write('%s | No code|%s\n' % (i, row))
                 continue # jump
 
             try:
                 product_qty = float(row[1].value)
             except:
-                log_file.write('%s | Qty error|%s\n' % (i, row)
+                log_file.write('%s | Qty error|%s\n' % (i, row))
                 product_qty = 0
 
             product_ids = product_pool.search(cr, uid, [
                 ('default_code', '=', default_code)], context=context)
             
             if not product_ids:
-                log_file.write('%s | Product not found|%s\n' % (i, row)
+                log_file.write('%s | Product not found|%s\n' % (i, row))
                 continue # jump
             
             product_proxy = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
              
-            self.write(cr, uid, product_ids[0], {
+            product_pool.write(cr, uid, product_ids[0], {
                 'inventory_start': product_qty,
                 }, context=context)
 
@@ -133,6 +132,7 @@ class ProductProductImportInventory(orm.Model):
                 product_proxy.inventory_start,
                 product_qty,
                 ))
+            _logger.info('Update %s' % default_code)    
                 
         log_file.close()        
         return True       
