@@ -122,16 +122,17 @@ class ProductProductImportInventory(orm.Model):
             product_proxy = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
              
-            product_pool.write(cr, uid, product_ids[0], {
-                'inventory_start': product_qty,
-                }, context=context)
-
-            # Write log:    
+            # Write log before:
             log_file.write('%s | %s | %s\n' % (
                 default_code,
                 product_proxy.inventory_start,
                 product_qty,
                 ))
+
+            product_pool.write(cr, uid, product_ids[0], {
+                'inventory_start': product_qty,
+                }, context=context)
+
             _logger.info('Update %s' % default_code)    
                 
         log_file.close()        
