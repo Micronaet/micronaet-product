@@ -51,6 +51,83 @@ class ProductProductImportInventory(orm.Model):
     # -------------
     # Button event:
     # -------------
+    def set_inventory_start(self, cr, uid, ids, context=None):
+        ''' Set start inventory in product from XLS file 
+        '''
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        import pdb; pdb.set_trace()
+        log_file = open(
+            os.join(
+                self.filename,
+                'inventory_update_%s.csv' % (datetime.now()),
+                ))                
+
+        # ----------------
+        # Read parameters:
+        # ----------------
+        # From import procedure:
+        fullname = current_proxy.fullname
+        max_line = current_proxy.max_line or 15000
+
+        try:
+            filename = os.path.join(self.filename, fullname)
+            wb = xlrd.open_workbook(filename)
+            ws = wb.sheet_by_index(0)
+        except:
+            error = 'Error opening XLS file: %s' % (sys.exc_info(), )
+            raise osv.except_osv(
+                _('Open file error'), 
+                _('Cannot found file: %s' % filename),
+                )  
+
+        if not fullname:
+            raise osv.except_osv(
+                _('Import error'), 
+                _('Need a file name to import in path %s' % fullname),
+                )
+                
+        _logger.info('Start import from path: %s' % self.filename)
+        for i in range(0, max_line):
+            try:
+                row = ws.row(i) # generate error at end
+            except:
+                break
+            # Loop on colums (trace)
+            try:
+                default_code = str(row[0].value).replace('.0', '')
+            except:
+                break
+                
+            # Search product with code:
+            if not default_code:
+                continue # jump
+
+            try:
+                product_qty = float(row[1].value)
+            except:
+                product_qty = 0
+
+            product_ids = product_pool.search(cr, uid, [
+                ('default_code', '=', default_code)], context=context)
+            
+            if not product_ids:
+                continue # jump
+            
+            product_proxy = product_pool.browse(
+                cr, uid, product_ids, context=context)[0]
+             
+            # Write log:    
+            log_file.write('%s | %s | %s\n' % (
+                default_code,
+                product_proxy.inventory_start,
+                product_qty,
+                )
+                
+            self.write(cr, uid, product_ids[0], {
+                'inventory_start': product_qty,
+                }, context=context)
+        return True       
+
     def action_import_product_from_csv(self, cr, uid, ids, context=None):
         ''' Import detail button
         '''
