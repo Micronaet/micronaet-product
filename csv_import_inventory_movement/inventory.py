@@ -54,13 +54,14 @@ class ProductProductImportInventory(orm.Model):
     def set_inventory_start(self, cr, uid, ids, context=None):
         ''' Set start inventory in product from XLS file 
         '''
+        product_pool = self.pool.get('product.product')
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
-        import pdb; pdb.set_trace()
+
         log_file = open(
-            os.join(
+            os.path.join(
                 self.filename,
                 'inventory_update_%s.csv' % (datetime.now()),
-                ))                
+                ), 'w')
 
         # ----------------
         # Read parameters:
@@ -86,46 +87,54 @@ class ProductProductImportInventory(orm.Model):
                 _('Need a file name to import in path %s' % fullname),
                 )
                 
-        _logger.info('Start import from path: %s' % self.filename)
+        _logger.info('Start import from path: %s' % self.filename)        
         for i in range(0, max_line):
+            import pdb; pdb.set_trace()
             try:
                 row = ws.row(i) # generate error at end
             except:
+                log_file.write('%s | Row error|\n' % i
                 break
             # Loop on colums (trace)
             try:
                 default_code = str(row[0].value).replace('.0', '')
             except:
+                log_file.write('%s | Code error|%s\n' % (i, row)
                 break
                 
             # Search product with code:
             if not default_code:
+                log_file.write('%s | No code|%s\n' % (i, row)
                 continue # jump
 
             try:
                 product_qty = float(row[1].value)
             except:
+                log_file.write('%s | Qty error|%s\n' % (i, row)
                 product_qty = 0
 
             product_ids = product_pool.search(cr, uid, [
                 ('default_code', '=', default_code)], context=context)
             
             if not product_ids:
+                log_file.write('%s | Product not found|%s\n' % (i, row)
                 continue # jump
             
             product_proxy = product_pool.browse(
                 cr, uid, product_ids, context=context)[0]
              
+            self.write(cr, uid, product_ids[0], {
+                'inventory_start': product_qty,
+                }, context=context)
+
             # Write log:    
             log_file.write('%s | %s | %s\n' % (
                 default_code,
                 product_proxy.inventory_start,
                 product_qty,
-                )
+                ))
                 
-            self.write(cr, uid, product_ids[0], {
-                'inventory_start': product_qty,
-                }, context=context)
+        log_file.close()        
         return True       
 
     def action_import_product_from_csv(self, cr, uid, ids, context=None):
