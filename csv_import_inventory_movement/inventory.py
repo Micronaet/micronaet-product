@@ -279,12 +279,12 @@ class ProductProductImportInventory(orm.Model):
                 if gap_qty:
                     move_pool.create(cr, uid, {
                         'name': default_code,
-                        #'date_planned': '2015-12-31',
                         'product_id': product_ids[0],
                         'picking_id': picking_id,
                         'product_uom_qty': gap_qty,
                         'date': date,
                         'date_expected': date,
+                        #'date_planned': date,
                         'location_id': 
                             type_picking.default_location_src_id.id,
                         'location_dest_id': 
