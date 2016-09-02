@@ -162,7 +162,8 @@ class ProductProductImportInventory(orm.Model):
         seq_sl_id = current_proxy.sl_picking_type_id.sequence_id.id
 
         # Calculated:
-        date = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        date = current_proxy.date or datetime.now().strftime(
+            DEFAULT_SERVER_DATETIME_FORMAT)
 
         # Log activity:
         if not fullname:
