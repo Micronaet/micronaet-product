@@ -319,7 +319,7 @@ class ProductProductImportInventory(orm.Model):
         return True
 
     _columns = {
-        'date': fields.date('Date'),
+        'date': fields.datetime('Date'),
         'fullname': fields.char(
             'File name', size=80, required=True), 
         'max_line': fields.integer('Max line'), 
