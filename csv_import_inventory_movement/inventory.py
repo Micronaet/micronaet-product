@@ -354,7 +354,7 @@ class ProductProductImportInventory(orm.Model):
             }, context=context)
 
         # Set inventory OFF
-        user_proxy.write(cr, uid, uid, {
+        user_pool.write(cr, uid, uid, {
             'no_inventory_status': True,
             }, context=context)
 
