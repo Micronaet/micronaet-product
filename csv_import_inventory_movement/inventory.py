@@ -301,19 +301,18 @@ class ProductProductImportInventory(orm.Model):
                         type_picking.default_location_dest_id.id
                 else:
                     document = 'NO DOC'
-                    pass                    
-
-                # Create quant:
-                quant_id = quant_pool.create(cr, uid, {
-                    'in_date': date,
-                    'cost': 0.0, # TODO
-                    'location_id': quant_location_id,
-                    'product_id': product_ids[0],
-                    'qty': gap_qty * sign, 
-                    #'product_uom': bom.product_id.uom_id.id,
-                    }, context=context)   
 
                 if gap_qty:
+                    # Create quant:
+                    quant_id = quant_pool.create(cr, uid, {
+                        'in_date': date,
+                        'cost': 0.0, # TODO
+                        'location_id': quant_location_id,
+                        'product_id': product_ids[0],
+                        'qty': gap_qty * sign, 
+                        #'product_uom': bom.product_id.uom_id.id,
+                        }, context=context)   
+
                     move_pool.create(cr, uid, {
                         'name': default_code,
                         'product_id': product_ids[0],
