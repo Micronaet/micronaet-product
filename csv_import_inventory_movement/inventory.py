@@ -39,6 +39,17 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class StockMove(orm.Model):
+    """ Model name: Quants updated from inventory
+    """    
+    _inherit = 'stock.move'
+
+    _columns = {
+        'inventory_quants_id': fields.many2one(
+            'stock.quant', 'Inventory quant', ondelete='set null',
+            help='Quants linked to this stock movement'),
+        }
+
 class ProductProductImportInventory(orm.Model):
     ''' Importation log element
     ''' 
@@ -146,6 +157,7 @@ class ProductProductImportInventory(orm.Model):
         move_pool = self.pool.get('stock.move')
         product_pool = self.pool.get('product.product')
         seq_pool = self.pool.get('ir.sequence')
+        quant_pool = self.pool.get('stock.quant')
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
         user_proxy = self.pool.get('res.users').browse(
             cr, uid, uid, context=context)
@@ -264,10 +276,12 @@ class ProductProductImportInventory(orm.Model):
                 mx_net_qty = product_proxy.mx_net_qty # for speed
                 gap_qty = mx_net_qty - product_qty
                 
+                sign = +1 # positive quant
                 if gap_qty > 0:
                     document = 'SL'
                     picking_id = sl_proxy
                     type_picking = type_sl
+                    sign = -1 # negative quant
                 elif gap_qty < 0:
                     document = 'CL'
                     picking_id = cl_proxy
@@ -276,6 +290,16 @@ class ProductProductImportInventory(orm.Model):
                 else:
                     document = 'NO DOC'
                     pass                    
+
+                # Create quant:
+                quant_id = quant_pool.create(cr, uid, {
+                    'in_date': date,
+                    'cost': 0.0, # TODO
+                    'location_id': type_picking.default_location_src_id.id,
+                    'product_id': product_ids[0],
+                    'qty': gap_qty * sign, 
+                    #'product_uom': bom.product_id.uom_id.id,
+                    }, context=context)   
 
                 if gap_qty:
                     move_pool.create(cr, uid, {
@@ -286,6 +310,7 @@ class ProductProductImportInventory(orm.Model):
                         'date': date,
                         'date_expected': date,
                         #'date_planned': date,
+                        'inventory_quants_id': quant_id,
                         'location_id': 
                             type_picking.default_location_src_id.id,
                         'location_dest_id': 
@@ -295,6 +320,8 @@ class ProductProductImportInventory(orm.Model):
                         'product_uom': product_proxy.uom_id.id,
                         'state': 'done',
                         }, context=context)
+                        
+                        
 
                 note += '%s|. |\'%s| from |\'%s| to |\'%s| [|%s|%s|]\n' % (
                     i, 
