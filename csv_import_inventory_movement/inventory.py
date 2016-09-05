@@ -67,7 +67,7 @@ class ProductProductImportInventory(orm.Model):
         '''
         product_pool = self.pool.get('product.product')
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
-
+         
         log_file = open(
             os.path.join(
                 self.filename,
@@ -159,8 +159,16 @@ class ProductProductImportInventory(orm.Model):
         seq_pool = self.pool.get('ir.sequence')
         quant_pool = self.pool.get('stock.quant')
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
-        user_proxy = self.pool.get('res.users').browse(
+        user_pool = self.pool.get('res.users')
+        
+        # Browse obj:
+        user_proxy = user_pool.browse(
             cr, uid, uid, context=context)
+
+        # Set inventory ON
+        user_pool.write(cr, uid, uid, {
+            'no_inventory_status': False,
+            }, context=context)
 
         # ----------------
         # Read parameters:
@@ -262,8 +270,7 @@ class ProductProductImportInventory(orm.Model):
                     error += _(
                         '%s. Error code not found, code: %s\n') % (
                             i, default_code)
-                    continue # jump
-                
+                    continue # jump                
                 elif len(product_ids) > 1:
                     error += _(
                         '%s. Warning more code (take first), code: %s\n') % (
@@ -276,17 +283,22 @@ class ProductProductImportInventory(orm.Model):
                 mx_net_qty = product_proxy.mx_net_qty # for speed
                 gap_qty = mx_net_qty - product_qty
                 
-                sign = +1 # positive quant
                 if gap_qty > 0:
                     document = 'SL'
                     picking_id = sl_proxy
                     type_picking = type_sl
+                    # quant:
                     sign = -1 # negative quant
+                    quant_location_id = type_picking.default_location_src_id.id
                 elif gap_qty < 0:
                     document = 'CL'
                     picking_id = cl_proxy
                     type_picking = type_cl
                     gap_qty = -gap_qty # positive quantity        
+                    # quant:
+                    sign = +1 # positive quant
+                    quant_location_id = \
+                        type_picking.default_location_dest_id.id
                 else:
                     document = 'NO DOC'
                     pass                    
@@ -295,7 +307,7 @@ class ProductProductImportInventory(orm.Model):
                 quant_id = quant_pool.create(cr, uid, {
                     'in_date': date,
                     'cost': 0.0, # TODO
-                    'location_id': type_picking.default_location_src_id.id,
+                    'location_id': quant_location_id,
                     'product_id': product_ids[0],
                     'qty': gap_qty * sign, 
                     #'product_uom': bom.product_id.uom_id.id,
@@ -320,8 +332,6 @@ class ProductProductImportInventory(orm.Model):
                         'product_uom': product_proxy.uom_id.id,
                         'state': 'done',
                         }, context=context)
-                        
-                        
 
                 note += '%s|. |\'%s| from |\'%s| to |\'%s| [|%s|%s|]\n' % (
                     i, 
@@ -341,6 +351,11 @@ class ProductProductImportInventory(orm.Model):
                 filename, note),
             'inventory_cl_id': cl_proxy,
             'inventory_sl_id': sl_proxy,    
+            }, context=context)
+
+        # Set inventory OFF
+        user_proxy.write(cr, uid, uid, {
+            'no_inventory_status': True,
             }, context=context)
 
         _logger.info('End import XLS purchase file: %s' % fullname)
