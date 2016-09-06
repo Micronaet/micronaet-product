@@ -382,6 +382,5 @@ class ProductProductImportInventory(orm.Model):
             DEFAULT_SERVER_DATETIME_FORMAT),
         'max_line': lambda *x: 15000,
         }
-     
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
