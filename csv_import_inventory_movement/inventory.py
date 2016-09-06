@@ -175,6 +175,8 @@ class ProductProductImportInventory(orm.Model):
         # ----------------
         # From import procedure:
         fullname = current_proxy.fullname
+        create_product = current_proxy.create_product
+        uom_id = current_proxy.uom_id.id or False
         max_line = current_proxy.max_line or 15000
         type_cl = current_proxy.cl_picking_type_id
         type_sl = current_proxy.sl_picking_type_id
@@ -267,10 +269,18 @@ class ProductProductImportInventory(orm.Model):
                     ('default_code', '=', default_code)], context=context)
                 
                 if not product_ids:
-                    error += _(
-                        '%s. Error code not found, code: %s\n') % (
-                            i, default_code)
-                    continue # jump                
+                    if create_product:
+                        product_id = product_pool.create(cr, uid, {
+                            'default_code': default_code,
+                            'name': 'Product %s' % default_code,
+                            'uom_id': uom_id,
+                            }, context=context)
+                        product_ids = [product_id]    
+                    else:
+                        error += _(
+                            '%s. Error code not found, code: %s\n') % (
+                                i, default_code)
+                        continue # jump                
                 elif len(product_ids) > 1:
                     error += _(
                         '%s. Warning more code (take first), code: %s\n') % (
@@ -364,7 +374,10 @@ class ProductProductImportInventory(orm.Model):
         'date': fields.datetime('Date'),
         'fullname': fields.char(
             'File name', size=80, required=True), 
-        'max_line': fields.integer('Max line'), 
+        'max_line': fields.integer('Max line'),
+        'create_product': fields.boolean('Create product'),
+        'uom_id': fields.many2one(
+            'product.uom', 'UOM', help='For new product'), 
         'cl_picking_type_id': fields.many2one(
             'stock.picking.type', 'Type CL', required=True),
         'sl_picking_type_id': fields.many2one(

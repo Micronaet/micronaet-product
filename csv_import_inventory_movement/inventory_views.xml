@@ -29,6 +29,8 @@
                         <field name="max_line" />
                         <field name="cl_picking_type_id" />
                         <field name="sl_picking_type_id" />
+                        <field name="create_product" />
+                        <field name="uom_id" attrs="{'invisible': [('create_product', '=', False)], 'required': [('create_product', '=', True)]}" />
                         <field name="date" />
                         <button name="set_inventory_start" string="Set inventory start" type="object" />
                     </group>
