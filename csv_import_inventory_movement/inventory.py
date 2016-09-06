@@ -268,12 +268,16 @@ class ProductProductImportInventory(orm.Model):
                 product_ids = product_pool.search(cr, uid, [
                     ('default_code', '=', default_code)], context=context)
                 
+                created = False
                 if not product_ids:
                     if create_product:
+                        created = True
                         product_id = product_pool.create(cr, uid, {
                             'default_code': default_code,
                             'name': 'Product %s' % default_code,
                             'uom_id': uom_id,
+                            'uos_id': uom_id,
+                            'uom_po_id': uom_id,
                             }, context=context)
                         product_ids = [product_id]    
                     else:
@@ -342,13 +346,14 @@ class ProductProductImportInventory(orm.Model):
                         'state': 'done',
                         }, context=context)
 
-                note += '%s|. |\'%s| from |\'%s| to |\'%s| [|%s|%s|]\n' % (
+                note += '%s|. |\'%s| from |\'%s| to |\'%s| [|%s|%s|%s]\n' % (
                     i, 
                     default_code, 
                     mx_net_qty,
                     product_qty,
                     document,
                     gap_qty if gap_qty else 'No move!!',
+                    'product creation!' if created else '',
                     )
             except:
                 error += _('%s. Import error code: %s [%s]\n') % (
