@@ -24,6 +24,7 @@
                         <group col="4" colspan="4">
                             <field name="code" />
                             <field name="name" />
+                            <field name="rely_value_id" />
                             
                             <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>                            
@@ -38,6 +39,7 @@
             <field name="arch" type="xml">
                 <tree string="Structure" editable="bottom">        
                     <field name="code" />
+                    <field name="rely_value_id" />
                     <field name="name" />
                     <field name="note" />
                 </tree>
