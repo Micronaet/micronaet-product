@@ -1,7 +1,18 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    
+        <!--inherit product.product-->
+        <record model="ir.ui.view" id="view_product_product_add_structure_form">
+            <field name="name">product.product.add.structure.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="after">
+                    <field name="structure_id" />
+                    <button name="generate_name_from_code" string="Generate name" type="object" confirm="Name will be overwrite with structure name calculated, confirm?"/>
+                </field>
+            </field>
+        </record>
         <!--structure.block.value-->
         <record model="ir.ui.view" id="view_structure_block_value_form">
             <field name="name">structure.block.value.form</field>

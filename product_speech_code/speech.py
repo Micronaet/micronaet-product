@@ -111,6 +111,23 @@ class ProductProduct(orm.Model):
     
     _inherit = 'product.product'
     
+    def generate_name_from_code(self, cr, uid, ids, context=None):
+        ''' Generate product name depend on structure and code insert
+        '''
+        product_proxy = self.browse(cr, uid, ids, context=context)[0]
+        if not product_proxy.default_code or not product_proxy.structure_id:
+            raise osv.except_osv(
+                _('Error'), 
+                _('Insert manadatory fields: code and structure'),
+                )
+        name = ''
+        
+        
+        self.write(cr, uid, ids, {
+            'name': name, 
+            }, context=context)
+        return True
+        
     _columns = {
         'structure_id': fields.many2one(
             'structure.structure', 'Code structure'), 
