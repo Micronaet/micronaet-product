@@ -1,6 +1,38 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+    
+        <!--structure.block-->
+        <record model="ir.ui.view" id="view_structure_block_form">
+            <field name="name">structure.block.form</field>
+            <field name="model">structure.block</field>
+            <field name="arch" type="xml">
+                <form string="Structure block" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" />
+                            
+                            <separator string="Value" colspan="4"/>
+                            <field name="value_ids" colspan="4" nolabel="1"/>
+                            
+                            <separator string="Note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>                            
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_structure_block_tree">
+            <field name="name">structure.block.tree</field>
+            <field name="model">structure.block</field>
+            <field name="arch" type="xml">
+                <tree string="Structure">        
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+    
         <!--structure.structure-->
         <record model="ir.ui.view" id="view_structure_structure_form">
             <field name="name">structure.structure.form</field>
@@ -12,7 +44,7 @@
                             <field name="name" />
                             
                             <separator string="Block" colspan="4"/>
-                            <field name="block_ids" colspan="4"/>
+                            <field name="block_ids" colspan="4" nolabel="1"/>
                             
                             <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>                            
