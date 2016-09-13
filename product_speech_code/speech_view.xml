@@ -10,6 +10,7 @@
                 <form string="Block value" version="7.0">        
                     <sheet>
                         <group col="4" colspan="4">
+                            <field name="code" />
                             <field name="name" />
                             
                             <separator string="Note" colspan="4"/>
@@ -21,9 +22,10 @@
         </record>
         <record model="ir.ui.view" id="view_structure_block_value_tree">
             <field name="name">structure.block.value.tree</field>
-            <field name="model">structure.block</field>
+            <field name="model">structure.block.value</field>
             <field name="arch" type="xml">
                 <tree string="Structure" editable="bottom">        
+                    <field name="code" />
                     <field name="name" />
                     <field name="note" />
                 </tree>

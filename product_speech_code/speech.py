@@ -74,8 +74,10 @@ class StructureBlockValore(orm.Model):
     
     _name = 'structure.block.value'
     _description = 'Block value'
+    _order = 'code'
     
     _columns = {
+        'code': fields.char('Code', size=10, required=True),
         'name': fields.char('Name', size=64, required=True, translate=True),        
         'block_id': fields.many2one('structure.block', 'Block'), 
         'note': fields.text('Note'),
