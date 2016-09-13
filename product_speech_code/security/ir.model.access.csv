@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_structure_structure_user,structure.structure,model_structure_structure,base.group_user,1,1,1,1
+access_structure_block_user,structure.block,model_structure_block,base.group_user,1,1,1,1
+access_structure_block_value_user,structure.block.value,model_structure_block_value,base.group_user,1,1,1,1
+
