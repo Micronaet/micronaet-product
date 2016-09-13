@@ -64,7 +64,7 @@
                             <field name="value_ids" colspan="4" nolabel="1">
                                 <tree string="Structure" editable="bottom">        
                                     <field name="code" />
-                                    <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]"/>
+                                    <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]" /><!--TODO attrs="{'readonly': [(parent.rely_id, '=', False)], 'required': [(parent.rely_id, '!=', False)]}"/>-->
                                     <field name="name" />
                                     <field name="note" />
                                 </tree>                            

@@ -37,6 +37,9 @@
     'data': [
         'security/ir.model.access.csv',    
         'speech_view.xml',
+        
+        # First Structure for company 1:
+        'data/data_structure.xml',
         ],
     'active': False,
     'installable': True,

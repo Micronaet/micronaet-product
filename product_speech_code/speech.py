@@ -130,20 +130,45 @@ class ProductProduct(orm.Model):
         code_db = {}
         for block in product_proxy.structure_id.block_ids:
             key = (block.from_char - 1, block.to_char)
-            code_db[key] = {}
+            if block.rely_id:
+                rely_range = (
+                    block.rely_id.from_char - 1,
+                    block.rely_id.to_char, 
+                    )
+                rely_len = block.rely_id.to_char - block.rely_id.from_char + 1 
+                mask = '%-' + str(rely_len) + 's%s'
+            else:
+                rely_range = False
+                mask = False
+           
+            code_db[key] = [{}, rely_range, mask]
             for value in block.value_ids:
-                code_db[key][value.code] = value.name
+                if block.rely_id:
+                    code = mask % (value.rely_value_id.code, value.code)
+                else:
+                    code = value.code    
+                code_db[key][0][code] = value.name
 
         name = ''
         error = ''
         for key in sorted(code_db):
-            value = code_db[key]
+            value = code_db[key][0]
+            rely_range = code_db[key][1]
+            mask = code_db[key][2]
+            
             v = default_code[key[0]:key[1]].strip()
+            if rely_range:
+                v = mask % (
+                    default_code[rely_range[0]:rely_range[1]].strip(),
+                    v,
+                    )
+            print key, v, rely_range
             if v in value:
                 name += ' %s' % value[v]
             else:
-                error += 'Value %s not present in block %s' % (
-                    v, key)
+                if v: 
+                    error += 'Value %s not present in block (%s, %s)' % (
+                        v, key[0] + 1, key[1])
 
         _logger.error('Code error: [%s]' % error)        
         # TODO create procedure to generate name of product:

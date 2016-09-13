@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<openerp>
+    <data><!--<data noupdate="1">-->
+        <!--structure.structure-->
+        <record model="structure.structure" id="data_structure_structure_company1">
+            <field name="name">Company product code structure</field>
+            <field name="note">Auto create model for company 1</field>
+        </record>
+        
+        <!--structure.block-->
+        <record model="structure.block" id="data_structure_block_1_3">
+            <field name="name">Parent code</field>
+            <field name="structure_id" ref="data_structure_structure_company1"/>
+            <field name="from_char" eval="1" />
+            <field name="to_char" eval="3" />
+            <field name="mandatory">1</field>
+            <field name="note">First block [0:3] with parent code</field>
+        </record>
+        <record model="structure.block" id="data_structure_block_4_6">
+            <field name="name">Fabric type</field>
+            <field name="structure_id" ref="data_structure_structure_company1"/>
+            <field name="from_char" eval="4" />
+            <field name="to_char" eval="6" />
+            <field name="mandatory">0</field>
+            <field name="note">Second block [3:6] with fabric type</field>
+        </record>
+        <record model="structure.block" id="data_structure_block_7_8">
+            <field name="name">Frame type</field>
+            <field name="structure_id" ref="data_structure_structure_company1"/>
+            <field name="from_char" eval="7" />
+            <field name="to_char" eval="8" />
+            <field name="mandatory">0</field>
+            <field name="note">Third block [6:8] with frame type</field>
+        </record>
+        <record model="structure.block" id="data_structure_block_9_12">
+            <field name="name">Color depend on fabric</field>
+            <field name="structure_id" ref="data_structure_structure_company1"/>
+            <field name="from_char" eval="9" />
+            <field name="to_char" eval="12" />
+            <field name="mandatory">0</field>
+            <field name="rely_id" ref="data_structure_block_4_6"/>
+            
+            <field name="note">Fourth block [8:12] with color depend on fabric type</field>
+        </record>
+        <record model="structure.block" id="data_structure_block_13_13">
+            <field name="name">Particularity</field>
+            <field name="structure_id" ref="data_structure_structure_company1"/>
+            <field name="from_char" eval="13" />
+            <field name="to_char" eval="13" />
+            <field name="mandatory">0</field>
+            <field name="note">Fifth block [13:13] with particularity</field>
+        </record>
+
+        <!--structure.block.value-->
+        <record model="structure.block.value" id="data_structure_block_value_005">
+            <field name="code">005</field>
+            <field name="name">SEDIA REGISTA ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_021">
+            <field name="code">021</field>
+            <field name="name">POLTRONA RELAX LUNA ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_022">
+            <field name="code">022</field>
+            <field name="name">LETTINO QUICK ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_023">
+            <field name="code">023</field>
+            <field name="name">SDRAIO OSCILLANTE DONDOLINA ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_014">
+            <field name="code">014</field>
+            <field name="name">POLTRONA RELAX ALLUMINIO 5 POS</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_024">
+            <field name="code">024</field>
+            <field name="name">POLTRONA RELAX ALLUMINIO 5 POS</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_025">
+            <field name="code">025</field>
+            <field name="name">SEDIA DA SPIAGGIA BETTY ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_026">
+            <field name="code">026</field>
+            <field name="name">POLTRONA FIESTA ALLUMINIO 3 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <!--<record model="structure.block.value" id="data_structure_block_value_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>-->        
+    </data>
+</openerp>
+
