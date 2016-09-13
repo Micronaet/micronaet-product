@@ -53,9 +53,10 @@
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="name" />
-                            <field name="mandatory" />
+                            <field name="rely_id" />
                             <field name="from_char" />
                             <field name="to_char" />
+                            <field name="mandatory" />
                             
                             <separator string="Value" colspan="4"/>
                             <field name="value_ids" colspan="4" nolabel="1"/>
@@ -73,8 +74,9 @@
             <field name="arch" type="xml">
                 <tree string="Structure block">        
                     <!--<field name="structure_id" />-->
-                    <field name="name" />
                     <field name="mandatory" />
+                    <field name="name" />
+                    <field name="rely_id" />
                     <field name="from_char" />
                     <field name="to_char" />
                     <field name="note" />

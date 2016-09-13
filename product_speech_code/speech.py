@@ -64,7 +64,7 @@ class StructureBlock(orm.Model):
             'structure.structure', 'Code structure'), 
         'from_char': fields.integer('From char', required=True), 
         'to_char': fields.integer('To char', required=True),
-        'mandatory': fields.boolean('Mandatory'),        
+        'mandatory': fields.boolean('Mandatory'),
         'note': fields.text('Note'),
         }
 
@@ -90,6 +90,8 @@ class StructureBlock(orm.Model):
     _inherit = 'structure.block'
     
     _columns = {
+        'rely_id': fields.many2one(
+            'structure.block', 'Rely block'), 
         'value_ids': fields.one2many(
             'structure.block.value', 'block_id', 'Value'), 
         }
