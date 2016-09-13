@@ -142,7 +142,7 @@ class ProductProduct(orm.Model):
             if v in value:
                 name += ' %s' % value[v]
             else:
-                error += 'Value %s not presenti in block %s' % (
+                error += 'Value %s not present in block %s' % (
                     v, key)
 
         _logger.error('Code error: [%s]' % error)        

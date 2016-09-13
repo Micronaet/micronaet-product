@@ -61,7 +61,14 @@
                             <field name="mandatory" />
                             
                             <separator string="Value" colspan="4"/>
-                            <field name="value_ids" colspan="4" nolabel="1"/>
+                            <field name="value_ids" colspan="4" nolabel="1">
+                                <tree string="Structure" editable="bottom">        
+                                    <field name="code" />
+                                    <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]"/>
+                                    <field name="name" />
+                                    <field name="note" />
+                                </tree>                            
+                            </field>
                             
                             <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>                            
