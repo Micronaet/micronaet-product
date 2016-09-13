@@ -120,13 +120,13 @@ class ProductProduct(orm.Model):
                 _('Error'), 
                 _('Insert manadatory fields: code and structure'),
                 )
-        name = ''
+        name = '...'
         
+        # TODO create proceduro to generate name of product:
         
-        self.write(cr, uid, ids, {
+        return self.write(cr, uid, ids, {
             'name': name, 
             }, context=context)
-        return True
         
     _columns = {
         'structure_id': fields.many2one(
