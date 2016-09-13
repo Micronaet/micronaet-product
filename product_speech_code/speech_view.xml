@@ -11,6 +11,9 @@
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="name" />
+                            <field name="mandatory" />
+                            <field name="from" />
+                            <field name="to" />
                             
                             <separator string="Value" colspan="4"/>
                             <field name="value_ids" colspan="4" nolabel="1"/>
@@ -27,7 +30,11 @@
             <field name="model">structure.block</field>
             <field name="arch" type="xml">
                 <tree string="Structure">        
+                    <!--<field name="structure_id" />-->
                     <field name="name" />
+                    <field name="mandatory" />
+                    <field name="from" />
+                    <field name="to" />
                     <field name="note" />
                 </tree>
             </field>
