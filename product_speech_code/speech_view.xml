@@ -1,6 +1,53 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <!--structure.structure-->
+        <record model="ir.ui.view" id="view_structure_structure_form">
+            <field name="name">structure.structure.form</field>
+            <field name="model">structure.structure</field>
+            <field name="arch" type="xml">
+                <form string="Product code structure" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" />
+                            
+                            <separator string="Block" colspan="4"/>
+                            <field name="block_ids" colspan="4"/>
+                            
+                            <separator string="Note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>                            
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_structure_structure_tree">
+            <field name="name">structure.structure.tree</field>
+            <field name="model">structure.structure</field>
+            <field name="arch" type="xml">
+                <tree string="Structure">        
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_structure_structure">
+            <field name="name">Product code structure</field>
+            <field name="res_model">structure.structure</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_structure_structure_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        <menuitem 
+            parent="base.menu_base_config" 
+            id="menu_structure_structure" 
+            action="action_structure_structure"
+            sequence="60"
+            />
+        
+
 
     </data>
 </openerp>
