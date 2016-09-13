@@ -2,6 +2,34 @@
 <openerp>
     <data>
     
+        <!--structure.block.value-->
+        <record model="ir.ui.view" id="view_structure_block_value_form">
+            <field name="name">structure.block.value.form</field>
+            <field name="model">structure.block.value</field>
+            <field name="arch" type="xml">
+                <form string="Block value" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" />
+                            
+                            <separator string="Note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>                            
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_structure_block_value_tree">
+            <field name="name">structure.block.value.tree</field>
+            <field name="model">structure.block</field>
+            <field name="arch" type="xml">
+                <tree string="Structure" editable="bottom">        
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+
         <!--structure.block-->
         <record model="ir.ui.view" id="view_structure_block_form">
             <field name="name">structure.block.form</field>
@@ -29,7 +57,7 @@
             <field name="name">structure.block.tree</field>
             <field name="model">structure.block</field>
             <field name="arch" type="xml">
-                <tree string="Structure">        
+                <tree string="Structure block">        
                     <!--<field name="structure_id" />-->
                     <field name="name" />
                     <field name="mandatory" />
