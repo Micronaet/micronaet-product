@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <field name="default_code" position="after">
                     <field name="structure_id" />
+                    <field name="structure_error" attrs="{'invisible': [('structure_error','=',False)]}" nolabel="1" colors="red:True"/>
                     <button name="generate_name_from_code" string="Generate name" type="object" confirm="Name will be overwrite with structure name calculated, confirm?"/>
                 </field>
             </field>
@@ -53,8 +54,8 @@
                         <group col="4" colspan="4">
                             <field name="name" />
                             <field name="mandatory" />
-                            <field name="from" />
-                            <field name="to" />
+                            <field name="from_char" />
+                            <field name="to_char" />
                             
                             <separator string="Value" colspan="4"/>
                             <field name="value_ids" colspan="4" nolabel="1"/>
@@ -74,8 +75,8 @@
                     <!--<field name="structure_id" />-->
                     <field name="name" />
                     <field name="mandatory" />
-                    <field name="from" />
-                    <field name="to" />
+                    <field name="from_char" />
+                    <field name="to_char" />
                     <field name="note" />
                 </tree>
             </field>

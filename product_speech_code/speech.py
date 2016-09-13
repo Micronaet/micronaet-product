@@ -56,14 +56,14 @@ class StructureBlock(orm.Model):
     
     _name = 'structure.block'
     _description = 'Structure block'
-    _order = 'from'
+    _order = 'from_char'
     
     _columns = {
         'name': fields.char('Name', size=64, required=True),
         'structure_id': fields.many2one(
             'structure.structure', 'Code structure'), 
-        'from': fields.integer('From char', required=True), 
-        'to': fields.integer('To char', required=True),
+        'from_char': fields.integer('From char', required=True), 
+        'to_char': fields.integer('To char', required=True),
         'mandatory': fields.boolean('Mandatory'),        
         'note': fields.text('Note'),
         }
@@ -115,22 +115,45 @@ class ProductProduct(orm.Model):
         ''' Generate product name depend on structure and code insert
         '''
         product_proxy = self.browse(cr, uid, ids, context=context)[0]
-        if not product_proxy.default_code or not product_proxy.structure_id:
+        default_code = product_proxy.default_code
+        if not default_code or not product_proxy.structure_id:
             raise osv.except_osv(
                 _('Error'), 
                 _('Insert manadatory fields: code and structure'),
                 )
-        name = '...'
+        default_code = default_code.upper()        
         
-        # TODO create proceduro to generate name of product:
-        
+        code_db = {}
+        for block in product_proxy.structure_id.block_ids:
+            key = (block.from_char - 1, block.to_char)
+            code_db[key] = {}
+            for value in block.value_ids:
+                code_db[key][value.code] = value.name
+
+        name = ''
+        error = ''
+        for key in sorted(code_db):
+            value = code_db[key]
+            v = default_code[key[0]:key[1]].strip()
+            if v in value:
+                name += ' %s' % value[v]
+            else:
+                error += 'Value %s not presenti in block %s' % (
+                    v, key)
+
+        _logger.error('Code error: [%s]' % error)        
+        # TODO create procedure to generate name of product:
         return self.write(cr, uid, ids, {
             'name': name, 
+            'default_code': default_code,
+            'structure_error': error,
             }, context=context)
         
     _columns = {
         'structure_id': fields.many2one(
             'structure.structure', 'Code structure'), 
+        'structure_error': fields.text(
+            'Structure error', readonly=True), 
         }
         
 
