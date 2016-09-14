@@ -118,20 +118,25 @@ class ProductProduct(orm.Model):
     
     _inherit = 'product.product'
     
-    def generate_name_from_code(self, cr, uid, ids, context=None):
-        ''' Generate product name depend on structure and code insert
+    # -------------------------------------------------------------------------    
+    # Utility:
+    # -------------------------------------------------------------------------    
+    def get_name_from_default_code(self, default_code, structure_proxy, 
+            context=None):
+        ''' Utility function for calculate product name from code and structure
+            selected (passed as arguments)
         '''
-        product_proxy = self.browse(cr, uid, ids, context=context)[0]
-        default_code = product_proxy.default_code
-        if not default_code or not product_proxy.structure_id:
+        if not default_code or not structure_proxy.id:
             raise osv.except_osv(
                 _('Error'), 
                 _('Insert manadatory fields: code and structure'),
                 )
-        default_code = default_code.upper()        
         
+        # ---------------------------------------------
+        # Crete database structure for name generation:
+        # ---------------------------------------------
         code_db = {}
-        for block in product_proxy.structure_id.block_ids:
+        for block in structure_proxy.block_ids:
             key = (block.from_char - 1, block.to_char)
             if block.rely_id:
                 rely_range = (
@@ -152,6 +157,9 @@ class ProductProduct(orm.Model):
                     code = value.code    
                 code_db[key][0][code] = value.name
 
+        # ----------------
+        # Name generation:
+        # ----------------
         name = ''
         error = ''
         for key in sorted(code_db):
@@ -174,6 +182,22 @@ class ProductProduct(orm.Model):
                         v, key[0] + 1, key[1])
 
         _logger.error('Code error: [%s]' % error)        
+        return (name, error)
+        
+    # -------------------------------------------------------------------------    
+    # Button event:
+    # -------------------------------------------------------------------------    
+    def generate_name_from_code(self, cr, uid, ids, context=None):
+        ''' Generate product name depend on structure and code insert
+        '''
+        product_proxy = self.browse(cr, uid, ids, context=context)[0]
+        default_code = product_proxy.default_code or ''
+        default_code = default_code.upper()
+        structure_proxy = product_proxy.structure_id
+        
+        (name, error) = self.get_name_from_default_code(cr, uid, default_code, 
+            structure_proxy, context=context)
+
         # TODO create procedure to generate name of product:
         return self.write(cr, uid, ids, {
             'name': name, 
