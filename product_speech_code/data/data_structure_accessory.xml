@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<openerp>
+    <data><!--<data noupdate="1">-->
+        <!--structure.structure-->
+        <record model="structure.structure" id="data_structure_structure_accessory_company1">
+            <field name="name">Company product code structure</field>
+            <field name="note">Auto create model for company 1</field>
+        </record>
+        
+        <!--structure.block-->
+        <record model="structure.block" id="data_structure_block_accessory_1_3">
+            <field name="name">Accessory codee</field>
+            <field name="structure_id" ref="data_structure_structure_accessory_company1"/>
+            <field name="from_char" eval="1" />
+            <field name="to_char" eval="3" />
+            <field name="mandatory">1</field>
+            <field name="note">First block [0:3] with parent code</field>
+        </record>
+        <record model="structure.block" id="data_structure_block_accessory_4_16">
+            <field name="name">Mirror product code</field>
+            <field name="structure_id" ref="data_structure_structure_accessory_company1"/>
+            <field name="mirror_structure_id" ref="data_structure_structure_company1"/>
+            <field name="from_char" eval="4" />
+            <field name="to_char" eval="16" />            
+            <field name="mandatory">0</field>
+            <field name="note">Second block [3:16] mirror on other trace</field>
+        </record>
+
+        <!--structure.block.value-->
+            <!--PRODUCT CODE ELEMENTS-->
+        <record model="structure.block.value" id="data_structure_block_value_005">
+            <field name="code">005</field>
+            <field name="name">SEDIA REGISTA ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_accessory_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_021">
+            <field name="code">021</field>
+            <field name="name">POLTRONA RELAX LUNA ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_accessory_1_3"/>
+        </record>
+    </data>
+</openerp>
+

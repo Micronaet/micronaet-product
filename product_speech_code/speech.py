@@ -154,7 +154,7 @@ class ProductProduct(orm.Model):
                 else:
                     rely_range = False
                     mask = False
-                mirror_structure_id = False    
+                mirror_structure_proxy = False    
            
             code_db[key] = [{}, rely_range, mask, mirror_structure_proxy]
             for value in block.value_ids:
@@ -177,7 +177,8 @@ class ProductProduct(orm.Model):
             mirror_structure_proxy = code_db[key][3]
             
             v = default_code[key[0]:key[1]].strip()
-            if mirror_structure_proxy:
+            if mirror_structure_proxy:    
+                #import pdb; pdb.set_trace()          
                 # Recursion call:
                 name_mirror, error_mirror =  self.get_name_from_default_code(
                     v, mirror_structure_proxy)

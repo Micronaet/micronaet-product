@@ -40,6 +40,7 @@
         
         # First Structure for company 1:
         'data/data_structure.xml',
+        'data/data_structure_accessory.xml',
         ],
     'active': False,
     'installable': True,
