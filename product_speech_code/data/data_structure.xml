@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data><!--<data noupdate="1">-->
+    <data noupdate="1">
         <!--structure.structure-->
         <record model="structure.structure" id="data_structure_structure_company1">
             <field name="name">Company product code structure</field>
