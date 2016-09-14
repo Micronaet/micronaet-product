@@ -548,54 +548,386 @@
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_fabric_S3B">
-            <field name="code"></field>
-            <field name="name"></field>
+            <field name="code">S3B</field>
+            <field name="name">SOFT TRIPLEX CON BRACC.LEGNO</field>
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
-            <field name="code"></field>
-            <field name="name"></field>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_SI">
+            <field name="code">SI</field>
+            <field name="name">SOFT OLEFIN IGNIFUGO</field>
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
-            <field name="code"></field>
-            <field name="name"></field>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_TX">
+            <field name="code">TX</field>
+            <field name="name">TEXFIL</field>
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
-            <field name="code"></field>
-            <field name="name"></field>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_TXB">
+            <field name="code">TXB</field>
+            <field name="name">TEXFIL CON BRACC.LEGNO</field>
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
-            <field name="code"></field>
-            <field name="name"></field>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_TXE">
+            <field name="code">TXE</field>
+            <field name="name">TEXFIL ECO</field>
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
-            <field name="code"></field>
-            <field name="name"></field>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_TXR">
+            <field name="code">TXR</field>
+            <field name="name">TEXFIL RIGATO</field>
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
-            <field name="code"></field>
-            <field name="name"></field>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_XW">
+            <field name="code">XW</field>
+            <field name="name">TEXFIL TERMOSALDATO</field>
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
-            <field name="code"></field>
-            <field name="name"></field>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_XWB">
+            <field name="code">XWB</field>
+            <field name="name">TEXFIL TERMOSALDATO CON BRACC.LEGNO</field>
             <field name="block_id" ref="data_structure_block_4_6"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
-            <field name="code"></field>
-            <field name="name"></field>
-            <field name="block_id" ref="data_structure_block_4_6"/>
+
+         <!--FRAME ELEMENTS-->
+        <record model="structure.block.value" id="data_structure_block_value_frame_AL">
+            <field name="code">AL</field>
+            <field name="name">SILVER</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
         </record>
-        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+        <record model="structure.block.value" id="data_structure_block_value_frame_AN">
+            <field name="code">AN</field>
+            <field name="name">ANTRACITE</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_AR">
+            <field name="code">AR</field>
+            <field name="name">ARANCIO</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_AS">
+            <field name="code">AS</field>
+            <field name="name">SILVER OPACO</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_BI">
+            <field name="code">BI</field>
+            <field name="name">BIANCO</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_BS">
+            <field name="code">BS</field>
+            <field name="name">BIANCO</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_CR">
+            <field name="code">CR</field>
+            <field name="name">CROMATO</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_NC">
+            <field name="code">NC</field>
+            <field name="name">TINTO NOCE</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_NI">
+            <field name="code">NI</field>
+            <field name="name">NERO INTERIO</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_RO">
+            <field name="code">RO</field>
+            <field name="name">ROSSO</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_TA">
+            <field name="code">TA</field>
+            <field name="name">TORTORA</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_frame_VE">
+            <field name="code">VE</field>
+            <field name="name">VERDE CHIARO</field>
+            <field name="block_id" ref="data_structure_block_7_8"/>
+        </record>
+
+         <!--FABRIC - COLORS -->
+            <!-- FABRIC TX - COLORS: -->
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_AC">
+            <field name="code">AC</field>
+            <field name="name">ALICE</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_AK">
+            <field name="code">AK</field>
+            <field name="name">AZZURRO 4188</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_AR">
+            <field name="code">AR</field>
+            <field name="name">ARANCIO 2116</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_AZ1">
+            <field name="code">AZ1</field>
+            <field name="name">AZZURRO 4150</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_BAT">
+            <field name="code">BAT</field>
+            <field name="name">BIANCO/ACQUA/TORTORA</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_BI">
+            <field name="code">BI</field>
+            <field name="name">BIANCO 0108</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_BIAQ">
+            <field name="code">BIAQ</field>
+            <field name="name">BIANCO/ACQUA 0205</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_BIBE">
+            <field name="code">BIBE</field>
+            <field name="name">BIANCO/BEIGE 0271</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_BIGR">
+            <field name="code">BIGR</field>
+            <field name="name">BIANCO/GRIGIO 0601</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_BK">
+            <field name="code">BK</field>
+            <field name="name">BLU 4129</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_BL">
+            <field name="code">BL</field>
+            <field name="name">BLU 4103</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_DR">
+            <field name="code">DR</field>
+            <field name="name">DREAMLINER</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_GI">
+            <field name="code">GI</field>
+            <field name="name">GIALLO 1100</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_GR">
+            <field name="code">GR</field>
+            <field name="name">GRIGIO 0600</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_GU">
+            <field name="code">GU</field>
+            <field name="name">ANTRACITE 0670</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_MG">
+            <field name="code">MG</field>
+            <field name="name">MAGIC 0476</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_MW">
+            <field name="code">MW</field>
+            <field name="name">MARRONE WENGE 5109</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_NE">
+            <field name="code">NE</field>
+            <field name="name">NERO 0400</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_OT">
+            <field name="code">OT</field>
+            <field name="name">OTTANIO 3158</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_RIAR">
+            <field name="code">RIAR</field>
+            <field name="name">RIGATO ARANCIO</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_RIVI">
+            <field name="code">RIVI</field>
+            <field name="name">RIGATO VIOLA</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_RO">
+            <field name="code">RO</field>
+            <field name="name">ROSSO 2109</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_SP">
+            <field name="code">SP</field>
+            <field name="name">SPIRIT 0655</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_SU">
+            <field name="code">SU</field>
+            <field name="name">SUPERIOR</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_TA">
+            <field name="code">TA</field>
+            <field name="name">TORTORA 0711</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_VE">
+            <field name="code">VE</field>
+            <field name="name">VERDE CHIARO 3197</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_VI">
+            <field name="code">VI</field>
+            <field name="name">VIOLA 4164</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_VN">
+            <field name="code">VN</field>
+            <field name="name">VIENNA 0155</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_VP">
+            <field name="code">VP</field>
+            <field name="name">VERDE PISTACCHIO 3124</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_VS">
+            <field name="code">VS</field>
+            <field name="name">VERDE SCURO 3187</field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_TX" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+
+          <!--FABRIC - COLORS -->
+          <!-- FABRIC D - COLORS: -->
+
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
             <field name="code"></field>
             <field name="name"></field>
-            <field name="block_id" ref="data_structure_block_4_6"/>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fab_col_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="rely_id" ref="data_structure_block_value_fabric_D" />
+            <field name="block_id" ref="data_structure_block_9_12"/>
+        </record>
+
+
+
+         <!--EXTRA INFO-->
+        <record model="structure.block.value" id="data_structure_block_value_extra_S">
+            <field name="code">S</field>
+            <field name="name">IMBALLO SINGOLO</field>
+            <field name="block_id" ref="data_structure_block_13_13"/>
         </record>
     </data>
 </openerp>
