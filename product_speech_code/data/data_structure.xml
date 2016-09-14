@@ -52,6 +52,7 @@
         </record>
 
         <!--structure.block.value-->
+            <!--PRODUCT CODE ELEMENTS-->
         <record model="structure.block.value" id="data_structure_block_value_005">
             <field name="code">005</field>
             <field name="name">SEDIA REGISTA ALLUMINIO</field>
@@ -92,11 +93,510 @@
             <field name="name">POLTRONA FIESTA ALLUMINIO 3 POS.</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
-        <!--<record model="structure.block.value" id="data_structure_block_value_">
+        <record model="structure.block.value" id="data_structure_block_value_027">
+            <field name="code">027</field>
+            <field name="name">POLTRONA FIESTA ALLUMINIO 4 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_028">
+            <field name="code">028</field>
+            <field name="name">SGABELLO CHICO ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_029">
+            <field name="code">029</field>
+            <field name="name">POLTRONA MOVIDA MULTIPOSIZIONI ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_030">
+            <field name="code">030</field>
+            <field name="name">POLTRONA MOVIDA XXL ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_031">
+            <field name="code">031</field>
+            <field name="name">LETTINO JOLLY ALLUMINIO 3 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_032">
+            <field name="code">032</field>
+            <field name="name">LETTINO/CARRELLO WHEELY ALLUMINIO CON RUOTE</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_033">
+            <field name="code">033</field>
+            <field name="name">LETTINO JACK ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_034">
+            <field name="code">034</field>
+            <field name="name">LETTINO AMIGO ALLUMINIO CON PARASOLE</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_035">
+            <field name="code">035</field>
+            <field name="name">LETTINO AMIGO ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_036">
+            <field name="code">036</field>
+            <field name="name">LETTINO AMIGO 40+ ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_037">
+            <field name="code">037</field>
+            <field name="name">LETTINO CASANOVA XXL ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_038">
+            <field name="code">038</field>
+            <field name="name">LETTINO AMIGO XXL ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_039">
+            <field name="code">039</field>
+            <field name="name">LETTINO AMIGO 40+ ALLUMINIO CON PARASOLE</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_041">
+            <field name="code">041</field>
+            <field name="name">SDRAIO PICCOLINA ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_045">
+            <field name="code">045</field>
+            <field name="name">POLTRONA SAMBA ALLUMINIO 2 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_046">
+            <field name="code">046</field>
+            <field name="name">POLTRONA SAMBA ALLUMINIO 2 POS. CON POGGIATESTA</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_048">
+            <field name="code">048</field>
+            <field name="name">CHAISE LONGUE TANGO ALLUMINIO 2 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_049">
+            <field name="code">049</field>
+            <field name="name">CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA
+            </field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_050">
+            <field name="code">050</field>
+            <field name="name">LETTINO BIG FIFTY ALLUMINIO CON PARASOLE</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_051">
+            <field name="code">051</field>
+            <field name="name">LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA
+            </field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_061">
+            <field name="code">061</field>
+            <field name="name">POLTRONA LIDO SCHIENALE ALTO ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_062">
+            <field name="code">062</field>
+            <field name="name">POGGIAPIEDI LIDO ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_063">
+            <field name="code">063</field>
+            <field name="name">POLTRONA LIDO SCHIENALE BASSO ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_068">
+            <field name="code">068</field>
+            <field name="name">SEDIA LIDO ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_069">
+            <field name="code">069</field>
+            <field name="name">SEDIA LIDO ALLUMINIO CON BRACCIOLI</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_070">
+            <field name="code">070</field>
+            <field name="name">LETTINO RIVER ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_071">
+            <field name="code">071</field>
+            <field name="name">LETTINO RIVER ALLUMINIO CON PARASOLE</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_081">
+            <field name="code">081</field>
+            <field name="name">POLTRONA SPAGHETTI ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_090">
+            <field name="code">090</field>
+            <field name="name">POLTRONA AMIDA MULTIPOSIZIONI ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_091">
+            <field name="code">091</field>
+            <field name="name">POLTRONA AMIDA XL MULTIPOSIZ.ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_121">
+            <field name="code">121</field>
+            <field name="name">POLTRONA RELAX LUNA</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_123">
+            <field name="code">123</field>
+            <field name="name">SDRAIO OSCILLANTE DONDOLINA</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_126">
+            <field name="code">126</field>
+            <field name="name">POLTRONA FIESTA 3 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_127">
+            <field name="code">127</field>
+            <field name="name">POLTRONA FIESTA 4 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_128">
+            <field name="code">128</field>
+            <field name="name">SGABELLO CHICO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_129">
+            <field name="code">129</field>
+            <field name="name">POLTRONA MOVIDA MULTIPOSIZIONI</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_130">
+            <field name="code">130</field>
+            <field name="name">POLTRONA MOVIDA XXL</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_131">
+            <field name="code">131</field>
+            <field name="name">LETTINO JOLLY 3 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_132">
+            <field name="code">132</field>
+            <field name="name">LETTINO/CARRELLO WHEELY CON RUOTE</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_135">
+            <field name="code">135</field>
+            <field name="name">LETTINO AMIGO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record>
+		<record model="structure.block.value" id="data_structure_block_value_145">
+            <field name="code">145</field>
+            <field name="name">POLTRONA SAMBA 2 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_147">
+            <field name="code">147</field>
+            <field name="name">CHAISE LONGUE TANGO ECO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_148">
+            <field name="code">148</field>
+            <field name="name">CHAISE LONGUE TANGO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_149">
+            <field name="code">149</field>
+            <field name="name">CHAISE LONGUE TANGO CON POGGIATESTA</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_150">
+            <field name="code">150</field>
+            <field name="name">POLTRONCINA BAMBINO SUSY</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_161">
+            <field name="code">161</field>
+            <field name="name">SGABELLO BITTER H.46 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_162">
+            <field name="code">162</field>
+            <field name="name">SGABELLO BITTER H.62 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_163">
+            <field name="code">163</field>
+            <field name="name">SGABELLO BITTER H.72 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_164">
+            <field name="code">164</field>
+            <field name="name">SGABELLO GINGER H.45 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_165">
+            <field name="code">165</field>
+            <field name="name">SGABELLO GINGER H.62 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_190">
+            <field name="code">190</field>
+            <field name="name">POLTRONA AMIDA MULTIPOSIZIONI</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_205">
+            <field name="code">205</field>
+            <field name="name">SEDIA REGISTA</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_223">
+            <field name="code">223</field>
+            <field name="name">SDRAIO OSCILLANTE DONDOLINA TWIN</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_230">
+            <field name="code">230</field>
+            <field name="name">REGISTA LEGNO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_261">
+            <field name="code">261</field>
+            <field name="name">POLTRONA LIDO SCHIENALE ALTO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_262">
+            <field name="code">262</field>
+            <field name="name">POGGIAPIEDI LIDO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_263">
+            <field name="code">263</field>
+            <field name="name">POLTRONA LIDO SCHIENALE BASSO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_300">
+            <field name="code">300</field>
+            <field name="name">TAVOLO CLUB</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_301">
+            <field name="code">301</field>
+            <field name="name">TAVOLO CLUB ALLUMINIO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_322">
+            <field name="code">322</field>
+            <field name="name">TAVOLO TRIS ROTONDO D.53 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_330">
+            <field name="code">330</field>
+            <field name="name">TAVOLO SIRIO ROTONDO D.67 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_331">
+            <field name="code">331</field>
+            <field name="name">TAVOLO SIRIO QUADRATO 67x67 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_332">
+            <field name="code">332</field>
+            <field name="name">TAVOLO SIRIO 50x70 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_334">
+            <field name="code">334</field>
+            <field name="name">TAVOLO 140x67</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_335">
+            <field name="code">335</field>
+            <field name="name">TAVOLO RAFFAELLO 80x120</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_336">
+            <field name="code">336</field>
+            <field name="name">TAVOLO PIEGHEVOLE DONATELLO 80x80</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_337">
+            <field name="code">337</field>
+            <field name="name">TAVOLO MICHELANGELO 85x165</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_550">
+            <field name="code">550</field>
+            <field name="name">SEPARE'</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_552">
+            <field name="code">552</field>
+            <field name="name">ANTA SINGOLA PER SEPARE'</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_600">
+            <field name="code">600</field>
+            <field name="name">PARASOLE UNIVERSALE</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_601">
+            <field name="code">601</field>
+            <field name="name">PARASOLE PER CASANOVA</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_620">
+            <field name="code">620</field>
+            <field name="name">SUPPORTO PER LIBRI/TABLET</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_649">
+            <field name="code">649</field>
+            <field name="name">CUSCINO POGGIATESTA 49 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_650">
+            <field name="code">650</field>
+            <field name="name">CUSCINO POGGIATESTA 50 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_651">
+            <field name="code">651</field>
+            <field name="name">CUSCINO POGGIATESTA 58 CM</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_800">
+            <field name="code">800</field>
+            <field name="name">SEDIA SPRING</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_810">
+            <field name="code">810</field>
+            <field name="name">POLTRONA SPAGHETTI</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_831">
+            <field name="code">831</field>
+            <field name="name">SEDIA CHIUDIBILE ATENA CON BRACCIOLI</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_900">
+            <field name="code">900</field>
+            <field name="name">POLTRONA IN LEGNO LINDA 2 POS.</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_901">
+            <field name="code">901</field>
+            <field name="name">SGABELLO/POGGIAPIEDI MATTY IN LEGNO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+		<record model="structure.block.value" id="data_structure_block_value_930">
+            <field name="code">930</field>
+            <field name="name">SDRAIO LEGNO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+        <record model="structure.block.value" id="data_structure_block_value_931">
+            <field name="code">931</field>
+            <field name="name">SGABELLO/POGGIAPIEDI IN LEGNO</field>
+            <field name="block_id" ref="data_structure_block_1_3"/>
+        </record> 
+
+            <!--FABRIC ELEMENTS-->
+        <record model="structure.block.value" id="data_structure_block_value_fabric_D">
+            <field name="code">D</field>
+            <field name="name">OLEFIN</field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_DB">
+            <field name="code">DB</field>
+            <field name="name">OLEFIN CON BRACC.LEGNO</field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_IL">
+            <field name="code">IL</field>
+            <field name="name">ACRYPOL</field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_L">
+            <field name="code">L</field>
+            <field name="name">ACRYPOL</field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_PE">
+            <field name="code">PE</field>
+            <field name="name">POLIESTERE</field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_PV">
+            <field name="code">PV</field>
+            <field name="name">PIANO VERNICIATO</field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_S">
+            <field name="code">S</field>
+            <field name="name">SOFT OLEFIN</field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_S3">
+            <field name="code">S3</field>
+            <field name="name">SOFT TRIPLEX</field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_S3B">
             <field name="code"></field>
             <field name="name"></field>
-            <field name="block_id" ref="data_structure_block_1_3"/>
-        </record>-->        
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
+        <record model="structure.block.value" id="data_structure_block_value_fabric_">
+            <field name="code"></field>
+            <field name="name"></field>
+            <field name="block_id" ref="data_structure_block_4_6"/>
+        </record>
     </data>
 </openerp>
 
