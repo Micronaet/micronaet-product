@@ -55,13 +55,14 @@
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="name" />
-                            <field name="rely_id" />
+                            <field name="mandatory" />
+                            <field name="mirror_structure_id" domain="[('id','!=',structure_id)]"/>
+                            <field name="rely_id" attrs="{'invisible':[('mirror_structure_id','!=',False)]}" domain="[('structure_id','=',structure_id),('id','!=',active_id)]"/>
                             <field name="from_char" />
                             <field name="to_char" />
-                            <field name="mandatory" />
                             
-                            <separator string="Value" colspan="4"/>
-                            <field name="value_ids" colspan="4" nolabel="1">
+                            <separator string="Value" colspan="4" attrs="{'invisible':[('mirror_structure_id','!=',False)]}"/>
+                            <field name="value_ids" colspan="4" nolabel="1" attrs="{'invisible':[('mirror_structure_id','!=',False)]}">
                                 <tree string="Structure" editable="bottom">        
                                     <field name="code" />
                                     <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]" /><!--TODO attrs="{'readonly': [(parent.rely_id, '=', False)], 'required': [(parent.rely_id, '!=', False)]}"/>-->
@@ -72,6 +73,8 @@
                             
                             <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>                            
+
+                            <field name="structure_id" invisible="1"/>
                         </group>
                     </sheet>        
                 </form>
@@ -81,10 +84,11 @@
             <field name="name">structure.block.tree</field>
             <field name="model">structure.block</field>
             <field name="arch" type="xml">
-                <tree string="Structure block">        
+                <tree string="Structure block" colors="brown:rely_id!=False;blue:mirror_structure_id!=False">        
                     <!--<field name="structure_id" />-->
                     <field name="mandatory" />
                     <field name="name" />
+                    <field name="mirror_structure_id" />
                     <field name="rely_id" />
                     <field name="from_char" />
                     <field name="to_char" />

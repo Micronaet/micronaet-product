@@ -62,6 +62,9 @@ class StructureBlock(orm.Model):
         'name': fields.char('Name', size=64, required=True),
         'structure_id': fields.many2one(
             'structure.structure', 'Code structure'), 
+        'mirror_structure_id': fields.many2one(
+            'structure.structure', 'Mirror structure', 
+            help='This block work as the mirror code structure'), 
         'from_char': fields.integer('From char', required=True), 
         'to_char': fields.integer('To char', required=True),
         'mandatory': fields.boolean('Mandatory'),
