@@ -74,7 +74,7 @@ class StructureBlockValore(orm.Model):
     
     _name = 'structure.block.value'
     _description = 'Block value'
-    _order = 'code'
+    _order = 'rely_value_id,code'
     
     _columns = {
         'code': fields.char('Code', size=10, required=True),
