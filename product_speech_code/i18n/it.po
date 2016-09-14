@@ -1,0 +1,1040 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_speech_code
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-14 10:28+0000\n"
+"PO-Revision-Date: 2016-09-14 12:38+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_IL
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_L
+msgid "ACRYPOL"
+msgstr "ACRYPOL"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_AC
+msgid "ALICE"
+msgstr "ALICE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_552
+msgid "ANTA SINGOLA PER SEPARE'"
+msgstr "ANTA SINGOLA PER SEPARE'"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_AN
+msgid "ANTRACITE"
+msgstr "ANTRACITE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_GU
+msgid "ANTRACITE 0670"
+msgstr "ANTRACITE 0670"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_PE_AR
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_AR
+msgid "ARANCIO"
+msgstr "ARANCIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_AR
+msgid "ARANCIO 2116"
+msgstr "ARANCIO 2116"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_AR
+msgid "ARANCIO 8508"
+msgstr "ARANCIO 8508"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_AZ1
+msgid "AZZURRO 4150"
+msgstr "AZZURRO 4150"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_AK
+msgid "AZZURRO 4188"
+msgstr "AZZURRO 4188"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_BI
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_BS
+msgid "BIANCO"
+msgstr "BIANCO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_BI
+msgid "BIANCO 0108"
+msgstr "BIANCO 0108"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_BI
+msgid "BIANCO 2602"
+msgstr "BIANCO 2602"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_BIAQ
+msgid "BIANCO/ACQUA 0205"
+msgstr "BIANCO/ACQUA 0205"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_BAT
+msgid "BIANCO/ACQUA/TORTORA"
+msgstr "BIANCO/ACQUA/TORTORA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_BIBE
+msgid "BIANCO/BEIGE 0271"
+msgstr "BIANCO/BEIGE 0271"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_BIBE
+msgid "BIANCO/BEIGE 8506"
+msgstr "BIANCO/BEIGE 8506"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_IL_BBVP
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_L_BBVP
+msgid "BIANCO/BLU/PISTACCHIO"
+msgstr "BIANCO/BLU/PISTACCHIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_BIGR
+msgid "BIANCO/GRIGIO 0601"
+msgstr "BIANCO/GRIGIO 0601"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_BINE
+msgid "BIANCO/NERO 8513"
+msgstr "BIANCO/NERO 8513"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_IL_BL
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_L_BL
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_PE_BL
+msgid "BLU"
+msgstr "BLU"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_B2
+msgid "BLU 2821"
+msgstr "BLU 2821"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_BL
+msgid "BLU 4103"
+msgstr "BLU 4103"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_BK
+msgid "BLU 4129"
+msgstr "BLU 4129"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_BL
+msgid "BLU 8502"
+msgstr "BLU 8502"
+
+#. module: product_speech_code
+#: field:structure.block.value,block_id:0
+#: view:structure.structure:product_speech_code.view_structure_structure_form
+#: field:structure.structure,block_ids:0
+msgid "Block"
+msgstr "Blocco"
+
+#. module: product_speech_code
+#: model:ir.model,name:product_speech_code.model_structure_block_value
+#: view:structure.block.value:product_speech_code.view_structure_block_value_form
+msgid "Block value"
+msgstr "Valore blocco"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_148
+msgid "CHAISE LONGUE TANGO"
+msgstr "CHAISE LONGUE TANGO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_048
+msgid "CHAISE LONGUE TANGO ALLUMINIO 2 POS."
+msgstr "CHAISE LONGUE TANGO ALLUMINIO 2 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_049
+msgid "CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA"
+msgstr "CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_149
+msgid "CHAISE LONGUE TANGO CON POGGIATESTA"
+msgstr "CHAISE LONGUE TANGO CON POGGIATESTA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_147
+msgid "CHAISE LONGUE TANGO ECO"
+msgstr "CHAISE LONGUE TANGO ECO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_extra_P
+msgid "CON PARASOLE"
+msgstr "CON PARASOLE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_extra_X
+msgid "CON PARASOLE, SUPPORTO TABLET E CUSCINO"
+msgstr "CON PARASOLE, SUPPORTO TABLET E CUSCINO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_extra_T
+msgid "CON SUPPORTO TABLET"
+msgstr "CON SUPPORTO TABLET"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_CR
+msgid "CROMATO"
+msgstr "CROMATO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_649
+msgid "CUSCINO POGGIATESTA 49 CM"
+msgstr "CUSCINO POGGIATESTA 49 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_650
+msgid "CUSCINO POGGIATESTA 50 CM"
+msgstr "CUSCINO POGGIATESTA 50 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_651
+msgid "CUSCINO POGGIATESTA 58 CM"
+msgstr "CUSCINO POGGIATESTA 58 CM"
+
+#. module: product_speech_code
+#: field:structure.block.value,code:0
+msgid "Code"
+msgstr "Codice"
+
+#. module: product_speech_code
+#: field:product.product,structure_id:0 field:structure.block,structure_id:0
+msgid "Code structure"
+msgstr "Struttura codice"
+
+#. module: product_speech_code
+#: field:structure.block,create_uid:0 field:structure.block.value,create_uid:0
+#: field:structure.structure,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: product_speech_code
+#: field:structure.block,create_date:0
+#: field:structure.block.value,create_date:0
+#: field:structure.structure,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_DR
+msgid "DREAMLINER"
+msgstr "DREAMLINER"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_NA
+msgid "ECRU 2710"
+msgstr "ECRU 2710"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_IL_NA
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_L_NA
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_PE_NA
+msgid "ECRU'"
+msgstr "ECRU'"
+
+#. module: product_speech_code
+#: code:addons/product_speech_code/speech.py:133
+#, python-format
+msgid "Error"
+msgstr "Errore"
+
+#. module: product_speech_code
+#: field:structure.block,from_char:0
+msgid "From char"
+msgstr "Dal carattere"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_GI
+msgid "GIALLO 1100"
+msgstr "GIALLO 1100"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_S3B_GR
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_S3_GR
+msgid "GRIGIO"
+msgstr "GRIGIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_GR
+msgid "GRIGIO 0600"
+msgstr "GRIGIO 0600"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_GR
+msgid "GRIGIO 2631"
+msgstr "GRIGIO 2631"
+
+#. module: product_speech_code
+#: view:product.product:product_speech_code.view_product_product_add_structure_form
+msgid "Generate name"
+msgstr "Genera nome"
+
+#. module: product_speech_code
+#: field:structure.block,id:0 field:structure.block.value,id:0
+#: field:structure.structure,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_extra_S
+msgid "IMBALLO SINGOLO"
+msgstr "IMBALLO SINGOLO"
+
+#. module: product_speech_code
+#: code:addons/product_speech_code/speech.py:134
+#, python-format
+msgid "Insert manadatory fields: code and structure"
+msgstr "Inserisci campi obbligatori: codice e struttura"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_135
+msgid "LETTINO AMIGO"
+msgstr "LETTINO AMIGO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_036
+msgid "LETTINO AMIGO 40+ ALLUMINIO"
+msgstr "LETTINO AMIGO 40+ ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_039
+msgid "LETTINO AMIGO 40+ ALLUMINIO CON PARASOLE"
+msgstr "LETTINO AMIGO 40+ ALLUMINIO CON PARASOLE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_035
+msgid "LETTINO AMIGO ALLUMINIO"
+msgstr "LETTINO AMIGO ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_034
+msgid "LETTINO AMIGO ALLUMINIO CON PARASOLE"
+msgstr "LETTINO AMIGO ALLUMINIO CON PARASOLE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_038
+msgid "LETTINO AMIGO XXL ALLUMINIO"
+msgstr "LETTINO AMIGO XXL ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_050
+msgid "LETTINO BIG FIFTY ALLUMINIO CON PARASOLE"
+msgstr "LETTINO BIG FIFTY ALLUMINIO CON PARASOLE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_051
+msgid "LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA"
+msgstr "LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_037
+msgid "LETTINO CASANOVA XXL ALLUMINIO"
+msgstr "LETTINO CASANOVA XXL ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_033
+msgid "LETTINO JACK ALLUMINIO"
+msgstr "LETTINO JACK ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_131
+msgid "LETTINO JOLLY 3 POS."
+msgstr "LETTINO JOLLY 3 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_031
+msgid "LETTINO JOLLY ALLUMINIO 3 POS."
+msgstr "LETTINO JOLLY ALLUMINIO 3 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_022
+msgid "LETTINO QUICK ALLUMINIO"
+msgstr "LETTINO QUICK ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_070
+msgid "LETTINO RIVER ALLUMINIO"
+msgstr "LETTINO RIVER ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_071
+msgid "LETTINO RIVER ALLUMINIO CON PARASOLE"
+msgstr "LETTINO RIVER ALLUMINIO CON PARASOLE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_032
+msgid "LETTINO/CARRELLO WHEELY ALLUMINIO CON RUOTE"
+msgstr "LETTINO/CARRELLO WHEELY ALLUMINIO CON RUOTE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_132
+msgid "LETTINO/CARRELLO WHEELY CON RUOTE"
+msgstr "LETTINO/CARRELLO WHEELY CON RUOTE"
+
+#. module: product_speech_code
+#: field:structure.block,write_uid:0 field:structure.block.value,write_uid:0
+#: field:structure.structure,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: product_speech_code
+#: field:structure.block,write_date:0 field:structure.block.value,write_date:0
+#: field:structure.structure,write_date:0
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_MG
+msgid "MAGIC 0476"
+msgstr "MAGIC 0476"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_MW
+msgid "MARRONE WENGE 5109"
+msgstr "MARRONE WENGE 5109"
+
+#. module: product_speech_code
+#: field:structure.block,mandatory:0
+msgid "Mandatory"
+msgstr "Obbligatorio"
+
+#. module: product_speech_code
+#: field:structure.block,mirror_structure_id:0
+msgid "Mirror structure"
+msgstr "Struttura speculare"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_PE_NE
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_S3B_NE
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_S3_NE
+msgid "NERO"
+msgstr "NERO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_NE
+msgid "NERO 0400"
+msgstr "NERO 0400"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_NE
+msgid "NERO 2501"
+msgstr "NERO 2501"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_NI
+msgid "NERO INTERIO"
+msgstr "NERO INTERIO"
+
+#. module: product_speech_code
+#: field:structure.block,name:0 field:structure.block.value,name:0
+#: field:structure.structure,name:0
+msgid "Name"
+msgstr "Nome"
+
+#. module: product_speech_code
+#: view:product.product:product_speech_code.view_product_product_add_structure_form
+msgid "Name will be overwrite with structure name calculated, confirm?"
+msgstr ""
+"Il nome prodotto verrà sovrascritto con quello calcolato in funzione alla "
+"struttura scelta, confermi?"
+
+#. module: product_speech_code
+#: view:structure.block:product_speech_code.view_structure_block_form
+#: field:structure.block,note:0
+#: view:structure.block.value:product_speech_code.view_structure_block_value_form
+#: field:structure.block.value,note:0
+#: view:structure.structure:product_speech_code.view_structure_structure_form
+#: field:structure.structure,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_D
+msgid "OLEFIN"
+msgstr "OLEFIN"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_DB
+msgid "OLEFIN CON BRACC.LEGNO"
+msgstr "OLEFIN CON BRACC.LEGNO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_OT
+msgid "OTTANIO 3158"
+msgstr "OTTANIO 3158"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_601
+msgid "PARASOLE PER CASANOVA"
+msgstr "PARASOLE PER CASANOVA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_600
+msgid "PARASOLE UNIVERSALE"
+msgstr "PARASOLE UNIVERSALE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_PV
+msgid "PIANO VERNICIATO"
+msgstr "PIANO VERNICIATO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_262
+msgid "POGGIAPIEDI LIDO"
+msgstr "POGGIAPIEDI LIDO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_062
+msgid "POGGIAPIEDI LIDO ALLUMINIO"
+msgstr "POGGIAPIEDI LIDO ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_PE
+msgid "POLIESTERE"
+msgstr "POLIESTERE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_190
+msgid "POLTRONA AMIDA MULTIPOSIZIONI"
+msgstr "POLTRONA AMIDA MULTIPOSIZIONI"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_090
+msgid "POLTRONA AMIDA MULTIPOSIZIONI ALLUMINIO"
+msgstr "POLTRONA AMIDA MULTIPOSIZIONI ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_091
+msgid "POLTRONA AMIDA XL MULTIPOSIZ.ALLUMINIO"
+msgstr "POLTRONA AMIDA XL MULTIPOSIZ.ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_126
+msgid "POLTRONA FIESTA 3 POS."
+msgstr "POLTRONA FIESTA 3 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_127
+msgid "POLTRONA FIESTA 4 POS."
+msgstr "POLTRONA FIESTA 4 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_026
+msgid "POLTRONA FIESTA ALLUMINIO 3 POS."
+msgstr "POLTRONA FIESTA ALLUMINIO 3 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_027
+msgid "POLTRONA FIESTA ALLUMINIO 4 POS."
+msgstr "POLTRONA FIESTA ALLUMINIO 4 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_900
+msgid "POLTRONA IN LEGNO LINDA 2 POS."
+msgstr "POLTRONA IN LEGNO LINDA 2 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_261
+msgid "POLTRONA LIDO SCHIENALE ALTO"
+msgstr "POLTRONA LIDO SCHIENALE ALTO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_061
+msgid "POLTRONA LIDO SCHIENALE ALTO ALLUMINIO"
+msgstr "POLTRONA LIDO SCHIENALE ALTO ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_263
+msgid "POLTRONA LIDO SCHIENALE BASSO"
+msgstr "POLTRONA LIDO SCHIENALE BASSO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_063
+msgid "POLTRONA LIDO SCHIENALE BASSO ALLUMINIO"
+msgstr "POLTRONA LIDO SCHIENALE BASSO ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_129
+msgid "POLTRONA MOVIDA MULTIPOSIZIONI"
+msgstr "POLTRONA MOVIDA MULTIPOSIZIONI"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_029
+msgid "POLTRONA MOVIDA MULTIPOSIZIONI ALLUMINIO"
+msgstr "POLTRONA MOVIDA MULTIPOSIZIONI ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_130
+msgid "POLTRONA MOVIDA XXL"
+msgstr "POLTRONA MOVIDA XXL"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_030
+msgid "POLTRONA MOVIDA XXL ALLUMINIO"
+msgstr "POLTRONA MOVIDA XXL ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_014
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_024
+msgid "POLTRONA RELAX ALLUMINIO 5 POS"
+msgstr "POLTRONA RELAX ALLUMINIO 5 POS"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_121
+msgid "POLTRONA RELAX LUNA"
+msgstr "POLTRONA RELAX LUNA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_021
+msgid "POLTRONA RELAX LUNA ALLUMINIO"
+msgstr "POLTRONA RELAX LUNA ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_145
+msgid "POLTRONA SAMBA 2 POS."
+msgstr "POLTRONA SAMBA 2 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_045
+msgid "POLTRONA SAMBA ALLUMINIO 2 POS."
+msgstr "POLTRONA SAMBA ALLUMINIO 2 POS."
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_046
+msgid "POLTRONA SAMBA ALLUMINIO 2 POS. CON POGGIATESTA"
+msgstr "POLTRONA SAMBA ALLUMINIO 2 POS. CON POGGIATESTA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_810
+msgid "POLTRONA SPAGHETTI"
+msgstr "POLTRONA SPAGHETTI"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_081
+msgid "POLTRONA SPAGHETTI ALLUMINIO"
+msgstr "POLTRONA SPAGHETTI ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_150
+msgid "POLTRONCINA BAMBINO SUSY"
+msgstr "POLTRONCINA BAMBINO SUSY"
+
+#. module: product_speech_code
+#: model:ir.model,name:product_speech_code.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: product_speech_code
+#: model:ir.actions.act_window,name:product_speech_code.action_structure_structure
+#: model:ir.model,name:product_speech_code.model_structure_structure
+#: model:ir.ui.menu,name:product_speech_code.menu_structure_structure
+#: view:structure.structure:product_speech_code.view_structure_structure_form
+msgid "Product code structure"
+msgstr "Codice prodotto struttura"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_230
+msgid "REGISTA LEGNO"
+msgstr "REGISTA LEGNO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_RIAR
+msgid "RIGATO ARANCIO"
+msgstr "RIGATO ARANCIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_RIVI
+msgid "RIGATO VIOLA"
+msgstr "RIGATO VIOLA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_PE_RO
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_RO
+msgid "ROSSO"
+msgstr "ROSSO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_RO
+msgid "ROSSO 2109"
+msgstr "ROSSO 2109"
+
+#. module: product_speech_code
+#: field:structure.block,rely_id:0
+msgid "Rely block"
+msgstr "Blocco collegato"
+
+#. module: product_speech_code
+#: field:structure.block.value,rely_value_id:0
+msgid "Rely value"
+msgstr "Valore collegato"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_930
+msgid "SDRAIO LEGNO"
+msgstr "SDRAIO LEGNO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_123
+msgid "SDRAIO OSCILLANTE DONDOLINA"
+msgstr "SDRAIO OSCILLANTE DONDOLINA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_023
+msgid "SDRAIO OSCILLANTE DONDOLINA ALLUMINIO"
+msgstr "SDRAIO OSCILLANTE DONDOLINA ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_223
+msgid "SDRAIO OSCILLANTE DONDOLINA TWIN"
+msgstr "SDRAIO OSCILLANTE DONDOLINA TWIN"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_041
+msgid "SDRAIO PICCOLINA ALLUMINIO"
+msgstr "SDRAIO PICCOLINA ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_831
+msgid "SEDIA CHIUDIBILE ATENA CON BRACCIOLI"
+msgstr "SEDIA CHIUDIBILE ATENA CON BRACCIOLI"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_025
+msgid "SEDIA DA SPIAGGIA BETTY ALLUMINIO"
+msgstr "SEDIA DA SPIAGGIA BETTY ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_068
+msgid "SEDIA LIDO ALLUMINIO"
+msgstr "SEDIA LIDO ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_069
+msgid "SEDIA LIDO ALLUMINIO CON BRACCIOLI"
+msgstr "SEDIA LIDO ALLUMINIO CON BRACCIOLI"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_205
+msgid "SEDIA REGISTA"
+msgstr "SEDIA REGISTA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_005
+msgid "SEDIA REGISTA ALLUMINIO"
+msgstr "SEDIA REGISTA ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_800
+msgid "SEDIA SPRING"
+msgstr "SEDIA SPRING"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_550
+msgid "SEPARE'"
+msgstr "SEPARE'"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_161
+msgid "SGABELLO BITTER H.46 CM"
+msgstr "SGABELLO BITTER H.46 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_162
+msgid "SGABELLO BITTER H.62 CM"
+msgstr "SGABELLO BITTER H.62 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_163
+msgid "SGABELLO BITTER H.72 CM"
+msgstr "SGABELLO BITTER H.72 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_128
+msgid "SGABELLO CHICO"
+msgstr "SGABELLO CHICO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_028
+msgid "SGABELLO CHICO ALLUMINIO"
+msgstr "SGABELLO CHICO ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_164
+msgid "SGABELLO GINGER H.45 CM"
+msgstr "SGABELLO GINGER H.45 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_165
+msgid "SGABELLO GINGER H.62 CM"
+msgstr "SGABELLO GINGER H.62 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_931
+msgid "SGABELLO/POGGIAPIEDI IN LEGNO"
+msgstr "SGABELLO/POGGIAPIEDI IN LEGNO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_901
+msgid "SGABELLO/POGGIAPIEDI MATTY IN LEGNO"
+msgstr "SGABELLO/POGGIAPIEDI MATTY IN LEGNO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_AL
+msgid "SILVER"
+msgstr "SILVER"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_AS
+msgid "SILVER OPACO"
+msgstr "SILVER OPACO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_S
+msgid "SOFT OLEFIN"
+msgstr "SOFT OLEFIN"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_SI
+msgid "SOFT OLEFIN IGNIFUGO"
+msgstr "SOFT OLEFIN IGNIFUGO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_S3
+msgid "SOFT TRIPLEX"
+msgstr "SOFT TRIPLEX"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_S3B
+msgid "SOFT TRIPLEX CON BRACC.LEGNO"
+msgstr "SOFT TRIPLEX CON BRACC.LEGNO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_SP
+msgid "SPIRIT 0655"
+msgstr "SPIRIT 0655"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_SU
+msgid "SUPERIOR"
+msgstr "SUPERIOR"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_620
+msgid "SUPPORTO PER LIBRI/TABLET"
+msgstr "SUPPORTO PER LIBRI/TABLET"
+
+#. module: product_speech_code
+#: view:structure.block:product_speech_code.view_structure_block_form
+#: view:structure.block.value:product_speech_code.view_structure_block_value_tree
+#: view:structure.structure:product_speech_code.view_structure_structure_tree
+msgid "Structure"
+msgstr "Struttura"
+
+#. module: product_speech_code
+#: model:ir.model,name:product_speech_code.model_structure_block
+#: view:structure.block:product_speech_code.view_structure_block_form
+#: view:structure.block:product_speech_code.view_structure_block_tree
+msgid "Structure block"
+msgstr "Blocco della struttura"
+
+#. module: product_speech_code
+#: field:product.product,structure_error:0
+msgid "Structure error"
+msgstr "Errore Struttura"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_334
+msgid "TAVOLO 140x67"
+msgstr "TAVOLO 140x67"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_300
+msgid "TAVOLO CLUB"
+msgstr "TAVOLO CLUB"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_301
+msgid "TAVOLO CLUB ALLUMINIO"
+msgstr "TAVOLO CLUB ALLUMINIO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_337
+msgid "TAVOLO MICHELANGELO 85x165"
+msgstr "TAVOLO MICHELANGELO 85x165"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_336
+msgid "TAVOLO PIEGHEVOLE DONATELLO 80x80"
+msgstr "TAVOLO PIEGHEVOLE DONATELLO 80x80"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_335
+msgid "TAVOLO RAFFAELLO 80x120"
+msgstr "TAVOLO RAFFAELLO 80x120"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_332
+msgid "TAVOLO SIRIO 50x70 CM"
+msgstr "TAVOLO SIRIO 50x70 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_331
+msgid "TAVOLO SIRIO QUADRATO 67x67 CM"
+msgstr "TAVOLO SIRIO QUADRATO 67x67 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_330
+msgid "TAVOLO SIRIO ROTONDO D.67 CM"
+msgstr "TAVOLO SIRIO ROTONDO D.67 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_322
+msgid "TAVOLO TRIS ROTONDO D.53 CM"
+msgstr "TAVOLO TRIS ROTONDO D.53 CM"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_TX
+msgid "TEXFIL"
+msgstr "TEXFIL"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_TXB
+msgid "TEXFIL CON BRACC.LEGNO"
+msgstr "TEXFIL CON BRACC.LEGNO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_TXE
+msgid "TEXFIL ECO"
+msgstr "TEXFIL ECO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_TXR
+msgid "TEXFIL RIGATO"
+msgstr "TEXFIL RIGATO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_XW
+msgid "TEXFIL TERMOSALDATO"
+msgstr "TEXFIL TERMOSALDATO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fabric_XWB
+msgid "TEXFIL TERMOSALDATO CON BRACC.LEGNO"
+msgstr "TEXFIL TERMOSALDATO CON BRACC.LEGNO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_NC
+msgid "TINTO NOCE"
+msgstr "TINTO NOCE"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_S3B_TA
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_S3_TA
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_TA
+msgid "TORTORA"
+msgstr "TORTORA"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_TA
+msgid "TORTORA 0711"
+msgstr "TORTORA 0711"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_TA
+msgid "TORTORA 8507"
+msgstr "TORTORA 8507"
+
+#. module: product_speech_code
+#. module: product_speech_code
+#. module: product_speech_code
+#: help:structure.block,mirror_structure_id:0 field:structure.block,to_char:0
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_VE
+msgid "VERDE CHIARO"
+msgstr "VERDE CHIARO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_PE_VE
+msgid "VERDE CHIARO "
+msgstr "VERDE CHIARO "
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_VE
+msgid "VERDE CHIARO 3197"
+msgstr "VERDE CHIARO 3197"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_VP
+msgid "VERDE PISTACCHIO 3124"
+msgstr "VERDE PISTACCHIO 3124"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_VP
+msgid "VERDE PISTACCHIO 8510"
+msgstr "VERDE PISTACCHIO 8510"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_IL_VS
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_L_VS
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_PE_VS
+msgid "VERDE SCURO"
+msgstr "VERDE SCURO"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_VS
+msgid "VERDE SCURO 3187"
+msgstr "VERDE SCURO 3187"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_VS
+msgid "VERDE SCURO 8503"
+msgstr "VERDE SCURO 8503"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_VN
+msgid "VIENNA 0155"
+msgstr "VIENNA 0155"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_D_VI
+msgid "VIOLA 183/176"
+msgstr "VIOLA 183/176"
+
+#. module: product_speech_code
+#: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_VI
+msgid "VIOLA 4164"
+msgstr "VIOLA 4164"
+
+#. module: product_speech_code
+#: view:structure.block:product_speech_code.view_structure_block_form
+#: field:structure.block,value_ids:0
+msgid "Value"
+msgstr "Valore"

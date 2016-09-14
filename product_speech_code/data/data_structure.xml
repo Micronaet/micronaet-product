@@ -180,8 +180,7 @@
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_049">
             <field name="code">049</field>
-            <field name="name">CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA
-            </field>
+            <field name="name">CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_050">
@@ -191,8 +190,7 @@
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_051">
             <field name="code">051</field>
-            <field name="name">LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA
-            </field>
+            <field name="name">LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_061">
@@ -834,8 +832,7 @@
         </record>
 
           <!--FABRIC - COLORS -->
-          <!-- FABRIC D - COLORS: -->
-
+              <!-- FABRIC D - COLORS: -->
         <record model="structure.block.value" id="data_structure_block_value_fab_col_D_AR">
             <field name="code">AR</field>
             <field name="name">ARANCIO 8508</field>
@@ -917,7 +914,6 @@
 
             <!--FABRIC - COLORS -->
                 <!-- FABRIC IL - COLORS: -->
-
          <record model="structure.block.value" id="data_structure_block_value_fab_col_IL_BBVP">
             <field name="code">BBVP</field>
             <field name="name">BIANCO/BLU/PISTACCHIO</field>
@@ -945,7 +941,6 @@
 
             <!--FABRIC - COLORS -->
             <!-- FABRIC L - COLORS: -->
-
         <record model="structure.block.value" id="data_structure_block_value_fab_col_L_BBVP">
             <field name="code">BBVP</field>
             <field name="name">BIANCO/BLU/PISTACCHIO</field>
@@ -973,7 +968,6 @@
 
           <!--FABRIC - COLORS -->
           <!-- FABRIC PE - COLORS: -->
-
          <record model="structure.block.value" id="data_structure_block_value_fab_col_PE_AR">
             <field name="code">AR</field>
             <field name="name">ARANCIO</field>
@@ -1040,7 +1034,6 @@
 
           <!--FABRIC - COLORS -->
           <!-- FABRIC S3B - COLORS: -->
-
         <record model="structure.block.value" id="data_structure_block_value_fab_col_S3B_GR">
             <field name="code">GR</field>
             <field name="name">GRIGIO</field>
@@ -1060,11 +1053,7 @@
             <field name="block_id" ref="data_structure_block_9_12"/>
         </record>
 
-
-
-
          <!--EXTRA INFO-->
-
         <record model="structure.block.value" id="data_structure_block_value_extra_S">
             <field name="code">S</field>
             <field name="name">IMBALLO SINGOLO</field>
