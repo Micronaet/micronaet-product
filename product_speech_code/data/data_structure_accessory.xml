@@ -16,14 +16,14 @@
             <field name="mandatory">1</field>
             <field name="note">First block [0:2] with parent code</field>
         </record>
-        <record model="structure.block" id="data_structure_block_accessory_4_16">
+        <record model="structure.block" id="data_structure_block_accessory_3_13">
             <field name="name">Mirror product code</field>
             <field name="structure_id" ref="data_structure_structure_accessory_company1"/>
             <field name="mirror_structure_id" ref="data_structure_structure_company1"/>
-            <field name="from_char" eval="4" />
-            <field name="to_char" eval="16" />            
+            <field name="from_char" eval="3" />
+            <field name="to_char" eval="13" />            
             <field name="mandatory">0</field>
-            <field name="note">Second block [3:16] mirror on other trace</field>
+            <field name="note">Second block [2:13] mirror on other trace</field>
         </record>
 
         <!--structure.block.value-->
