@@ -974,9 +974,11 @@ msgid "TORTORA 8507"
 msgstr "TORTORA 8507"
 
 #. module: product_speech_code
-#. module: product_speech_code
-#. module: product_speech_code
 #: help:structure.block,mirror_structure_id:0 field:structure.block,to_char:0
+msgid "To char"
+msgstr "Al carattere"
+
+#. module: product_speech_code
 #: model:structure.block.value,name:product_speech_code.data_structure_block_value_frame_VE
 msgid "VERDE CHIARO"
 msgstr "VERDE CHIARO"

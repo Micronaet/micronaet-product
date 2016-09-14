@@ -40,8 +40,7 @@ _logger = logging.getLogger(__name__)
 
 class StructureStructure(orm.Model):
     """ Model name: StructureStructure
-    """
-    
+    """    
     _name = 'structure.structure'
     _description = 'Product code structure'
     
@@ -52,8 +51,7 @@ class StructureStructure(orm.Model):
 
 class StructureBlock(orm.Model):
     """ Model name: StructureBlock
-    """
-    
+    """    
     _name = 'structure.block'
     _description = 'Structure block'
     _order = 'from_char'
@@ -73,8 +71,7 @@ class StructureBlock(orm.Model):
 
 class StructureBlockValore(orm.Model):
     """ Model name: StructureBlockValue
-    """
-    
+    """    
     _name = 'structure.block.value'
     _description = 'Block value'
     _order = 'rely_value_id,code'
@@ -90,8 +87,7 @@ class StructureBlockValore(orm.Model):
 
 class StructureBlock(orm.Model):
     """ Model name: StructureBlock inherited for add 2many relation fields
-    """
-    
+    """    
     _inherit = 'structure.block'
     
     _columns = {
@@ -103,8 +99,7 @@ class StructureBlock(orm.Model):
 
 class StructureStructure(orm.Model):
     """ Model name: StructureStructure inherited for add 2many relation fields
-    """
-    
+    """    
     _inherit = 'structure.structure'
 
     _columns = {
@@ -114,8 +109,7 @@ class StructureStructure(orm.Model):
 
 class ProductProduct(orm.Model):
     """ Model name: Add extra fields to product
-    """
-    
+    """    
     _inherit = 'product.product'
     
     # -------------------------------------------------------------------------    
