@@ -121,10 +121,12 @@ class ProductProduct(orm.Model):
     # -------------------------------------------------------------------------    
     # Utility:
     # -------------------------------------------------------------------------    
-    def get_name_from_default_code(self, default_code, structure_proxy, 
-            context=None):
+    def get_name_from_default_code(self, default_code, structure_proxy):
         ''' Utility function for calculate product name from code and structure
             selected (passed as arguments)
+            self: class instance
+            default_code: product code
+            structure_proxy: browse object for obj: structure.structure
         '''
         if not default_code or not structure_proxy.id:
             raise osv.except_osv(
@@ -138,18 +140,23 @@ class ProductProduct(orm.Model):
         code_db = {}
         for block in structure_proxy.block_ids:
             key = (block.from_char - 1, block.to_char)
-            if block.rely_id:
-                rely_range = (
-                    block.rely_id.from_char - 1,
-                    block.rely_id.to_char, 
-                    )
-                rely_len = block.rely_id.to_char - block.rely_id.from_char + 1 
-                mask = '%-' + str(rely_len) + 's%s'
-            else:
-                rely_range = False
-                mask = False
+            if block.mirror_structure_id:
+                mirror_structure_proxy = block.mirror_structure_id
+            else:                                
+                if block.rely_id:
+                    rely_range = (
+                        block.rely_id.from_char - 1,
+                        block.rely_id.to_char, 
+                        )
+                    rely_len = \
+                        block.rely_id.to_char - block.rely_id.from_char + 1 
+                    mask = '%-' + str(rely_len) + 's%s'
+                else:
+                    rely_range = False
+                    mask = False
+                mirror_structure_id = False    
            
-            code_db[key] = [{}, rely_range, mask]
+            code_db[key] = [{}, rely_range, mask, mirror_structure_proxy]
             for value in block.value_ids:
                 if block.rely_id:
                     code = mask % (value.rely_value_id.code, value.code)
@@ -163,23 +170,32 @@ class ProductProduct(orm.Model):
         name = ''
         error = ''
         for key in sorted(code_db):
+            # Explose database value:
             value = code_db[key][0]
             rely_range = code_db[key][1]
             mask = code_db[key][2]
+            mirror_structure_proxy = code_db[key][3]
             
             v = default_code[key[0]:key[1]].strip()
-            if rely_range:
-                v = mask % (
-                    default_code[rely_range[0]:rely_range[1]].strip(),
-                    v,
-                    )
-            print key, v, rely_range
-            if v in value:
-                name += ' %s' % value[v]
+            if mirror_structure_proxy:
+                # Recursion call:
+                name_mirror, error_mirror =  self.get_name_from_default_code(
+                    v, mirror_structure_proxy)
+                name += ' %s' % name_mirror
+                error += error_mirror # TODO test                
             else:
-                if v: 
-                    error += 'Value %s not present in block (%s, %s)' % (
-                        v, key[0] + 1, key[1])
+                if rely_range:
+                    v = mask % (
+                        default_code[rely_range[0]:rely_range[1]].strip(),
+                        v,
+                        )
+
+                if v in value:
+                    name += ' %s' % value[v]
+                else:
+                    if v: 
+                        error += 'Value %s not present in block (%s, %s)' % (
+                            v, key[0] + 1, key[1])
 
         _logger.error('Code error: [%s]' % error)        
         return (name, error)
@@ -195,8 +211,8 @@ class ProductProduct(orm.Model):
         default_code = default_code.upper()
         structure_proxy = product_proxy.structure_id
         
-        (name, error) = self.get_name_from_default_code(cr, uid, default_code, 
-            structure_proxy, context=context)
+        (name, error) = self.get_name_from_default_code(default_code, 
+            structure_proxy)
 
         # TODO create procedure to generate name of product:
         return self.write(cr, uid, ids, {
