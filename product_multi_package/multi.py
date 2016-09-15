@@ -86,6 +86,7 @@ class ProductTemplate(orm.Model):
         'multi_pack_ids': fields.one2many(
             'product.multi.packaging', 'product_id', 'Multipack',
             help='Multipack for package one item'),
+        'multipack_dimension': fields.text('Multipack dimension'),
         # TODO colls in product? > campo function
         }
         
