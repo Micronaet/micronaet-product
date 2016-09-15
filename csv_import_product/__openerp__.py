@@ -31,6 +31,7 @@
         'base',
         'product',
         'base_log',
+        'product_more_cost',
         ],
     'init_xml': [],
     'demo': [],

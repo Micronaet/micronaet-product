@@ -114,10 +114,12 @@ class ProductProductImportationTraceColumn(orm.Model):
 
         ('lst_price', 'Sale price'),
         ('standard_price', 'Cost price'),
+        ('cost_in_stock', 'Cost in stock'),
+        ('cost_for_sale', 'Cost for sale'),
 
         # Not used now:
         ('weight', 'Weight'),
-        ('weight_net', 'Weight net'),        
+        ('weight_net', 'Weight net'),       
         ]
 
     def _get_user_lang(self, cr, uid, context=None):
