@@ -71,6 +71,8 @@ class ProductProductImportationTraceColumn(orm.Model):
         'seat_height', 'pz_x_container',
         'pack_l', 'pack_p', 'pack_h',
         'standard_price',
+        'cost_in_stock',
+        'cost_for_sale',
         #'item_per_box', 'colls', 
         #'weight', 'weight_net',
         )
