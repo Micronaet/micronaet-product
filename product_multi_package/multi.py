@@ -89,5 +89,5 @@ class ProductTemplate(orm.Model):
         'multipack_dimension': fields.text('Multipack dimension'),
         # TODO colls in product? > campo function
         }
-        
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
