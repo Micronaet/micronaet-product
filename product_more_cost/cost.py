@@ -47,12 +47,12 @@ class ProductTemplate(orm.Model):
         'cost_in_stock': fields.float(
             'Cost in stock', 
             digits_compute=dp.get_precision('Product Price'), 
-            help='Cost in company stock (cost + transport)'
+            help='Cost in company stock (cost + transport)'),
 
         'cost_for_sale': fields.float(
             'Cost for sale', 
             digits_compute=dp.get_precision('Product Price'), 
-            help='Base cost for calculate sale price (ex. campaign)'
+            help='Base cost for calculate sale price (ex. campaign)'),
         }
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
