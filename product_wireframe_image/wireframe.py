@@ -120,13 +120,13 @@ class ProductProduct(orm.Model):
             
             parent_code = [default_code]    
             for parent in parent_block:
-                parent_code.append(default_code[0:parent])
-                
+                parent_code.append(default_code[0:parent].strip('_'))
+
             for img_name in parent_code:
                 # TODO manage parent wireframe
                 filename = os.path.join(
                     product_folder, '%s.%s' % (
-                        default_code, 
+                        img_name, 
                         self._wireframe_extension,
                         ))
                 try:
