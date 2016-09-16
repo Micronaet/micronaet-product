@@ -154,13 +154,13 @@
                     <field name="default_code" />
                     <field name="supplier_cost" />
                     <field name="company_method_id" />
-                    <button name="calculate_cost_method" string="Generate f/company" type="object" context="{'calculate_cost_method':'company_method_id'}" />
+                    <button name="calculate_cost_method_company" string="Generate f/company" type="object" context="{'calculate_cost_method':'company_method_id'}" />
                     <field name="standard_price" />
                     <field name="customer_method_id" />
-                    <button name="calculate_cost_method" string="Generate f/customer" type="object" context="{'calculate_cost_method':'customer_method_id'}" />
+                    <button name="calculate_cost_method_custom" string="Generate f/customer" type="object" context="{'calculate_cost_method':'customer_method_id'}" />
                     <field name="customer_cost" />
                     <field name="pricelist_method_id" />
-                    <button name="calculate_cost_method" string="Generate pricelist" type="object" context="{'calculate_cost_method':'pricelist_method_id'}" />
+                    <button name="calculate_cost_method_pricelist" string="Generate pricelist" type="object" context="{'calculate_cost_method':'pricelist_method_id'}" />
                     <field name="lst_price" />
                 </tree>
             </field>

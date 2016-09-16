@@ -123,11 +123,11 @@ class ProductCostMethod(orm.Model):
         'rule_ids': fields.one2many('product.cost.rule', 'method_id', 'Rule'), 
         }
 
-class ProductTemplate(orm.Model):
-    """ Model name: ProductTemplate
+class ProductProduct(orm.Model):
+    """ Model name: Product Product
     """    
-    _inherit = 'product.template'
-    
+    _inherit = 'product.product'
+
     # -------------------------------------------------------------------------
     #                           Compute method:
     # -------------------------------------------------------------------------
@@ -140,14 +140,26 @@ class ProductTemplate(orm.Model):
         
         return True
     
-    def calculate_cost_method(self, cr, uid, ids, context=None):
-        ''' Button method (for 3 button on view)
+    # 3 Button:
+    def calculate_cost_method_company(self, cr, uid, ids, context=None):
+        ''' Button calculate
         '''
-        if context is None:
-            context = {}
-        
-        method = context.get('calculate_cost_method', 'company_method_id')    
-        # TODO 
+        self.get_product_cost_value(cr, uid, product, 
+            field='company_method_id', context=context)
+        return True
+
+    def calculate_cost_method_custom(self, cr, uid, ids, context=None):
+        ''' Button calculate
+        '''
+        self.get_product_cost_value(cr, uid, product, 
+            field='company_method_id', context=context)
+        return True
+
+    def calculate_cost_method_pricelist(self, cr, uid, ids, context=None):
+        ''' Button calculate
+        '''
+        self.get_product_cost_value(cr, uid, product, 
+            field='company_method_id', context=context)
         return True
         
     
@@ -241,6 +253,11 @@ class ProductTemplate(orm.Model):
             
         # TODO extra recharge:
         return total"""
+
+class ProductTemplate(orm.Model):
+    """ Model name: ProductTemplate
+    """    
+    _inherit = 'product.template'
     
     _columns = {
         'company_method_id': fields.many2one(
