@@ -35,6 +35,7 @@
     'init_xml': [],
     'demo': [],
     'data': [
+        'data/config_data.xml',
         'wireframe_view.xml',
         ],
     'active': False,

@@ -56,6 +56,20 @@ class ProductProduct(orm.Model):
         ''' Upper the default code and replace spaces with _ char
         '''
         return (default_code or '').upper().replace(' ', '_')
+    
+    def get_config_parameter_list(self, cr, uid, context=None):
+        ''' Read parameter: 
+        '''    
+        key = 'product.default.product.parent'
+        config_pool = self.pool.get('ir.config_parameter')
+        config_ids = config_pool.search(cr, uid, [
+            ('key', '=', key)], context=context)
+        if not config_ids:
+            _logger.warning('Parameter not found: %s' % key)
+            return []
+        config_proxy = config_pool.browse(
+            cr, uid, config_ids, context=context)[0]
+        return eval(config_proxy.value)    
         
     # -------------------------------------------------------------------------
     # Functional field:
@@ -70,7 +84,7 @@ class ProductProduct(orm.Model):
             cr, uid, subfolder=self._wireframe_path, context=context))
 
         product_proxy = self.browse(cr, uid, item_id, context=context)
-        default_code = self.prepare_filename(product.default_code)
+        default_code = self.prepare_filename(product_proxy.default_code)
         if not default_code:
             raise osv.except_osv(
                 _('Error'), 
@@ -78,7 +92,7 @@ class ProductProduct(orm.Model):
                 )
         
         filename = os.path.join(
-            product_folder, '%s.%s' % (item_id, self._wireframe_extension))
+            product_folder, '%s.%s' % (default_code, self._wireframe_extension))
 
         product_file = open(filename, 'wb')
         if value:
@@ -93,6 +107,8 @@ class ProductProduct(orm.Model):
         product_folder = os.path.expanduser(company_pool.get_base_local_folder(
             cr, uid, subfolder=self._wireframe_path, context=context))
 
+        parent_block = self.get_config_parameter_list(
+            cr, uid, context=context)
         res = {}
         for product in self.browse(cr, uid, ids, context=context):
             default_code = self.prepare_filename(product.default_code)
@@ -102,18 +118,26 @@ class ProductProduct(orm.Model):
                 res[product.id] = ''
                 continue
             
-            # TODO manage parent wireframe
-            filename = os.path.join(
-                product_folder, '%s.%s' % (
-                    default_code, 
-                    self._wireframe_extension,
-                    ))
-            try:
-                f = open(filename , 'rb')
-                res[product.id] = base64.encodestring(f.read())
-                f.close()
-            except:
-                res[product.id] = ''
+            parent_code = [default_code]    
+            for parent in parent_block:
+                parent_code.append(default_code[0:parent])
+                
+            for img_name in parent_code:
+                # TODO manage parent wireframe
+                filename = os.path.join(
+                    product_folder, '%s.%s' % (
+                        default_code, 
+                        self._wireframe_extension,
+                        ))
+                try:
+                    f = open(filename , 'rb')
+                    res[product.id] = base64.encodestring(f.read())
+                    f.close()
+                except:
+                    res[product.id] = ''            
+                if res[product.id]:
+                    break    
+                
         return res
 
     _columns = {
