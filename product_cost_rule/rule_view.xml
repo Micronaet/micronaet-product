@@ -144,6 +144,58 @@
                 </form>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_product_product_cost_tree">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="60" />
+            <field name="arch" type="xml">
+                <tree string="String" version="7.0">        
+                    <field name="name" />
+                    <field name="default_code" />
+                    <field name="supplier_cost" />
+                    <field name="company_method_id" />
+                    <button name="calculate_cost_method" string="Generate f/company" type="object" context="{'calculate_cost_method':'company_method_id'}" />
+                    <field name="standard_price" />
+                    <field name="customer_method_id" />
+                    <button name="calculate_cost_method" string="Generate f/customer" type="object" context="{'calculate_cost_method':'customer_method_id'}" />
+                    <field name="customer_cost" />
+                    <field name="pricelist_method_id" />
+                    <button name="calculate_cost_method" string="Generate pricelist" type="object" context="{'calculate_cost_method':'pricelist_method_id'}" />
+                    <field name="lst_price" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_product_cost_search">
+            <field name="name">product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="60" />
+            <field name="arch" type="xml">
+                <search string="Cost method" version="7.0">        
+                    <field name="name" />
+                    <field name="default_code" />
+                    
+                    <field name="company_method_id" />
+                    <field name="customer_method_id" />
+                    <field name="pricelist_method_id" />
+                    
+                    <group expand="0" string="Group By...">
+                        <filter name="group_company" string="Company method" context="{'group_by': 'company_method_id'}"/>
+                        <filter name="group_company" string="Customer method" context="{'group_by': 'customer_method_id'}"/>
+                        <filter name="group_company" string="Pricelist method" context="{'group_by': 'pricelist_method_id'}"/>
+                    </group>                
+                </search>
+            </field>
+        </record>        
+        <record model="ir.actions.act_window" id="action_product_product_cost_tree">
+            <field name="name">Cost product</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_product_cost_tree"/>
+            <field name="search_view_id" ref="view_product_product_cost_search"/>
+            <field name="context">{'form_view_ref': 'product_cost_rule.view_product_product_cost_form'}</field>
+            <field name="domain">[]</field>
+        </record>
         
         <!--MENU STRUCTURE:-->
         <menuitem 
@@ -153,15 +205,21 @@
             />
             <menuitem
                 parent="menu_product_cost_root" 
+                id="menu_product_product_cost" 
+                action="action_product_product_cost_tree"
+                sequence="10"
+                />
+            <menuitem
+                parent="menu_product_cost_root" 
                 id="menu_product_cost_method" 
                 action="action_product_cost_method"
-                sequence="10"
+                sequence="20"
                 />
             <menuitem
                 parent="menu_product_cost_root" 
                 id="menu_product_cost_transport" 
                 action="action_product_cost_transport"
-                sequence="20"
+                sequence="30"
                 />
     </data>
 </openerp>

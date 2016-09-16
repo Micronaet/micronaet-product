@@ -132,7 +132,7 @@ class ProductTemplate(orm.Model):
     #                           Compute method:
     # -------------------------------------------------------------------------
     def get_product_cost_value(self, cr, uid, product, 
-            field='company_method_id', context=context):
+            field='company_method_id', context=None):
         ''' Utility for generate cost for product template passed
             product: browse obj for product
             field: name of field that idendity cost method
