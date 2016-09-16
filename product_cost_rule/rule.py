@@ -123,7 +123,6 @@ class ProductCostMethod(orm.Model):
         'rule_ids': fields.one2many('product.cost.rule', 'method_id', 'Rule'), 
         }
 
-
 class ProductTemplate(orm.Model):
     """ Model name: ProductTemplate
     """    
