@@ -131,7 +131,7 @@ class ProductProduct(orm.Model):
     # -------------------------------------------------------------------------
     #                           Compute method:
     # -------------------------------------------------------------------------
-    def get_product_cost_value(self, cr, uid, product, 
+    def get_product_cost_value(self, cr, uid, ids, 
             field='company_method_id', context=None):
         ''' Utility for generate cost for product template passed
             product: browse obj for product
@@ -152,14 +152,14 @@ class ProductProduct(orm.Model):
         ''' Button calculate
         '''
         self.get_product_cost_value(cr, uid, product, 
-            field='company_method_id', context=context)
+            field='custom_method_id', context=context)
         return True
 
     def calculate_cost_method_pricelist(self, cr, uid, ids, context=None):
         ''' Button calculate
         '''
         self.get_product_cost_value(cr, uid, product, 
-            field='company_method_id', context=context)
+            field='pricelist_method_id', context=context)
         return True
         
     
