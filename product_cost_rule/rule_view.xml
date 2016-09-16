@@ -114,6 +114,7 @@
         <record model="ir.ui.view" id="view_product_product_cost_form">
             <field name="name">product.product.form</field>
             <field name="model">product.product</field>
+            <field name="priority" eval="60" />
             <field name="arch" type="xml">
                 <form string="String" version="7.0">        
                     <sheet>
@@ -122,16 +123,22 @@
                             <field name="default_code" />
                             <group col="6" colspan="4">
                                 <group col="2" colspan="2">
-                                    <field name="standard_price" />
+                                    <field name="supplier_cost" />
                                     <field name="company_method_id" />
-                                    
+                                    <button name="calculate_cost_method" string="Generate f/company" type="object" context="{'calculate_cost_method':'company_method_id'}"/>
                                 </group>
-                                
-                            </group>
-                            <field name="cost" />
-                            <field name="cost" />
-                            <field name="cost" />
-                            
+                                <group col="2" colspan="2">
+                                    <field name="standard_price" />
+                                    <field name="customer_method_id" />
+                                    <button name="calculate_cost_method" string="Generate f/customer" type="object" context="{'calculate_cost_method':'customer_method_id'}" />
+                                </group>                                
+                                <group col="2" colspan="2">
+                                    <field name="customer_cost" />
+                                    <field name="pricelist_method_id" />
+                                    <button name="calculate_cost_method" string="Generate pricelist" type="object" context="{'calculate_cost_method':'pricelist_method_id'}" />
+                                    <field name="lst_price" />
+                                </group>                                
+                            </group>                            
                         </group>
                     </sheet>        
                 </form>

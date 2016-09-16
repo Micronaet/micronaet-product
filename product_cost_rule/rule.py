@@ -140,6 +140,17 @@ class ProductTemplate(orm.Model):
         
         return True
     
+    def calculate_cost_method(self, cr, uid, ids, context=None):
+        ''' Button method (for 3 button on view)
+        '''
+        if context is None:
+            context = {}
+        
+        method = context.get('calculate_cost_method', 'company_method_id')    
+        # TODO 
+        return True
+        
+    
     """def get_campaign_price(self, cost, price, campaign, product, cost_type):
         # ---------------------------------------------------------------------
         # Product cost generation:
