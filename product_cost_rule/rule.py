@@ -39,18 +39,17 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 class ProductCostTransport(orm.Model):
-    """ Model name: ProductCostTransport
+    """ Product Cost Transport method
     """    
     _name = 'product.cost.transport'
     _description = 'Transport method'
     
     _columns = {
         'name': fields.char('Name', size=64, required=True),
-        'cost': fields.float(
-            'Transport cost', 
+        'cost': fields.float('Transport cost', 
             digits_compute=dp.get_precision('Product Price'), 
             help='Transport cost in company currency', required=False),
-        'mc': fields.float('M3 total', digits=(16, 2), required=False), 
+        'cube_meter': fields.float('M3 total', digits=(16, 2), required=False), 
         'note': fields.text('Note'),
         }
     
@@ -76,7 +75,28 @@ class ProductCostMethod(orm.Model):
     _defaults = {
         'category': lambda *x: 'company',            
         }
-        
+
+class ProductCostRule(orm.Model):
+    """ Product cost rule
+    """    
+    _name = 'product.cost.rule'
+    _description = 'Cost rule'
+    
+    _columns = {
+        'name': fields.char('Rule', size=64, required=False),        
+        'method_id': fields.many2one(
+            'product.cost.method', 'Method'),
+        }
+
+class ProductCostMethod(orm.Model):
+    """ Product cost method
+    """    
+    _inherit = 'product.cost.method'
+    
+    _columns = {
+        'rule_ids': fields.one2many('product.cost.rule', 'method_id', 'Rule'), 
+        }
+
 
 class ProductTemplate(orm.Model):
     """ Model name: ProductTemplate
