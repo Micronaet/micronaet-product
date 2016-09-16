@@ -41,6 +41,63 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
+        
+        <!--product.cost.method-->
+        <record model="ir.ui.view" id="view_product_cost_method_form">
+            <field name="name">product.cost.method.form</field>
+            <field name="model">product.cost.method</field>
+            <field name="arch" type="xml">
+                <form string="Cost method" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" />
+                            <newline/>
+                            <field name="category" />
+                            <field name="transport_id" />
+                            <separator string="Note" colspan="4" />
+                            <field name="note" colspan="4" nolabel="1" />
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_cost_method_tree">
+            <field name="name">product.cost.method.tree</field>
+            <field name="model">product.cost.method</field>
+            <field name="arch" type="xml">
+                <tree string="Cost method" version="7.0">        
+                    <field name="name" />
+                    <field name="category" />
+                    <field name="transport_id" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_cost_method_search">
+            <field name="name">product.cost.method.search</field>
+            <field name="model">product.cost.method</field>
+            <field name="arch" type="xml">
+                <search string="Cost method" version="7.0">        
+                    <field name="name" />
+                    <field name="category" />
+                    <field name="transport_id" />
+                    <group expand="0" string="Group By...">
+                        <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
+                        <filter name="group_transport" string="Transport" context="{'group_by': 'transport_id'}"/>
+                    </group>                
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_product_cost_method">
+            <field name="name">Cost method</field>
+            <field name="res_model">product.cost.method</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_cost_method_tree"/>
+            <field name="search_view_id" ref="view_product_cost_method_search"/>            
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
 
         <!--MENU STRUCTURE:-->
         <menuitem 
@@ -50,9 +107,15 @@
             />
             <menuitem
                 parent="menu_product_cost_root" 
+                id="menu_product_cost_method" 
+                action="action_product_cost_method"
+                sequence="10"
+                />
+            <menuitem
+                parent="menu_product_cost_root" 
                 id="menu_product_cost_transport" 
                 action="action_product_cost_transport"
-                sequence="10"
+                sequence="20"
                 />
     </data>
 </openerp>

@@ -70,6 +70,7 @@ class ProductCostMethod(orm.Model):
                 'pricelist'),
         'transport_id': fields.many2one(
             'product.cost.transport', 'Transport'),
+        'note': fields.text('Note'),
         }
 
     _defaults = {
