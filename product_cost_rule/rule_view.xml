@@ -54,6 +54,18 @@
                             <newline/>
                             <field name="category" />
                             <field name="transport_id" />
+                            <separator string="Rule" colspan="4" />
+                            <field name="rule_ids" colspan="4" nolabel="1">
+                                <tree string="Rule" editable="bottom">
+                                    <field name="sequence" />
+                                    <field name="name" />
+                                    <field name="operation" />
+                                    <field name="mode" />
+                                    <field name="value" attrs="{'readonly': [('mode','=','multi')]}"/>
+                                    <field name="text_value" attrs="{'readonly': [('mode','!=','multi')]}"/>
+                                    <field name="note" />
+                                </tree>
+                            </field>
                             <separator string="Note" colspan="4" />
                             <field name="note" colspan="4" nolabel="1" />
                         </group>
