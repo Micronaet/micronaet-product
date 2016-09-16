@@ -1,7 +1,59 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <!--product.cost.transport-->
+        <record model="ir.ui.view" id="view_product_cost_transport_form">
+            <field name="name">product.cost.transport.form</field>
+            <field name="model">product.cost.transport</field>
+            <field name="arch" type="xml">
+                <form string="Cost transport" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" />
+                            <newline/>
+                            <field name="cost" />
+                            <field name="cube_meter" />
+                            <separator string="Note" colspan="4" />
+                            <field name="note" colspan="4" nolabel="1" />
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_cost_transport_tree">
+            <field name="name">product.cost.transport.tree</field>
+            <field name="model">product.cost.transport</field>
+            <field name="arch" type="xml">
+                <tree string="Cost transport" version="7.0">        
+                    <field name="name" />
+                    <field name="cost" />
+                    <field name="cube_meter" />
+                    <field name="note" colspan="4" nolabel="1" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_product_cost_transport">
+            <field name="name">Transport</field>
+            <field name="res_model">product.cost.transport</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_cost_transport_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
 
+        <!--MENU STRUCTURE:-->
+        <menuitem 
+            parent="stock.menu_stock_configuration" 
+            id="menu_product_cost_root" 
+            name="Cost calc method"
+            />
+            <menuitem
+                parent="menu_product_cost_root" 
+                id="menu_product_cost_transport" 
+                action="action_product_cost_transport"
+                sequence="10"
+                />
     </data>
 </openerp>
 

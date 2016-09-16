@@ -1,3 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-access_model_name_user,model.name,model_model_name,base.group_user,1,1,1,1
+access_product_cost_transport_user,product.cost.transport,model_product_cost_transport,base.group_user,1,1,1,1
+access_product_cost_method_user,product.cost.method,model_product_cost_method,base.group_user,1,1,1,1
+access_product_cost_rule_user,product.cost.rule,model_product_cost_rule,base.group_user,1,1,1,1
 

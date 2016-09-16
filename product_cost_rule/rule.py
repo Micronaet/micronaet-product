@@ -62,12 +62,12 @@ class ProductCostMethod(orm.Model):
     _columns = {
         'name': fields.char('Rule', size=64, required=False),        
         'category': fields.selection([
-            ('company', 'F / Company'),
-            ('customer', 'F / Customer'),
-            ('pricelist', 'Pricelist'),
+            ('company', 'F / Company (base: supplier cost)'),
+            ('customer', 'F / Customer (base: company cost)'),
+            ('pricelist', 'Pricelist (base: customer cost)'),
             ], 'Category', 
             help='Used for get the cost to update, cost f/company, f/customer'
-            'pricelist'),
+                'pricelist'),
         'transport_id': fields.many2one(
             'product.cost.transport', 'Transport'),
         }
@@ -81,12 +81,37 @@ class ProductCostRule(orm.Model):
     """    
     _name = 'product.cost.rule'
     _description = 'Cost rule'
+    _order = 'sequence,id'
     
     _columns = {
-        'name': fields.char('Rule', size=64, required=False),        
+        'sequence': fields.integer('Sequence'),
+        'name': fields.char('Description', size=64, required=False),        
         'method_id': fields.many2one(
-            'product.cost.method', 'Method'),
+            'product.cost.method', 'Method', ondelete='cascade'),
+        'operation': fields.selection([
+            ('discount', 'Discount % (-)'),
+            ('duty', 'Duty % (+)'),
+            ('exchange', 'Exchange (x)'),
+            ('transport', 'Tranport (Vol. x transport)'),
+            ('recharge', 'Recharge % (+)'),], 'Operation', required=True,
+            help='Operation type set the base for operation and type of '
+                'operator and also the sign'),
+        'mode': fields.selection([
+            ('fixed', 'Fixed'),
+            ('percentual', 'Percentual'),
+            ('multi', 'Multi percentual'),
+            ], 'Cost mode', required=True),
+        'value': fields.float(
+            'Value', digits_compute=dp.get_precision('Product Price')),
+        'text_value': fields.char('Text value', size=30, 
+            help='Used for multi discount element'),
+        'note': fields.char('Note', size=80),
         }
+        
+    _defaults = {
+        'operation': lambda *x: 'recharge',
+        'mode': lambda *x: 'percentual',
+        }    
 
 class ProductCostMethod(orm.Model):
     """ Product cost method
@@ -103,8 +128,117 @@ class ProductTemplate(orm.Model):
     """    
     _inherit = 'product.template'
     
+    # -------------------------------------------------------------------------
+    #                           Compute method:
+    # -------------------------------------------------------------------------
+    def get_product_cost_value(self, cr, uid, product, 
+            field='company_method_id', context=context):
+        ''' Utility for generate cost for product template passed
+            product: browse obj for product
+            field: name of field that idendity cost method
+        '''
+        
+        return True
+    
+    """def get_campaign_price(self, cost, price, campaign, product, cost_type):
+        # ---------------------------------------------------------------------
+        # Product cost generation:
+        # ---------------------------------------------------------------------
+        total = 0.0
+        for rule in cost_type.rule_ids:
+            # Read rule parameters
+            sign = rule.sign
+            base = rule.base
+            mode = rule.mode
+            value = rule.value
+            text_value = rule.text_value
+            
+            # -----------
+            # Sign coeff:
+            # -----------
+            if sign == 'minus':
+                sign_coeff = -1.0  
+            else:
+                sign_coeff = 1.0
+                
+            # ----------------
+            # Base evaluation:
+            # ----------------
+            if base == 'previous':
+                base_value = total
+            elif base == 'cost':
+                base_value = cost
+                if not total: # Initial setup depend on first rule
+                    total = cost 
+            elif base == 'price':
+                base_value = price
+                if not total: # Initial setup depend on first rule
+                    total = price
+            #elif base == 'volume':
+            #    base_value = (
+            #        product.volume / campaign.volume_total)                    
+            else:
+                _logger.error('No base value found!!!')                
+                # TODO raise error?        
+
+            # -----------
+            # Value type:
+            # -----------
+            if mode == 'fixed':
+                total += sign_coeff * value
+                continue # Fixed case only increment total no other operations                
+            elif mode == 'multi':
+                # TODO check sign for multi discount value (different from revenue)
+                # Convert multi discount with value
+                value = sign_coeff * partner_pool.format_multi_discount(
+                    text_value).get('value', 0.0)
+            elif mode == 'percentual':
+                value *= sign_coeff
+            else:    
+                _logger.error('No mode value found!!!')
+                # TODO raise error?        
+                    
+            if not value:
+                _logger.error('Percentual value is mandatory!')
+                pass
+            total += base_value * value / 100.0
+
+        # --------------------------------
+        # General cost depend on campaign:    
+        # --------------------------------
+        volume_cost = campaign.volume_cost
+        discount_scale = campaign.discount_scale
+        revenue_scale = campaign.revenue_scale
+        
+        # TODO correct!!!!:
+        if volume_cost:        
+            total += total * product.qty * (
+                product.volume / campaign.volume_total)
+            # TODO use heigh, width, length 
+            # TODO use pack_l, pack_h, pack_p
+            # TODO use packaging dimension?
+            
+        if discount_scale:
+            discount_value = partner_pool.format_multi_discount(
+                discount_scale).get('value', 0.0)
+            total -= total * discount_value / 100.0
+
+        if revenue_scale:
+            revenue_value = partner_pool.format_multi_discount(
+                revenue_scale).get('value', 0.0)
+            total += total * revenue_value / 100.0
+            
+        # TODO extra recharge:
+        return total"""
+    
     _columns = {
-        'method_id': fields.many2one('product.cost.method', 'Method'),
+        'company_method_id': fields.many2one(
+            'product.cost.method', 'Company Method'),
+        'customer_method_id': fields.many2one(
+            'product.cost.method', 'Customer Method'),
+        'pricelist_method_id': fields.many2one(
+            'product.cost.method', 'Pricelist Method'),
+        
         'supplier_cost': fields.float('Supplier cost', 
             digits_compute=dp.get_precision('Product Price'), 
             help='Supplier cost (pricelist cost, f/company)'),
