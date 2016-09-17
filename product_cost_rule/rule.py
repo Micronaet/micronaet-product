@@ -100,12 +100,9 @@ class ProductCostRule(orm.Model):
         'mode': fields.selection([
             ('fixed', 'Fixed'),
             ('percentual', 'Percentual'),
-            ('multi', 'Multi percentual'),
             ], 'Cost mode', required=True),
         'value': fields.float(
             'Value', digits_compute=dp.get_precision('Product Price')),
-        'text_value': fields.char('Text value', size=30, 
-            help='Used for multi discount element'),
         'note': fields.char('Note', size=80),
         }
         
@@ -210,22 +207,8 @@ class ProductProduct(orm.Model):
             for rule in method.rule_ids:                
                 # Rule parameter (for readability):
                 value = rule.value
-                value_text = rule.text_value
-                if value_text:
-                    try:
-                        value_text_list = [
-                            float(item.replace(' ', '').replace('%', '')) for item \
-                                in value_text.split('+')]
-                    except:
-                        self.write(cr, uid, product.id, {
-                            error_field: _('''
-                                <p><font color="red">
-                                    Error parsing multi discount: %s!</font>
-                                </p>''' % value_text),
-                                    }, context=context)
-                        continue
                                     
-                import pdb; pdb.set_trace()        
+                # Read rule field used:                    
                 mode = rule.mode
                 operation = rule.operation
                 
@@ -322,9 +305,6 @@ class ProductProduct(orm.Model):
                         recharge_value = total * value / 100.0
                     elif mode == 'fixed':
                         recharge_value = value
-                    elif mode == 'multi':
-                        # TODO convert value text
-                        recharge_value = total * value / 100.0                                
                         
                     total += recharge_value
                     calc += '''
@@ -336,14 +316,15 @@ class ProductProduct(orm.Model):
                         </tr>''' % (
                             rule.sequence,
                             _('+ Rechange %s%s') % (
-                                value_text if mode == 'multi' else value,
-                                '%',
+                                value,
+                                '' if mode == 'fixed' else '%',
                                 ),
-                            '%s x (%s) = %s' % (
-                                base, 
-                                value_text if mode == 'multi' else value, 
-                                recharge_value,
-                                ),
+                            value if mode == 'fixed' else \
+                                '%s x (%s) = %s' % (
+                                    base, 
+                                    value, 
+                                    recharge_value,
+                                    ),
                             total,
                             )    
                 
