@@ -127,26 +127,27 @@
                             <group col="6" colspan="4">
                                 <group col="2" colspan="2">
                                     <field name="supplier_cost" />
-                                    <field name="company_method_id" />
-                                    <button name="calculate_cost_method" string="Generate f/company" type="object" context="{'calculate_cost_method':'company_method_id'}"/>
+                                    <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" />
+                                    <button name="calculate_cost_method" string="Generate f/company" type="object" />
                                     <field name="company_calc" />
-                                    <field name="company_calc_error" attrs="{'invisible': [('company_calc_error','=',False)]}"/>
-                                    
+                                    <field name="company_calc_error" attrs="{'invisible': [('company_calc_error','=',False)]}" />                                    
                                 </group>
+                                
                                 <group col="2" colspan="2">
                                     <field name="standard_price" />
-                                    <field name="customer_method_id" />
-                                    <button name="calculate_cost_method" string="Generate f/customer" type="object" context="{'calculate_cost_method':'customer_method_id'}" />
+                                    <field name="customer_method_id" context="{'default_category':'customer', 'product_embedded':True}" domain="[('category','=','customer')]" />
+                                    <button name="calculate_cost_method" string="Generate f/customer" type="object" />
                                     <field name="customer_calc" />
-                                    <field name="customer_calc_error" attrs="{'invisible': [('customer_calc_error','=',False)]}"/>
-                                </group>                                
+                                    <field name="customer_calc_error" attrs="{'invisible': [('customer_calc_error','=',False)]}" />
+                                </group>            
+                                                    
                                 <group col="2" colspan="2">
                                     <field name="customer_cost" />
-                                    <field name="pricelist_method_id" />
-                                    <button name="calculate_cost_method" string="Generate pricelist" type="object" context="{'calculate_cost_method':'pricelist_method_id'}" />
+                                    <field name="pricelist_method_id" context="{'default_category':'pricelist', 'product_embedded':True}" domain="[('category','=','pricelist')]" />
+                                    <button name="calculate_cost_method" string="Generate pricelist" type="object" />
                                     <field name="lst_price" />
                                     <field name="pricelist_calc" />
-                                    <field name="pricelist_calc_error" attrs="{'invisible': [('pricelist_calc_error','=',False)]}"/>
+                                    <field name="pricelist_calc_error" attrs="{'invisible': [('pricelist_calc_error','=',False)]}" />
                                 </group>                                
                             </group>                            
                         </group>
@@ -164,13 +165,13 @@
                     <field name="default_code" />
                     <field name="supplier_cost" />
                     <field name="company_method_id" />
-                    <button name="calculate_cost_method_company" string="Generate f/company" type="object" context="{'default_category':'company'}" domain="[('category','=','company')]"/>
+                    <button name="calculate_cost_method_company" string="Generate f/company" type="object" />
                     <field name="standard_price" />
                     <field name="customer_method_id" />
-                    <button name="calculate_cost_method_customer" string="Generate f/customer" type="object" context="{'default_category':'customer'}" domain="[('category','=','customer')]" />
+                    <button name="calculate_cost_method_customer" string="Generate f/customer" type="object" />
                     <field name="customer_cost" />
                     <field name="pricelist_method_id" />
-                    <button name="calculate_cost_method_pricelist" string="Generate pricelist" type="object" context="{'default_category':'pricelist'}" domain="[('category','=','pricelist')]"/>
+                    <button name="calculate_cost_method_pricelist" string="Generate pricelist" type="object" />
                     <field name="lst_price" />
                 </tree>
             </field>
