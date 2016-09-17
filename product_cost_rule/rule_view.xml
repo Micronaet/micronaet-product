@@ -132,6 +132,7 @@
                                     <button name="calculate_cost_method_company" string="Generate f/company" icon="gtk-execute" type="object" attrs="{'invisible': [('company_method_id','=',False)]}" colspan="2" />
                                     <field name="company_calc" attrs="{'invisible': [('company_method_id','=',False)]}" widget='html' nolabel="1" colspan="2"/>
                                     <field name="company_calc_error" attrs="{'invisible': [('company_calc_error','=',False)]}" widget='html' nolabel="1" colspan="2"/>
+                                    <field name="company_calc_warning" attrs="{'invisible': [('company_calc_warning','=',False)]}" widget='html' nolabel="1" colspan="2"/>
                                 </group>
                                 
                                 <group col="2" colspan="2">
@@ -141,6 +142,7 @@
                                     <button name="calculate_cost_method_customer" string="Generate f/customer" icon="gtk-execute" type="object" attrs="{'invisible': [('customer_method_id','=',False)]}" colspan="2" />
                                     <field name="customer_calc" attrs="{'invisible': [('customer_method_id','=',False)]}" widget='html' nolabel="1"  colspan="2"/>
                                     <field name="customer_calc_error" attrs="{'invisible': [('customer_calc_error','=',False)]}" widget='html' nolabel="1"  colspan="2"/>
+                                    <field name="customer_calc_warning" attrs="{'invisible': [('customer_calc_warning','=',False)]}" widget='html' nolabel="1"  colspan="2"/>
                                 </group>            
                                                     
                                 <group col="2" colspan="2">
@@ -151,6 +153,7 @@
                                     <field name="lst_price" />
                                     <field name="pricelist_calc" attrs="{'invisible': [('pricelist_method_id','=',False)]}" widget='html' nolabel="1"  colspan="2"/>
                                     <field name="pricelist_calc_error" attrs="{'invisible': [('pricelist_calc_error','=',False)]}" widget='html' nolabel="1"  colspan="2"/>
+                                    <field name="pricelist_calc_warning" attrs="{'invisible': [('pricelist_calc_warning','=',False)]}" widget='html' nolabel="1"  colspan="2"/>
                                 </group>                                
                             </group>                            
                         </group>
