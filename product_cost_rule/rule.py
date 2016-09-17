@@ -148,7 +148,7 @@ class ProductProduct(orm.Model):
         '''
         # Database for speed up search:
         duty_db = {} # database of first supplier duty
-        import pdb; pdb.set_trace()
+
         for product in self.browse(cr, uid, ids, context=context):
             # Reset variable used:
             calc = ''
@@ -164,16 +164,22 @@ class ProductProduct(orm.Model):
                 result_field = 'standard_price'
                 calc_field = 'company_calc'
                 error_field = 'company_calc_error'
+                
+                base_description = _('Supplier cost')
             elif block == 'customer':
                 total = product.standard_price
                 result_field = 'customer_price'
                 calc_field = 'customer_calc'
                 error_field = 'customer_calc_error'
+                
+                base_description = _('Company cost')
             elif block == 'pricelist':
                 total = product.customer_cost
                 result_field = 'price_lst'
                 calc_field = 'pricelist_calc'
                 error_field = 'pricelist_calc_error'
+                
+                base_description = _('Customer cost')
             else:
                 self.write(cr, uid, product.id, {
                     error_field: _('Block selection error: %s') % block,
@@ -190,10 +196,20 @@ class ProductProduct(orm.Model):
             #                  Process all the rules:    
             # -----------------------------------------------------------------
             method = product.__getattribute__('%s_method_id' % block)
+            calc += '''
+                <tr> 
+                    <td>0</td>
+                    <td>Base: %s</td>
+                    <td>&nbsp;</td>
+                    <td style="text-align:right">%s</td>
+                </tr>''' % (
+                    base_description,
+                    total,
+                    )
             for rule in method.rule_ids:                
                 # Rule parameter (for readability):
                 value = rule.value
-                value_text = rule.value_text
+                value_text = rule.text_value
                 mode = rule.mode
                 operation = rule.operation
                 
@@ -255,9 +271,11 @@ class ProductProduct(orm.Model):
                         <tr>
                             <td>%s</td>
                             <td>%s</td>
+                            <td>%s</td>
                             <td style="text-align:right">%s</td>
                         </tr>''' % (
-                            _('Duty %s%s<br/>[%s-%s]') % (
+                            rule.sequence,
+                            _('+ Duty %s%s<br/>[%s-%s]') % (
                                 duty_rate,
                                 '%',
                                 product.duty_id.name,
@@ -298,9 +316,11 @@ class ProductProduct(orm.Model):
                         <tr>
                             <td>%s</td>
                             <td>%s</td>
+                            <td>%s</td>
                             <td style="text-align:right">%s</td>
                         </tr>''' % (
-                            _('Rechange %s%s') % (
+                            rule.sequence,
+                            _('+ Rechange %s%s') % (
                                 value_text if mode == 'multi' else value,
                                 '%',
                                 ),
@@ -320,6 +340,7 @@ class ProductProduct(orm.Model):
                 calc_field: _('''
                     <table>
                         <tr>
+                            <th>Seq.</th>
                             <th>Description</th>
                             <th>Calculation</th>
                             <th>Subtotal</th>
