@@ -52,17 +52,17 @@
                         <group col="4" colspan="4">
                             <field name="name" />
                             <newline/>
-                            <field name="category" />
                             <field name="transport_id" />
+                            <field name="category" invisible="context.get('product_embedded', False)"/>
                             <separator string="Rule" colspan="4" />
                             <field name="rule_ids" colspan="4" nolabel="1">
                                 <tree string="Rule" editable="bottom">
                                     <field name="sequence" />
                                     <field name="name" />
                                     <field name="operation" />
-                                    <field name="mode" />
-                                    <field name="value" attrs="{'readonly': [('mode','=','multi')]}"/>
-                                    <field name="text_value" attrs="{'readonly': [('mode','!=','multi')]}"/>
+                                    <field name="mode" attrs="{'readonly': [('operation','in',('duty', 'exchange'))]}"/>
+                                    <field name="value" attrs="{'readonly': ['|',('operation','in',('duty', 'exchange')),('mode','=','multi')]}"/>
+                                    <field name="text_value" attrs="{'readonly': ['|',('operation','in',('duty', 'exchange')),('mode','!=','multi')]}"/>
                                     <field name="note" />
                                 </tree>
                             </field>
@@ -126,6 +126,7 @@
                             <field name="first_supplier_id" />
                             <group col="6" colspan="4">
                                 <group col="2" colspan="2">
+                                    <separator string="F / Company" colspan="2"/>
                                     <field name="supplier_cost" />
                                     <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" />
                                     <button name="calculate_cost_method" string="Generate f/company" type="object" attrs="{'invisible': [('company_method_id','=',False)]}" />
@@ -134,6 +135,7 @@
                                 </group>
                                 
                                 <group col="2" colspan="2">
+                                    <separator string="F / Customer" colspan="2"/>
                                     <field name="standard_price" />
                                     <field name="customer_method_id" context="{'default_category':'customer', 'product_embedded':True}" domain="[('category','=','customer')]" />
                                     <button name="calculate_cost_method" string="Generate f/customer" type="object" attrs="{'invisible': [('customer_method_id','=',False)]}"/>
@@ -142,6 +144,7 @@
                                 </group>            
                                                     
                                 <group col="2" colspan="2">
+                                    <separator string="Pricelist" colspan="2"/>
                                     <field name="customer_cost" />
                                     <field name="pricelist_method_id" context="{'default_category':'pricelist', 'product_embedded':True}" domain="[('category','=','pricelist')]" />
                                     <button name="calculate_cost_method" string="Generate pricelist" type="object" attrs="{'invisible': [('pricelist_method_id','=',False)]}"/>
