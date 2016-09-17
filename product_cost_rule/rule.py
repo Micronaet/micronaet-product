@@ -175,13 +175,13 @@ class ProductProduct(orm.Model):
                 calc_field = 'pricelist_calc'
                 error_field = 'pricelist_calc_error'
             else:
-                self.write(cr, uid, product.id {
+                self.write(cr, uid, product.id, {
                     error_field: _('Block selection error: %s') % block,
                     }, context=context)
                 continue
 
             if not total:
-                self.write(cr, uid, product.id {
+                self.write(cr, uid, product.id, {
                     error_field: _('Base price is empty (%s)') % block,
                     }, context=context)
                 continue
@@ -209,18 +209,27 @@ class ProductProduct(orm.Model):
                     # Check mandatory fields for duty calc:
                     # -------------------------------------
                     if not supplier_id: 
-                        error += _('First supplier not found!')
+                        error += _('''
+                        <p><font color="red">
+                            First supplier not found!</font>
+                        </p>''')
                         continue # next rule
                         
                     if not country_id: 
-                        error += _('Country for first supplier not found!')
+                        error += _('''
+                        <p><font color="red">
+                            Country for first supplier not found!</font>
+                        </p>''''<p>')
                         continue # next rule
 
                     duty = product.duty_id                    
                     # Check duty category presence:
                     if not duty: 
-                        error += _('Duty category not found!')
-                        continue # next rule
+                        error += _('''
+                        <p><font color="yellow">
+                            Duty category not found!</font>
+                        </p>''')
+                        #continue # it's a warning!!!
                     
                     # Get duty rate depend on supplier country     
                     if supplier_id not in duty:
@@ -268,14 +277,14 @@ class ProductProduct(orm.Model):
             # -----------------------------------------------------------------
             self.write(cr, uid, product.id, {
                 result_field: total,
-                calc_field: '''
+                calc_field: _('''
                     <table>
                         <tr>
                             <th>Description</th>
                             <th>Calculation</th>
                             <th>Subtotal</th>
                         </tr>%s
-                    </table>''' % calc, # embed in table
+                    </table>''') % calc, # embed in table
                 error_field: error,                    
                 }, context=context)                
         return True
@@ -416,11 +425,11 @@ class ProductTemplate(orm.Model):
             'Pricelist calc', readonly=True, widget='html'),    
         # 3 Text calc error:
         'company_calc_error': fields.text(
-            'Company calc error', readonly=True),
+            'Company calc error', readonly=True, widget='html'),
         'customer_calc_error': fields.text(
-            'Customer calc error', readonly=True),    
+            'Customer calc error', readonly=True, widget='html'),
         'pricelist_calc_error': fields.text(
-            'Pricelist calc error', readonly=True),    
+            'Pricelist calc error', readonly=True, widget='html'),
         
         'supplier_cost': fields.float('Supplier cost', 
             digits_compute=dp.get_precision('Product Price'), 
