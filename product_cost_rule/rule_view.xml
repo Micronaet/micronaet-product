@@ -198,16 +198,22 @@
                     <field name="duty_id" />
                     <field name="first_supplier_id" />
                     
+                    <!--<filter name="state_error" string="Cost error" domain="[('cost_error','=',True)]"/>
+                    <filter name="state_warning" string="Cost warning" domain="[('cost_warning','=',True)]"/>-->
+                    
                     <group expand="0" string="Group By...">
+                        <!--<filter name="group_error" string="Cost error" context="{'group_by': 'cost_error'}"/>
+                        <filter name="group_warning" string="Cost warning" context="{'group_by': 'cost_warning'}"/>-->
                         <filter name="group_company" string="Company method" context="{'group_by': 'company_method_id'}"/>
-                        <filter name="group_company" string="Customer method" context="{'group_by': 'customer_method_id'}"/>
-                        <filter name="group_company" string="Pricelist method" context="{'group_by': 'pricelist_method_id'}"/>
+                        <filter name="group_customer" string="Customer method" context="{'group_by': 'customer_method_id'}"/>
+                        <filter name="group_pricelist" string="Pricelist method" context="{'group_by': 'pricelist_method_id'}"/>
+                        
                         <filter name="group_supplier" string="Supplier" context="{'group_by': 'first_supplier_id'}"/>
                         <filter name="group_duty" string="Duty category" context="{'group_by': 'duty_id'}"/>
                     </group>                
                 </search>
             </field>
-        </record>        
+        </record>   
         <record model="ir.actions.act_window" id="action_product_product_cost_tree">
             <field name="name">Cost product</field>
             <field name="res_model">product.product</field>

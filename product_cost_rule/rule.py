@@ -153,6 +153,7 @@ class ProductProduct(orm.Model):
             # Reset variable used:
             calc = ''
             error = ''
+            warning = ''
             supplier_id = product.first_supplier_id.id
             country_id = product.first_supplier_id.country_id.id
             
@@ -160,35 +161,35 @@ class ProductProduct(orm.Model):
             #         Get parameter depend on block selected:
             # -----------------------------------------------------------------
             if block == 'company':
-                total = product.supplier_cost
+                total = product.supplier_cost                
                 result_field = 'standard_price'
-                calc_field = 'company_calc'
-                error_field = 'company_calc_error'
-                
                 base_description = _('Supplier cost')
-            elif block == 'customer':
+            elif block == 'customer':            
                 total = product.standard_price
                 result_field = 'customer_price'
-                calc_field = 'customer_calc'
-                error_field = 'customer_calc_error'
-                
                 base_description = _('Company cost')
             elif block == 'pricelist':
                 total = product.customer_cost
                 result_field = 'price_lst'
-                calc_field = 'pricelist_calc'
-                error_field = 'pricelist_calc_error'
-                
                 base_description = _('Customer cost')
             else:
                 self.write(cr, uid, product.id, {
-                    error_field: _('Block selection error: %s') % block,
+                    error_field: _('''
+                        <p><font color="red">Block selection error: %s
+                        </font></p>''') % block,
                     }, context=context)
                 continue
-
+            
+            # Field name depend on block name:
+            calc_field = '%s_calc' % block
+            error_field = '%s_calc_error'% block
+            warning_field = '%s_calc_warning' % block
+    
             if not total:
                 self.write(cr, uid, product.id, {
-                    error_field: _('Base price is empty (%s)') % block,
+                    error_field: _('''
+                        <p><font color="red">Base price is empty (%s)
+                        </font></p>''') % block,
                     }, context=context)
                 continue
                 
@@ -210,6 +211,21 @@ class ProductProduct(orm.Model):
                 # Rule parameter (for readability):
                 value = rule.value
                 value_text = rule.text_value
+                if value_text:
+                    try:
+                        value_text_list = [
+                            float(item.replace(' ', '').replace('%', '')) for item \
+                                in value_text.split('+')]
+                    except:
+                        self.write(cr, uid, product.id, {
+                            error_field: _('''
+                                <p><font color="red">
+                                    Error parsing multi discount: %s!</font>
+                                </p>''' % value_text),
+                                    }, context=context)
+                        continue
+                                    
+                import pdb; pdb.set_trace()        
                 mode = rule.mode
                 operation = rule.operation
                 
@@ -258,11 +274,10 @@ class ProductProduct(orm.Model):
     
                     # Check duty rate value (:
                     if not duty_rate: 
-                        error += _('''
+                        warning += _('''
                         <p><font color="orange">
                             Duty rate is 0!</font>
                         </p>''')
-                        # continue # it's a warning!!!
                     
                     base = total
                     duty_value = total * duty_rate / 100.0
@@ -346,7 +361,8 @@ class ProductProduct(orm.Model):
                             <th>Subtotal</th>
                         </tr>%s
                     </table>''') % calc, # embed in table
-                error_field: error,                    
+                error_field: error,
+                warning_field: warning,
                 }, context=context)                
         return True
     
@@ -474,6 +490,7 @@ class ProductTemplate(orm.Model):
             'product.cost.method', 'Customer Method'),
         'pricelist_method_id': fields.many2one(
             'product.cost.method', 'Pricelist Method'),
+            
         # 3 Text result:    
         'company_calc': fields.text(
             'Company calc', readonly=True),
@@ -481,6 +498,7 @@ class ProductTemplate(orm.Model):
             'Customer calc', readonly=True),    
         'pricelist_calc': fields.text(
             'Pricelist calc', readonly=True),    
+            
         # 3 Text calc error:
         'company_calc_error': fields.text(
             'Company calc error', readonly=True),
@@ -488,6 +506,14 @@ class ProductTemplate(orm.Model):
             'Customer calc error', readonly=True),
         'pricelist_calc_error': fields.text(
             'Pricelist calc error', readonly=True),
+
+        # 3 Text calc warning:
+        'company_calc_warning': fields.text(
+            'Company calc warning', readonly=True),
+        'customer_calc_warning': fields.text(
+            'Customer calc warning', readonly=True),
+        'pricelist_calc_warning': fields.text(
+            'Pricelist calc warning', readonly=True),
         
         'supplier_cost': fields.float('Supplier cost', 
             digits_compute=dp.get_precision('Product Price'), 
