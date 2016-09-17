@@ -199,8 +199,7 @@ class ProductProduct(orm.Model):
                 #                       DISCOUNT RULE:
                 # -------------------------------------------------------------
                 if rule.mode == 'discount':
-                    
-                
+                    pass                
 
                 # -------------------------------------------------------------
                 #                          DUTY RULE:
@@ -217,7 +216,7 @@ class ProductProduct(orm.Model):
                         error += _('Country for first supplier not found!')
                         continue # next rule
 
-                    duty = product.duty_id
+                    duty = product.duty_id                    
                     # Check duty category presence:
                     if not duty: 
                         error += _('Duty category not found!')
@@ -240,32 +239,43 @@ class ProductProduct(orm.Model):
                     calc += '<tr><td>%s</td><td></td><td>+ %s</td></tr>' % (
                         _('Duty rate=%s (Category: %s Country: %s') % (
                             product.duty_id.name,
-                            product.first_supplier_id.country_id.name
+                            product.first_supplier_id.country_id.name,
+                            ),
+                        '%s x %s' % (total, duty_rate),
+                        duty_value,
+                        )    
 
                 # -------------------------------------------------------------
                 #                         EXCHANGE RULE:
                 # -------------------------------------------------------------
                 elif rule.mode == 'exchange':
-                
+                    pass
 
                 # -------------------------------------------------------------
                 #                         TRANSPORT RULE:
                 # -------------------------------------------------------------
                 elif rule.mode == 'transport':
-                
+                    pass                
 
                 # -------------------------------------------------------------
                 #                          RECHARGE RULE:
                 # -------------------------------------------------------------
                 elif rule.mode == 'recharge':
-                
+                    pass                
                 
             # -----------------------------------------------------------------
             #                     Write data in product:
             # -----------------------------------------------------------------
             self.write(cr, uid, product.id, {
                 result_field: total,
-                calc_field: calc,
+                calc_field: '''
+                    <table>
+                        <tr>
+                            <th>Description</th>
+                            <th>Calculation</th>
+                            <th>Subtotal</th>
+                        </tr>%s
+                    </table>''' % calc, # embed in table
                 error_field: error,                    
                 }, context=context)                
         return True
