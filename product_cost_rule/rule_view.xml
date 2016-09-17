@@ -93,9 +93,13 @@
                     <field name="name" />
                     <field name="category" />
                     <field name="transport_id" />
+                    <field name="duty_id" />
+                    <field name="first_supplier_id" />
                     <group expand="0" string="Group By...">
                         <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
                         <filter name="group_transport" string="Transport" context="{'group_by': 'transport_id'}"/>
+                        <filter name="group_supplier" string="Supplier" context="{'group_by': 'first_supplier_id'}"/>
+                        <filter name="group_duty" string="Duty category" context="{'group_by': 'duty_id'}"/>
                     </group>                
                 </search>
             </field>
