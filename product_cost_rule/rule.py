@@ -128,16 +128,146 @@ class ProductProduct(orm.Model):
     """    
     _inherit = 'product.product'
 
+    # Utility: 
+    def get_duty_product_rate(self, cr, uid, duty, country_id, context=None):
+        ''' Utility for return duty range from duty browse category and
+            country ID of first supplier
+        '''
+        for country in duty.tax_ids:
+            if country.id == country_id:
+                return country.tax
+        return 0.0
     # -------------------------------------------------------------------------
     #                           Compute method:
     # -------------------------------------------------------------------------
     def get_product_cost_value(self, cr, uid, ids, 
-            field='company_method_id', context=None):
+            block='company', context=None):
         ''' Utility for generate cost for product template passed
             product: browse obj for product
-            field: name of field that idendity cost method
+            field: name of field that idendify cost method
         '''
+        # Database for speed up search:
+        duty = {} # database of first supplier duty
         
+        for product in self.browse(cr, uid, ids, context=context):
+            # Reset variable used:
+            calc = ''
+            error = ''
+            supplier_id = product.first_supplier_id
+            country_id = product.first_supplier_id.country_id
+            
+            # -----------------------------------------------------------------
+            #         Get parameter depend on block selected:
+            # -----------------------------------------------------------------
+            if block == 'company':
+                total = product.supplier_cost
+                result_field = 'standard_price'
+                calc_field = 'company_calc'
+                error_field = 'company_calc_error'
+            elif block == 'customer':
+                total = product.standard_price
+                result_field = 'customer_price'
+                calc_field = 'customer_calc'
+                error_field = 'customer_calc_error'
+            if block == 'pricelist':
+                total = product.customer_cost
+                result_field = 'price_lst'
+                calc_field = 'pricelist_calc'
+                error_field = 'pricelist_calc_error'
+            else:
+                self.write(cr, uid, product.id {
+                    error_field: _('Block selection error: %s') % block,
+                    }, context=context)
+                continue
+
+            if not total:
+                self.write(cr, uid, product.id {
+                    error_field: _('Base price is empty (%s)') % block,
+                    }, context=context)
+                continue
+                
+            # -----------------------------------------------------------------
+            #                  Process all the rules:    
+            # -----------------------------------------------------------------
+            for rule in product.__getattribute__('%s_method_id' % block):
+                
+                # Rule parameter (for readability):
+                value = rule.value
+                mode = rule.mode
+                
+                # -------------------------------------------------------------
+                #                       DISCOUNT RULE:
+                # -------------------------------------------------------------
+                if rule.mode == 'discount':
+                    
+                
+
+                # -------------------------------------------------------------
+                #                          DUTY RULE:
+                # -------------------------------------------------------------
+                elif rule.mode == 'duty':
+                    # -------------------------------------
+                    # Check mandatory fields for duty calc:
+                    # -------------------------------------
+                    if not supplier_id: 
+                        error += _('First supplier not found!')
+                        continue # next rule
+                        
+                    if not country_id: 
+                        error += _('Country for first supplier not found!')
+                        continue # next rule
+
+                    duty = product.duty_id
+                    # Check duty category presence:
+                    if not duty: 
+                        error += _('Duty category not found!')
+                        continue # next rule
+                    
+                    # Get duty rate depend on supplier country     
+                    if supplier_id not in duty:
+                        duty[supplier_id] = self.get_duty_product_rate(
+                            cr, uid, duty, country_id, 
+                            context=context)
+                    duty_rate = duty[supplier_id]
+    
+                    # Check duty rate value (:
+                    if not duty: 
+                        error += _('Duty rate not found!')
+                        continue # next rule
+                    
+                    duty_value = total * duty_rate
+                    total += duty_value
+                    calc += '<tr><td>%s</td><td></td><td>+ %s</td></tr>' % (
+                        _('Duty rate=%s (Category: %s Country: %s') % (
+                            product.duty_id.name,
+                            product.first_supplier_id.country_id.name
+
+                # -------------------------------------------------------------
+                #                         EXCHANGE RULE:
+                # -------------------------------------------------------------
+                elif rule.mode == 'exchange':
+                
+
+                # -------------------------------------------------------------
+                #                         TRANSPORT RULE:
+                # -------------------------------------------------------------
+                elif rule.mode == 'transport':
+                
+
+                # -------------------------------------------------------------
+                #                          RECHARGE RULE:
+                # -------------------------------------------------------------
+                elif rule.mode == 'recharge':
+                
+                
+            # -----------------------------------------------------------------
+            #                     Write data in product:
+            # -----------------------------------------------------------------
+            self.write(cr, uid, product.id, {
+                result_field: total,
+                calc_field: calc,
+                error_field: error,                    
+                }, context=context)                
         return True
     
     # 3 Button:
@@ -145,21 +275,21 @@ class ProductProduct(orm.Model):
         ''' Button calculate
         '''
         self.get_product_cost_value(cr, uid, product, 
-            field='company_method_id', context=context)
+            block='company', context=context)
         return True
 
-    def calculate_cost_method_custom(self, cr, uid, ids, context=None):
+    def calculate_cost_method_customer(self, cr, uid, ids, context=None):
         ''' Button calculate
         '''
         self.get_product_cost_value(cr, uid, product, 
-            field='custom_method_id', context=context)
+            block='customer', context=context)
         return True
 
     def calculate_cost_method_pricelist(self, cr, uid, ids, context=None):
         ''' Button calculate
         '''
         self.get_product_cost_value(cr, uid, product, 
-            field='pricelist_method_id', context=context)
+            block='pricelist', context=context)
         return True
         
     
@@ -260,12 +390,27 @@ class ProductTemplate(orm.Model):
     _inherit = 'product.template'
     
     _columns = {
+        # 3 Method:
         'company_method_id': fields.many2one(
             'product.cost.method', 'Company Method'),
         'customer_method_id': fields.many2one(
             'product.cost.method', 'Customer Method'),
         'pricelist_method_id': fields.many2one(
             'product.cost.method', 'Pricelist Method'),
+        # 3 Text result:    
+        'company_calc': fields.text(
+            'Company calc', readonly=True, widget='html'),
+        'customer_calc': fields.text(
+            'Customer calc', readonly=True, widget='html'),    
+        'pricelist_calc': fields.text(
+            'Pricelist calc', readonly=True, widget='html'),    
+        # 3 Text calc error:
+        'company_calc_error': fields.text(
+            'Company calc error', readonly=True),
+        'customer_calc_error': fields.text(
+            'Customer calc error', readonly=True),    
+        'pricelist_calc_error': fields.text(
+            'Pricelist calc error', readonly=True),    
         
         'supplier_cost': fields.float('Supplier cost', 
             digits_compute=dp.get_precision('Product Price'), 

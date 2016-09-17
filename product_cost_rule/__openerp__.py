@@ -30,6 +30,8 @@
     'depends': [
         'base',
         'product',
+        'product_first_supplier', # to get first supplier
+        'duty_management', # for duty elements
         ],
     'init_xml': [],
     'demo': [],
