@@ -133,9 +133,9 @@ class ProductProduct(orm.Model):
         ''' Utility for return duty range from duty browse category and
             country ID of first supplier
         '''
-        for country in duty.tax_ids:
-            if country.id == country_id:
-                return country.tax
+        for tax in duty.tax_ids:
+            if tax.country_id.id == country_id:
+                return tax.tax
         return 0.0
     # -------------------------------------------------------------------------
     #                           Compute method:
@@ -193,18 +193,20 @@ class ProductProduct(orm.Model):
             for rule in method.rule_ids:                
                 # Rule parameter (for readability):
                 value = rule.value
+                value_text = rule.value_text
                 mode = rule.mode
+                operation = rule.operation
                 
                 # -------------------------------------------------------------
                 #                       DISCOUNT RULE:
                 # -------------------------------------------------------------
-                if rule.operation == 'discount':
+                if operation == 'discount':
                     pass                
 
                 # -------------------------------------------------------------
                 #                          DUTY RULE:
                 # -------------------------------------------------------------
-                elif rule.operation == 'duty':
+                elif operation == 'duty':
                     # -------------------------------------
                     # Check mandatory fields for duty calc:
                     # -------------------------------------
@@ -241,40 +243,74 @@ class ProductProduct(orm.Model):
                     # Check duty rate value (:
                     if not duty_rate: 
                         error += _('''
-                        <p><font color="yellow">
+                        <p><font color="orange">
                             Duty rate is 0!</font>
                         </p>''')
                         # continue # it's a warning!!!
                     
-                    duty_value = total * duty_rate
+                    base = total
+                    duty_value = total * duty_rate / 100.0
                     total += duty_value
-                    calc += '<tr><td>%s</td><td>%s</td><td>+ %s</td></tr>' % (
-                        _('Duty rate=%s (Category: %s Country: %s') % (
-                            duty_rate,
-                            product.duty_id.name,
-                            product.first_supplier_id.country_id.name,
-                            ),
-                        '%s x %s' % (total, duty_rate),
-                        duty_value,
-                        )    
+                    calc += '''
+                        <tr>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td style="text-align:right">%s</td>
+                        </tr>''' % (
+                            _('Duty %s%s<br/>[%s-%s]') % (
+                                duty_rate,
+                                '%',
+                                product.duty_id.name,
+                                product.first_supplier_id.country_id.name,
+                                ),
+                            '%s x %s = %s' % (base, duty_rate, duty_value),
+                            total,
+                            )    
 
                 # -------------------------------------------------------------
                 #                         EXCHANGE RULE:
                 # -------------------------------------------------------------
-                elif rule.operation == 'exchange':
+                elif operation == 'exchange':
                     pass
 
                 # -------------------------------------------------------------
                 #                         TRANSPORT RULE:
                 # -------------------------------------------------------------
-                elif rule.operation == 'transport':
+                elif operation == 'transport':
                     pass                
 
                 # -------------------------------------------------------------
                 #                          RECHARGE RULE:
                 # -------------------------------------------------------------
-                elif rule.operation == 'recharge':
-                    pass                
+                elif operation == 'recharge':
+                    base = total
+                    # value depend on mode:
+                    if mode == 'percentual':
+                        recharge_value = total * value / 100.0
+                    elif mode == 'fixed':
+                        recharge_value = value
+                    elif mode == 'multi':
+                        # TODO convert value text
+                        recharge_value = total * value / 100.0                                
+                        
+                    total += recharge_value
+                    calc += '''
+                        <tr>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td style="text-align:right">%s</td>
+                        </tr>''' % (
+                            _('Rechange %s%s') % (
+                                value_text if mode == 'multi' else value,
+                                '%',
+                                ),
+                            '%s x (%s) = %s' % (
+                                base, 
+                                value_text if mode == 'multi' else value, 
+                                recharge_value,
+                                ),
+                            total,
+                            )    
                 
             # -----------------------------------------------------------------
             #                     Write data in product:
