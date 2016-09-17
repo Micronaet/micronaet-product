@@ -166,6 +166,9 @@
                 <tree string="String" version="7.0">        
                     <field name="name" />
                     <field name="default_code" />
+                    <field name="duty_id" />
+                    <field name="duty_code" />
+                    <field name="first_supplier_id" />
                     <field name="supplier_cost" />
                     <field name="company_method_id" />
                     <button name="calculate_cost_method" string="Generate f/company" icon="gtk-execute" type="object" attrs="{'invisible': [('company_method_id','=',False)]}" />
