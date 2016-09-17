@@ -147,14 +147,14 @@ class ProductProduct(orm.Model):
             field: name of field that idendify cost method
         '''
         # Database for speed up search:
-        duty = {} # database of first supplier duty
+        duty_db = {} # database of first supplier duty
         import pdb; pdb.set_trace()
         for product in self.browse(cr, uid, ids, context=context):
             # Reset variable used:
             calc = ''
             error = ''
-            supplier_id = product.first_supplier_id
-            country_id = product.first_supplier_id.country_id
+            supplier_id = product.first_supplier_id.id
+            country_id = product.first_supplier_id.country_id.id
             
             # -----------------------------------------------------------------
             #         Get parameter depend on block selected:
@@ -169,7 +169,7 @@ class ProductProduct(orm.Model):
                 result_field = 'customer_price'
                 calc_field = 'customer_calc'
                 error_field = 'customer_calc_error'
-            if block == 'pricelist':
+            elif block == 'pricelist':
                 total = product.customer_cost
                 result_field = 'price_lst'
                 calc_field = 'pricelist_calc'
@@ -189,8 +189,8 @@ class ProductProduct(orm.Model):
             # -----------------------------------------------------------------
             #                  Process all the rules:    
             # -----------------------------------------------------------------
-            for rule in product.__getattribute__('%s_method_id' % block):
-                
+            method = product.__getattribute__('%s_method_id' % block)
+            for rule in method.rule_ids:                
                 # Rule parameter (for readability):
                 value = rule.value
                 mode = rule.mode
@@ -198,13 +198,13 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 #                       DISCOUNT RULE:
                 # -------------------------------------------------------------
-                if rule.mode == 'discount':
+                if rule.operation == 'discount':
                     pass                
 
                 # -------------------------------------------------------------
                 #                          DUTY RULE:
                 # -------------------------------------------------------------
-                elif rule.mode == 'duty':
+                elif rule.operation == 'duty':
                     # -------------------------------------
                     # Check mandatory fields for duty calc:
                     # -------------------------------------
@@ -226,27 +226,31 @@ class ProductProduct(orm.Model):
                     # Check duty category presence:
                     if not duty: 
                         error += _('''
-                        <p><font color="yellow">
-                            Duty category not found!</font>
+                        <p><font color="red">
+                            Duty category not setted on product!</font>
                         </p>''')
-                        #continue # it's a warning!!!
+                        continue
                     
                     # Get duty rate depend on supplier country     
-                    if supplier_id not in duty:
-                        duty[supplier_id] = self.get_duty_product_rate(
+                    if supplier_id not in duty_db:
+                        duty_db[supplier_id] = self.get_duty_product_rate(
                             cr, uid, duty, country_id, 
                             context=context)
-                    duty_rate = duty[supplier_id]
+                    duty_rate = duty_db[supplier_id]
     
                     # Check duty rate value (:
-                    if not duty: 
-                        error += _('Duty rate not found!')
-                        continue # next rule
+                    if not duty_rate: 
+                        error += _('''
+                        <p><font color="yellow">
+                            Duty rate is 0!</font>
+                        </p>''')
+                        # continue # it's a warning!!!
                     
                     duty_value = total * duty_rate
                     total += duty_value
-                    calc += '<tr><td>%s</td><td></td><td>+ %s</td></tr>' % (
+                    calc += '<tr><td>%s</td><td>%s</td><td>+ %s</td></tr>' % (
                         _('Duty rate=%s (Category: %s Country: %s') % (
+                            duty_rate,
                             product.duty_id.name,
                             product.first_supplier_id.country_id.name,
                             ),
@@ -257,19 +261,19 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 #                         EXCHANGE RULE:
                 # -------------------------------------------------------------
-                elif rule.mode == 'exchange':
+                elif rule.operation == 'exchange':
                     pass
 
                 # -------------------------------------------------------------
                 #                         TRANSPORT RULE:
                 # -------------------------------------------------------------
-                elif rule.mode == 'transport':
+                elif rule.operation == 'transport':
                     pass                
 
                 # -------------------------------------------------------------
                 #                          RECHARGE RULE:
                 # -------------------------------------------------------------
-                elif rule.mode == 'recharge':
+                elif rule.operation == 'recharge':
                     pass                
                 
             # -----------------------------------------------------------------
@@ -293,23 +297,20 @@ class ProductProduct(orm.Model):
     def calculate_cost_method_company(self, cr, uid, ids, context=None):
         ''' Button calculate
         '''
-        self.get_product_cost_value(cr, uid, product, 
+        return self.get_product_cost_value(cr, uid, ids, 
             block='company', context=context)
-        return True
 
     def calculate_cost_method_customer(self, cr, uid, ids, context=None):
         ''' Button calculate
         '''
-        self.get_product_cost_value(cr, uid, product, 
+        return self.get_product_cost_value(cr, uid, ids, 
             block='customer', context=context)
-        return True
 
     def calculate_cost_method_pricelist(self, cr, uid, ids, context=None):
         ''' Button calculate
         '''
-        self.get_product_cost_value(cr, uid, product, 
+        return self.get_product_cost_value(cr, uid, ids, 
             block='pricelist', context=context)
-        return True
         
     
     """def get_campaign_price(self, cost, price, campaign, product, cost_type):
@@ -418,18 +419,18 @@ class ProductTemplate(orm.Model):
             'product.cost.method', 'Pricelist Method'),
         # 3 Text result:    
         'company_calc': fields.text(
-            'Company calc', readonly=True, widget='html'),
+            'Company calc', readonly=True),
         'customer_calc': fields.text(
-            'Customer calc', readonly=True, widget='html'),    
+            'Customer calc', readonly=True),    
         'pricelist_calc': fields.text(
-            'Pricelist calc', readonly=True, widget='html'),    
+            'Pricelist calc', readonly=True),    
         # 3 Text calc error:
         'company_calc_error': fields.text(
-            'Company calc error', readonly=True, widget='html'),
+            'Company calc error', readonly=True),
         'customer_calc_error': fields.text(
-            'Customer calc error', readonly=True, widget='html'),
+            'Customer calc error', readonly=True),
         'pricelist_calc_error': fields.text(
-            'Pricelist calc error', readonly=True, widget='html'),
+            'Pricelist calc error', readonly=True),
         
         'supplier_cost': fields.float('Supplier cost', 
             digits_compute=dp.get_precision('Product Price'), 
