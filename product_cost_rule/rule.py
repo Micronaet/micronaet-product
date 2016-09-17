@@ -148,7 +148,7 @@ class ProductProduct(orm.Model):
         '''
         # Database for speed up search:
         duty = {} # database of first supplier duty
-        
+        import pdb; pdb.set_trace()
         for product in self.browse(cr, uid, ids, context=context):
             # Reset variable used:
             calc = ''
