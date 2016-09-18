@@ -155,7 +155,7 @@
                                         </group>                                
                                     </group>                            
                                 </page>
-                                <page string="Volume data">
+                                <page string="Duty data">
                                     <group col="4" colspan="4">
                                         <field name="first_supplier_id" />
                                         <newline/>

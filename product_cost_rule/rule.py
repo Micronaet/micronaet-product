@@ -135,6 +135,31 @@ class ProductProduct(orm.Model):
             if tax.country_id.id == country_id:
                 return tax.tax
         return 0.0
+        
+    def get_volume_single_product(self, cr, uid, product, context=None):
+        ''' Calculate volume with default pack or multipackage if present
+        '''
+        volume = 0        
+        if product.has_multipackage:
+            for pack in product.multi_pack_ids:
+                for loop in range(0, pack.number or 1):
+                    #res.append('%s x %s x %s' % (
+                    #    pack.height, pack.width, pack.length,
+                    #    ))
+                    volume += pack.height * pack.width * pack.length \
+                        / 1000000.0                    
+        else:
+            #res.append('%s x %s x %s' % (
+            #    product.pack_l, product.pack_h, product.pack_p
+            #    ))
+            
+            q_x_pack = product.q_x_pack or 1 # min 1
+            volume = \
+                product.pack_l * product.pack_h * product.pack_p \
+                / 1000000.0 / q_x_pack
+        return volume        
+
+        
     # -------------------------------------------------------------------------
     #                           Compute method:
     # -------------------------------------------------------------------------
@@ -201,7 +226,7 @@ class ProductProduct(orm.Model):
                     <td>0</td>
                     <td>Base: %s</td>
                     <td>&nbsp;</td>
-                    <td style="text-align:right">%s</td>
+                    <td style="text-align:right"><b>%s</b></td>
                 </tr>''' % (
                     base_description,
                     total,
@@ -272,10 +297,12 @@ class ProductProduct(orm.Model):
                             <td>%s</td>
                             <td>%s</td>
                             <td>%s</td>
-                            <td style="text-align:right">%s</td>
+                            <td style="text-align:right"><b>%s</b></td>
                         </tr>''' % (
                             rule.sequence,
-                            _('+ Duty %s%s<br/>[%s-%s]') % (
+                            _('''+ Duty %s%s<br/>
+                                <i><font color="grey">[%s-%s]</font></i>
+                            ''') % (
                                 duty_rate,
                                 '%',
                                 product.duty_id.name,
@@ -303,8 +330,42 @@ class ProductProduct(orm.Model):
                                 </font></p>''') % block,
                             }, context=context)
                         continue
-                    volume = transport.volume
-                    cost = transport.cost
+                    # Mandatory fields:   
+                    transport_cost = transport.cost
+                    transport_volume = transport.volume
+                    
+                    # Calculated fields:
+                    volume1 = self.get_volume_single_product(
+                        cr, uid, product, context=context)
+                    
+                    if not volume1:
+                        self.write(cr, uid, product.id, {
+                            error_field: _('''
+                                <p><font color="red">
+                                    Volume x piece not present!!!
+                                </font></p>'''),
+                            }, context=context)
+                        continue
+                    
+                    cost1 = volume1 * transport_cost / tranport_volume     
+                    total +=  cost1
+                    calc += '''
+                        <tr>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td style="text-align:right">%s</td>
+                        </tr>''' % (
+                            rule.sequence,
+                            _('+ Transport (volume)'),
+                            '%s x %s / %s = %s' % (
+                                volume1, 
+                                transport_cost, 
+                                transport_volume,
+                                cost1,
+                                ),
+                            total,
+                            )    
 
                 # -------------------------------------------------------------
                 #                          RECHARGE RULE:
