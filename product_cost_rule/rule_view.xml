@@ -60,8 +60,8 @@
                                     <field name="sequence" />
                                     <field name="name" />
                                     <field name="operation" />
-                                    <field name="mode" attrs="{'readonly': [('operation','in',('duty', 'exchange'))]}"/>
-                                    <field name="value" attrs="{'readonly': [('operation','in',('duty', 'exchange'))]}"/>
+                                    <field name="mode" attrs="{'readonly': [('operation','in',('duty', 'exchange', 'transport'))]}"/>
+                                    <field name="value" attrs="{'readonly': [('operation','in',('duty', 'exchange', 'transport'))]}"/>
                                     <field name="note" />
                                 </tree>
                             </field>

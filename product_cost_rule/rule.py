@@ -322,6 +322,7 @@ class ProductProduct(orm.Model):
                 #                         TRANSPORT RULE:
                 # -------------------------------------------------------------
                 elif operation == 'transport':
+                    import pdb; pdb.set_trace()
                     if not transport:
                         self.write(cr, uid, product.id, {
                             error_field: _('''
@@ -347,7 +348,7 @@ class ProductProduct(orm.Model):
                             }, context=context)
                         continue
                     
-                    cost1 = volume1 * transport_cost / tranport_volume     
+                    cost1 = volume1 * transport_cost / transport_volume     
                     total +=  cost1
                     calc += '''
                         <tr>
