@@ -48,8 +48,9 @@ class ProductCostTransport(orm.Model):
         'name': fields.char('Name', size=64, required=True),
         'cost': fields.float('Transport cost', 
             digits_compute=dp.get_precision('Product Price'), 
-            help='Transport cost in company currency', required=False),
-        'cube_meter': fields.float('M3 total', digits=(16, 2), required=False), 
+            help='Transport cost in company currency', required=True),
+        'volume': fields.float('Total volume (M3)', 
+            digits=(16, 2), required=True), 
         'note': fields.text('Note'),
         }
     
@@ -194,6 +195,7 @@ class ProductProduct(orm.Model):
             #                  Process all the rules:    
             # -----------------------------------------------------------------
             method = product.__getattribute__('%s_method_id' % block)
+            transport = method.transport_id
             calc += '''
                 <tr> 
                     <td>0</td>
@@ -293,7 +295,16 @@ class ProductProduct(orm.Model):
                 #                         TRANSPORT RULE:
                 # -------------------------------------------------------------
                 elif operation == 'transport':
-                    pass                
+                    if not transport:
+                        self.write(cr, uid, product.id, {
+                            error_field: _('''
+                                <p><font color="red">
+                                    No %s transport set up cost method!
+                                </font></p>''') % block,
+                            }, context=context)
+                        continue
+                    volume = transport.volume
+                    cost = transport.cost
 
                 # -------------------------------------------------------------
                 #                          RECHARGE RULE:
