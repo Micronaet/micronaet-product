@@ -243,7 +243,34 @@ class ProductProduct(orm.Model):
                 #                       DISCOUNT RULE:
                 # -------------------------------------------------------------
                 if operation == 'discount':
-                    pass                
+                    base = total
+                    # value depend on mode:
+                    if mode == 'percentual':
+                        discount_value = total * value / 100.0
+                    elif mode == 'fixed':
+                        discount_value = value
+                        
+                    total -= discount_value
+                    calc += '''
+                        <tr>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td style="text-align:right">%s</td>
+                        </tr>''' % (
+                            rule.sequence,
+                            _('- Discount %s%s') % (
+                                value,
+                                '' if mode == 'fixed' else '%',
+                                ),
+                            value if mode == 'fixed' else \
+                                '%s x (%s) = %s' % (
+                                    base, 
+                                    value, 
+                                    discount_value,
+                                    ),
+                            total,
+                            )    
 
                 # -------------------------------------------------------------
                 #                          DUTY RULE:
@@ -322,7 +349,7 @@ class ProductProduct(orm.Model):
                 #                         TRANSPORT RULE:
                 # -------------------------------------------------------------
                 elif operation == 'transport':
-                    import pdb; pdb.set_trace()
+                    # Check mandatory element:
                     if not transport:
                         self.write(cr, uid, product.id, {
                             error_field: _('''
@@ -331,7 +358,8 @@ class ProductProduct(orm.Model):
                                 </font></p>''') % block,
                             }, context=context)
                         continue
-                    # Mandatory fields:   
+                        
+                    # Mandatory fields (from view):   
                     transport_cost = transport.cost
                     transport_volume = transport.volume
                     
@@ -339,6 +367,7 @@ class ProductProduct(orm.Model):
                     volume1 = self.get_volume_single_product(
                         cr, uid, product, context=context)
                     
+                    # Check mandatory volume
                     if not volume1:
                         self.write(cr, uid, product.id, {
                             error_field: _('''
