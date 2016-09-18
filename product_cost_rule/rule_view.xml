@@ -124,38 +124,90 @@
                             <field name="duty_code" />
                             <field name="first_supplier_id" />
                             <field name="q_x_pack" />
-                            <group col="6" colspan="4">
-                                <group col="2" colspan="2">
-                                    <separator string="F / Company" colspan="2"/>
-                                    <field name="supplier_cost" />
-                                    <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" />
-                                    <button name="calculate_cost_method_company" string="Generate f/company" icon="gtk-execute" type="object" attrs="{'invisible': [('company_method_id','=',False)]}" colspan="2" />
-                                    <field name="company_calc" attrs="{'invisible': [('company_method_id','=',False)]}" widget="html" nolabel="1" colspan="2"/>
-                                    <field name="company_calc_error" attrs="{'invisible': [('company_calc_error','=',False)]}" widget="html" nolabel="1" colspan="2"/>
-                                    <field name="company_calc_warning" attrs="{'invisible': [('company_calc_warning','=',False)]}" widget="html" nolabel="1" colspan="2"/>
-                                </group>
-                                
-                                <group col="2" colspan="2">
-                                    <separator string="F / Customer" colspan="2"/>
-                                    <field name="standard_price" />
-                                    <field name="customer_method_id" context="{'default_category':'customer', 'product_embedded':True}" domain="[('category','=','customer')]" />
-                                    <button name="calculate_cost_method_customer" string="Generate f/customer" icon="gtk-execute" type="object" attrs="{'invisible': [('customer_method_id','=',False)]}" colspan="2" />
-                                    <field name="customer_calc" attrs="{'invisible': [('customer_method_id','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
-                                    <field name="customer_calc_error" attrs="{'invisible': [('customer_calc_error','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
-                                    <field name="customer_calc_warning" attrs="{'invisible': [('customer_calc_warning','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
-                                </group>            
-                                                    
-                                <group col="2" colspan="2">
-                                    <separator string="Pricelist" colspan="2"/>
-                                    <field name="customer_cost" />
-                                    <field name="pricelist_method_id" context="{'default_category':'pricelist', 'product_embedded':True}" domain="[('category','=','pricelist')]" />
-                                    <button name="calculate_cost_method_pricelist" string="Generate pricelist" icon="gtk-execute" type="object" attrs="{'invisible': [('pricelist_method_id','=',False)]}" colspan="2" />
-                                    <field name="lst_price" />
-                                    <field name="pricelist_calc" attrs="{'invisible': [('pricelist_method_id','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
-                                    <field name="pricelist_calc_error" attrs="{'invisible': [('pricelist_calc_error','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
-                                    <field name="pricelist_calc_warning" attrs="{'invisible': [('pricelist_calc_warning','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
-                                </group>                                
-                            </group>                            
+                            <notebook colspan="4">
+                                <page string="Cost generation">
+                                    <group col="6" colspan="4">
+                                        <group col="2" colspan="2">
+                                            <separator string="F / Company" colspan="2"/>
+                                            <field name="supplier_cost" />
+                                            <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" />
+                                            <button name="calculate_cost_method_company" string="Generate f/company" icon="gtk-execute" type="object" attrs="{'invisible': [('company_method_id','=',False)]}" colspan="2" />
+                                            <field name="company_calc" attrs="{'invisible': [('company_method_id','=',False)]}" widget="html" nolabel="1" colspan="2"/>
+                                            <field name="company_calc_error" attrs="{'invisible': [('company_calc_error','=',False)]}" widget="html" nolabel="1" colspan="2"/>
+                                            <field name="company_calc_warning" attrs="{'invisible': [('company_calc_warning','=',False)]}" widget="html" nolabel="1" colspan="2"/>
+                                        </group>
+                                        
+                                        <group col="2" colspan="2">
+                                            <separator string="F / Customer" colspan="2"/>
+                                            <field name="standard_price" />
+                                            <field name="customer_method_id" context="{'default_category':'customer', 'product_embedded':True}" domain="[('category','=','customer')]" />
+                                            <button name="calculate_cost_method_customer" string="Generate f/customer" icon="gtk-execute" type="object" attrs="{'invisible': [('customer_method_id','=',False)]}" colspan="2" />
+                                            <field name="customer_calc" attrs="{'invisible': [('customer_method_id','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
+                                            <field name="customer_calc_error" attrs="{'invisible': [('customer_calc_error','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
+                                            <field name="customer_calc_warning" attrs="{'invisible': [('customer_calc_warning','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
+                                        </group>            
+                                                            
+                                        <group col="2" colspan="2">
+                                            <separator string="Pricelist" colspan="2"/>
+                                            <field name="customer_cost" />
+                                            <field name="pricelist_method_id" context="{'default_category':'pricelist', 'product_embedded':True}" domain="[('category','=','pricelist')]" />
+                                            <button name="calculate_cost_method_pricelist" string="Generate pricelist" icon="gtk-execute" type="object" attrs="{'invisible': [('pricelist_method_id','=',False)]}" colspan="2" />
+                                            <field name="lst_price" />
+                                            <field name="pricelist_calc" attrs="{'invisible': [('pricelist_method_id','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
+                                            <field name="pricelist_calc_error" attrs="{'invisible': [('pricelist_calc_error','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
+                                            <field name="pricelist_calc_warning" attrs="{'invisible': [('pricelist_calc_warning','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
+                                        </group>                                
+                                    </group>                            
+                                </page>
+                                <page string="Volume data">
+                                    <group col="6" colspan="4">
+                                        <separator string="Product pack" colspan="6"/>
+                                        <field name="pack_l" />
+                                        <field name="pack_h" />
+                                        <field name="pack_p" />
+                                    </group>    
+                                    <group colspan="4" col="4"> 
+                                        <field name="has_multipackage" />
+                                        <newline/>
+                                        <separator string="Dimension in pack extra description" colspan="4"/>                        
+                                        <field name="multipack_dimension" />                
+                                        <field name="type" invisible="1" />
+                                        <separator string="Packaging" colspan="4" attrs="{'invisible':['|',('has_multipackage','=',False),('type','=','service')]}"/>
+                                        <field name="multi_pack_ids" attrs="{'invisible':['|',('has_multipackage','=',False),('type','=','service')]}">
+                                            <tree string="Multipack">
+                                                <field name="sequence" />
+                                                <field name="ul_id" />
+                                                <field name="code" />
+                                                <field name="name" />
+                                                <field name="number" sum='total'/>
+                                                <field name="height" />
+                                                <field name="width" />
+                                                <field name="length" />
+                                                <field name="weight" />
+                                            </tree>
+                                            <form string="Multipack">
+                                                <sheet>
+                                                    <group col="4">
+                                                        <field name="sequence" />
+                                                        <field name="code" />
+
+                                                        <field name="name" />
+                                                        <field name="ul_id" />
+
+                                                        <field name="number" />
+                                                        <field name="weight" />
+
+                                                        <field name="height" />
+                                                        <field name="width" />
+                                                        <field name="length" />
+                                                    </group>
+                                                </sheet>
+                                            </form>
+                                        </field>
+                                    </group>                                    
+                                </page>
+                            </notebook>
+                            
                         </group>
                     </sheet>        
                 </form>

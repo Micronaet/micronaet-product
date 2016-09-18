@@ -33,6 +33,11 @@
         'product_first_supplier', # to get first supplier
         'duty_management', # for duty elements
         'base_accounting_program', # q x pack field
+        'product_multi_package', # multipack management
+        
+        # for pack_X measure:
+        'product_package_volume', # XXX used?
+        'purchase_extra_field', 
         ],
     'init_xml': [],
     'demo': [],
