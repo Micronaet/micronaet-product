@@ -104,6 +104,8 @@ class ProductCostRule(orm.Model):
             ], 'Cost mode', required=True),
         'value': fields.float(
             'Value', digits_compute=dp.get_precision('Product Price')),
+        'force_exchange': fields.float('Force exchange', digits=(16, 
+                config(int['price_accuracy']))),    
         'note': fields.char('Note', size=80),
         }
         
@@ -264,7 +266,7 @@ class ProductProduct(orm.Model):
                                 '' if mode == 'fixed' else '%',
                                 ),
                             value if mode == 'fixed' else \
-                                '%s x (%s) = %s' % (
+                                '%s x %s = %s' % (
                                     base, 
                                     value, 
                                     discount_value,
@@ -422,7 +424,7 @@ class ProductProduct(orm.Model):
                                 '' if mode == 'fixed' else '%',
                                 ),
                             value if mode == 'fixed' else \
-                                '%s x (%s) = %s' % (
+                                '%s x %s = %s' % (
                                     base, 
                                     value, 
                                     recharge_value,
@@ -467,98 +469,6 @@ class ProductProduct(orm.Model):
         '''
         return self.get_product_cost_value(cr, uid, ids, 
             block='pricelist', context=context)
-        
-    
-    """def get_campaign_price(self, cost, price, campaign, product, cost_type):
-        # ---------------------------------------------------------------------
-        # Product cost generation:
-        # ---------------------------------------------------------------------
-        total = 0.0
-        for rule in cost_type.rule_ids:
-            # Read rule parameters
-            sign = rule.sign
-            base = rule.base
-            mode = rule.mode
-            value = rule.value
-            text_value = rule.text_value
-            
-            # -----------
-            # Sign coeff:
-            # -----------
-            if sign == 'minus':
-                sign_coeff = -1.0  
-            else:
-                sign_coeff = 1.0
-                
-            # ----------------
-            # Base evaluation:
-            # ----------------
-            if base == 'previous':
-                base_value = total
-            elif base == 'cost':
-                base_value = cost
-                if not total: # Initial setup depend on first rule
-                    total = cost 
-            elif base == 'price':
-                base_value = price
-                if not total: # Initial setup depend on first rule
-                    total = price
-            #elif base == 'volume':
-            #    base_value = (
-            #        product.volume / campaign.volume_total)                    
-            else:
-                _logger.error('No base value found!!!')                
-                # TODO raise error?        
-
-            # -----------
-            # Value type:
-            # -----------
-            if mode == 'fixed':
-                total += sign_coeff * value
-                continue # Fixed case only increment total no other operations                
-            elif mode == 'multi':
-                # TODO check sign for multi discount value (different from revenue)
-                # Convert multi discount with value
-                value = sign_coeff * partner_pool.format_multi_discount(
-                    text_value).get('value', 0.0)
-            elif mode == 'percentual':
-                value *= sign_coeff
-            else:    
-                _logger.error('No mode value found!!!')
-                # TODO raise error?        
-                    
-            if not value:
-                _logger.error('Percentual value is mandatory!')
-                pass
-            total += base_value * value / 100.0
-
-        # --------------------------------
-        # General cost depend on campaign:    
-        # --------------------------------
-        volume_cost = campaign.volume_cost
-        discount_scale = campaign.discount_scale
-        revenue_scale = campaign.revenue_scale
-        
-        # TODO correct!!!!:
-        if volume_cost:        
-            total += total * product.qty * (
-                product.volume / campaign.volume_total)
-            # TODO use heigh, width, length 
-            # TODO use pack_l, pack_h, pack_p
-            # TODO use packaging dimension?
-            
-        if discount_scale:
-            discount_value = partner_pool.format_multi_discount(
-                discount_scale).get('value', 0.0)
-            total -= total * discount_value / 100.0
-
-        if revenue_scale:
-            revenue_value = partner_pool.format_multi_discount(
-                revenue_scale).get('value', 0.0)
-            total += total * revenue_value / 100.0
-            
-        # TODO extra recharge:
-        return total"""
 
 class ProductTemplate(orm.Model):
     """ Model name: ProductTemplate
@@ -606,4 +516,15 @@ class ProductTemplate(orm.Model):
             help='Customer cost (base for calculate goods f/customer)'),
         }
 
+class ResPartner(orm.Model):
+    """ Model name: ResPartner
+    """    
+    _inherit = 'res.partner'
+    
+    _columns = {
+        'cost_currency_id': fields.many2one(
+            'res.currency', 'Cost currency', 
+            help='currency for supplier cost value, used also to get exchange'
+                'value for conversiono'),
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

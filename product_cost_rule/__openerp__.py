@@ -38,6 +38,10 @@
         # for pack_X measure:
         'product_package_volume', # XXX used?
         'purchase_extra_field', 
+        
+        # Exchange management 
+        #git clone -b 8.0 https://github.com/OCA/account-financial-tools.git
+        'currency_rate_update', # for exchange fields or udate
         ],
     'init_xml': [],
     'demo': [],

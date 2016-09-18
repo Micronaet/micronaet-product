@@ -286,6 +286,16 @@
             <field name="domain">[]</field>
         </record>
         
+        <!--<record model="ir.ui.view" id="view_res_partner_cost_currency_form">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <field name="property_account_position" position="before">
+                    <field name="cost_currency_id" />
+                </field>
+            </field>
+        </record>-->
+        
         <!--MENU STRUCTURE:-->
         <menuitem 
             parent="stock.menu_stock_configuration" 
