@@ -149,11 +149,20 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             product_pool.write(cr, uid, product_ids, {
                 'pricelist_method_id': wiz_proxy.pricelist_method_id.id,
                 }, context=context)
-               
         
         # ---------------------------------------------------------------------
         # 4. force calc operation
         # ---------------------------------------------------------------------
+        if wiz_proxy.company_calc:
+            product_pool.get_product_cost_value(cr, uid, product_ids, 
+            block='company', context=context)
+        if wiz_proxy.customer_calc:
+            product_pool.get_product_cost_value(cr, uid, product_ids, 
+                block='customer', context=context)
+        if wiz_proxy.pricelist_calc:
+            product_pool.get_product_cost_value(cr, uid, product_ids, 
+                block='pricelist', context=context)
+            
 
         # Return touched product:        
         return self.return_view(cr, uid, product_ids, context=context)
