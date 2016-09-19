@@ -107,6 +107,7 @@ class ProductCostRule(orm.Model):
             'Value', digits_compute=dp.get_precision('Product Price')),
         'round': fields.integer('Round', required=True,
             help='Round number of decimal, 2 means 15.216 > 15.22'),    
+        # TODO add selection for round only final result    
         'note': fields.char('Note', size=80),
         }
         

@@ -54,6 +54,7 @@
                             <field name="category" invisible="context.get('product_embedded', False)"/>
                             <field name="transport_id" />
                             <field name="force_exchange" />                            
+                            <field name="round" />                            
                             <separator string="Rule" colspan="4" />
                             <field name="rule_ids" colspan="4" nolabel="1">
                                 <tree string="Rule" editable="bottom">
