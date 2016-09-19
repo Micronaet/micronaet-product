@@ -321,6 +321,12 @@
                 action="action_product_cost_transport"
                 sequence="30"
                 />
+            <menuitem
+                parent="menu_product_cost_root" 
+                id="menu_product_custom_duty" 
+                action="duty_management.product_custom_duty_action"
+                sequence="90"
+                />
     </data>
 </openerp>
 
