@@ -67,6 +67,10 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             domain.append(
                 ('first_supplier_id', '=', wiz_browse.first_supplier_id.id))
                 
+        # Duty:
+        if wiz_browse.duty_id:
+            domain.append(
+                ('duty_id', '=', wiz_browse.duty_id.id))
        
         product_ids = product_pool.search(cr, uid, domain, context=context)
         
@@ -82,14 +86,40 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         # 4. force calc operation
         # ---------------------------------------------------------------------
         
+        
+        # ---------------------------------------------------------------------
+        # 5. return touched product
+        # ---------------------------------------------------------------------
+        model_pool = self.pool.get('ir.model.data')
+        tree_view_id = model_pool.get_object_reference(
+            cr, uid, 'product_cost_rule', 'view_product_product_cost_tree')[1]
+        form_view_id = model_pool.get_object_reference(
+            cr, uid, 'product_cost_rule', 'view_product_product_cost_form')[1]
+        search_view_id = model_pool.get_object_reference(
+            cr, uid, 'product_cost_rule', 'view_product_product_cost_search')[1]
+        
         return {
-            'type': 'ir.actions.act_window_close'
+            'type': 'ir.actions.act_window',
+            'name': _('Calc set product esit:'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            #'res_id': 1,
+            'res_model': 'product.product',
+            'view_id': tree_view_id,
+            'search_view_id': search_view_id,
+            'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
+            'domain': [('id', '=', product_ids)],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
             }
 
     _columns = {
         # Filter field:
         'first_supplier_id': fields.many2one(
             'res.partner', 'First supplier'),
+        'duty_id': fields.many2one(
+            'product.custom.duty', 'Duty category'),
     
         # Calculation field:
         'company_calc': fields.boolean('Company set method'),
