@@ -141,6 +141,15 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             product_pool.write(cr, uid, product_ids, {
                 'company_method_id': wiz_proxy.company_method_id.id,
                 }, context=context)
+        if wiz_proxy.customer_set:
+            product_pool.write(cr, uid, product_ids, {
+                'customer_method_id': wiz_proxy.customer_method_id.id,
+                }, context=context)
+        if wiz_proxy.pricelist_set:
+            product_pool.write(cr, uid, product_ids, {
+                'pricelist_method_id': wiz_proxy.pricelist_method_id.id,
+                }, context=context)
+               
         
         # ---------------------------------------------------------------------
         # 4. force calc operation
