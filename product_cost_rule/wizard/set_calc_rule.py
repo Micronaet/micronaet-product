@@ -172,7 +172,7 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
                 item.id for item in wiz_proxy.transport_ids]
             
             create_list = []
-            import pdb; pdb.set_trace()        
+            import pdb; pdb.set_trace()
             for product in product_pool.browse(cr, uid, product_ids, 
                     context=context):
                 for item in product.transport_ids:
@@ -202,7 +202,7 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
                                 'quantity': int(
                                     transport.volume / volume),
                                 })
-            
+            import pdb; pdb.set_trace()
             for data in create_list:
                 transport_pool.create(cr, uid, data, context=context)
         

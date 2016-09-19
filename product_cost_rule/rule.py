@@ -478,13 +478,12 @@ class ProductProduct(orm.Model):
                                 rule.sequence,
                                 _('+ Transport (calculated)<br/>'
                                     '<i><font color="orange">'
-                                    '[No pcs/tran. so %s > %s]'
+                                    '[pcs/tr. %s > %s]'
                                     '</font></i>') % (
                                         pc_x_trans, int(pc_x_trans)),
-                                '%s x %s = %s' % (
+                                '%s / %s = %s' % (
                                     transport_cost, 
-                                    transport_volume,
-                                    volume1, 
+                                    int(pc_x_trans), 
                                     cost1,
                                     ),
                                 float_mask % total,
