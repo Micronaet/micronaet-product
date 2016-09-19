@@ -104,7 +104,7 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             'view_id': tree_view_id,
             'search_view_id': search_view_id,
             'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
-            'domain': [('id', '=', ids)],
+            'domain': [('id', 'in', ids)],
             'context': context,
             'target': target,
             'nodestroy': False,
