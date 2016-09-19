@@ -19,15 +19,15 @@
                         <separator string="Force / Calc" colspan="6"/>
                         <field name="company_calc" />
                         <field name="company_set" />
-                        <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" attrs="{'invisible':[('company_set','=',False)]}"/>
+                        <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" attrs="{'invisible':[('company_set','=',False)],'required':[('company_set','=',True)]}"/>
                                             
                         <field name="customer_calc" />
                         <field name="customer_set" />
-                        <field name="customer_method_id" context="{'default_category':'customer', 'product_embedded':True}" domain="[('category','=','customer')]" attrs="{'invisible':[('customer_set','=',False)]}" />
+                        <field name="customer_method_id" context="{'default_category':'customer', 'product_embedded':True}" domain="[('category','=','customer')]" attrs="{'invisible':[('customer_set','=',False)],'required':[('customer_set','=',True)]}" />
                                             
                         <field name="pricelist_calc" />
                         <field name="pricelist_set" />
-                        <field name="pricelist_method_id" context="{'default_category':'pricelist', 'product_embedded':True}" domain="[('category','=','pricelist')]" attrs="{'invisible':[('pricelist_set','=',False)]}" />
+                        <field name="pricelist_method_id" context="{'default_category':'pricelist', 'product_embedded':True}" domain="[('category','=','pricelist')]" attrs="{'invisible':[('pricelist_set','=',False)],'required':[('pricelist_set','=',True)]}" />
                    </group>
                 </form>
             </field>
