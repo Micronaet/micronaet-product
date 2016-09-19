@@ -129,11 +129,14 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
         
         product_pool = self.pool.get('product.product')
+        transport_pool = self.pool.get('product.product.transport')
         
         # ---------------------------------------------------------------------
-        # 1. generate filter and search product
+        # 1. generate filter and search product (common part)
         # ---------------------------------------------------------------------
-        product_ids = self.get_product_filter_selection(cr, uid, wiz_proxy, context=context)
+        product_ids = self.get_product_filter_selection(cr, uid, wiz_proxy, 
+            context=context)
+        _logger.info('Found %s product for update!' % len(product_ids))    
         
         if wiz_proxy.mode == 'cost':
             # -----------------------------------------------------------------
@@ -164,9 +167,40 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             if wiz_proxy.pricelist_calc:
                 product_pool.get_product_cost_value(cr, uid, product_ids, 
                     block='pricelist', context=context)
-        else: # 'transport'
-            for transport in wiz_proxy.transport_ids:
-                pass
+        else: # 'transport'   
+            update_transport_ids = wiz_proxy.transport_ids
+            
+            import pdb; pdb.set_trace()        
+            create_list = []
+            for product in product_pool.browse(cr, uid, product_ids, 
+                    context=context):
+                for item in product.transport_ids:
+                    current_ids = [for item in product.transport_ids:
+                        if item.transport_id.id]
+                        
+                    volume = False
+                    if transport_id in update_transport_ids:
+                        if transport_id not in current_ids:
+                            if volume == False: # calculate only once                                                                
+                                # get volume1
+                                volume = product_pool.get_volume_single_product(
+                                    cr, uid, product, context=context)                        
+                                        
+                                if not volume:  
+                                    _logger.error(
+                                        'Product without volume: %s' % \
+                                            product.default_code)                                            
+                                    continue # jump product
+                        
+                                create_list.extend([{
+                                    'transport_id': item.transport_id,
+                                    'product_id': product.id,
+                                    'quantity': int(
+                                        item.transport_id.volume / volume),
+                                    }
+            
+            for data in create_list:
+                transport_pool.create(cr, uid, data, context=context)
         
         # Return touched product:        
         return self.return_view(cr, uid, product_ids, context=context)
