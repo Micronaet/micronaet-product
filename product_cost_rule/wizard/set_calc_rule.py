@@ -71,6 +71,22 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         if wiz_browse.duty_id:
             domain.append(
                 ('duty_id', '=', wiz_browse.duty_id.id))
+        
+        # Product code filter:
+        if wiz_browse.code_start:
+            domain.append(('default_code', '=ilike', '%s%s' % (
+                wiz_browse.code_start, '%')))
+        if wiz_browse.code_partial:
+            if wiz_browse.code_from and wiz_browse.code_from > 1:
+                pattern = '_' * (wiz_browse.code_from -1)                
+                domain.append(('default_code', 'ilike', '%s%s%s' % (
+                    pattern,
+                    wiz_browse.code_partial,
+                    '%',
+                    )))
+            else:
+                domain.append(
+                    ('default_code', 'ilike', wiz_browse.code_partial))
        
         product_ids = product_pool.search(cr, uid, domain, context=context)
         
@@ -120,6 +136,14 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             'res.partner', 'First supplier'),
         'duty_id': fields.many2one(
             'product.custom.duty', 'Duty category'),
+            
+        # Code filter:
+        'code_start': fields.char('Code start', size=25), 
+        'code_partial': fields.char('Code partial', size=25), 
+        'code_from': fields.integer('Code from char'),         
+        #'family_id': fields.many2one('product.template', 'Family', 
+        #    domain=[('is_family', '=', True)]),
+        }
     
         # Calculation field:
         'company_calc': fields.boolean('Company calc'),
