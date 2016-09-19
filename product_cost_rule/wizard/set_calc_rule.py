@@ -122,9 +122,9 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             'product.custom.duty', 'Duty category'),
     
         # Calculation field:
-        'company_calc': fields.boolean('Company calc method'),
-        'customer_calc': fields.boolean('Customer calc method'),
-        'pricelist_calc': fields.boolean('Pricelist calc method'),
+        'company_calc': fields.boolean('Company calc'),
+        'customer_calc': fields.boolean('Customer calc'),
+        'pricelist_calc': fields.boolean('Pricelist calc'),
         
         # Set field:
         'company_set': fields.boolean('Company set method'),
