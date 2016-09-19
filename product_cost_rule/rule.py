@@ -410,38 +410,76 @@ class ProductProduct(orm.Model):
                     transport_cost = transport.cost
                     transport_volume = transport.volume
                     
-                    # Calculated fields:
-                    volume1 = self.get_volume_single_product(
-                        cr, uid, product, context=context)
+                    # Search in tranport-product relation
+                    q_x_tran = 0
+                    for prod_tran in product.transport_ids:
+                        if prod_tran.transport_id.id = transport.id:
+                            q_x_tran = prod_tran.quantity
                     
-                    # Check mandatory volume
-                    if not volume1:
-                        error += _('''
-                            <p><font color="red">
-                                Volume x piece not present!!!
-                            </font></p>''')
-                        continue
-                    
-                    cost1 = volume1 * transport_cost / transport_volume     
-                    total +=  cost1
-                    total = round(total, round_decimal)
-                    calc += '''
-                        <tr>
-                            <td>%s</td>
-                            <td>%s</td>
-                            <td>%s</td>
-                            <td style="text-align:right">%s</td>
-                        </tr>''' % (
-                            rule.sequence,
-                            _('+ Transport (volume)'),
-                            '%s x %s / %s = %s' % (
-                                volume1, 
-                                transport_cost, 
-                                transport_volume,
-                                cost1,
-                                ),
-                            float_mask % total,
-                            )    
+                    if q_x_tran: # Calculate with q x tran                                
+                        cost1 = transport_cost / q_x_tran
+                        total += cost1
+                        total = round(total, round_decimal)
+
+                        calc += '''
+                            <tr>
+                                <td>%s</td>
+                                <td>%s</td>
+                                <td>%s</td>
+                                <td style="text-align:right">%s</td>
+                            </tr>''' % (
+                                rule.sequence,
+                                _('+ Transport (anagraphic)'),
+                                '%s / %s = %s' % (
+                                    transport_cost, 
+                                    q_x_tran,
+                                    cost1,
+                                    ),
+                                float_mask % total,
+                                )                        
+                    else:
+                        # Calculated fields:
+                        volume1 = self.get_volume_single_product(
+                            cr, uid, product, context=context)
+                        
+                        # Check mandatory volume
+                        if not volume1:
+                            error += _('''
+                                <p><font color="red">
+                                    Volume x piece not present!!!
+                                </font></p>''')
+                            continue
+                        
+                        cost1 = volume1 * transport_cost / transport_volume     
+                        total +=  cost1
+                        total = round(total, round_decimal)
+                        warning += _('''
+                        <p><font color="orange">
+                            Transport is optimistic because based on volume
+                            not on pcs x tranport in product form!
+                            </font>
+                        </p>''')
+
+                        calc += '''
+                            <tr>
+                                <td>%s</td>
+                                <td>%s</td>
+                                <td>%s</td>
+                                <td style="text-align:right">%s</td>
+                            </tr>''' % (
+                                rule.sequence,
+                                _('+ Transport (volume)\n'
+                                    '<b><i><font color="orange">'
+                                    '[base on volume not setting]'
+                                    '</font></i></b>'),
+                                '%s x %s / %s = %s' % (
+                                    volume1, 
+                                    transport_cost, 
+                                    transport_volume,
+                                    cost1,
+                                    ),
+                                float_mask % total,
+                                )    
 
                 # -------------------------------------------------------------
                 #                          RECHARGE RULE:
@@ -535,7 +573,7 @@ class ProductTemplateTransport(orm.Model):
         'product_id': fields.many2one(
             'product.template', 'Product'),
         'transport_id': fields.many2one(
-            'product.cost.transport', 'Transport'),
+            'product.cost.transport', 'Transport', required=True),
         'quantity': fields.integer('Quantity', required=True),
         }
     
