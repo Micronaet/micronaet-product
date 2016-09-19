@@ -135,36 +135,39 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         product_ids = self.get_product_filter_selection(cr, uid, wiz_proxy, context=context)
         
-        # ---------------------------------------------------------------------
-        # 3. force calc method (depend on check button)
-        # ---------------------------------------------------------------------
-        if wiz_proxy.company_set:
-            product_pool.write(cr, uid, product_ids, {
-                'company_method_id': wiz_proxy.company_method_id.id,
-                }, context=context)
-        if wiz_proxy.customer_set:
-            product_pool.write(cr, uid, product_ids, {
-                'customer_method_id': wiz_proxy.customer_method_id.id,
-                }, context=context)
-        if wiz_proxy.pricelist_set:
-            product_pool.write(cr, uid, product_ids, {
-                'pricelist_method_id': wiz_proxy.pricelist_method_id.id,
-                }, context=context)
-        
-        # ---------------------------------------------------------------------
-        # 4. force calc operation
-        # ---------------------------------------------------------------------
-        if wiz_proxy.company_calc:
-            product_pool.get_product_cost_value(cr, uid, product_ids, 
-            block='company', context=context)
-        if wiz_proxy.customer_calc:
-            product_pool.get_product_cost_value(cr, uid, product_ids, 
-                block='customer', context=context)
-        if wiz_proxy.pricelist_calc:
-            product_pool.get_product_cost_value(cr, uid, product_ids, 
-                block='pricelist', context=context)
+        if wiz_proxy.mode == 'cost':
+            # -----------------------------------------------------------------
+            # 2. force calc method (depend on check button)
+            # -----------------------------------------------------------------
+            if wiz_proxy.company_set:
+                product_pool.write(cr, uid, product_ids, {
+                    'company_method_id': wiz_proxy.company_method_id.id,
+                    }, context=context)
+            if wiz_proxy.customer_set:
+                product_pool.write(cr, uid, product_ids, {
+                    'customer_method_id': wiz_proxy.customer_method_id.id,
+                    }, context=context)
+            if wiz_proxy.pricelist_set:
+                product_pool.write(cr, uid, product_ids, {
+                    'pricelist_method_id': wiz_proxy.pricelist_method_id.id,
+                    }, context=context)
             
-
+            # -----------------------------------------------------------------
+            # 3. force calc operation
+            # -----------------------------------------------------------------
+            if wiz_proxy.company_calc:
+                product_pool.get_product_cost_value(cr, uid, product_ids, 
+                block='company', context=context)
+            if wiz_proxy.customer_calc:
+                product_pool.get_product_cost_value(cr, uid, product_ids, 
+                    block='customer', context=context)
+            if wiz_proxy.pricelist_calc:
+                product_pool.get_product_cost_value(cr, uid, product_ids, 
+                    block='pricelist', context=context)
+        else: # 'transport'
+            for transport in wiz_proxy.transport_ids:
+                pass
+        
         # Return touched product:        
         return self.return_view(cr, uid, product_ids, context=context)
 
@@ -181,7 +184,24 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         'code_from': fields.integer('Code from char'),         
         #'family_id': fields.many2one('product.template', 'Family', 
         #    domain=[('is_family', '=', True)]),
+        
+        # Mode selection:
+        'mode': fields.selection([
+            ('transport', 'Product transport force'),
+            ('cost', 'Set or calc product cost'),
+            ], 'Wizard mode', required=True),
+            
+        # ---------------------------------------------------------------------
+        # Transport management:
+        # ---------------------------------------------------------------------
+        'transport_ids': fields.many2many(
+            'product.cost.transport', 'product_force_wizard_transport_rel', 
+            'wizard_id', 'transport_id', 
+            'Transport'),
     
+        # ---------------------------------------------------------------------
+        # Cost management:
+        # ---------------------------------------------------------------------
         # Calculation field:
         'company_calc': fields.boolean('Company calc'),
         'customer_calc': fields.boolean('Customer calc'),
@@ -200,8 +220,9 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             'product.cost.method', 'Pricelist Method'),        
         }
         
-    _defaults = {
-        
+    _defaults = {        
+        # Default value:
+        'mode': lambda *x: 'cost',
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

@@ -413,7 +413,7 @@ class ProductProduct(orm.Model):
                     # Search in tranport-product relation
                     q_x_tran = 0
                     for prod_tran in product.transport_ids:
-                        if prod_tran.transport_id.id = transport.id:
+                        if prod_tran.transport_id.id == transport.id:
                             q_x_tran = prod_tran.quantity
                     
                     if q_x_tran: # Calculate with q x tran                                
@@ -468,10 +468,10 @@ class ProductProduct(orm.Model):
                                 <td style="text-align:right">%s</td>
                             </tr>''' % (
                                 rule.sequence,
-                                _('+ Transport (volume)\n'
-                                    '<b><i><font color="orange">'
+                                _('+ Transport (volume)<br/>'
+                                    '<i><font color="orange">'
                                     '[base on volume not setting]'
-                                    '</font></i></b>'),
+                                    '</font></i>'),
                                 '%s x %s / %s = %s' % (
                                     volume1, 
                                     transport_cost, 
@@ -561,26 +561,26 @@ class ProductProduct(orm.Model):
         return self.get_product_cost_value(cr, uid, ids, 
             block='pricelist', context=context)
 
-class ProductTemplateTransport(orm.Model):
-    """ Model name: ProductTemplateTransport
+class ProductProductTransport(orm.Model):
+    """ Model name: ProductProduct
     """
     
-    _name = 'product.template.transport'
+    _name = 'product.product.transport'
     _description = 'Product transport'
     _rec_name = 'product_id'
     
     _columns = {
         'product_id': fields.many2one(
-            'product.template', 'Product'),
+            'product.product', 'Product'),
         'transport_id': fields.many2one(
             'product.cost.transport', 'Transport', required=True),
         'quantity': fields.integer('Quantity', required=True),
         }
     
-class ProductTemplate(orm.Model):
-    """ Model name: ProductTemplate
+class ProductProduct(orm.Model):
+    """ Model name: ProductProduct
     """    
-    _inherit = 'product.template'
+    _inherit = 'product.product'
     
     _columns = {
         # 3 Method:
@@ -623,7 +623,7 @@ class ProductTemplate(orm.Model):
             help='Customer cost (base for calculate goods f/customer)'),
         
         'transport_ids': fields.one2many(
-            'product.template.transport', 'product_id', 
+            'product.product.transport', 'product_id', 
             'Transport'),
         }
 

@@ -2,4 +2,5 @@
 access_product_cost_transport_user,product.cost.transport,model_product_cost_transport,base.group_user,1,1,1,1
 access_product_cost_method_user,product.cost.method,model_product_cost_method,base.group_user,1,1,1,1
 access_product_cost_rule_user,product.cost.rule,model_product_cost_rule,base.group_user,1,1,1,1
+access_product_product_transport_user,product.product.transport,model_product_product_transport,base.group_user,1,1,1,1
 
