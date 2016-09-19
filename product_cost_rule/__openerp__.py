@@ -41,7 +41,7 @@
         
         # Exchange management 
         #git clone -b 8.0 https://github.com/OCA/account-financial-tools.git
-        'currency_rate_update', # for exchange fields or udate
+        #'currency_rate_update', # for exchange fields or udate
         ],
     'init_xml': [],
     'demo': [],
