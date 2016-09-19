@@ -523,6 +523,22 @@ class ProductProduct(orm.Model):
         return self.get_product_cost_value(cr, uid, ids, 
             block='pricelist', context=context)
 
+class ProductTemplateTransport(orm.Model):
+    """ Model name: ProductTemplateTransport
+    """
+    
+    _name = 'product.template.transport'
+    _description = 'Product transport'
+    _rec_name = 'product_id'
+    
+    _columns = {
+        'product_id': fields.many2one(
+            'product.template', 'Product'),
+        'transport_id': fields.many2one(
+            'product.cost.transport', 'Transport'),
+        'quantity': fields.integer('Quantity', required=True),
+        }
+    
 class ProductTemplate(orm.Model):
     """ Model name: ProductTemplate
     """    
@@ -567,6 +583,10 @@ class ProductTemplate(orm.Model):
         'customer_cost': fields.float('Customer cost', 
             digits_compute=dp.get_precision('Product Price'), 
             help='Customer cost (base for calculate goods f/customer)'),
+        
+        'transport_ids': fields.one2many(
+            'product.template.transport', 'product_id', 
+            'Transport'),
         }
 
 class ResPartner(orm.Model):

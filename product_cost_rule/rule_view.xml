@@ -212,8 +212,17 @@
                                         </field>
                                     </group>                                    
                                 </page>
-                            </notebook>
-                            
+                                <page string="Transport">
+                                    <group col="4" colspan="4">
+                                        <field name="transport_ids" nolabel="1">
+                                            <tree string="Transport" editable="bottom">
+                                                <field name="transport_id" />
+                                                <field name="quantity" />
+                                            </tree>                                            
+                                        </field>
+                                    </group>
+                                </page>    
+                            </notebook>                            
                         </group>
                     </sheet>        
                 </form>

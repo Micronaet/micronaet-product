@@ -48,7 +48,7 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
     _description = 'Force calc or assign method to product'
 
     # Utility
-    def generate_domain(self, cr, uid, wiz_proxy, context=None):
+    def get_product_filter_selection(self, cr, uid, wiz_proxy, context=None):
         ''' Update domain:
         '''
         product_pool = self.pool.get('product.product')
@@ -92,7 +92,8 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         form_view_id = model_pool.get_object_reference(
             cr, uid, 'product_cost_rule', 'view_product_product_cost_form')[1]
         search_view_id = model_pool.get_object_reference(
-            cr, uid, 'product_cost_rule', 'view_product_product_cost_search')[1]
+            cr, uid, 'product_cost_rule', 
+            'view_product_product_cost_search')[1]
         
         return {
             'type': 'ir.actions.act_window',
@@ -117,7 +118,7 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         ''' Return record selected
         '''
         wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
-        product_ids = self.generate_domain(
+        product_ids = self.get_product_filter_selection(
             cr, uid, wiz_proxy, context=context)
         return self.return_view(cr, uid, product_ids, context=context)
             
@@ -132,7 +133,7 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # 1. generate filter and search product
         # ---------------------------------------------------------------------
-        product_ids = self.generate_domain(cr, uid, wiz_proxy, context=context)
+        product_ids = self.get_product_filter_selection(cr, uid, wiz_proxy, context=context)
         
         # ---------------------------------------------------------------------
         # 3. force calc method (depend on check button)
