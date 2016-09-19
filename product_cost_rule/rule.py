@@ -72,6 +72,9 @@ class ProductCostMethod(orm.Model):
         'transport_id': fields.many2one(
             'product.cost.transport', 'Transport'),
         'force_exchange': fields.float('Force exchange', digits=(16, 2)),    
+        'round': fields.integer('Round', required=True,
+            help='Round number of decimal, 2 means 15.216 > 15.22'),    
+        # TODO add selection for round only final result    
         'note': fields.text('Note'),
         }
 
@@ -105,9 +108,6 @@ class ProductCostRule(orm.Model):
             ], 'Cost mode', required=True),
         'value': fields.float(
             'Value', digits_compute=dp.get_precision('Product Price')),
-        'round': fields.integer('Round', required=True,
-            help='Round number of decimal, 2 means 15.216 > 15.22'),    
-        # TODO add selection for round only final result    
         'note': fields.char('Note', size=80),
         }
         
@@ -226,6 +226,9 @@ class ProductProduct(orm.Model):
             # -----------------------------------------------------------------
             method = product.__getattribute__('%s_method_id' % block)
             transport = method.transport_id
+            round_decimal = method.round
+            float_mask = '%s10.%sf' % ('%', round_decimal)
+            
             calc += '''
                 <tr> 
                     <td>0</td>
@@ -234,8 +237,9 @@ class ProductProduct(orm.Model):
                     <td style="text-align:right"><b>%s</b></td>
                 </tr>''' % (
                     base_description,
-                    total,
+                    float_mask % total,
                     )
+            
             for rule in method.rule_ids:                
                 # Rule parameter (for readability):
                 value = rule.value
@@ -254,8 +258,10 @@ class ProductProduct(orm.Model):
                         discount_value = total * value / 100.0
                     elif mode == 'fixed':
                         discount_value = value
+                    
                         
                     total -= discount_value
+                    total = round(total, round_decimal)
                     calc += '''
                         <tr>
                             <td>%s</td>
@@ -274,7 +280,7 @@ class ProductProduct(orm.Model):
                                     value, 
                                     discount_value,
                                     ),
-                            total,
+                            float_mask % total,
                             )    
 
                 # -------------------------------------------------------------
@@ -324,6 +330,7 @@ class ProductProduct(orm.Model):
                     base = total
                     duty_value = total * duty_rate / 100.0
                     total += duty_value
+                    total = round(total, round_decimal)
                     calc += '''
                         <tr>
                             <td>%s</td>
@@ -341,7 +348,7 @@ class ProductProduct(orm.Model):
                                 product.first_supplier_id.country_id.name,
                                 ),
                             '%s x %s = %s' % (base, duty_rate, duty_value),
-                            total,
+                            float_mask % total,
                             )    
 
                 # -------------------------------------------------------------
@@ -351,8 +358,9 @@ class ProductProduct(orm.Model):
                     base = total
                     exchange_rate = method.force_exchange
                     # TODO read it from currency                    
-                    exchange_value = total * exchange_rate                        
+                    exchange_value = total * exchange_rate
                     total += exchange_value
+                    total = round(total, round_decimal)
                     calc += '''
                         <tr>
                             <td>%s</td>
@@ -364,7 +372,7 @@ class ProductProduct(orm.Model):
                             _('x Exchange %s') % exchange_rate,
                             '%s x %s = %s' % (
                                 base, exchange_rate, exchange_value),
-                            total,
+                            float_mask % total,
                             )    
 
                 # -------------------------------------------------------------
@@ -401,6 +409,7 @@ class ProductProduct(orm.Model):
                     
                     cost1 = volume1 * transport_cost / transport_volume     
                     total +=  cost1
+                    total = round(total, round_decimal)
                     calc += '''
                         <tr>
                             <td>%s</td>
@@ -416,7 +425,7 @@ class ProductProduct(orm.Model):
                                 transport_volume,
                                 cost1,
                                 ),
-                            total,
+                            float_mask % total,
                             )    
 
                 # -------------------------------------------------------------
@@ -429,8 +438,9 @@ class ProductProduct(orm.Model):
                         recharge_value = total * value / 100.0
                     elif mode == 'fixed':
                         recharge_value = value
-                        
+                    
                     total += recharge_value
+                    total = round(total, round_decimal)
                     calc += '''
                         <tr>
                             <td>%s</td>
@@ -449,12 +459,13 @@ class ProductProduct(orm.Model):
                                     value, 
                                     recharge_value,
                                     ),
-                            total,
+                            float_mask % total,
                             )    
                 
             # -----------------------------------------------------------------
             #                     Write data in product:
             # -----------------------------------------------------------------
+            import pdb; pdb.set_trace()
             self.write(cr, uid, product.id, {
                 result_field: total,
                 calc_field: _('''
