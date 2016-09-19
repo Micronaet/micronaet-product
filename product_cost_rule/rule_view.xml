@@ -51,9 +51,9 @@
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="name" />
-                            <newline/>
-                            <field name="transport_id" />
                             <field name="category" invisible="context.get('product_embedded', False)"/>
+                            <field name="transport_id" />
+                            <field name="force_exchange" />                            
                             <separator string="Rule" colspan="4" />
                             <field name="rule_ids" colspan="4" nolabel="1">
                                 <tree string="Rule" editable="bottom">

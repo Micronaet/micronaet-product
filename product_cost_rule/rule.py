@@ -71,6 +71,7 @@ class ProductCostMethod(orm.Model):
                 'pricelist'),
         'transport_id': fields.many2one(
             'product.cost.transport', 'Transport'),
+        'force_exchange': fields.float('Force exchange', digits=(16, 2)),    
         'note': fields.text('Note'),
         }
 
@@ -104,14 +105,15 @@ class ProductCostRule(orm.Model):
             ], 'Cost mode', required=True),
         'value': fields.float(
             'Value', digits_compute=dp.get_precision('Product Price')),
-        'force_exchange': fields.float('Force exchange', digits=(16, 
-                config(int['price_accuracy']))),    
+        'round': fields.integer('Round', required=True,
+            help='Round number of decimal, 2 means 15.216 > 15.22'),    
         'note': fields.char('Note', size=80),
         }
         
     _defaults = {
         'operation': lambda *x: 'recharge',
         'mode': lambda *x: 'percentual',
+        'round': lambda *x: 2,
         }    
 
 class ProductCostMethod(orm.Model):
@@ -345,7 +347,24 @@ class ProductProduct(orm.Model):
                 #                         EXCHANGE RULE:
                 # -------------------------------------------------------------
                 elif operation == 'exchange':
-                    pass
+                    base = total
+                    exchange_rate = method.force_exchange
+                    # TODO read it from currency                    
+                    exchange_value = total * exchange_rate                        
+                    total += exchange_value
+                    calc += '''
+                        <tr>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td style="text-align:right">%s</td>
+                        </tr>''' % (
+                            rule.sequence,
+                            _('x Exchange %s') % exchange_rate,
+                            '%s x %s = %s' % (
+                                base, exchange_rate, exchange_value),
+                            total,
+                            )    
 
                 # -------------------------------------------------------------
                 #                         TRANSPORT RULE:
