@@ -168,36 +168,40 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
                 product_pool.get_product_cost_value(cr, uid, product_ids, 
                     block='pricelist', context=context)
         else: # 'transport'   
-            update_transport_ids = wiz_proxy.transport_ids
+            update_transport_ids = [
+                item.id for item in wiz_proxy.transport_ids]
             
-            import pdb; pdb.set_trace()        
             create_list = []
+            import pdb; pdb.set_trace()        
             for product in product_pool.browse(cr, uid, product_ids, 
                     context=context):
                 for item in product.transport_ids:
-                    current_ids = [for item in product.transport_ids:
-                        if item.transport_id.id]
+                    current_ids = [
+                        item.transport_id.id for item in product.transport_ids]
+                else:        
+                    current_ids = []
                         
-                    volume = False
-                    if transport_id in update_transport_ids:
-                        if transport_id not in current_ids:
-                            if volume == False: # calculate only once                                                                
-                                # get volume1
-                                volume = product_pool.get_volume_single_product(
-                                    cr, uid, product, context=context)                        
-                                        
-                                if not volume:  
-                                    _logger.error(
-                                        'Product without volume: %s' % \
-                                            product.default_code)                                            
-                                    continue # jump product
-                        
-                                create_list.extend([{
-                                    'transport_id': item.transport_id,
-                                    'product_id': product.id,
-                                    'quantity': int(
-                                        item.transport_id.volume / volume),
-                                    }
+                volume = False
+                for transport in wiz_proxy.transport_ids:
+                    transport_id = transport.id
+                    if transport_id not in current_ids:
+                        if volume == False: # calculate only once                                                                
+                            # get volume1
+                            volume = product_pool.get_volume_single_product(
+                                cr, uid, product, context=context)                        
+                                    
+                            if not volume:  
+                                _logger.error(
+                                    'Product without volume: %s' % \
+                                        product.default_code)                                            
+                                continue # jump product
+                    
+                            create_list.append({
+                                'transport_id': transport_id,
+                                'product_id': product.id,
+                                'quantity': int(
+                                    transport.volume / volume),
+                                })
             
             for data in create_list:
                 transport_pool.create(cr, uid, data, context=context)

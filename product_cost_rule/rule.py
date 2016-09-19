@@ -429,7 +429,7 @@ class ProductProduct(orm.Model):
                                 <td style="text-align:right">%s</td>
                             </tr>''' % (
                                 rule.sequence,
-                                _('+ Transport (anagraphic)'),
+                                _('+ Transport (settings)'),
                                 '%s / %s = %s' % (
                                     transport_cost, 
                                     q_x_tran,
@@ -449,9 +449,17 @@ class ProductProduct(orm.Model):
                                     Volume x piece not present!!!
                                 </font></p>''')
                             continue
-                        
-                        cost1 = volume1 * transport_cost / transport_volume     
-                        total +=  cost1
+
+                        if not transport_volume:
+                            error += _('''
+                                <p><font color="red">
+                                    No transport total volume present!!!
+                                </font></p>''')
+                            continue
+                                                
+                        pc_x_trans = transport_volume / volume1
+                        cost1 =  transport_cost / int(pc_x_trans) # cut down
+                        total += cost1
                         total = round(total, round_decimal)
                         warning += _('''
                         <p><font color="orange">
@@ -468,14 +476,15 @@ class ProductProduct(orm.Model):
                                 <td style="text-align:right">%s</td>
                             </tr>''' % (
                                 rule.sequence,
-                                _('+ Transport (volume)<br/>'
+                                _('+ Transport (calculated)<br/>'
                                     '<i><font color="orange">'
-                                    '[base on volume not setting]'
-                                    '</font></i>'),
-                                '%s x %s / %s = %s' % (
-                                    volume1, 
+                                    '[No pcs/tran. so %s > %s]'
+                                    '</font></i>') % (
+                                        pc_x_trans, int(pc_x_trans)),
+                                '%s x %s = %s' % (
                                     transport_cost, 
                                     transport_volume,
+                                    volume1, 
                                     cost1,
                                     ),
                                 float_mask % total,
