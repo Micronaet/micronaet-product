@@ -92,7 +92,7 @@ class ProductCostRule(orm.Model):
     
     _columns = {
         'sequence': fields.integer('Sequence'),
-        'name': fields.char('Description', size=64, required=False),        
+        'name': fields.char('Description', size=64, required=True),        
         'method_id': fields.many2one(
             'product.cost.method', 'Method', ondelete='cascade'),
         'operation': fields.selection([
