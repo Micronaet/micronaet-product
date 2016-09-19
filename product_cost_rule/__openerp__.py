@@ -48,6 +48,7 @@
     'data': [
         'security/ir.model.access.csv',    
         'rule_view.xml',
+        'wizard/set_calc_rule_view.xml',
         ],
     'active': False,
     'installable': True,

@@ -66,7 +66,7 @@ class ProductCostMethod(orm.Model):
             ('company', 'F / Company (base: supplier cost)'),
             ('customer', 'F / Customer (base: company cost)'),
             ('pricelist', 'Pricelist (base: customer cost)'),
-            ], 'Category', 
+            ], 'Category', required=True, 
             help='Used for get the cost to update, cost f/company, f/customer'
                 'pricelist'),
         'transport_id': fields.many2one(
@@ -171,8 +171,9 @@ class ProductProduct(orm.Model):
     def get_product_cost_value(self, cr, uid, ids, 
             block='company', context=None):
         ''' Utility for generate cost for product template passed
-            product: browse obj for product
-            field: name of field that idendify cost method
+            ids: list of product ID
+            block: name of field that idendify cost method 
+                (company, customer, pricelist)
         '''
         # Database for speed up search:
         duty_db = {} # database of first supplier duty
@@ -205,6 +206,7 @@ class ProductProduct(orm.Model):
                     error_field: _('''
                         <p><font color="red">Block selection error: %s
                         </font></p>''') % block,
+                        
                     }, context=context)
                 continue
             
@@ -216,9 +218,11 @@ class ProductProduct(orm.Model):
             # Bloced error:
             if not total:
                 self.write(cr, uid, product.id, {
+                    calc_field: False,
                     error_field: _('''
                         <p><font color="red">Base price is empty (%s)
                         </font></p>''') % block,
+                    warning_field: False,    
                     }, context=context)
                 continue
                 
