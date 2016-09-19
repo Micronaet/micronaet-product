@@ -78,8 +78,8 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
                 wiz_browse.code_start, '%')))
         if wiz_browse.code_partial:
             if wiz_browse.code_from and wiz_browse.code_from > 1:
-                pattern = '_' * (wiz_browse.code_from -1)                
-                domain.append(('default_code', 'ilike', '%s%s%s' % (
+                pattern = '_' * (wiz_browse.code_from - 1)                
+                domain.append(('default_code', '=ilike', '%s%s%s' % (
                     pattern,
                     wiz_browse.code_partial,
                     '%',
@@ -87,7 +87,7 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             else:
                 domain.append(
                     ('default_code', 'ilike', wiz_browse.code_partial))
-       
+        _logger.warning(domain)
         product_ids = product_pool.search(cr, uid, domain, context=context)
         
         # ---------------------------------------------------------------------

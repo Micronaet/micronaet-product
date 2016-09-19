@@ -19,7 +19,7 @@
                         
                         <field name="code_start" />
                         <field name="code_partial" />
-                        <field name="code_from" />
+                        <field name="code_from" attrs="{'invisible':[('code_partial','=',False)]}"/>
 
                         <separator string="Force / Calc" colspan="6"/>
                         <field name="company_calc" />
