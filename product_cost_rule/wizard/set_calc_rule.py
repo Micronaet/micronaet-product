@@ -143,7 +143,6 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         'code_from': fields.integer('Code from char'),         
         #'family_id': fields.many2one('product.template', 'Family', 
         #    domain=[('is_family', '=', True)]),
-        }
     
         # Calculation field:
         'company_calc': fields.boolean('Company calc'),
