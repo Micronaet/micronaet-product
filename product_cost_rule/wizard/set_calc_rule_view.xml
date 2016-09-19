@@ -9,6 +9,7 @@
                 <form string="Wizard" version="7.0">
                    <header>
                        <button string="Cancel" special="cancel" />
+                       <button name="action_show_selection" string="Show selection" type="object" icon="gtk-jump-to" />
                        <button name="action_execute" string="Execute" type="object" icon="gtk-jump-to" class="oe_highlight" />
                    </header>                   
                    <group colspan="4" col="6">

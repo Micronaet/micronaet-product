@@ -47,65 +47,45 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
     _name = 'product.method.force.calc.wizard'
     _description = 'Force calc or assign method to product'
 
-    # --------------------
-    # Wizard button event:
-    # --------------------
-    def action_execute(self, cr, uid, ids, context=None):
-        ''' Event for button execute
+    # Utility
+    def generate_domain(self, cr, uid, wiz_proxy, context=None):
+        ''' Update domain:
         '''
-        wiz_browse = self.browse(cr, uid, ids, context=context)[0]
-        
         product_pool = self.pool.get('product.product')
-        
-        # ---------------------------------------------------------------------
-        # 1. generate filter and search product
-        # ---------------------------------------------------------------------
+
         domain = []
-        
         # Supplier filter:
-        if wiz_browse.first_supplier_id:
+        if wiz_proxy.first_supplier_id:
             domain.append(
-                ('first_supplier_id', '=', wiz_browse.first_supplier_id.id))
+                ('first_supplier_id', '=', wiz_proxy.first_supplier_id.id))
                 
         # Duty:
-        if wiz_browse.duty_id:
+        if wiz_proxy.duty_id:
             domain.append(
-                ('duty_id', '=', wiz_browse.duty_id.id))
+                ('duty_id', '=', wiz_proxy.duty_id.id))
         
         # Product code filter:
-        if wiz_browse.code_start:
+        if wiz_proxy.code_start:
             domain.append(('default_code', '=ilike', '%s%s' % (
-                wiz_browse.code_start, '%')))
-        if wiz_browse.code_partial:
-            if wiz_browse.code_from and wiz_browse.code_from > 1:
-                pattern = '_' * (wiz_browse.code_from - 1)                
+                wiz_proxy.code_start, '%')))
+        if wiz_proxy.code_partial:
+            if wiz_proxy.code_from and wiz_proxy.code_from > 1:
+                pattern = '_' * (wiz_proxy.code_from - 1)                
                 domain.append(('default_code', '=ilike', '%s%s%s' % (
                     pattern,
-                    wiz_browse.code_partial,
+                    wiz_proxy.code_partial,
                     '%',
                     )))
             else:
                 domain.append(
-                    ('default_code', 'ilike', wiz_browse.code_partial))
-        _logger.warning(domain)
+                    ('default_code', 'ilike', wiz_proxy.code_partial))
+
         product_ids = product_pool.search(cr, uid, domain, context=context)
-        
-        # ---------------------------------------------------------------------
-        # 3. force calc method (depend on check button)
-        # ---------------------------------------------------------------------
-        if wiz_browse.company_set:
-            product_pool.write(cr, uid, product_ids, {
-                'company_method_id': wiz_browse.company_method_id.id,
-                }, context=context)
-        
-        # ---------------------------------------------------------------------
-        # 4. force calc operation
-        # ---------------------------------------------------------------------
-        
-        
-        # ---------------------------------------------------------------------
-        # 5. return touched product
-        # ---------------------------------------------------------------------
+        return product_ids
+
+    def return_view(self, cr, uid, ids, target='current', context=None):
+        ''' Generate view for return product list result
+        '''
         model_pool = self.pool.get('ir.model.data')
         tree_view_id = model_pool.get_object_reference(
             cr, uid, 'product_cost_rule', 'view_product_product_cost_tree')[1]
@@ -124,11 +104,50 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             'view_id': tree_view_id,
             'search_view_id': search_view_id,
             'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
-            'domain': [('id', '=', product_ids)],
+            'domain': [('id', '=', ids)],
             'context': context,
-            'target': 'current',
+            'target': target,
             'nodestroy': False,
             }
+        
+    # --------------------
+    # Wizard button event:
+    # --------------------
+    def action_show_selection(self, cr, uid, ids, context=None):
+        ''' Return record selected
+        '''
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
+        product_ids = self.generate_domain(
+            cr, uid, wiz_proxy, context=context)
+        return self.return_view(cr, uid, product_ids, context=context)
+            
+    
+    def action_execute(self, cr, uid, ids, context=None):
+        ''' Event for button execute
+        '''
+        wiz_proxy = self.browse(cr, uid, ids, context=context)[0]
+        
+        product_pool = self.pool.get('product.product')
+        
+        # ---------------------------------------------------------------------
+        # 1. generate filter and search product
+        # ---------------------------------------------------------------------
+        product_ids = self.generate_domain(cr, uid, wiz_proxy, context=context)
+        
+        # ---------------------------------------------------------------------
+        # 3. force calc method (depend on check button)
+        # ---------------------------------------------------------------------
+        if wiz_proxy.company_set:
+            product_pool.write(cr, uid, product_ids, {
+                'company_method_id': wiz_proxy.company_method_id.id,
+                }, context=context)
+        
+        # ---------------------------------------------------------------------
+        # 4. force calc operation
+        # ---------------------------------------------------------------------
+
+        # Return touched product:        
+        return self.return_view(cr, uid, product_ids, context=context)
 
     _columns = {
         # Filter field:
