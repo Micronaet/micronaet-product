@@ -80,6 +80,7 @@ class ProductCostMethod(orm.Model):
 
     _defaults = {
         'category': lambda *x: 'company',            
+        'round': lambda *x: 2,
         }
 
 class ProductCostRule(orm.Model):
@@ -114,7 +115,6 @@ class ProductCostRule(orm.Model):
     _defaults = {
         'operation': lambda *x: 'recharge',
         'mode': lambda *x: 'percentual',
-        'round': lambda *x: 2,
         }    
 
 class ProductCostMethod(orm.Model):
@@ -194,11 +194,11 @@ class ProductProduct(orm.Model):
                 base_description = _('Supplier cost')
             elif block == 'customer':            
                 total = product.standard_price
-                result_field = 'customer_price'
+                result_field = 'customer_cost'
                 base_description = _('Company cost')
             elif block == 'pricelist':
                 total = product.customer_cost
-                result_field = 'price_lst'
+                result_field = 'lst_price'
                 base_description = _('Customer cost')
             else:
                 self.write(cr, uid, product.id, {
@@ -213,6 +213,7 @@ class ProductProduct(orm.Model):
             error_field = '%s_calc_error'% block
             warning_field = '%s_calc_warning' % block
     
+            # Bloced error:
             if not total:
                 self.write(cr, uid, product.id, {
                     error_field: _('''
@@ -253,12 +254,19 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 if operation == 'discount':
                     base = total
+
+                    if not value:
+                        error += _('''
+                            <p><font color="red">
+                                Discount rate not found!!!
+                            </font></p>''')
+                        continue
+
                     # value depend on mode:
                     if mode == 'percentual':
                         discount_value = total * value / 100.0
                     elif mode == 'fixed':
                         discount_value = value
-                    
                         
                     total -= discount_value
                     total = round(total, round_decimal)
@@ -356,8 +364,16 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 elif operation == 'exchange':
                     base = total
-                    exchange_rate = method.force_exchange
-                    # TODO read it from currency                    
+                    exchange_rate = method.force_exchange                    
+                    # TODO read it from currency         
+
+                    if not exchange_rate:
+                        error += _('''
+                            <p><font color="red">
+                                Exchange value not found!!!
+                            </font></p>''')
+                        continue
+                               
                     exchange_value = total * exchange_rate
                     total += exchange_value
                     total = round(total, round_decimal)
@@ -381,12 +397,10 @@ class ProductProduct(orm.Model):
                 elif operation == 'transport':
                     # Check mandatory element:
                     if not transport:
-                        self.write(cr, uid, product.id, {
-                            error_field: _('''
-                                <p><font color="red">
-                                    No %s transport set up cost method!
-                                </font></p>''') % block,
-                            }, context=context)
+                        error += _('''
+                            <p><font color="red">
+                                No %s transport set up cost method!
+                            </font></p>''') % block
                         continue
                         
                     # Mandatory fields (from view):   
@@ -399,12 +413,10 @@ class ProductProduct(orm.Model):
                     
                     # Check mandatory volume
                     if not volume1:
-                        self.write(cr, uid, product.id, {
-                            error_field: _('''
-                                <p><font color="red">
-                                    Volume x piece not present!!!
-                                </font></p>'''),
-                            }, context=context)
+                        error += _('''
+                            <p><font color="red">
+                                Volume x piece not present!!!
+                            </font></p>''')
                         continue
                     
                     cost1 = volume1 * transport_cost / transport_volume     
@@ -433,6 +445,14 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 elif operation == 'recharge':
                     base = total
+
+                    if not value:
+                        error += _('''
+                            <p><font color="red">
+                                Recharge rate not found!!!
+                            </font></p>''')
+                        continue
+                        
                     # value depend on mode:
                     if mode == 'percentual':
                         recharge_value = total * value / 100.0
@@ -465,7 +485,6 @@ class ProductProduct(orm.Model):
             # -----------------------------------------------------------------
             #                     Write data in product:
             # -----------------------------------------------------------------
-            import pdb; pdb.set_trace()
             self.write(cr, uid, product.id, {
                 result_field: total,
                 calc_field: _('''
