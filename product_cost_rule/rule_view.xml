@@ -217,6 +217,7 @@
                                         <field name="transport_ids" nolabel="1">
                                             <tree string="Transport" editable="bottom">
                                                 <field name="transport_id" />
+                                                <field name="calc_note" />
                                                 <field name="quantity" />
                                             </tree>                                            
                                         </field>

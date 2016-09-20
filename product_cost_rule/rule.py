@@ -582,6 +582,7 @@ class ProductProductTransport(orm.Model):
             'product.product', 'Product'),
         'transport_id': fields.many2one(
             'product.cost.transport', 'Transport', required=True),
+        'calc_note': fields.text('Calc. note', readonly=True) ,    
         'quantity': fields.integer('Quantity', required=True),
         }
     

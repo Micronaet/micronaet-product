@@ -172,15 +172,15 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
                 item.id for item in wiz_proxy.transport_ids]
             
             create_list = []
-            import pdb; pdb.set_trace()
             for product in product_pool.browse(cr, uid, product_ids, 
                     context=context):
+                current_ids = []    
                 for item in product.transport_ids:
                     current_ids = [
                         item.transport_id.id for item in product.transport_ids]
-                else:        
-                    current_ids = []
-                        
+
+                print current_ids, update_transport_ids                        
+
                 volume = False
                 for transport in wiz_proxy.transport_ids:
                     transport_id = transport.id
@@ -190,19 +190,20 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
                             volume = product_pool.get_volume_single_product(
                                 cr, uid, product, context=context)                        
                                     
-                            if not volume:  
-                                _logger.error(
-                                    'Product without volume: %s' % \
-                                        product.default_code)                                            
-                                continue # jump product
-                    
-                            create_list.append({
-                                'transport_id': transport_id,
-                                'product_id': product.id,
-                                'quantity': int(
-                                    transport.volume / volume),
-                                })
-            import pdb; pdb.set_trace()
+                        if not volume:  
+                            _logger.error(
+                                'Product without volume: %s' % \
+                                    product.default_code)                                            
+                            break # no more transport for this product
+                        quantity = int(transport.volume / volume)
+                        create_list.append({
+                            'transport_id': transport_id,
+                            'product_id': product.id,
+                            'quantity': quantity,
+                            'calc_note': 'INT (%s / %s) = %s' % (
+                                transport.volume, volume, quantity),
+                            })
+
             for data in create_list:
                 transport_pool.create(cr, uid, data, context=context)
         
