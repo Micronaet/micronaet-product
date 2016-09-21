@@ -624,11 +624,15 @@ class ProductProduct(orm.Model):
         'pricelist_calc_warning': fields.text(
             'Pricelist calc warning', readonly=True),
         
-        'supplier_cost': fields.float('Supplier cost', 
-            digits_compute=dp.get_precision('Product Price'), 
+        # XXX supplier_cost >> standard_price
+        #'supplier_cost': fields.float('Supplier cost',
+        #    digits_compute=dp.get_precision('Cost FOB'), 
+        #    help='Supplier cost (pricelist cost, f/company)'),
+        'company_cost': fields.float('Company cost', 
+            digits_compute=dp.get_precision('Cost FCO / Company'), 
             help='Supplier cost (pricelist cost, f/company)'),
         'customer_cost': fields.float('Customer cost', 
-            digits_compute=dp.get_precision('Product Price'), 
+            digits_compute=dp.get_precision('Cost FCO / Customer'), 
             help='Customer cost (base for calculate goods f/customer)'),
         
         'transport_ids': fields.one2many(
