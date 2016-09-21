@@ -125,8 +125,9 @@
                                 <page string="Cost generation">
                                     <group col="8" colspan="4">
                                         <group col="2" colspan="2">
-                                            <separator string="Cost FOB (supplier)" colspan="2"/>
+                                            <separator string="Cost FOB (supplier) >>>" colspan="2"/>
                                             <field name="standard_price" string="Cost FOB"/>
+                                            <separator string="--------------------------------------" colspan="2"/>
                                             <!--<field name="supplier_cost" />-->
                                             <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" />
                                             <button name="calculate_cost_method_company" string="Generate f/company" icon="gtk-execute" type="object" attrs="{'invisible': [('company_method_id','=',False)]}" colspan="2" />
@@ -136,8 +137,9 @@
                                         </group>
                                         
                                         <group col="2" colspan="2">
-                                            <separator string="F / Company >>" colspan="2"/>
+                                            <separator string="F / Company >>>" colspan="2"/>
                                             <field name="company_cost" />
+                                            <separator string="--------------------------------------" colspan="2"/>
                                             <field name="customer_method_id" context="{'default_category':'customer', 'product_embedded':True}" domain="[('category','=','customer')]" />
                                             <button name="calculate_cost_method_customer" string="Generate f/customer" icon="gtk-execute" type="object" attrs="{'invisible': [('customer_method_id','=',False)]}" colspan="2" />
                                             <field name="customer_calc" attrs="{'invisible': [('customer_method_id','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
@@ -146,8 +148,9 @@
                                         </group>            
                                                             
                                         <group col="2" colspan="2">
-                                            <separator string="FCO / Supplier >>" colspan="2"/>
+                                            <separator string="FCO / Supplier >>>" colspan="2"/>
                                             <field name="customer_cost" />
+                                            <separator string="--------------------------------------" colspan="2"/>
                                             <field name="pricelist_method_id" context="{'default_category':'pricelist', 'product_embedded':True}" domain="[('category','=','pricelist')]" />
                                             <button name="calculate_cost_method_pricelist" string="Generate pricelist" icon="gtk-execute" type="object" attrs="{'invisible': [('pricelist_method_id','=',False)]}" colspan="2" />
                                             <field name="pricelist_calc" attrs="{'invisible': [('pricelist_method_id','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
@@ -157,6 +160,7 @@
                                         <group col="2" colspan="2">
                                             <separator string="Pricelist" colspan="2"/>
                                             <field name="lst_price" />
+                                            <separator string="--------------------------------------" colspan="2"/>
                                         </group> 
                                     </group>                            
                                 </page>
