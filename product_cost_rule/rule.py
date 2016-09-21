@@ -191,8 +191,7 @@ class ProductProduct(orm.Model):
             # -----------------------------------------------------------------
             if block == 'company':
                 total = product.standard_price
-                #total = product.supplier_cost                
-                result_field = 'standard_price'
+                result_field = 'company_cost'
                 base_description = _('Supplier cost')
             elif block == 'customer':            
                 total = product.company_cost
