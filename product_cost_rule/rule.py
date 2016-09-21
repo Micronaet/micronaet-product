@@ -190,11 +190,12 @@ class ProductProduct(orm.Model):
             #         Get parameter depend on block selected:
             # -----------------------------------------------------------------
             if block == 'company':
-                total = product.supplier_cost                
+                total = product.standard_price
+                #total = product.supplier_cost                
                 result_field = 'standard_price'
                 base_description = _('Supplier cost')
             elif block == 'customer':            
-                total = product.standard_price
+                total = product.company_cost
                 result_field = 'customer_cost'
                 base_description = _('Company cost')
             elif block == 'pricelist':
