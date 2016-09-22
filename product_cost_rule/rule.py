@@ -635,24 +635,35 @@ class ProductProduct(orm.Model):
             'Pricelist calc warning', readonly=True),
         
         # XXX supplier_cost >> standard_price
-        #'supplier_cost': fields.float('Supplier cost',
-        #    digits_compute=dp.get_precision('Cost FOB'), 
+        #'supplier_cost': fields.float('Cost FOB',
+        #    digits_compute=dp.get_precision('price_accuracy'), 
         #    help='Supplier cost (pricelist cost, f/company)'),
-        'company_cost': fields.float('Company cost', 
-            digits_compute=dp.get_precision('Cost FCO / Company'), 
+        'company_cost': fields.float('Cost FCO/Company', 
+            digits_compute=dp.get_precision('price_accuracy'), 
             help='Supplier cost (pricelist cost, f/company)'),
-        'customer_cost': fields.float('Customer cost', 
-            digits_compute=dp.get_precision('Cost FCO / Customer'), 
+        'customer_cost': fields.float('Cost FCO/Customer', 
+            digits_compute=dp.get_precision('price_accuracy'), 
             help='Customer cost (base for calculate goods f/customer)'),
         
         'cost_currency_id': fields.related(
             'first_supplier_id', 'cost_currency_id', 
             type='many2one', relation='res.currency', 
-            string='Partner cost currency'),    
+            string='Partner cost currency', readonly=True),
         
         'transport_ids': fields.one2many(
             'product.product.transport', 'product_id', 
             'Transport'),
+        }
+
+class ResCurrency(orm.Model):
+    """ Model name: Res Currency
+    """    
+    _inherit = 'res.currency'
+    
+    _columns = {
+        'rate_silent_cost': fields.float('Rate for cost', 
+            digits_compute=dp.get_precision('price_accuracy'), 
+            help='Used for convert supplier cost in pricelist generation'),        
         }
 
 class ResPartner(orm.Model):

@@ -125,16 +125,17 @@
                                 <page string="Cost generation">
                                     <group col="8" colspan="4">
                                         <group col="3" colspan="2">
-                                            <separator string="Cost FOB (supplier) >>>" colspan="2"/>
+                                            <separator string="Cost FOB (supplier) >>>" colspan="3"/>
                                             <field name="standard_price" string="Cost FOB"/>
                                             <field name="cost_currency_id" nolabel="1" />
-                                            <separator string="--------------------------------------" colspan="2"/>
+                                            <separator string="--------------------------------------" colspan="3"/>
                                             <!--<field name="supplier_cost" />-->
                                             <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" />
-                                            <button name="calculate_cost_method_company" string="Generate f/company" icon="gtk-execute" type="object" attrs="{'invisible': [('company_method_id','=',False)]}" colspan="2" />
-                                            <field name="company_calc" attrs="{'invisible': [('company_method_id','=',False)]}" widget="html" nolabel="1" colspan="2"/>
-                                            <field name="company_calc_error" attrs="{'invisible': [('company_calc_error','=',False)]}" widget="html" nolabel="1" colspan="2"/>
-                                            <field name="company_calc_warning" attrs="{'invisible': [('company_calc_warning','=',False)]}" widget="html" nolabel="1" colspan="2"/>
+                                            <newline/>
+                                            <button name="calculate_cost_method_company" string="Generate f/company" icon="gtk-execute" type="object" attrs="{'invisible': [('company_method_id','=',False)]}" colspan="3" />
+                                            <field name="company_calc" attrs="{'invisible': [('company_method_id','=',False)]}" widget="html" nolabel="1" colspan="3"/>
+                                            <field name="company_calc_error" attrs="{'invisible': [('company_calc_error','=',False)]}" widget="html" nolabel="1" colspan="3"/>
+                                            <field name="company_calc_warning" attrs="{'invisible': [('company_calc_warning','=',False)]}" widget="html" nolabel="1" colspan="3"/>
                                         </group>
                                         
                                         <group col="2" colspan="2">
@@ -306,6 +307,17 @@
             <field name="domain">[]</field>
         </record>
         
+        <record model="ir.ui.view" id="view_res_currency_extra_rate_form">
+            <field name="name">res.currency.extra.rate</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_form"/>
+            <field name="arch" type="xml">
+                <field name="rate_silent" position="after">
+                    <field name="rate_silent_cost" />
+                </field>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="view_res_partner_extra_cost_form">
             <field name="name">res.partner.extra.form</field>
             <field name="model">res.partner</field>
