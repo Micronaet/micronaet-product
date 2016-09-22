@@ -430,7 +430,7 @@ class ProductProduct(orm.Model):
                             product.first_supplier_id.transport_id.cost
                         transport_volume = \
                             product.first_supplier_id.transport_id.volume
-                        comment = _('(Par.)')
+                        comment = _('(Suppl.)')
                     else:
                         error += _('''
                             <p><font color="red">
