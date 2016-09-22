@@ -368,13 +368,31 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 elif operation == 'exchange':
                     base = total
-                    exchange_rate = method.force_exchange                    
-                    # TODO read it from currency         
-
-                    if not exchange_rate:
+                    comment = ''
+                    # Read exchange:
+                    if method.force_exchange: # method
+                        comment = _('(Met.)')    
+                        exchange_rate = method.force_exchange
+                    else:
+                        supplier = product.first_supplier_id
+                        if supplier:
+                            comment = _('(Suppl.)')    
+                            if supplier.cost_currency_id:
+                                exchange_rate = \
+                                    supplier.cost_currency_id.rate_silent_cost
+                            else:
+                                exchange_rate = 1.0 # EUR
+                                warning += _('''
+                                    <p><font color="orange">
+                                        No currency in supplier use 1
+                                    </font></p>''')
+                        else:
+                            exchange_rate = 0.0
+                        
+                    if not exchange_rate: # no exchange (value 0):
                         error += _('''
                             <p><font color="red">
-                                Exchange value not found!!!
+                                Exchange value not found (currency and method)!                                
                             </font></p>''')
                         continue
                                
@@ -383,12 +401,13 @@ class ProductProduct(orm.Model):
                     calc += '''
                         <tr>
                             <td>%s</td>
-                            <td>%s</td>
+                            <td>%s %s</td>
                             <td>%s</td>
                             <td style="text-align:right">%s</td>
                         </tr>''' % (
                             rule.sequence,
                             _('x Exchange %s') % exchange_rate,
+                            comment,
                             '%s x %s' % (
                                 base, exchange_rate),
                             float_mask % total,
@@ -398,6 +417,7 @@ class ProductProduct(orm.Model):
                 #                         TRANSPORT RULE:
                 # -------------------------------------------------------------
                 elif operation == 'transport':
+                    comment = ''
                     # Check mandatory element:
                     # Read default supplier transport method:
                     if transport:        
@@ -659,10 +679,9 @@ class ResCurrency(orm.Model):
     """ Model name: Res Currency
     """    
     _inherit = 'res.currency'
-    
+
     _columns = {
-        'rate_silent_cost': fields.float('Rate for cost', 
-            digits_compute=dp.get_precision('price_accuracy'), 
+        'rate_silent_cost': fields.float('Rate for cost', digits=(16, 4), 
             help='Used for convert supplier cost in pricelist generation'),        
         }
 
