@@ -646,8 +646,10 @@ class ResPartner(orm.Model):
     _inherit = 'res.partner'
     
     _columns = {
+        'transport_id': fields.many2one(
+            'product.cost.transport', 'Transport'),
         'cost_currency_id': fields.many2one(
-            'res.currency', 'Cost currency', 
+            'res.currency', 'Currency for cost',
             help='currency for supplier cost value, used also to get exchange'
                 'value for conversiono'),
         }

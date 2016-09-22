@@ -30,6 +30,7 @@
     'depends': [
         'base',
         'product',
+        'account', # for currency
         'product_first_supplier', # to get first supplier
         'duty_management', # for duty elements
         'base_accounting_program', # q x pack field
