@@ -124,9 +124,10 @@
                             <notebook colspan="4">
                                 <page string="Cost generation">
                                     <group col="8" colspan="4">
-                                        <group col="2" colspan="2">
+                                        <group col="3" colspan="2">
                                             <separator string="Cost FOB (supplier) >>>" colspan="2"/>
                                             <field name="standard_price" string="Cost FOB"/>
+                                            <field name="cost_currency_id" nolabel="1" />
                                             <separator string="--------------------------------------" colspan="2"/>
                                             <!--<field name="supplier_cost" />-->
                                             <field name="company_method_id" context="{'default_category':'company', 'product_embedded':True}" domain="[('category','=','company')]" />

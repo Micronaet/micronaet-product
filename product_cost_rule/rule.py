@@ -645,6 +645,11 @@ class ProductProduct(orm.Model):
             digits_compute=dp.get_precision('Cost FCO / Customer'), 
             help='Customer cost (base for calculate goods f/customer)'),
         
+        'cost_currency_id': fields.related(
+            'first_supplier_id', 'cost_currency_id', 
+            type='many2one', relation='res.currency', 
+            string='Partner cost currency'),    
+        
         'transport_ids': fields.one2many(
             'product.product.transport', 'product_id', 
             'Transport'),
