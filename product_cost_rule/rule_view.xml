@@ -310,7 +310,7 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <field name="name" position="after">
+                <field name="property_account_position" position="after">
                     <field name="cost_currency_id" />
                     <field name="transport_id" />
                 </field>

@@ -399,17 +399,25 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 elif operation == 'transport':
                     # Check mandatory element:
-                    if not transport:
+                    # Read default supplier transport method:
+                    if transport:        
+                        transport_cost = transport.cost
+                        transport_volume = transport.volume
+                        comment = _('(Met.)')
+                    elif product.first_supplier_id and \
+                            product.first_supplier_id.transport_id:
+                        transport_cost = \
+                            product.first_supplier_id.transport_id.cost
+                        transport_volume = \
+                            product.first_supplier_id.transport_id.volume
+                        comment = _('(Par.)')
+                    else:
                         error += _('''
                             <p><font color="red">
-                                No %s transport set up cost method!
+                                Setup transport in cost method %s or partner!
                             </font></p>''') % block
                         continue
                         
-                    # Mandatory fields (from view):   
-                    transport_cost = transport.cost
-                    transport_volume = transport.volume
-                    
                     # Search in tranport-product relation
                     q_x_tran = 0
                     for prod_tran in product.transport_ids:
@@ -424,12 +432,13 @@ class ProductProduct(orm.Model):
                         calc += '''
                             <tr>
                                 <td>%s</td>
-                                <td>%s</td>
+                                <td>%s %s</td>
                                 <td>%s</td>
                                 <td style="text-align:right">%s</td>
                             </tr>''' % (
                                 rule.sequence,
-                                _('+ Transport (settings)'),
+                                _('+ Transport (sett.)'),
+                                comment,
                                 '%s / %s = %s' % (
                                     transport_cost, 
                                     q_x_tran,
@@ -471,16 +480,17 @@ class ProductProduct(orm.Model):
                         calc += '''
                             <tr>
                                 <td>%s</td>
-                                <td>%s</td>
+                                <td>%s %s</td>
                                 <td>%s</td>
                                 <td style="text-align:right">%s</td>
                             </tr>''' % (
                                 rule.sequence,
-                                _('+ Transport (calculated)<br/>'
+                                _('+ Transport (calc.)<br/>'
                                     '<i><font color="orange">'
                                     '[pcs/tr. %s > %s]'
                                     '</font></i>') % (
                                         pc_x_trans, int(pc_x_trans)),
+                                comment,        
                                 '%s / %s = %s' % (
                                     transport_cost, 
                                     int(pc_x_trans), 
@@ -647,7 +657,7 @@ class ResPartner(orm.Model):
     
     _columns = {
         'transport_id': fields.many2one(
-            'product.cost.transport', 'Transport'),
+            'product.cost.transport', 'Default transport'),
         'cost_currency_id': fields.many2one(
             'res.currency', 'Currency for cost',
             help='currency for supplier cost value, used also to get exchange'
