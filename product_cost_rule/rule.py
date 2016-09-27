@@ -72,7 +72,7 @@ class ProductCostMethod(orm.Model):
         'transport_id': fields.many2one(
             'product.cost.transport', 'Transport'),
         'force_exchange': fields.float('Force exchange', digits=(16, 2)),    
-        'round': fields.integer('Round', required=True,
+        'round': fields.integer('Decimal subtotal', required=True,
             help='Round number of decimal, 2 means 15.216 > 15.22'),    
         # TODO add selection for round only final result    
         'note': fields.text('Note'),
@@ -100,7 +100,9 @@ class ProductCostRule(orm.Model):
             ('duty', 'Duty % (+)'),
             ('exchange', 'Exchange (x)'),
             ('transport', 'Tranport (Vol. x transport)'),
-            ('recharge', 'Recharge % (+)'),], 'Operation', required=True,
+            ('recharge', 'Recharge % (+)'),
+            ('approx', 'Approx'), # Ex.: 0.01 or 1 
+            ], 'Operation', required=True,
             help='Operation type set the base for operation and type of '
                 'operator and also the sign'),
         'mode': fields.selection([
@@ -560,7 +562,33 @@ class ProductProduct(orm.Model):
                                     ),
                             float_mask % total,
                             )    
-                
+
+                # -------------------------------------------------------------
+                #                          APPROX RULE:
+                # -------------------------------------------------------------
+                elif operation == 'approx':
+                    if not value:
+                        error += _('''
+                            <p><font color="red">
+                                Approx need to be setup (es. 0,01)!
+                            </font></p>''')
+                        continue
+                    
+                    total = (total / value)
+                    total = round(total, 0) * value # int round
+                    
+                    calc += '''
+                        <tr>
+                            <td>%s</td>
+                            <td>%s</td>
+                            <td></td>
+                            <td style="text-align:right">%s</td>
+                        </tr>''' % (
+                            rule.sequence,
+                            _('= Round %s') % value,
+                            float_mask % total,
+                            )    
+
             # -----------------------------------------------------------------
             #                     Write data in product:
             # -----------------------------------------------------------------
