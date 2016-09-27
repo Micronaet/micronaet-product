@@ -139,7 +139,7 @@
                                         </group>
                                         
                                         <group col="2" colspan="2">
-                                            <separator string="F / Company >>>" colspan="2"/>
+                                            <separator string="F / Our stock >>>" colspan="2"/>
                                             <field name="company_cost" />
                                             <separator string="--------------------------------------" colspan="2"/>
                                             <field name="customer_method_id" context="{'default_category':'customer', 'product_embedded':True}" domain="[('category','=','customer')]" />
@@ -150,7 +150,7 @@
                                         </group>            
                                                             
                                         <group col="2" colspan="2">
-                                            <separator string="FCO / Supplier >>>" colspan="2"/>
+                                            <separator string="FCO / Customer >>>" colspan="2"/>
                                             <field name="customer_cost" />
                                             <separator string="--------------------------------------" colspan="2"/>
                                             <field name="pricelist_method_id" context="{'default_category':'pricelist', 'product_embedded':True}" domain="[('category','=','pricelist')]" />
