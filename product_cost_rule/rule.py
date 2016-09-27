@@ -396,7 +396,7 @@ class ProductProduct(orm.Model):
                             </font></p>''')
                         continue
                                
-                    total *= exchange_rate
+                    total /= exchange_rate
                     total = round(total, round_decimal)
                     calc += '''
                         <tr>
@@ -408,7 +408,7 @@ class ProductProduct(orm.Model):
                             rule.sequence,
                             _('x Exchange %s') % exchange_rate,
                             comment,
-                            '%s x %s' % (
+                            '%s : %s' % (
                                 base, exchange_rate),
                             float_mask % total,
                             )    
