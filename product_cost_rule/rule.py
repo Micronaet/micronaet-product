@@ -406,7 +406,7 @@ class ProductProduct(orm.Model):
                             <td style="text-align:right">%s</td>
                         </tr>''' % (
                             rule.sequence,
-                            _('x Exchange %s') % exchange_rate,
+                            _(': Exchange %s') % exchange_rate,
                             comment,
                             '%s : %s' % (
                                 base, exchange_rate),
