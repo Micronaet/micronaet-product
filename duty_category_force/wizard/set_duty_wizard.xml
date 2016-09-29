@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!-- product.method.force.duty.wizard-->
+       <record id="product_method_force_duty_wizard_view" model="ir.ui.view">
+            <field name="name">Force duty category</field>
+            <field name="model">product.method.force.duty.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Wizard" version="7.0">
+                   <header>
+                       <button string="Cancel" special="cancel" />
+                       <button name="action_show_selection" string="Show selection" type="object" icon="gtk-justify-fill" />
+                       <button name="action_execute" string="Execute" type="object" icon="gtk-jump-to" class="oe_highlight" />
+                   </header>                   
+                   <group colspan="4" col="6">
+                        <field name="duty_id" />
+                        <newline/>
+
+                        <separator string="Filter" colspan="6"/>
+                        <field name="code_start" />
+                        <field name="code_partial" />
+                        <field name="code_from" attrs="{'invisible':[('code_partial','=',False)]}"/>
+                   </group>
+                </form>
+            </field>
+      </record>
+
+      <record model="ir.actions.act_window" id="action_product_method_force_duty_wizard">
+          <field name="name">Force duty category</field>
+          <field name="res_model">product.method.force.duty.wizard</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">form</field>
+          <field name="target">new</field>
+          <field name="view_id" ref="product_method_force_duty_wizard_view"/>
+      </record>      
+      <menuitem
+            parent="duty_management.product_custom_duty_action_menu" 
+            id="menu_product_method_force_duty_wizard" 
+            action="action_product_method_force_duty_wizard"
+            sequence="10"
+            />
+      
+    </data>
+</openerp>
