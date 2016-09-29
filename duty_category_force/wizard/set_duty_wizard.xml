@@ -39,6 +39,23 @@
             action="action_product_method_force_duty_wizard"
             sequence="10"
             />
+     
+      <record model="ir.ui.view" id="view_product_product_duty_tree">
+          <field name="name">product.product.duty.tree</field>
+          <field name="model">product.product</field>
+          <field name="arch" type="xml">
+                <tree string="Product Variants" colors="red:virtual_available&lt;0;blue:virtual_available&gt;=0 and state in ('draft', 'end', 'obsolete');black:virtual_available&gt;=0 and state not in ('draft', 'end', 'obsolete')">
+	                <field name="default_code" modifiers="{}"/>
+	                <field name="name" modifiers="{'required': true}"/>
+	                <field name="lst_price" modifiers="{}"/>
+	                <field name="price" invisible="not context.get('pricelist',False)" modifiers="{'readonly': true, 'tree_invisible': true}"/>
+	                <field name="uom_id" modifiers="{'required': true}"/>
+	                <field name="ean13" modifiers="{}"/>
+	                <field name="duty_id" modifiers="{}"/>
+	                <field name="state" invisible="1" modifiers="{'tree_invisible': true}"/>
+                </tree>      
+          </field>
+      </record>
       
     </data>
 </openerp>

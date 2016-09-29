@@ -77,8 +77,8 @@ class ProductMethodForceDutyWizard(orm.TransientModel):
         ''' Generate view for return product list result
         '''
         model_pool = self.pool.get('ir.model.data')
-        #tree_view_id = model_pool.get_object_reference(
-        #    cr, uid, 'product_cost_rule', 'view_product_product_cost_tree')[1]
+        tree_view_id = model_pool.get_object_reference(
+            cr, uid, 'duty_category_force', 'view_product_product_duty_tree')[1]
         #form_view_id = model_pool.get_object_reference(
         #    cr, uid, 'product_cost_rule', 'view_product_product_cost_form')[1]
         #search_view_id = model_pool.get_object_reference(
@@ -93,8 +93,8 @@ class ProductMethodForceDutyWizard(orm.TransientModel):
             #'res_id': 1,
             'res_model': 'product.product',
             'view_id': tree_view_id,
-            'search_view_id': search_view_id,
-            'views': [(False, 'tree'), (False, 'form')],
+            #'search_view_id': search_view_id,
+            'views': [(tree_view_id, 'tree'), (False, 'form')],
             #'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
             'domain': [('id', 'in', ids)],
             'context': context,
@@ -128,7 +128,7 @@ class ProductMethodForceDutyWizard(orm.TransientModel):
         _logger.info('Found %s product for update!' % len(product_ids))
         
         product_pool.write(cr, uid, product_ids, {
-            'duty_id': wiz_proxy.duty_id,
+            'duty_id': wiz_proxy.duty_id.id,
             }, context=context)
         
         return self.return_view(cr, uid, product_ids, context=context)
