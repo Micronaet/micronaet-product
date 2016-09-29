@@ -44,7 +44,7 @@
           <field name="name">product.product.duty.tree</field>
           <field name="model">product.product</field>
           <field name="arch" type="xml">
-                <tree string="Product Variants" colors="red:virtual_available&lt;0;blue:virtual_available&gt;=0 and state in ('draft', 'end', 'obsolete');black:virtual_available&gt;=0 and state not in ('draft', 'end', 'obsolete')">
+                <tree string="Product duty category">
 	                <field name="default_code" modifiers="{}"/>
 	                <field name="name" modifiers="{'required': true}"/>
 	                <field name="lst_price" modifiers="{}"/>
