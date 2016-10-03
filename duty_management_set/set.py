@@ -45,7 +45,7 @@ class ProductDutySet(orm.Model):
     _name = 'product.duty.set'
     _description = 'Duty for set'
     _rec_name = 'duty_id'
-    _order = 'name'
+    _order = 'duty_id'
     
     _columns = {
         'product_id': fields.many2one(

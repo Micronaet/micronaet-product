@@ -121,6 +121,7 @@
                         <group col="4" colspan="4">
                             <field name="name" />
                             <field name="default_code" />
+                            
                             <notebook colspan="4">
                                 <page string="Cost generation">
                                     <group col="8" colspan="4">
@@ -147,8 +148,7 @@
                                             <field name="customer_calc" attrs="{'invisible': [('customer_method_id','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
                                             <field name="customer_calc_error" attrs="{'invisible': [('customer_calc_error','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
                                             <field name="customer_calc_warning" attrs="{'invisible': [('customer_calc_warning','=',False)]}" widget="html" nolabel="1"  colspan="2"/>
-                                        </group>            
-                                                            
+                                        </group>                                                            
                                         <group col="2" colspan="2">
                                             <separator string="FCO / Customer >>>" colspan="2"/>
                                             <field name="customer_cost" />
@@ -172,6 +172,17 @@
                                         <newline/>
                                         <field name="duty_id" />
                                         <field name="duty_code" />
+
+                                        <separator string="Duty for set:" colspan="4"/>
+                                        <field name="is_duty_set" />                                        
+
+                                        <field name="duty_set_ids" nolabel="1" attrs="{'invisible':[('is_duty_set','=',False)]}">
+                                            <tree string="Duty set" editable="bottom">
+                                                <field name="product_id" invisible="1" />
+                                                <field name="duty_id" />
+                                                <field name="partial" />
+                                            </tree>
+                                        </field>
                                     </group>
                                 </page>
                                 <page string="Volume data">
