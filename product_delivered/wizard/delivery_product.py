@@ -58,9 +58,9 @@ class ProductProductMovedWizard(orm.TransientModel):
         domain = []
         domain.append(('picking_type_id', '=', wiz_proxy.type_id.id))
         if wiz_proxy.from_date:
-            domain.append(('date', '>=', wiz_proxy.from_date))
+            domain.append(('date', '>=', '%s 00:00:00' % wiz_proxy.from_date))
         if wiz_proxy.to_date:
-            domain.append(('date', '<=', wiz_proxy.to_date))
+            domain.append(('date', '<=', '%s 23:59:59' % wiz_proxy.to_date))
         pick_ids = picking_pool.search(cr, uid, domain, context=context)
 
         domain_move = [('picking_id', 'in', pick_ids)]
