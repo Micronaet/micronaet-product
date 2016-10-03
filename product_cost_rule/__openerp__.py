@@ -41,6 +41,7 @@
         'purchase_extra_field', 
         
         'catalog_management', # gamma status
+        'duty_management_set', # for duty management in stock
         
         # Exchange management 
         #git clone -b 8.0 https://github.com/OCA/account-financial-tools.git

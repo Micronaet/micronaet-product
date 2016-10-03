@@ -38,16 +38,6 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-class ProductProduct(orm.Model):
-    """ Model name: Product product
-    """
-    
-    _inherit = 'product.product'
-    
-    _columns = {
-        'is_duty_set': fields.boolean('Is duty set'),
-        }
-
 class ProductDutySet(orm.Model):
     """ Model name: ProductDutySet
     """
@@ -64,8 +54,7 @@ class ProductDutySet(orm.Model):
             'product.custom.duty', 'Duty', 
             required=True),
         'partial': fields.float('Partial', 
-            digits=(16, 2), 
-            required=True,
+            digits=(16, 2), required=True,
             help='Duty part for this category'),
             
         # Set management for compoment: TODO    
@@ -73,4 +62,17 @@ class ProductDutySet(orm.Model):
         #    'product.product', 'Component'),
         #'total': fields.integer('Total'),    
         }
+
+class ProductProduct(orm.Model):
+    """ Model name: Product product
+    """
+    
+    _inherit = 'product.product'
+    
+    _columns = {
+        'is_duty_set': fields.boolean('Is duty set'),
+        'duty_set_ids': fields.one2many(
+            'product.duty.set', 'product_id', 'Duty for set'),
+        }
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
