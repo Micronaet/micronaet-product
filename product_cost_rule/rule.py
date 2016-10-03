@@ -332,8 +332,8 @@ class ProductProduct(orm.Model):
                     if product.is_duty_set:
                         for duty_set in product.duty_set_ids:
                             duty_rate = self.get_duty_product_rate(
-                                    cr, uid, duty_set.duty_id, 
-                                    country_id, context=context)
+                                cr, uid, duty_set.duty_id, 
+                                country_id, context=context)
                             duty_value += (base * duty_set.partial / 100.0) * (
                                 duty_rate / 100.0)
                     else: # no set
@@ -368,7 +368,7 @@ class ProductProduct(orm.Model):
                                 product.first_supplier_id.country_id.name,
                                 ),
                             '%s x %s = %s' % (base, duty_rate, duty_value) if \
-                                product.is_duty_set else duty_value,
+                                not product.is_duty_set else duty_value,
                             float_mask % total,
                             )    
 

@@ -109,7 +109,7 @@ class ProductProduct(orm.Model):
         'duty_set_reference': fields.function(
             _get_partal_total_duty_set, method=True, 
             type='float', string='Total value for set', 
-            help='Total of single part in this list, used for perc calc.'
+            help='Total of single part in this list, used for perc calc.',
             store=False, readonly=True), 
         }
         
