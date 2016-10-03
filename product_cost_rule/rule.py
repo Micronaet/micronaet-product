@@ -430,33 +430,29 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 elif operation == 'transport':
                     comment = ''
-                    # Check mandatory element:
-                    # Read default supplier transport method:
+                    # Check mandatory element for transport:
                     if transport:
-                        transport_cost = transport.cost
-                        transport_volume = transport.volume
-                        transport_id = transport.id
-                        comment = _('(Met.)')
+                        comment = _('(Metod)')
                     elif product.first_supplier_id and \
                             product.first_supplier_id.transport_id:
-                        transport_id = \
-                            product.first_supplier_id.transport_id.id
-                        transport_cost = \
-                            product.first_supplier_id.transport_id.cost
-                        transport_volume = \
-                            product.first_supplier_id.transport_id.volume
                         comment = _('(Suppl.)')
-                    else:
+                        transport = product.first_supplier_id.transport_id
+                    else:    
                         error += _('''
                             <p><font color="red">
-                                Setup transport in cost method %s or partner!
+                                Setup transport in cost method %s or 
+                                partner!
                             </font></p>''') % block
                         continue
+                    # Calculate date depend on tranport choosed    
+                    transport_cost = transport.cost
+                    transport_volume = transport.volume
+                    transport_id = transport.id
                         
                     # Search in tranport-product relation
                     q_x_tran = 0
                     for prod_tran in product.transport_ids:
-                        if prod_tran.transport_id.id == transport_id:
+                        if prod_tran.transport_id.id == transport.id:
                             q_x_tran = prod_tran.quantity
                             break
                     
