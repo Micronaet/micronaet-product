@@ -177,9 +177,6 @@ class ProductProduct(orm.Model):
             block: name of field that idendify cost method 
                 (company, customer, pricelist)
         '''
-        # Database for speed up search:
-        duty_db = {} # database of first supplier duty
-
         for product in self.browse(cr, uid, ids, context=context):
             # Reset variable used:
             calc = ''
@@ -330,20 +327,20 @@ class ProductProduct(orm.Model):
                         continue
                     
                     # Get duty rate depend on supplier country
+                    base = total
                     duty_value = 0.0
                     if product.is_duty_set:
                         for duty_set in product.duty_set_ids:
                             duty_rate = self.get_duty_product_rate(
                                     cr, uid, duty_set.duty_id, 
                                     country_id, context=context)
-                            duty_value += duty_set.partial * duty_rate / 100.0                        
+                            duty_value += (base * duty_set.partial / 100.0) * (
+                                duty_rate / 100.0)
                     else: # no set
-                        if supplier_id not in duty_db:
-                            duty_db[supplier_id] = self.get_duty_product_rate(
-                                cr, uid, duty, country_id, 
-                                context=context)
-                        duty_rate = duty_db[supplier_id]
-                        duty_value = total * duty_rate / 100.0
+                        duty_rate = self.get_duty_product_rate(
+                             cr, uid, duty, country_id, 
+                             context=context)
+                        duty_value = base * duty_rate / 100.0
     
                     # Check duty rate value (:
                     if not duty_value: 
@@ -352,7 +349,6 @@ class ProductProduct(orm.Model):
                             Duty value is zero!</font>
                         </p>''')
                     
-                    base = total
                     total += duty_value
                     total = round(total, round_decimal)
                     calc += '''
@@ -366,12 +362,13 @@ class ProductProduct(orm.Model):
                             _('''+ Duty %s%s<br/>
                                 <i><font color="grey">[%s-%s]</font></i>
                             ''') % (
-                                duty_rate,
+                                '(set)' if product.is_duty_set else duty_rate,
                                 '%',
                                 product.duty_id.name,
                                 product.first_supplier_id.country_id.name,
                                 ),
-                            '%s x %s = %s' % (base, duty_rate, duty_value),
+                            '%s x %s = %s' % (base, duty_rate, duty_value) if \
+                                product.is_duty_set else duty_value,
                             float_mask % total,
                             )    
 

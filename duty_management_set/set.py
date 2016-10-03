@@ -46,14 +46,35 @@ class ProductDutySet(orm.Model):
     _description = 'Duty for set'
     _rec_name = 'duty_id'
     _order = 'duty_id'
-    
+
+    # Function field:
+    def _get_partal_total_duty_set(self, cr, uid, ids, fields, args, 
+            context=None):
+        ''' Fields function for calculate 
+        '''    
+        res = {}
+        total = sum([duty.partial_value for duty in self.browse(
+            cr, uid, ids, context=context)])
+        for duty in self.browse(cr, uid, ids, context=context):
+            if total:
+                res[duty.id] = \
+                    duty.partial_value / total * 100.0
+            else:
+                res[duty.id] = 0.0 # error!            
+        return res
+        
     _columns = {
         'product_id': fields.many2one(
             'product.product', 'Product'),
         'duty_id': fields.many2one(
             'product.custom.duty', 'Duty', 
             required=True),
-        'partial': fields.float('Partial', 
+        'partial': fields.function(
+            _get_partal_total_duty_set, method=True, 
+            type='float', string='Partial %', 
+            store=False, readonly=True), 
+                        
+        'partial_value': fields.float('Partial value', 
             digits=(16, 2), required=True,
             help='Duty part for this category'),
         'note': fields.text('Note'),
@@ -70,10 +91,26 @@ class ProductProduct(orm.Model):
     
     _inherit = 'product.product'
     
+    # Function field:
+    def _get_partal_total_duty_set(self, cr, uid, ids, fields, args, 
+            context=None):
+        ''' Fields function for calculate 
+        '''    
+        res = {}
+        for product in self.browse(cr, uid, ids, context=context):
+            res[product.id] = sum([
+                duty.partial_value for duty in product.duty_set_ids])
+        return res
+        
     _columns = {
         'is_duty_set': fields.boolean('Is duty set'),
         'duty_set_ids': fields.one2many(
             'product.duty.set', 'product_id', 'Duty for set'),
+        'duty_set_reference': fields.function(
+            _get_partal_total_duty_set, method=True, 
+            type='float', string='Total value for set', 
+            help='Total of single part in this list, used for perc calc.'
+            store=False, readonly=True), 
         }
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

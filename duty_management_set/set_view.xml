@@ -13,14 +13,16 @@
                 <xpath expr="//notebook/page[2]" position="after">
                     <page string="Duty for set" attrs="{'invisible':[('is_duty_set','=',False)]}">
                          <group colspan="4" col="4"> 
-                           <field name="duty_set_ids" nolabel="1" colspan="4">
-                               <tree string="Duty set" editable="bottom">
-                                   <field name="product_id" invisible="1" />
-                                   <field name="duty_id" />
-                                   <field name="partial" />
-                                   <field name="note" />
-                               </tree>
-                           </field>
+                             <field name="duty_set_reference"/> 
+                             <field name="duty_set_ids" nolabel="1" colspan="4">
+                                   <tree string="Duty set" editable="bottom">
+                                       <field name="product_id" invisible="1" />
+                                       <field name="duty_id" />
+                                       <field name="partial_value" />
+                                       <field name="partial" />
+                                       <field name="note" />
+                                   </tree>
+                             </field>
                          </group>   
                     </page>
                 </xpath>
