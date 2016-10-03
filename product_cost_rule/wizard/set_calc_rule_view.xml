@@ -19,7 +19,7 @@
                         <separator string="Filter" colspan="6"/>
                         <field name="first_supplier_id" />
                         <field name="duty_id" />
-                        <newline/>
+                        <field name="status" />
                         
                         <field name="code_start" />
                         <field name="code_partial" />

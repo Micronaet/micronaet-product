@@ -40,6 +40,8 @@
         'product_package_volume', # XXX used?
         'purchase_extra_field', 
         
+        'catalog_management', # gamma status
+        
         # Exchange management 
         #git clone -b 8.0 https://github.com/OCA/account-financial-tools.git
         #'currency_rate_update', # for exchange fields or udate

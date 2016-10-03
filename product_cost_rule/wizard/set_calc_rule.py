@@ -63,6 +63,11 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
         if wiz_proxy.duty_id:
             domain.append(
                 ('duty_id', '=', wiz_proxy.duty_id.id))
+
+        # Status:
+        if wiz_proxy.status:
+            domain.append(
+                ('status', '=', wiz_proxy.status))
         
         # Product code filter:
         if wiz_proxy.code_start:
@@ -216,6 +221,14 @@ class ProductMethodForceCalcWizard(orm.TransientModel):
             'res.partner', 'First supplier'),
         'duty_id': fields.many2one(
             'product.custom.duty', 'Duty category'),
+        'status': fields.selection([
+            ('catalog', 'Catalog'),
+            ('out', 'Out catalog'),
+            ('stock', 'Stock'),
+            ('obsolete', 'Obsolete'),
+            ('sample', 'Sample'),
+            ('todo', 'Todo'),
+            ], 'Gamma'),
             
         # Code filter:
         'code_start': fields.char('Code start', size=25), 
