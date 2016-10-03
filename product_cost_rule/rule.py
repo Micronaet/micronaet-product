@@ -320,29 +320,39 @@ class ProductProduct(orm.Model):
 
                     duty = product.duty_id                    
                     # Check duty category presence:
-                    if not duty: 
+                    if not duty and not product.is_duty_set: 
                         error += _('''
                         <p><font color="red">
-                            Duty category not setted on product!</font>
+                            Duty category not setted on product
+                            And product is not a duty set!
+                            </font>
                         </p>''')
                         continue
                     
-                    # Get duty rate depend on supplier country     
-                    if supplier_id not in duty_db:
-                        duty_db[supplier_id] = self.get_duty_product_rate(
-                            cr, uid, duty, country_id, 
-                            context=context)
-                    duty_rate = duty_db[supplier_id]
+                    # Get duty rate depend on supplier country
+                    duty_value = 0.0
+                    if product.is_duty_set:
+                        for duty_set in product.duty_set_ids:
+                            duty_rate = self.get_duty_product_rate(
+                                    cr, uid, duty_set.duty_id, 
+                                    country_id, context=context)
+                            duty_value += duty_set.partial * duty_rate / 100.0                        
+                    else: # no set
+                        if supplier_id not in duty_db:
+                            duty_db[supplier_id] = self.get_duty_product_rate(
+                                cr, uid, duty, country_id, 
+                                context=context)
+                        duty_rate = duty_db[supplier_id]
+                        duty_value = total * duty_rate / 100.0
     
                     # Check duty rate value (:
-                    if not duty_rate: 
+                    if not duty_value: 
                         warning += _('''
                         <p><font color="orange">
-                            Duty rate is 0!</font>
+                            Duty value is zero!</font>
                         </p>''')
                     
                     base = total
-                    duty_value = total * duty_rate / 100.0
                     total += duty_value
                     total = round(total, round_decimal)
                     calc += '''
