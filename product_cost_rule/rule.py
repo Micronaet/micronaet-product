@@ -432,12 +432,15 @@ class ProductProduct(orm.Model):
                     comment = ''
                     # Check mandatory element:
                     # Read default supplier transport method:
-                    if transport:        
+                    if transport:
                         transport_cost = transport.cost
                         transport_volume = transport.volume
+                        transport_id = transport.id
                         comment = _('(Met.)')
                     elif product.first_supplier_id and \
                             product.first_supplier_id.transport_id:
+                        transport_id = \
+                            product.first_supplier_id.transport_id.id
                         transport_cost = \
                             product.first_supplier_id.transport_id.cost
                         transport_volume = \
@@ -453,8 +456,9 @@ class ProductProduct(orm.Model):
                     # Search in tranport-product relation
                     q_x_tran = 0
                     for prod_tran in product.transport_ids:
-                        if prod_tran.transport_id.id == transport.id:
+                        if prod_tran.transport_id.id == transport_id:
                             q_x_tran = prod_tran.quantity
+                            break
                     
                     if q_x_tran: # Calculate with q x tran                                
                         cost1 = transport_cost / q_x_tran
