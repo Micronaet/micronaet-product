@@ -174,13 +174,13 @@
                                         <field name="duty_code" />
 
                                         <separator string="Duty for set:" colspan="4"/>
-                                        <field name="is_duty_set" />                                        
-
-                                        <field name="duty_set_ids" nolabel="1" attrs="{'invisible':[('is_duty_set','=',False)]}">
+                                        <field name="is_duty_set" />     
+                                        <field name="duty_set_ids" nolabel="1" attrs="{'invisible':[('is_duty_set','=',False)]}" colspan="4" >
                                             <tree string="Duty set" editable="bottom">
                                                 <field name="product_id" invisible="1" />
                                                 <field name="duty_id" />
                                                 <field name="partial" />
+                                                <field name="note" />
                                             </tree>
                                         </field>
                                     </group>

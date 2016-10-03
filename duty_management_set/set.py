@@ -56,6 +56,7 @@ class ProductDutySet(orm.Model):
         'partial': fields.float('Partial', 
             digits=(16, 2), required=True,
             help='Duty part for this category'),
+        'note': fields.text('Note'),
             
         # Set management for compoment: TODO    
         #'component_id': fields.many2one(
