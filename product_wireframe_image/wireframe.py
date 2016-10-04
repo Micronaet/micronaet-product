@@ -92,7 +92,8 @@ class ProductProduct(orm.Model):
                 )
         
         filename = os.path.join(
-            product_folder, '%s.%s' % (default_code, self._wireframe_extension))
+            product_folder, '%s.%s' % (
+                default_code, self._wireframe_extension))
 
         product_file = open(filename, 'wb')
         if value:
