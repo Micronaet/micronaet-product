@@ -46,7 +46,7 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
 
     # Parameters:
-    _wireframe_path = 'wiredframe'
+    _wireframe_path = 'linedrawing'
     _wireframe_extension = 'png'
     
     # -------------------------------------------------------------------------
@@ -142,7 +142,7 @@ class ProductProduct(orm.Model):
 
     _columns = {
         'wireframe_parent_id': fields.many2one(
-            'product.product', 'Wiredframe parent'),
+            'product.product', 'Linedrawing parent'),
         'wireframe': fields.function(_get_wireframe_image, 
             fnct_inv=_set_wireframe_image, string='Image',
             type='binary', method=True),
