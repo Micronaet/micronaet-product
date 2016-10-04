@@ -50,7 +50,7 @@ for transport in sock.execute(
 import pdb; pdb.set_trace()
 product_ids = sock.execute(dbname, uid, pwd, 'product.product', 'search', [
     ('id', 'not in', exclude_ids),
-    ('pz_x_container', '>' 0),
+    ('pz_x_container', '>', 0),
     ])
 
 for product in sock.execute(
