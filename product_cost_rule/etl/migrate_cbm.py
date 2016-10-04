@@ -44,9 +44,9 @@ transport_ids = sock.execute(
 for transport in sock.execute(
         dbname, uid, pwd, 'product.product.transport', 'read', transport_ids):
     product_id = transport['product_id'][0]
-    if product_id and product_id not in exclude_ids:    
+    if product_id and product_id not in exclude_ids:
         exclude_ids.append(product_id)    
-
+import pdb; pdb.set_trace()
 product_ids = sock.execute(dbname, uid, pwd, 'product.product', 'search', [
     ('id', 'not in', exclude_ids),
     ('pz_x_container', '>' 0),
@@ -54,9 +54,8 @@ product_ids = sock.execute(dbname, uid, pwd, 'product.product', 'search', [
 
 for product in sock.execute(
         dbname, uid, pwd, 'product.product', 'read', product_ids):
-    product_id = transport['id']
     sock.execute(dbname, uid, pwd, 'product.product.transport', 'create', {
-        'product_id': product_id,
+        'product_id': product['id'],
         'transport_id': transport_id,
         'quantity': product['pz_x_container'],    
         })
