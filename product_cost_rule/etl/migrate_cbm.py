@@ -33,7 +33,6 @@ sock = xmlrpclib.ServerProxy(
 # -----------------------------------------------------------------------------
 transport_id = 1 # XXX ID of container 1 x 40 HC
 #transport_id = 4 # XXX ID of camion 1 x 82 (82 CBM)
-import pdb; pdb.set_trace()
 
 # Read transport product yet present:
 exclude_ids = []
@@ -47,7 +46,6 @@ for transport in sock.execute(
     if product_id and product_id not in exclude_ids:
         exclude_ids.append(product_id)    
 
-import pdb; pdb.set_trace()
 product_ids = sock.execute(dbname, uid, pwd, 'product.product', 'search', [
     ('id', 'not in', exclude_ids),
     ('pz_x_container', '>', 0),
