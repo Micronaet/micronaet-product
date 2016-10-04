@@ -364,7 +364,9 @@ class ProductProduct(orm.Model):
                             ''') % (
                                 '(set)' if product.is_duty_set else duty_rate,
                                 '%',
-                                product.duty_id.name,
+                                _('Different duty categ.') if \
+                                    product.is_duty_set \
+                                    else product.duty_id.name,
                                 product.first_supplier_id.country_id.name,
                                 ),
                             '%s x %s = %s' % (base, duty_rate, duty_value) if \
