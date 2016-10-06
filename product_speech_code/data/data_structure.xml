@@ -55,192 +55,192 @@
             <!--PRODUCT CODE ELEMENTS-->
         <record model="structure.block.value" id="data_structure_block_value_005">
             <field name="code">005</field>
-            <field name="name">SEDIA REGISTA ALLUM.</field>
+            <field name="name">SEDIA REGISTA ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_021">
             <field name="code">021</field>
-            <field name="name">POLTRONA RELAX LUNA ALLUM.</field>
+            <field name="name">POLTRONA RELAX LUNA ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_022">
             <field name="code">022</field>
-            <field name="name">LETTINO QUICK ALLUM.</field>
+            <field name="name">LETTINO QUICK ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_023">
             <field name="code">023</field>
-            <field name="name">SDRAIO OSCILLANTE DONDOLINA ALLUM.</field>
+            <field name="name">SDRAIO OSCILLANTE DONDOLINA ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_014">
             <field name="code">014</field>
-            <field name="name">POLTRONA RELAX ALLUM. 5 POS</field>
+            <field name="name">POLTRONA RELAX ALLUMINIO 5 POS</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_024">
             <field name="code">024</field>
-            <field name="name">POLTRONA RELAX ALLUM. 5 POS</field>
+            <field name="name">POLTRONA RELAX ALLUMINIO 5 POS</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_025">
             <field name="code">025</field>
-            <field name="name">SEDIA DA SPIAGGIA BETTY ALLUM.</field>
+            <field name="name">SEDIA DA SPIAGGIA BETTY ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_026">
             <field name="code">026</field>
-            <field name="name">POLTRONA FIESTA ALLUM. 3 POS.</field>
+            <field name="name">POLTRONA FIESTA ALLUMINIO 3 POS.</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_027">
             <field name="code">027</field>
-            <field name="name">POLTRONA FIESTA ALLUM. 4 POS.</field>
+            <field name="name">POLTRONA FIESTA ALLUMINIO 4 POS.</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record>
         <record model="structure.block.value" id="data_structure_block_value_028">
             <field name="code">028</field>
-            <field name="name">SGABELLO CHICO ALLUM.</field>
+            <field name="name">SGABELLO CHICO ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_029">
             <field name="code">029</field>
-            <field name="name">POLTRONA MOVIDA MULTIPOS. ALLUM.</field>
+            <field name="name">POLTRONA MOVIDA MULTIPOSIZIONI ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_030">
             <field name="code">030</field>
-            <field name="name">POLTRONA MOVIDA XXL ALLUM.</field>
+            <field name="name">POLTRONA MOVIDA XXL ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_031">
             <field name="code">031</field>
-            <field name="name">LETTINO JOLLY ALLUM. 3 POS.</field>
+            <field name="name">LETTINO JOLLY ALLUMINIO 3 POS.</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_032">
             <field name="code">032</field>
-            <field name="name">LETTINO/CARRELLO WHEELY ALLUM. CON RUOTE</field>
+            <field name="name">LETTINO/CARRELLO WHEELY ALLUMINIO CON RUOTE</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_033">
             <field name="code">033</field>
-            <field name="name">LETTINO JACK ALLUM.</field>
+            <field name="name">LETTINO JACK ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_034">
             <field name="code">034</field>
-            <field name="name">LETTINO AMIGO ALLUM. CON PARASOLE</field>
+            <field name="name">LETTINO AMIGO ALLUMINIO CON PARASOLE</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_035">
             <field name="code">035</field>
-            <field name="name">LETTINO AMIGO ALLUM.</field>
+            <field name="name">LETTINO AMIGO ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_036">
             <field name="code">036</field>
-            <field name="name">LETTINO AMIGO 40+ ALLUM.</field>
+            <field name="name">LETTINO AMIGO 40+ ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_037">
             <field name="code">037</field>
-            <field name="name">LETTINO CASANOVA XXL ALLUM.</field>
+            <field name="name">LETTINO CASANOVA XXL ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_038">
             <field name="code">038</field>
-            <field name="name">LETTINO AMIGO XXL ALLUM.</field>
+            <field name="name">LETTINO AMIGO XXL ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_039">
             <field name="code">039</field>
-            <field name="name">LETTINO AMIGO 40+ ALLUM. CON PARASOLE</field>
+            <field name="name">LETTINO AMIGO 40+ ALLUMINIO CON PARASOLE</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_041">
             <field name="code">041</field>
-            <field name="name">SDRAIO PICCOLINA ALLUM.</field>
+            <field name="name">SDRAIO PICCOLINA ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_045">
             <field name="code">045</field>
-            <field name="name">POLTRONA SAMBA ALLUM. 2 POS.</field>
+            <field name="name">POLTRONA SAMBA ALLUMINIO 2 POS.</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_046">
             <field name="code">046</field>
-            <field name="name">POLTRONA SAMBA ALLUM. 2 POS. CON POGGIAT.</field>
+            <field name="name">POLTRONA SAMBA ALLUMINIO 2 POS. CON POGGIATESTA</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_048">
             <field name="code">048</field>
-            <field name="name">CHAISE LONGUE TANGO ALLUM. 2 POS.</field>
+            <field name="name">CHAISE LONGUE TANGO ALLUMINIO 2 POS.</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_049">
             <field name="code">049</field>
-            <field name="name">CHAISE LONGUE TANGO ALLUM. 2 POS.CON POGGIAT.</field>
+            <field name="name">CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_050">
             <field name="code">050</field>
-            <field name="name">LETTINO BIG FIFTY ALLUM. CON PARASOLE</field>
+            <field name="name">LETTINO BIG FIFTY ALLUMINIO CON PARASOLE</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_051">
             <field name="code">051</field>
-            <field name="name">LETTINO BIG FIFTY ALLUM. CON PARASOLE E POGGIAT.</field>
+            <field name="name">LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_061">
             <field name="code">061</field>
-            <field name="name">POLTRONA LIDO SCHIENALE ALTO ALLUM.</field>
+            <field name="name">POLTRONA LIDO SCHIENALE ALTO ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_062">
             <field name="code">062</field>
-            <field name="name">POGGIAPIEDI LIDO ALLUM.</field>
+            <field name="name">POGGIAPIEDI LIDO ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_063">
             <field name="code">063</field>
-            <field name="name">POLTRONA LIDO SCHIENALE BASSO ALLUM.</field>
+            <field name="name">POLTRONA LIDO SCHIENALE BASSO ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_068">
             <field name="code">068</field>
-            <field name="name">SEDIA LIDO ALLUM.</field>
+            <field name="name">SEDIA LIDO ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_069">
             <field name="code">069</field>
-            <field name="name">SEDIA LIDO ALLUM. CON BRACCIOLI</field>
+            <field name="name">SEDIA LIDO ALLUMINIO CON BRACCIOLI</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_070">
             <field name="code">070</field>
-            <field name="name">LETTINO RIVER ALLUM.</field>
+            <field name="name">LETTINO RIVER ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_071">
             <field name="code">071</field>
-            <field name="name">LETTINO RIVER ALLUM. CON PARASOLE</field>
+            <field name="name">LETTINO RIVER ALLUMINIO CON PARASOLE</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_081">
             <field name="code">081</field>
-            <field name="name">POLTRONA SPAGHETTI ALLUM.</field>
+            <field name="name">POLTRONA SPAGHETTI ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_090">
             <field name="code">090</field>
-            <field name="name">POLTRONA AMIDA MULTIPOS. ALLUM.</field>
+            <field name="name">POLTRONA AMIDA MULTIPOSIZIONI ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_091">
             <field name="code">091</field>
-            <field name="name">POLTRONA AMIDA XL MULTIPOS. ALLUM.</field>
+            <field name="name">POLTRONA AMIDA XL MULTIPOSIZ.ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_121">
@@ -270,7 +270,7 @@
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_129">
             <field name="code">129</field>
-            <field name="name">POLTRONA MOVIDA MULTIPOS.</field>
+            <field name="name">POLTRONA MOVIDA MULTIPOSIZIONI</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_130">
@@ -310,7 +310,7 @@
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_149">
             <field name="code">149</field>
-            <field name="name">CHAISE LONGUE TANGO CON POGGIAT.</field>
+            <field name="name">CHAISE LONGUE TANGO CON POGGIATESTA</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_150">
@@ -345,7 +345,7 @@
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_190">
             <field name="code">190</field>
-            <field name="name">POLTRONA AMIDA MULTIPOS.</field>
+            <field name="name">POLTRONA AMIDA MULTIPOSIZIONI</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_205">
@@ -385,7 +385,7 @@
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_301">
             <field name="code">301</field>
-            <field name="name">TAVOLO CLUB ALLUM.</field>
+            <field name="name">TAVOLO CLUB ALLUMINIO</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_322">
@@ -420,7 +420,7 @@
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_336">
             <field name="code">336</field>
-            <field name="name">TAVOLO PIEGH. DONATELLO 80x80</field>
+            <field name="name">TAVOLO PIEGHEVOLE DONATELLO 80x80</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_337">
@@ -455,17 +455,17 @@
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_649">
             <field name="code">649</field>
-            <field name="name">CUSCINO POGGIAT. 49 CM</field>
+            <field name="name">CUSCINO POGGIATESTA 49 CM</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_650">
             <field name="code">650</field>
-            <field name="name">CUSCINO POGGIAT. 50 CM</field>
+            <field name="name">CUSCINO POGGIATESTA 50 CM</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_651">
             <field name="code">651</field>
-            <field name="name">CUSCINO POGGIAT. 58 CM</field>
+            <field name="name">CUSCINO POGGIATESTA 58 CM</field>
             <field name="block_id" ref="data_structure_block_1_3"/>
         </record> 
 		<record model="structure.block.value" id="data_structure_block_value_800">
@@ -1071,7 +1071,7 @@
         </record>
         <record model="structure.block.value" id="data_structure_block_value_extra_X">
             <field name="code">X</field>
-            <field name="name">CON PARASOLE, SUPP. TABLET E CUSCINO</field>
+            <field name="name">CON PARASOLE, SUPPORTO TABLET E CUSCINO</field>
             <field name="block_id" ref="data_structure_block_13_13"/>
         </record>
     </data>
