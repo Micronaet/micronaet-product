@@ -171,6 +171,7 @@ class ProductProduct(orm.Model):
             mirror_structure_proxy = code_db[key][3]
             
             v = default_code[key[0]:key[1]].strip()
+            
             if mirror_structure_proxy:    
                 # Recursion call:
                 name_mirror, error_mirror =  self.get_name_from_default_code(
