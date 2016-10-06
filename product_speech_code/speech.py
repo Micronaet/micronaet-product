@@ -172,7 +172,6 @@ class ProductProduct(orm.Model):
             
             v = default_code[key[0]:key[1]].strip()
             if mirror_structure_proxy:    
-                #import pdb; pdb.set_trace()          
                 # Recursion call:
                 name_mirror, error_mirror =  self.get_name_from_default_code(
                     v, mirror_structure_proxy)
