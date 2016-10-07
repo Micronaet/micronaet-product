@@ -204,7 +204,7 @@ class ProductProduct(orm.Model):
                             pass # nothing, yet present
                     else:
                         name_db[key] = name_mirror_db[key]
-                error += error_mirror # TODO test                
+                error += error_mirror + '\n'
             else:
                 # ------------------
                 # Normale structure:
@@ -221,10 +221,11 @@ class ProductProduct(orm.Model):
                     name_db[output] += output_mask % value[v]
                 else:
                     if v: 
-                        error += 'Value %s not present in block (%s, %s)' % (
+                        error += 'Value %s not present in block (%s, %s)\n' % (
                             v, key[0] + 1, key[1])
 
-        _logger.error('Code error: [%s]' % error)        
+        if error:
+            _logger.error('Code error: [%s]' % error)        
         return (name_db, error)
         
     # -------------------------------------------------------------------------    
@@ -242,12 +243,21 @@ class ProductProduct(orm.Model):
             structure_proxy)
 
         # TODO create procedure to generate name of product:
+        if error:
+            error = error.replace('\n', '<br/>')
+            error = '''
+                <div style="background-color: red;
+                    text-align: center; font-weight:bold;
+                    color:white; font-size:12px; width=100px;">
+                        %s
+                    </div>''' % error
+                    
         name_db.update({
             'default_code': default_code,
             'structure_error': error,            
             })
         return self.write(cr, uid, ids, name_db, context=context)
-        
+
     _columns = {
         'structure_id': fields.many2one(
             'structure.structure', 'Code structure'), 

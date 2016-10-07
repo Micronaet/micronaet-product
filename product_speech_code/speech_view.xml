@@ -7,10 +7,14 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
+                <field name="product_tmpl_id" position="after">
+                    <field name="structure_error" attrs="{'invisible': [('structure_error','=',False)]}" nolabel="1" widget="html"/>
+                </field>
                 <field name="default_code" position="after">
-                    <field name="structure_id" />
-                    <field name="structure_error" attrs="{'invisible': [('structure_error','=',False)]}" nolabel="1" colors="red:True"/>
-                    <button name="generate_name_from_code" string="Generate name" type="object" confirm="Name will be overwrite with structure name calculated, confirm?"/>
+                    <group colspan="4" col="3">
+                        <field name="structure_id" />
+                        <button name="generate_name_from_code" string="Generate name" type="object" confirm="Name will be overwrite with structure name calculated, confirm?" colspan="1"/>
+                    </group>   
                 </field>
             </field>
         </record>
