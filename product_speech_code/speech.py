@@ -57,7 +57,7 @@ class StructureBlock(orm.Model):
     _order = 'from_char'
     
     _columns = {
-        'name': fields.char('Name', size=64, required=True, translated=True),
+        'name': fields.char('Name', size=64, required=True, translate=True),
         'structure_id': fields.many2one(
             'structure.structure', 'Code structure'), 
         'mirror_structure_id': fields.many2one(
