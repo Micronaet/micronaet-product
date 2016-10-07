@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-14 10:28+0000\n"
-"PO-Revision-Date: 2016-09-14 12:38+0100\n"
+"POT-Creation-Date: 2016-10-07 09:08+0000\n"
+"PO-Revision-Date: 2016-10-07 11:08+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -173,8 +173,12 @@ msgstr "CHAISE LONGUE TANGO ALLUMINIO 2 POS."
 
 #. module: product_speech_code
 #: model:structure.block.value,name:product_speech_code.data_structure_block_value_049
-msgid "CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA"
-msgstr "CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA"
+msgid ""
+"CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA\n"
+"            "
+msgstr ""
+"CHAISE LONGUE TANGO ALLUMINIO 2 POS.CON POGGIATESTA\n"
+"            "
 
 #. module: product_speech_code
 #: model:structure.block.value,name:product_speech_code.data_structure_block_value_149
@@ -352,8 +356,12 @@ msgstr "LETTINO BIG FIFTY ALLUMINIO CON PARASOLE"
 
 #. module: product_speech_code
 #: model:structure.block.value,name:product_speech_code.data_structure_block_value_051
-msgid "LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA"
-msgstr "LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA"
+msgid ""
+"LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA\n"
+"         "
+msgstr ""
+"LETTINO BIG FIFTY ALLUMINIO CON PARASOLE E POGGIATESTA\n"
+"         "
 
 #. module: product_speech_code
 #: model:structure.block.value,name:product_speech_code.data_structure_block_value_037
@@ -491,6 +499,16 @@ msgstr "OLEFIN CON BRACC.LEGNO"
 #: model:structure.block.value,name:product_speech_code.data_structure_block_value_fab_col_TX_OT
 msgid "OTTANIO 3158"
 msgstr "OTTANIO 3158"
+
+#. module: product_speech_code
+#: field:structure.block,output_field_id:0
+msgid "Output field"
+msgstr "Campo output"
+
+#. module: product_speech_code
+#: field:structure.block,output_mask:0
+msgid "Output mask"
+msgstr "Ha maschera"
 
 #. module: product_speech_code
 #: model:structure.block.value,name:product_speech_code.data_structure_block_value_601
@@ -974,7 +992,22 @@ msgid "TORTORA 8507"
 msgstr "TORTORA 8507"
 
 #. module: product_speech_code
-#: help:structure.block,mirror_structure_id:0 field:structure.block,to_char:0
+#: help:structure.block,output_field_id:0
+msgid "Text will write here"
+msgstr "Il testo deve essere scitto qui"
+
+#. module: product_speech_code
+#: help:structure.block,output_mask:0
+msgid "Text with title and return"
+msgstr "Testo con titolo e INVIO"
+
+#. module: product_speech_code
+#: help:structure.block,mirror_structure_id:0
+msgid "This block work as the mirror code structure"
+msgstr "Questo blocco lavora come struttura speculare di codice"
+
+#. module: product_speech_code
+#: field:structure.block,to_char:0
 msgid "To char"
 msgstr "Al carattere"
 
