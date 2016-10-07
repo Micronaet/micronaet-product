@@ -66,8 +66,8 @@ class StructureBlock(orm.Model):
         'from_char': fields.integer('From char', required=True), 
         'to_char': fields.integer('To char', required=True),
         'output_field_id': fields.many2one(
-            'ir.model.fields', 'Output field', help='Text will write here' 
-            #required=True # XXX manage default
+            'ir.model.fields', 'Output field', help='Text will write here',
+            required=True, # XXX manage default
             ),
         'output_mask': fields.boolean('Output mask', 
             help='Text with title and return'),
@@ -171,7 +171,6 @@ class ProductProduct(orm.Model):
         # Name generation:
         # ----------------
         name_db = {}
-        name = ''
         error = ''
         for key in sorted(code_db):
             # Explose database value:
@@ -180,9 +179,9 @@ class ProductProduct(orm.Model):
             mask = code_db[key][2]
             mirror_structure_proxy = code_db[key][3]
             block = code_db[key][4]            
-            output = block.output_field_id
+            output = block.output_field_id.name
             if block.output_mask:
-                output_mask = block.name + ' %s')
+                output_mask = block.name + ' %s\n'
             else:                
                 output_mask = '%s '
             
@@ -192,10 +191,19 @@ class ProductProduct(orm.Model):
                 # --------------------
                 # Recursion structure:
                 # --------------------
-                # TODO completare la gestione con il multicampo
-                name_mirror, error_mirror =  self.get_name_from_default_code(
+                name_mirror_db, error_mirror = self.get_name_from_default_code(
                     v, mirror_structure_proxy)
-                name += ' %s' % name_mirror
+                # integrate 2 database:
+                all_fields_db = set(name_db.keys() + name_mirror_db.keys())
+                for key in all_fields_db:
+                    if key in name_db:
+                        if key in name_mirror_db:
+                            # XXX problem with title: BUG!!!
+                            name_db[key] += ' %s' % name_mirror_db[key]
+                        else:
+                            pass # nothing, yet present
+                    else:
+                        name_db[key] = name_mirror_db[key]
                 error += error_mirror # TODO test                
             else:
                 # ------------------
@@ -245,7 +253,6 @@ class ProductProduct(orm.Model):
             'structure.structure', 'Code structure'), 
         'structure_error': fields.text(
             'Structure error', readonly=True), 
-        }
-        
+        }        
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
