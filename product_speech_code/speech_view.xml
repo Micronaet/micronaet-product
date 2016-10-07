@@ -56,10 +56,16 @@
                         <group col="4" colspan="4">
                             <field name="name" />
                             <field name="mandatory" />
+                            
                             <field name="mirror_structure_id" domain="[('id','!=',structure_id)]"/>
                             <field name="rely_id" attrs="{'invisible':[('mirror_structure_id','!=',False)]}" domain="[('structure_id','=',structure_id),('id','!=',active_id)]"/>
+                            
                             <field name="from_char" />
                             <field name="to_char" />
+                            
+                            <field name="output_field_id" 
+                                domain="[('model','=','product.product'),('ttype','in',('char', 'text'))]" widget="selection"/>
+                            <field name="output_mask" />
                             
                             <separator string="Value" colspan="4" attrs="{'invisible':[('mirror_structure_id','!=',False)]}"/>
                             <field name="value_ids" colspan="4" nolabel="1" attrs="{'invisible':[('mirror_structure_id','!=',False)]}">
@@ -92,6 +98,9 @@
                     <field name="rely_id" />
                     <field name="from_char" />
                     <field name="to_char" />
+                    <field name="output_field_id" 
+                                domain="[('model','=','product.product'),('ttype','in',('char', 'text'))]"/>
+                    <field name="output_mask" />
                     <field name="note" />
                 </tree>
             </field>

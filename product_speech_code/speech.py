@@ -65,6 +65,12 @@ class StructureBlock(orm.Model):
             help='This block work as the mirror code structure'), 
         'from_char': fields.integer('From char', required=True), 
         'to_char': fields.integer('To char', required=True),
+        'output_field_id': fields.many2one(
+            'ir.model.fields', 'Output field', help='Text will write here' 
+            #required=True # XXX manage default
+            ),
+        'output_mask': fields.boolean('Output mask', 
+            help='Text with title and return'),
         'mandatory': fields.boolean('Mandatory'),
         'note': fields.text('Note'),
         }
@@ -150,7 +156,10 @@ class ProductProduct(orm.Model):
                     mask = False
                 mirror_structure_proxy = False    
            
-            code_db[key] = [{}, rely_range, mask, mirror_structure_proxy]
+            code_db[key] = [
+                {}, rely_range, mask, mirror_structure_proxy, 
+                block,
+                ]
             for value in block.value_ids:
                 if block.rely_id:
                     code = mask % (value.rely_value_id.code, value.code)
@@ -161,6 +170,7 @@ class ProductProduct(orm.Model):
         # ----------------
         # Name generation:
         # ----------------
+        name_db = {}
         name = ''
         error = ''
         for key in sorted(code_db):
@@ -169,16 +179,28 @@ class ProductProduct(orm.Model):
             rely_range = code_db[key][1]
             mask = code_db[key][2]
             mirror_structure_proxy = code_db[key][3]
+            block = code_db[key][4]            
+            output = block.output_field_id
+            if block.output_mask:
+                output_mask = block.name + ' %s')
+            else:                
+                output_mask = '%s '
             
             v = default_code[key[0]:key[1]].strip()
             
             if mirror_structure_proxy:    
-                # Recursion call:
+                # --------------------
+                # Recursion structure:
+                # --------------------
+                # TODO completare la gestione con il multicampo
                 name_mirror, error_mirror =  self.get_name_from_default_code(
                     v, mirror_structure_proxy)
                 name += ' %s' % name_mirror
                 error += error_mirror # TODO test                
             else:
+                # ------------------
+                # Normale structure:
+                # ------------------
                 if rely_range:
                     v = mask % (
                         default_code[rely_range[0]:rely_range[1]].strip(),
@@ -186,14 +208,16 @@ class ProductProduct(orm.Model):
                         )
 
                 if v in value:
-                    name += ' %s' % value[v]
+                    if output not in name_db:
+                        name_db[output] = ''                         
+                    name_db[output] += output_mask % value[v]
                 else:
                     if v: 
                         error += 'Value %s not present in block (%s, %s)' % (
                             v, key[0] + 1, key[1])
 
         _logger.error('Code error: [%s]' % error)        
-        return (name, error)
+        return (name_db, error)
         
     # -------------------------------------------------------------------------    
     # Button event:
@@ -206,15 +230,15 @@ class ProductProduct(orm.Model):
         default_code = default_code.upper()
         structure_proxy = product_proxy.structure_id
         
-        (name, error) = self.get_name_from_default_code(default_code, 
+        (name_db, error) = self.get_name_from_default_code(default_code, 
             structure_proxy)
 
         # TODO create procedure to generate name of product:
-        return self.write(cr, uid, ids, {
-            'name': name, 
+        name_db.update({
             'default_code': default_code,
-            'structure_error': error,
-            }, context=context)
+            'structure_error': error,            
+            })
+        return self.write(cr, uid, ids, name_db, context=context)
         
     _columns = {
         'structure_id': fields.many2one(
