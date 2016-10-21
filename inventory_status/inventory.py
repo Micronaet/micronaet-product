@@ -444,19 +444,25 @@ class ProductProduct(orm.Model):
             if item.id not in out_picking_type_ids:
                 out_picking_type_ids.append(item.id)
 
-        pick_ids = pick_pool.search(cr, uid, [
-            # type pick filter   
-            ('picking_type_id', 'in', out_picking_type_ids),
-            # Partner exclusion
-            #('partner_id', 'not in', exclude_partner_ids), 
-            # TODO check data date
-            # TODO date_done, min_date, date
-            ('date', '>=', from_date), 
-            ('date', '<=', to_date), 
-            # TODO state filter
-            ])
+        #pick_ids = pick_pool.search(cr, uid, [
+        #    # type pick filter   
+        #    ('picking_type_id', 'in', out_picking_type_ids),
+        #    # Partner exclusion
+        #    #('partner_id', 'not in', exclude_partner_ids), 
+        #    # TODO check data date
+        #    # TODO date_done, min_date, date
+        #    ('date', '>=', from_date), 
+        #    ('date', '<=', to_date), 
+        #    # TODO state filter
+        #    ])
 
         line_ids = move_pool.search(cr, uid, [
+            # Header:
+            ('picking_id.picking_type_id', 'in', out_picking_type_ids),
+            ('picking_id.date', '>=', from_date), 
+            ('picking_id.date', '<=', to_date), 
+
+            # Line:
             ('product_id', 'in', product_ids),
             ('picking_id', 'in', pick_ids),
             ], context=context)
