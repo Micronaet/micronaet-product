@@ -339,7 +339,9 @@ class ProductProduct(orm.Model):
         res = {}
         if context is None:
             context = {}
-        limit_up_date = context.get('limit_up_date', '2016-10-19 23:59:59')
+
+        # Set limit for inventory purpose:
+        limit_up_date = context.get('limit_up_date', False)
             
         # Read parameter for inventory:
         user_id = context.get('uid', uid)
@@ -347,7 +349,6 @@ class ProductProduct(orm.Model):
             cr, uid, user_id, context=context)
         no_inventory_status = user.no_inventory_status
         _logger.warning('USER: %s' % user_id)
-        
 
         # pool used:
         product_pool = self.pool.get('product.product')
@@ -464,7 +465,7 @@ class ProductProduct(orm.Model):
 
             # Line:
             ('product_id', 'in', product_ids),
-            ('picking_id', 'in', pick_ids),
+            #('picking_id', 'in', pick_ids),
             ], context=context)
         
         for line in move_pool.browse(cr, uid, line_ids, context=context):

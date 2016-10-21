@@ -152,6 +152,9 @@ class ProductProductImportInventory(orm.Model):
     def action_import_product_from_csv(self, cr, uid, ids, context=None):
         ''' Import detail button
         '''
+        if context is None:
+            context = {}
+            
         # Pool used:
         picking_pool = self.pool.get('stock.picking')
         move_pool = self.pool.get('stock.move')
@@ -186,6 +189,7 @@ class ProductProductImportInventory(orm.Model):
         # Calculated:
         date = current_proxy.date or datetime.now().strftime(
             DEFAULT_SERVER_DATETIME_FORMAT)
+        context['limit_up_date'] = date # set up limit   
 
         # Log activity:
         if not fullname:
@@ -371,8 +375,10 @@ class ProductProductImportInventory(orm.Model):
         user_pool.write(cr, uid, uid, {
             'no_inventory_status': True,
             }, context=context)
-
+        
+        context['limit_up_date'] # reset context limit
         _logger.info('End import XLS purchase file: %s' % fullname)
+        
         return True
 
     _columns = {
