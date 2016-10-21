@@ -335,10 +335,12 @@ class ProductProduct(orm.Model):
             context=None):
         ''' Get information
         '''
-        _logger.warning('>>> START INVENTORY <<<<<<<<<<<<<<<<<<<<<<<<<<')
+        _logger.warning('>>> START INVENTORY <<<')
         res = {}
-        context = context or {}
-
+        if context is None:
+            context = {}
+        limit_up_date = context.get('limit_up_date', '2016-10-19 23:59:59')
+            
         # Read parameter for inventory:
         user_id = context.get('uid', uid)
         user = self.pool.get('res.users').browse(
@@ -372,7 +374,11 @@ class ProductProduct(orm.Model):
         
         # Year filter:
         from_date = datetime.now().strftime('%Y-01-01 00:00:00')    
-        to_date = datetime.now().strftime('%Y-12-31 23:59:59')    
+        if limit_up_date:
+            to_date = limit_up_date
+            _logger.warning('Limite date: %s' % limit_up_date)
+        else:    
+            to_date = datetime.now().strftime('%Y-12-31 23:59:59')
 
         # ------------------
         # Create empty dict:
@@ -399,7 +405,7 @@ class ProductProduct(orm.Model):
                 'mx_of_date': '',           
                 }
         if no_inventory_status:
-            _logger.warning('>>> STOP NO INVENTORY <<<<<<<<<<<<<<<<<<<<<<<<<<')
+            _logger.warning('>>> STOP NO INVENTORY <<<')
             return res
             
         # ---------------------------------------------------------------------
@@ -475,21 +481,28 @@ class ProductProduct(orm.Model):
             if item.id not in in_picking_type_ids:
                 in_picking_type_ids.append(item.id)
             
-        pick_ids = pick_pool.search(cr, uid, [     
-            # type pick filter   
-            ('picking_type_id', 'in', in_picking_type_ids),            
-            # Partner exclusion
-            # TODO ('partner_id', 'not in', exclude_partner_ids),            
-            # check data date
-            # TODO Restore date (for start up period not)
-            #('date', '>=', from_date), # XXX correct for virtual?
-            #('date', '<=', to_date),            
-            # TODO state filter
-            ])
+        #pick_ids = pick_pool.search(cr, uid, [     
+        #    # type pick filter   
+        #    ('picking_type_id', 'in', in_picking_type_ids),            
+        #    # Partner exclusion
+        #    # TODO ('partner_id', 'not in', exclude_partner_ids),            
+        #    # check data date
+        #    # TODO Restore date (for start up period not)
+        #    
+        #    # Add filter 21 ott. 2016 for max limit of date:
+        #    ('date', '>=', from_date), # XXX correct for virtual?
+        #    ('date', '<=', to_date),            
+        #    # TODO state filter
+        #    ])
 
         line_ids = move_pool.search(cr, uid, [
+            ('picking_id.picking_type_id', 'in', in_picking_type_ids),            
+            # Add filter 21 ott. 2016 for max limit of date:
+            ('picking_id.date', '>=', from_date), # XXX correct for virtual?
+            ('picking_id.date', '<=', to_date),            
+
             ('product_id', 'in', product_ids),
-            ('picking_id', 'in', pick_ids),
+            #('picking_id', 'in', pick_ids),
             ], context=context)
 
         for line in move_pool.browse(cr, uid, line_ids, context=context):
@@ -511,6 +524,7 @@ class ProductProduct(orm.Model):
             ('product_id', 'in', product_ids),
             ('mx_closed', '=', False), # Forced as closed
             ('order_id.state', 'not in', ('cancel', 'draft', 'sent')),
+            # XXX Date filter? not for now (lord qty)
             ])
             
         for line in sol_pool.browse(cr, uid, sol_ids):
@@ -538,7 +552,7 @@ class ProductProduct(orm.Model):
                 res[key]['mx_net_qty'] - res[key]['mx_oc_out'] + \
                 res[key]['mx_of_in']                    
                 
-        _logger.warning('>>> STOP INVENTORY <<<<<<<<<<<<<<<<<<<<<<<<<<')
+        _logger.warning('>>> STOP INVENTORY <<<')
         return res
 
     _columns = {
