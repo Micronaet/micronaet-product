@@ -29,9 +29,10 @@
                         <field name="max_line" />
                         <field name="cl_picking_type_id" />
                         <field name="sl_picking_type_id" />
+                        <field name="partner_id" domain="[('is_company', '=', True), ('is_address', '=', False)]"/>
+                        <field name="date" />
                         <field name="create_product" />
                         <field name="uom_id" attrs="{'invisible': [('create_product', '=', False)], 'required': [('create_product', '=', True)]}" />
-                        <field name="date" />
                         <button name="set_inventory_start" string="Set inventory start" type="object" />
                     </group>
                     <group col="4" colspan="4" attrs="{'invisible':[('inventory_cl_id', '=', False)]}">

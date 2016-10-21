@@ -179,6 +179,7 @@ class ProductProductImportInventory(orm.Model):
         # From import procedure:
         fullname = current_proxy.fullname
         create_product = current_proxy.create_product
+        partner_id = current_proxy.partner_id.id or user_proxy.partner_id.id
         uom_id = current_proxy.uom_id.id or False
         max_line = current_proxy.max_line or 15000
         type_cl = current_proxy.cl_picking_type_id
@@ -204,7 +205,7 @@ class ProductProductImportInventory(orm.Model):
         # ----------------
         header_data = {
             'name': seq_pool.get_id(cr, uid, seq_cl_id, 'id', context=context),
-            'partner_id': user_proxy.partner_id.id, #ex 1, # TODO
+            'partner_id': partner_id,
             'picking_type_id': type_cl.id,            
             'date': date,
             'min_date': date,
@@ -382,6 +383,7 @@ class ProductProductImportInventory(orm.Model):
         return True
 
     _columns = {
+        'partner_id': fields.many2one('res.partner', 'Partner'),
         'date': fields.datetime('Date'),
         'fullname': fields.char(
             'File name', size=80, required=True), 
