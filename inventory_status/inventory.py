@@ -417,6 +417,7 @@ class ProductProduct(orm.Model):
                 ('inventory_id', '!=', False),
                 ('date', '>=', from_date), 
                 ('date', '<=', to_date), 
+                ('product_id', 'in', product_ids),
                 ])
             for line in move_pool.browse(cr, uid, line_ids, context=context):
                 if 'mx_inv_ids' not in res[line.product_id.id]:
