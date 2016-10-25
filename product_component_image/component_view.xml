@@ -24,6 +24,7 @@
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="component_image" widget="image" />
+                            <newline/>
                             <field name="default_code" />
                             <field name="name" />
                         </group>
