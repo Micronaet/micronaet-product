@@ -64,18 +64,23 @@ class ProductProductImportationTraceColumn(orm.Model):
     _description = 'Columns to import'
     _order = 'name'
 
-    _float_list = (
-        'length', 'width', 'height',
-        'diameter', 'volume',
-        'pack', 'q_x_pack',
-        'seat_height', 'pz_x_container',
-        'pack_l', 'pack_p', 'pack_h',
-        'standard_price',
-        'cost_in_stock',
-        'cost_for_sale',
-        #'item_per_box', 'colls', 
-        #'weight', 'weight_net',
-        )
+    def get_float_list(self, ):
+        ''' Transformed in function (Ex _float_list field)
+        '''
+        
+        return [
+            'length', 'width', 'height',
+            'diameter', 'volume',
+            'pack', 'q_x_pack',
+            'seat_height', 'pz_x_container',
+            'pack_l', 'pack_p', 'pack_h',
+            'standard_price',
+            'cost_in_stock',
+            'cost_for_sale',
+            #'item_per_box', 'colls', 
+            #'weight', 'weight_net',
+            ]
+            
     def _get_field_list(self, cr, uid, context=None):
         ''' Keep list in function for update in other modules
         '''

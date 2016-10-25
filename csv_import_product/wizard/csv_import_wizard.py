@@ -179,7 +179,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                     # ---------------------------------------------------------    
                     #       Float field or exchange field (so float):    
                     # ---------------------------------------------------------    
-                    elif field.field in column_pool._float_list or \
+                    elif field.field in column_pool.get_float_list() or \
                             field.need_exchange:
                         f = v or 0.0
                         if type(f) not in (float, int) :
