@@ -418,8 +418,9 @@ class ProductProduct(orm.Model):
                 ('date', '>=', from_date), 
                 ('date', '<=', to_date), 
                 ])
-            res[line.product_id.id]['mx_inv_ids'] = []
             for line in move_pool.browse(cr, uid, line_ids, context=context):
+                if 'mx_inv_ids' not in res[line.product_id.id]:
+                    res[line.product_id.id]['mx_inv_ids'] = []
                 res[line.product_id.id]['mx_inv_ids'].append(line.id)
                 
                 if line.location_id.id == stock_location_id:
