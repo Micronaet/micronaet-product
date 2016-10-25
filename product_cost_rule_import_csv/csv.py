@@ -49,7 +49,7 @@ class ProductProductImportationTraceColumn(orm.Model):
         '''
         res = super(
             ProductProductImportationTraceColumn, self).get_float_list()
-        res.extend('cost_in_stock','campaign_comment')
+        res.extend('cost_in_stock', 'campaign_comment')
         return res  
 
     def _get_field_list(self, cr, uid, context=None):
@@ -58,7 +58,7 @@ class ProductProductImportationTraceColumn(orm.Model):
                 cr, uid, context=context)
         res.extend([
             ('cost_in_stock', 'Cost: Fco/company'),
-            ('campaign_comment', 'cost: Fco/customer'),
+            ('campaign_comment', 'Cost: Fco/customer'),
             ])
         return res           
         
