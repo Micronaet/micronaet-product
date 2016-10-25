@@ -418,7 +418,7 @@ class ProductProduct(orm.Model):
                 ('date', '>=', from_date), 
                 ('date', '<=', to_date), 
                 ])
-            
+            res[line.product_id.id]['mx_inv_ids'] = []
             for line in move_pool.browse(cr, uid, line_ids, context=context):
                 res[line.product_id.id]['mx_inv_ids'].append(line.id)
                 
