@@ -507,7 +507,8 @@ class ProductProduct(orm.Model):
         line_ids = move_pool.search(cr, uid, [
             ('picking_id.picking_type_id', 'in', in_picking_type_ids),            
             # Add filter 21 ott. 2016 for max limit of date:
-            ('picking_id.date', '>=', from_date), # XXX correct for virtual?
+            #('picking_id.date', '>=', from_date), # XXX correct for virtual?
+            # Remove 27 ott. 2016 for old order cutted whit this clause
             ('picking_id.date', '<=', to_date),            
 
             ('product_id', 'in', product_ids),
