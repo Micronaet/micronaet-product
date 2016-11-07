@@ -41,6 +41,7 @@
             <field name="arch" type="xml">
                 <tree string="Stock move">
 	                <field name="create_date" readonly="1" />
+	                <field name="date" readonly="1" />
 	                <field name="partner_id" readonly="1"/>
 	                <field name="picking_id" readonly="1"/>
 	                <field name="ddt_id" readonly="1"/>
