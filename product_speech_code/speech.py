@@ -270,7 +270,6 @@ class ProductProduct(orm.Model):
                     'structure_error': error,            
                     })
 
-            import pdb; pdb.set_trace()
             self.write(cr, uid, ids, name_db, context=context)
         context['lang'] = lang_org # restore
         return True    
