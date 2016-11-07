@@ -234,29 +234,46 @@ class ProductProduct(orm.Model):
     def generate_name_from_code(self, cr, uid, ids, context=None):
         ''' Generate product name depend on structure and code insert
         '''
-        product_proxy = self.browse(cr, uid, ids, context=context)[0]
-        default_code = product_proxy.default_code or ''
-        default_code = default_code.upper()
-        structure_proxy = product_proxy.structure_id
-        
-        (name_db, error) = self.get_name_from_default_code(default_code, 
-            structure_proxy)
+        if context is None:
+            context = context
 
-        # TODO create procedure to generate name of product:
-        if error:
-            error = error.replace('\n', '<br/>')
-            error = '''
-                <div style="background-color: red;
-                    text-align: center; font-weight:bold;
-                    color:white; font-size:12px; width=100px;">
-                        %s
-                    </div>''' % error
-                    
-        name_db.update({
-            'default_code': default_code,
-            'structure_error': error,            
-            })
-        return self.write(cr, uid, ids, name_db, context=context)
+        # Load in every language:            
+        lang_pool = self.pool.get('res.lang')
+        lang_ids = lang_pool.search(cr, uid, [], context=context)
+        lang_proxy = lang_pool.browse(cr, uid, lang_ids, context=context) 
+        lang_org = context.get('lang', False)
+        
+        for language in lang_proxy:
+            context['lang'] = language.code
+            
+            product_proxy = self.browse(cr, uid, ids, context=context)[0]
+            default_code = product_proxy.default_code or ''
+            default_code = default_code.upper()
+            structure_proxy = product_proxy.structure_id
+            
+            (name_db, error) = self.get_name_from_default_code(default_code, 
+                structure_proxy)
+            
+            if language.code == (lang_org or 'it_IT'): # only for italian
+                _logger.warning('Update for lang: %s' % language.code)
+                if error:
+                    error = error.replace('\n', '<br/>')
+                    error = '''
+                        <div style="background-color: red;
+                            text-align: center; font-weight:bold;
+                            color:white; font-size:12px; width=100px;">
+                                %s
+                            </div>''' % error
+                            
+                name_db.update({
+                    'default_code': default_code,
+                    'structure_error': error,            
+                    })
+
+            import pdb; pdb.set_trace()
+            self.write(cr, uid, ids, name_db, context=context)
+        context['lang'] = lang_org # restore
+        return True    
 
     _columns = {
         'structure_id': fields.many2one(
