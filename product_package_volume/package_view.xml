@@ -43,7 +43,9 @@
                     <field name="pack_p" />
                     <field name="pack_volume" />
                 </field>
-                <field name="ul" position="after">  
+                <field name="ul" position="attributes">  
+                    <attribute name="on_change">onchange_ul_dimension(ul)</attribute>
+                </field>
             </field>
         </record>
         <record id="product_packaging_form_volume_no_product_view" model="ir.ui.view">
