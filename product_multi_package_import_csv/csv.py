@@ -48,7 +48,7 @@ class ProductProductImportationTraceColumn(orm.Model):
         res = super(
             ProductProductImportationTraceColumn, self)._get_field_list(
                 cr, uid, context=context)
-        res.extend('multipack_dimension', 'Multipack dimension')
+        res.extend([('multipack_dimension', 'Multipack dimension')])
         return res           
         
     _columns = {
