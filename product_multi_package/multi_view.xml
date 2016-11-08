@@ -37,11 +37,13 @@
                                     <field name="code" />
 
                                     <field name="name" />
-                                    <field name="ul_id" />
+                                    <field name="ul_id" on_change="onchange_ul_multidimension(ul_id)"/>
 
                                     <field name="number" />
                                     <field name="weight" />
 
+                                    <button name="load_from_multipack" string="Load fro pack" type="object" attrs="{'invisible': [('ul_id','=',False)]}"/>
+                                    <newline/>
                                     <field name="height" />
                                     <field name="width" />
                                     <field name="length" />

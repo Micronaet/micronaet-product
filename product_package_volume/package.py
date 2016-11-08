@@ -45,7 +45,7 @@ class ProductPackage(orm.Model):
     _inherit = 'product.packaging'
     
     # On change event:
-    def onchange_ul_dimension(self, cr, uid, ids, ul, context=context):
+    def onchange_ul_dimension(self, cr, uid, ids, ul, context=None):
         ''' Load dimension from ul
         '''
         ul_pool = self.pool.get('product.ul')
@@ -54,9 +54,9 @@ class ProductPackage(orm.Model):
            return 
         ul_proxy = ul_pool.browse(cr, uid, ul, context=context)
         res['value'] = {
-            'pack_p': ul_pool.length,
-            'pack_h': ul_pool.height,
-            'pack_l': ul_pool.width,            
+            'pack_p': ul_proxy.length,
+            'pack_h': ul_proxy.height,
+            'pack_l': ul_proxy.width,            
             }
         return res           
            

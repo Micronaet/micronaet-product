@@ -202,6 +202,7 @@
                                         <field name="multipack_dimension" nolabel="1"/>
                                         <field name="type" invisible="1" />
                                         <separator string="Packaging" colspan="4" attrs="{'invisible':['|',('has_multipackage','=',False),('type','=','service')]}"/>
+                                        <!--TODO add onchange for ul block-->
                                         <field name="multi_pack_ids" attrs="{'invisible':['|',('has_multipackage','=',False),('type','=','service')]}" nolabel="1">
                                             <tree string="Multipack">
                                                 <field name="sequence" />

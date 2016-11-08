@@ -45,6 +45,34 @@ class ProductMultiPackaging(orm.Model):
     _description = 'Multi packaging'
     _rec_name = 'sequence'
     _order = 'sequence'
+
+    # On change event:
+    def onchange_ul_multidimension(self, cr, uid, ids, ul, context=None):
+        ''' Load dimension from ul
+        '''
+        ul_pool = self.pool.get('product.ul')
+        res = {}
+        if not ul:
+           return 
+        ul_proxy = ul_pool.browse(cr, uid, ul, context=context)
+        res['value'] = {
+            'length': ul_proxy.length,
+            'height': ul_proxy.height,
+            'width': ul_proxy.width,            
+            }
+        return res           
+           
+    # Button event:
+    def load_from_multipack(self, cr, uid, ids, context=None):
+        ''' Load pack measure from box
+        '''
+        assert len(ids) == 1, 'Works only with one record a time'
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        return self.write(cr, uid, ids, {
+            'length': current_proxy.ul.length,
+            'height': current_proxy.ul.height,
+            'width': current_proxy.ul.width,
+            }, context=context)
     
     _columns = {
         'sequence': fields.integer('Seq.', 
