@@ -44,6 +44,34 @@ class ProductPackage(orm.Model):
     """    
     _inherit = 'product.packaging'
     
+    # On change event:
+    def onchange_ul_dimension(self, cr, uid, ids, ul, context=context):
+        ''' Load dimension from ul
+        '''
+        ul_pool = self.pool.get('product.ul')
+        res = {}
+        if not ul:
+           return 
+        ul_proxy = ul_pool.browse(cr, uid, ul, context=context)
+        res['value'] = {
+            'pack_p': ul_pool.length,
+            'pack_h': ul_pool.height,
+            'pack_l': ul_pool.width,            
+            }
+        return res           
+           
+    # Button event:
+    def load_from_pack(self, cr, uid, ids, context=None):
+        ''' Load pack measure from box
+        '''
+        assert len(ids) == 1, 'Works only with one record a time'
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        return self.write(cr, uid, ids, {
+            'pack_p': current_proxy.ul.length,
+            'pack_h': current_proxy.ul.height,
+            'pack_l': current_proxy.ul.width,
+            }, context=context)
+            
     # TODO use as related?
     _columns = {
         'pack_l': fields.float('L. Imb.', digits=(16, 2)),

@@ -36,11 +36,14 @@
             <field name="arch" type="xml">
                 <field name="ul" position="after">  
                     <separator colspan="4" string="Volume"/>
+                    <button name="load_from_pack" string="Load fro pack" type="object" attrs="{'invisible': [('ul','=',False)]}"/>
+                    <newline/>
                     <field name="pack_l" />
                     <field name="pack_h" />
                     <field name="pack_p" />
                     <field name="pack_volume" />
                 </field>
+                <field name="ul" position="after">  
             </field>
         </record>
         <record id="product_packaging_form_volume_no_product_view" model="ir.ui.view">
@@ -50,6 +53,8 @@
             <field name="arch" type="xml">
                 <field name="ul" position="after">  
                     <separator colspan="4" string="Volume"/>
+                    <button name="load_from_pack" string="Load fro pack" type="object" attrs="{'invisible': [('ul','=',False)]}" />
+                    <newline/>
                     <field name="pack_l" />
                     <field name="pack_h" />
                     <field name="pack_p" />
