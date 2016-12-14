@@ -18,27 +18,22 @@
 ###############################################################################
 
 {
-    'name': 'CSV Import inventory wizard',
+    'name': 'Inventory field',
     'version': '0.1',
-    'category': 'ETL',
-    'description': '''
-        Import wizard for import order product.
+    'category': 'Product',
+    'description': '''  
+        Add extra field for manage a sort of start inventory store field      
         ''',
     'author': 'Micronaet S.r.l. - Nicola Riolini',
     'website': 'http://www.micronaet.it',
     'license': 'AGPL-3',
     'depends': [
         'base',
-        'product',
-        'base_log',
-        'stock',
-        'purchase',
-        'inventory_field',
+        'product',        
         ],
     'init_xml': [],
     'demo': [],
     'data': [
-        'data/mode_data.xml',
         'inventory_views.xml',
         ],
     'active': False,
