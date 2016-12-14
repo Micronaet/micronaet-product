@@ -49,6 +49,9 @@ class ProductProduct(orm.Model):
             'purchase.order', 'Purchase inventory'),
         'inventory_start': fields.float(
             'Inventory start', digits=(16, 3)),
+        'inventory_delta': fields.float(
+            'Inventory delta', digits=(16, 3), 
+            help='Delta inventory for post correction retroactive'),
         'inventory_date': fields.date('Inventory date'),    
         }
 
