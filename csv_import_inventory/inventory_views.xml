@@ -9,8 +9,9 @@
             <field name="virtual_available" position="after">
                 <group name="startup_inventory_group" attrs="{'invisible':[('inventory_start', '>', 0)]}" colspan="4">
                     <separator string="Start up"  colspan="4"/>
-                    <field name="inventory_start" />    
-                    <field name="inventory_date" />    
+                    <field name="inventory_start" />
+                    <field name="inventory_delta" />
+                    <field name="inventory_date" />
                 </group>
             </field>
         </field>
