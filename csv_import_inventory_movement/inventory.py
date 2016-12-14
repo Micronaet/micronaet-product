@@ -57,6 +57,7 @@ class ProductProductImportInventory(orm.Model):
     _description = 'Inventory partial import'
     _rec_name = 'fullname'
     _order = 'date desc'
+    
     filename = '/home/administrator/photo/xls/inventory' # TODO parametrize
 
     # -------------
