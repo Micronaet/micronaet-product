@@ -33,6 +33,7 @@
         'product',
         'stock',
         'inventory_status',
+        'inventory_field',
         #'csv_import_inventory', # only for inventory_start field
         ],
     'init_xml': [],
