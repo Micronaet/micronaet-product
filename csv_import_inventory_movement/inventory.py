@@ -142,6 +142,7 @@ class ProductProductImportInventory(orm.Model):
 
             product_pool.write(cr, uid, product_ids[0], {
                 'inventory_start': product_qty,
+                'inventory_delta': 0.0,# XXX reset delta adjust!!!
                 }, context=context)
 
             _logger.info('Update %s' % default_code)    
