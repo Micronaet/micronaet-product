@@ -38,7 +38,8 @@
                     <group col="4" colspan="4" attrs="{'invisible':[('inventory_cl_id', '=', False)]}">
                         <field name="inventory_cl_id" />
                         <field name="inventory_sl_id" />
-
+                    </group>                        
+                    <group col="4" colspan="4" attrs="{'invisible':[('error', '=', False),('note', '=', False)]}">
                         <separator string="Note:" colspan="4"/>
                         <field name="note" nolabel="1" colspan="4"/>
 

@@ -6,14 +6,14 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-            <field name="virtual_available" position="after">
-                <group name="startup_inventory_group" attrs="{'invisible':[('inventory_start', '>', 0)]}" colspan="4">
+            <group name="inventory" position="after">                         
+                <group name="startup_inventory_group" attrs="{'invisible':[('inventory_delta', '=', 0),('inventory_start', '=', 0)]}" colspan="4">
                     <separator string="Start up"  colspan="4"/>
                     <field name="inventory_start" />
                     <field name="inventory_delta" />
                     <field name="inventory_date" />
                 </group>
-            </field>
+            </group>
         </field>
     </record>
     </data>
