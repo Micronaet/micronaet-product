@@ -46,6 +46,7 @@
                 <tree string="Inventory category product" colors="red:inventory_category_id==False;blue:default_code==False">        
                     <field name="name" />
                     <field name="default_code" />
+                    <field name="uom_id" />
                     <field name="inventory_category_id" />
                     <field name="state" />
                 </tree>
