@@ -83,6 +83,6 @@ class ProductProduct(orm.Model):
         # XXX Inventory report (keep in isolated module?)
         'inventory_category_id': fields.many2one(
             'product.product.inventory.category', 'Inventory category'),
-        'inventory_excluded':fields.boolean('Inventory excluded'),    
+        'inventory_excluded': fields.boolean('Inventory excluded'),    
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
