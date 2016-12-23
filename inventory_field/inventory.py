@@ -38,6 +38,19 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class ProductProductInventoryCategory(orm.Model):
+    """ Model name: ProductProductInventoryCategory
+    """
+    
+    _name = 'product.product.inventory.category'
+    _description = 'Inventory category'
+    
+    _columns = {
+        'name': fields.char(
+            'Name', size=64, required=True),
+        'note': fields.text('Note'),    
+    }
+
 class ProductProduct(orm.Model):
     ''' Link product to inventory purchase order
     '''
@@ -50,5 +63,10 @@ class ProductProduct(orm.Model):
             'Inventory delta', digits=(16, 3), 
             help='Delta inventory for post correction retroactive'),
         'inventory_date': fields.date('Inventory date'),    
+        
+        # XXX Inventory report (keep in isolated module?)
+        'inventory_category_id': fields.many2one(
+            'product.product.inventory.category', 'Inventory category'),
+        'inventory_excluded':fields.boolean('Inventory excluded'),    
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

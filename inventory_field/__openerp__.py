@@ -29,11 +29,12 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
-        'product',        
+        'product',
         ],
     'init_xml': [],
     'demo': [],
     'data': [
+        'security/ir.model.access.csv',
         'inventory_views.xml',
         ],
     'active': False,

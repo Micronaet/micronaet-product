@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_product_product_inventory_category_user,product.product.inventory.category,model_product_product_inventory_category,base.group_user,1,1,1,1
+

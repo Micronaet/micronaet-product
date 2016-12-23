@@ -1,21 +1,52 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    <record model="ir.ui.view" id="view_product_startup_inventory_form">
-        <field name="name">product.product.startup.q.form</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view"/>
-        <field name="arch" type="xml">
-            <group name="inventory" position="after">                         
-                <group name="startup_inventory_group" attrs="{'invisible':[('inventory_delta', '=', 0),('inventory_start', '=', 0)]}" colspan="4">
-                    <separator string="Start up"  colspan="4"/>
-                    <field name="inventory_start" />
-                    <field name="inventory_delta" />
-                    <field name="inventory_date" />
+        <record model="ir.ui.view" id="view_product_startup_inventory_form">
+            <field name="name">product.product.startup.q.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <group name="inventory" position="after">                         
+                    <group name="startup_inventory_group" attrs="{'invisible':[('inventory_delta', '=', 0),('inventory_start', '=', 0)]}" colspan="4">
+                        <separator string="Start up:"  colspan="4"/>
+                        <field name="inventory_start" />
+                        <field name="inventory_delta" />
+                        <field name="inventory_date" />
+                        
+                        <separator string="Inventory report:"  colspan="4"/>
+                        <field name="inventory_category_id" />
+                        <field name="inventory_excluded" />
+                    </group>
                 </group>
-            </group>
-        </field>
-    </record>
+            </field>
+        </record>
+        
+        <!--product.product.inventory.category-->
+        <record model="ir.ui.view" id="view_product_product_inventory_category_form">
+            <field name="name">product.product.inventory.category.form</field>
+            <field name="model">product.product.inventory.category</field>
+            <field name="arch" type="xml">
+                <form string="Inventory category" version="7.0">        
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="name" />
+                            <separator string="Note" colspan="4"/>
+                            <field name="note" nolabel="1" colspan="4"/>
+                        </group>
+                    </sheet>        
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_product_inventory_category_tree">
+            <field name="name">product.product.inventory.category.tree</field>
+            <field name="model">product.product.inventory.category</field>
+            <field name="arch" type="xml">
+                <tree string="String" >        
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
     </data>
 </openerp>
 
