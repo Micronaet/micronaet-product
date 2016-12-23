@@ -45,11 +45,27 @@ class ProductProductInventoryCategory(orm.Model):
     _name = 'product.product.inventory.category'
     _description = 'Inventory category'
     
+    def force_code_category(self, cr, uid, ids, context=None):
+        ''' Force product category with code in text field
+        '''
+        product_pool = self.pool.get('product.product')
+        
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        code = current_proxy.code
+        code_list = code.split('\n')
+        product_ids = product_pool.search(cr, uid, [
+            ('default_code', 'in', code_list)], context=context)
+        product_pool.write(cr, uid, product_ids, {
+            'inventory_category_id': current_proxy.id,
+            }, context=context)    
+        return True    
+        
     _columns = {
         'name': fields.char(
             'Name', size=64, required=True),
         'note': fields.text('Note'),    
-    }
+        'code': fields.text('Force code'),         
+        }
 
 class ProductProduct(orm.Model):
     ''' Link product to inventory purchase order
