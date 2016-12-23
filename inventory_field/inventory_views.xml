@@ -22,6 +22,45 @@
                 </group>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_inventory_category_search">
+            <field name="name">product.product.inventory_categorsearch</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="60" />
+            <field name="arch" type="xml">
+                <search string="Inventory category" version="7.0">        
+                    <field name="name" />
+                    <field name="default_code" />
+                    <filter name="no_code" string="No code" domain="[('default_code','=',False)]"/>
+                    <filter name="no_category" string="No category" domain="[('inventory_category_id','=',False)]"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_category" string="Inventory category" context="{'group_by': 'inventory_category_id'}"/>
+                    </group>                
+                </search>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_product_product_category_tree">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="60"/>
+            <field name="arch" type="xml">
+                <tree string="Inventory category product" colors="red:inventory_category_id==False,blue:default_code==False">        
+                    <field name="name" />
+                    <field name="default_code" />
+                    <field name="inventory_category_id" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_category_inventory_product">
+            <field name="name">Product inventory category</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_product_category_tree"/>
+            <field name="search_view_id" ref="view_inventory_category_search"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
         
         <!--product.product.inventory.category-->
         <record model="ir.ui.view" id="view_product_product_inventory_category_form">
@@ -63,11 +102,16 @@
         </record>
         <menuitem 
             parent="base.menu_base_config" 
-            id="menu_action_openerp_model_tree" 
+            id="menu_inventory_category" 
             action="action_inventory_category"
             sequence="60"
             />
-        
+            <menuitem 
+                parent="menu_inventory_category" 
+                id="menu_inventory_category_product" 
+                action="action_category_inventory_product"
+                sequence="10"
+                />
     </data>
 </openerp>
 
