@@ -13,6 +13,8 @@
                         <field name="inventory_delta" />
                         <field name="inventory_date" />
                         
+                    </group>
+                    <group name="startup_inventory_report_group" colspan="4">
                         <separator string="Inventory report:"  colspan="4"/>
                         <field name="inventory_category_id" />
                         <field name="inventory_excluded" />
