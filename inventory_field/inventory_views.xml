@@ -49,6 +49,22 @@
                 </tree>
             </field>
         </record>
+        <record model="ir.actions.act_window" id="action_inventory_category">
+            <field name="name">Inventory category</field>
+            <field name="res_model">product.product.inventory.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_product_inventory_category_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+        <menuitem 
+            parent="base.menu_base_config" 
+            id="menu_action_openerp_model_tree" 
+            action="action_inventory_category"
+            sequence="60"
+            />
+        
     </data>
 </openerp>
 
