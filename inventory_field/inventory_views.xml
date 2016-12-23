@@ -35,6 +35,7 @@
                             <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>
                             <button name="force_code_category" string="Force code category" type="object" />
+                            <newline/>
                             <separator string="Force code" colspan="4"/>
                             <field name="code" nolabel="1" colspan="4"/>
                         </group>
