@@ -43,7 +43,7 @@
             <field name="model">product.product</field>
             <field name="priority" eval="60"/>
             <field name="arch" type="xml">
-                <tree string="Inventory category product" colors="red:inventory_category_id==False,blue:default_code==False">        
+                <tree string="Inventory category product" colors="red:inventory_category_id==False;blue:default_code==False">        
                     <field name="name" />
                     <field name="default_code" />
                     <field name="inventory_category_id" />
@@ -73,9 +73,10 @@
                             <field name="name" />
                             <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>
-                            <separator string="Force code" colspan="4"/>
+                            <separator string="Force code" colspan="2"/>
+                            <button name="force_code_category" string="Force code category" type="object" colspan="1" class="oe_highlight"/>
+                            <button name="force_no_code_category" string="Force no code" type="object" colspan="1" attrs="{'invisible': [('code','!=',False)]}"/>
                             <field name="code" nolabel="1" colspan="4"/>
-                            <button name="force_code_category" string="Force code category" type="object" />
                         </group>
                     </sheet>        
                 </form>

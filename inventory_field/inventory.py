@@ -45,6 +45,19 @@ class ProductProductInventoryCategory(orm.Model):
     _name = 'product.product.inventory.category'
     _description = 'Inventory category'
     
+    def force_no_code_category(self, cr, uid, ids, context=None):
+        ''' Force all no code to this category
+        '''
+        product_pool = self.pool.get('product.product')
+        
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        product_ids = product_pool.search(cr, uid, [
+            ('default_code', '=', False)], context=context)
+        product_pool.write(cr, uid, product_ids, {
+            'inventory_category_id': current_proxy.id,
+            }, context=context)    
+        return True    
+        
     def force_code_category(self, cr, uid, ids, context=None):
         ''' Force product category with code in text field
         '''
