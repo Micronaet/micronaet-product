@@ -76,6 +76,7 @@ class MrpProduction(orm.Model):
             'Order',
             'Product',
             'Maked',
+            'ID',
             'Component',
             'Maked',
             'State',
@@ -107,10 +108,10 @@ class MrpProduction(orm.Model):
                     product = component.product_id
                                             
                     cmpt_maked = maked * component.product_qty
-                    if product.id not in unload_db: 
-                        unload_db[product.id] = cmpt_maked
-                    else:    
+                    if product.id in unload_db: 
                         unload_db[product.id] += cmpt_maked
+                    else:    
+                        unload_db[product.id] = cmpt_maked
                     
                     write_xls_log([
                         mrp.name, 
@@ -120,12 +121,15 @@ class MrpProduction(orm.Model):
                         sol.product_id.default_code,
                         maked,
                         # Component
+                        product.id,
                         product.default_code,
                         cmpt_maked,
                         mrp.state,
                         ])
-        WB.close()                
-        for item_id, unload in unload_db.iteritems():
-            product_pool.write(cr, uid, item_id, {
-                'mx_mrp_out': unload}, context=context)                
+        WB.close()  
+        import pdb; pdb.set_trace()              
+        for product_id, unload in unload_db.iteritems():
+            product_pool.write(cr, uid, product_id, {
+                'mx_mrp_out': unload,
+                }, context=context)                
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
