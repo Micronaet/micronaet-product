@@ -48,7 +48,6 @@ class MrpProduction(orm.Model):
     def schedule_unload_mrp_material(self, cr, uid, context=None):
         ''' Update product field with unloaded elements
         '''
-        import pdb; pdb.set_trace()
         # ---------------------------------------------------------------------
         # Utility function:
         # ---------------------------------------------------------------------
@@ -109,8 +108,8 @@ class MrpProduction(orm.Model):
                         cmpt_maked,
                         mrp.state,
                         ])
-                        
+        WB.close()                
         for item_id, unload in unload_db.iteritems():
             product_pool.write(cr, uid, item_id, {
-                'mx_mrp_out': unload}, context=context)
+                'mx_mrp_out': unload}, context=context)                
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
