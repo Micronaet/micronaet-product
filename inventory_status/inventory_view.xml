@@ -113,6 +113,8 @@
                      
                      <field name="mx_net_qty" readonly="1"/>
                      <field name="mx_lord_qty" readonly="1"/>
+                     
+                     <field name="mx_mrp_out" readonly="1" />
                 </tree> 
             </field>
         </record>   
@@ -162,6 +164,8 @@
                        <field name="mx_net_qty" readonly="1"/>
                        <newline/>
                        <field name="mx_lord_qty" readonly="1"/>
+                       <newline/>
+                      <field name="mx_mrp_out" readonly="1" />
                        <newline/>
 
                        <field name="mx_inv_qty" readonly="1"/>

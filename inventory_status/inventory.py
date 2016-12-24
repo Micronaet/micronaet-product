@@ -606,7 +606,11 @@ class ProductProduct(orm.Model):
         'mx_lord_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
             string='Total Lord', 
-            store=False, multi=True),        
+            store=False, multi=True),     
+        
+        # TODO temporary field for unload in production this season.
+        'mx_mrp_out': fields.float('(MRP out)', digits=(16, 2),
+            help='Not included in net or lord qty, just a data placeholder'),       
         
         # Many2one
         'mx_bc_ids': fields.function(
