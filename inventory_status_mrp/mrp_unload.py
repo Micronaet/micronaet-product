@@ -126,8 +126,8 @@ class MrpProduction(orm.Model):
                         cmpt_maked,
                         mrp.state,
                         ])
+                        
         WB.close()  
-        import pdb; pdb.set_trace()              
         for product_id, unload in unload_db.iteritems():
             product_pool.write(cr, uid, product_id, {
                 'mx_mrp_out': unload,
