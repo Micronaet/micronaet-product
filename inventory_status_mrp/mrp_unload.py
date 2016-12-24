@@ -68,7 +68,18 @@ class MrpProduction(orm.Model):
         WB = xlsxwriter.Workbook(filename)
 
         self.WS = WB.add_worksheet('Unload') # Work Sheet:        
-        self.counter = 1 # Row counters:
+        self.counter = 0 # Row counters:
+        # Write header
+        write_xls_log([
+            'MRP', 
+            'Date',
+            'Order',
+            'Product',
+            'Maked',
+            'Component',
+            'Maked',
+            'State',
+            ])        
         
         from_date = '2016-08-30'
         mrp_ids = self.search(cr, uid, [        
@@ -79,7 +90,10 @@ class MrpProduction(orm.Model):
             ('date_planned', '>=', from_date),
             ], context=context)
             
-        product_pool = self.pool.get('product.product')                           
+        product_pool = self.pool.get('product.product')   
+        cr.execute('''
+            UPDATE product_product set mx_mrp_out=0;
+            ''')                        
 
         # Generate MRP total componet report with totals:
         unload_db = {}
@@ -87,6 +101,8 @@ class MrpProduction(orm.Model):
             for sol in mrp.order_line_ids:
                 # Total elements:
                 maked = sol.product_uom_maked_sync_qty                                
+                if not maked: 
+                    continue
                 for component in sol.product_id.dynamic_bom_line_ids:                    
                     product = component.product_id
                                             
