@@ -374,12 +374,12 @@ class ProductProduct(orm.Model):
         stock_location_id = company_proxy.stock_location_id.id
         
         # Year filter:
-        from_date = datetime.now().strftime('%Y-01-01 00:00:00')    
+        from_date = datetime.now().strftime('2016-01-01 00:00:00') # TODO %Y **************************************************************************************   
         if limit_up_date:
             to_date = limit_up_date
             _logger.warning('Limite date: %s' % limit_up_date)
         else:    
-            to_date = datetime.now().strftime('%Y-12-31 23:59:59')
+            to_date = datetime.now().strftime('2017-12-31 23:59:59') # TODO %Y **************************************************************************************   
 
         # ------------------
         # Create empty dict:
@@ -574,7 +574,7 @@ class ProductProduct(orm.Model):
         # Quantity
         'mx_inv_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='Inventory', 
+            string='Inventory adjust', 
             store=False, multi=True),
         'mx_mm_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
