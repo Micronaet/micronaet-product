@@ -569,6 +569,7 @@ class ProductProduct(orm.Model):
         'web_published': fields.boolean('Web published'),
                 
         # Quantity
+        # TODO manage in net and lord check:
         'mx_start_date': fields.date('Start date'),
         'mx_start_qty': fields.float('Inventory start qty', 
             digits=(16, 3), # TODO parametrize
