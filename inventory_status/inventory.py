@@ -374,7 +374,7 @@ class ProductProduct(orm.Model):
         stock_location_id = company_proxy.stock_location_id.id
         
         # Year filter:
-        from_date = datetime.now().strftime('2016-01-01 00:00:00') # TODO %Y **************************************************************************************   
+        from_date = datetime.now().strftime('2016-01-01 00:00:00')   # TODO %Y **************************************************************************************   
         if limit_up_date:
             to_date = limit_up_date
             _logger.warning('Limite date: %s' % limit_up_date)
@@ -516,13 +516,14 @@ class ProductProduct(orm.Model):
             ], context=context)
 
         for line in move_pool.browse(cr, uid, line_ids, context=context):
-            if line.state == 'assigned': # OF
+            if line.state == 'assigned': # OF (still open, so keep also prev.)
                 res[line.product_id.id][
                     'mx_of_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_of_ids'].append(line.id)
                 res[line.product_id.id]['mx_of_date'] += '%s ' % ((
-                    line.date_expected or '')[:10])
-            else: # done   BF
+                    line.date_expected or '')[:10])                    
+            elif picking_id.date >= from_date: # done BF
+                # XXX Note: Added 02/01/2017 elif clause before else
                 res[line.product_id.id][
                     'mx_bf_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_bf_ids'].append(line.id)
