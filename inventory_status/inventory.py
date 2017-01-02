@@ -570,13 +570,13 @@ class ProductProduct(orm.Model):
                 
         # Quantity
         # TODO manage in net and lord check:
-        'mx_start_date': fields.date('Start date'),
-        'mx_start_qty': fields.float('Inventory start qty', 
-            digits=(16, 3), # TODO parametrize
-            help='Inventory at 1/1 for current year'),
-        'mx_delta_qty': fields.float('Inventory start qty', 
-            digits=(16, 3), # TODO parametrize
-            help='Inventory at 1/1 for current year'),
+        #'mx_start_date': fields.date('Start date'),
+        #'mx_start_qty': fields.float('Inventory start qty', 
+        #    digits=(16, 3), # TODO parametrize
+        #    help='Inventory at 1/1 for current year'),
+        #'mx_delta_qty': fields.float('Inventory start qty', 
+        #    digits=(16, 3), # TODO parametrize
+        #    help='Inventory at 1/1 for current year'),
 
         'mx_inv_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
