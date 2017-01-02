@@ -405,6 +405,7 @@ class ProductProduct(orm.Model):
                 # text info:
                 'mx_of_date': '',           
                 }
+                
         if no_inventory_status:
             _logger.warning('>>> STOP NO INVENTORY <<<')
             return res
@@ -539,11 +540,6 @@ class ProductProduct(orm.Model):
             ])
             
         for line in sol_pool.browse(cr, uid, sol_ids):
-            # Header state
-            # XXX moved in search clause
-            #if line.order_id.state in ('cancel', 'draft', 'sent'): #done?
-            #    continue # TODO better!!            
-
             # Check delivered:
             remain = line.product_uom_qty - line.delivered_qty
             if remain <= 0.0:
@@ -571,8 +567,16 @@ class ProductProduct(orm.Model):
         #     _get_status_ordered, method=True, type='float', string='Ordered', 
         #     store=False),
         'web_published': fields.boolean('Web published'),
-        
+                
         # Quantity
+        'mx_start_date': fields.date('Start date'),
+        'mx_start_qty': fields.float('Inventory start qty', 
+            digits=(16, 3), # TODO parametrize
+            help='Inventory at 1/1 for current year'),
+        'mx_delta_qty': fields.float('Inventory start qty', 
+            digits=(16, 3), # TODO parametrize
+            help='Inventory at 1/1 for current year'),
+
         'mx_inv_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
             string='Inventory adjust', 
