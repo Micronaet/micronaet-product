@@ -44,6 +44,7 @@
 	                <field name="date" readonly="1" />
 	                <field name="partner_id" readonly="1"/>
 	                <field name="picking_id" readonly="1"/>
+	                <button name="open_picking_from_stock_move" string="Open picking" type="object" icon="gtk-goto-last"/>
 	                <field name="ddt_id" readonly="1"/>
 	                <field name="product_id" readonly="1"/>
 	                <field name="partner_id" readonly="1"/>
