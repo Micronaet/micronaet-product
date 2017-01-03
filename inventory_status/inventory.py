@@ -59,7 +59,7 @@ class StockMove(orm.Model):
             'res_id': picking_id,
             'res_model': 'stock.picking',
             #'view_id': view_id, # False
-            'views': [(False, 'tree'), (False, 'form')],
+            'views': [(False, 'form')],
             #'domain': [],
             'context': context,
             'target': 'new', 
@@ -546,7 +546,7 @@ class ProductProduct(orm.Model):
                 res[line.product_id.id]['mx_of_ids'].append(line.id)
                 res[line.product_id.id]['mx_of_date'] += '%s ' % ((
                     line.date_expected or '')[:10])                    
-            elif picking_id.date >= from_date: # done BF
+            elif line.picking_id.date >= from_date: # done BF
                 # XXX Note: Added 02/01/2017 elif clause before else
                 res[line.product_id.id][
                     'mx_bf_in'] += line.product_uom_qty
