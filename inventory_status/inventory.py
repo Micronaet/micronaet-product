@@ -545,9 +545,12 @@ class ProductProduct(orm.Model):
                     'mx_of_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_of_ids'].append(line.id)
                 res[line.product_id.id]['mx_of_date'] += '%s ' % ((
-                    line.date_expected or '')[:10])                    
-            elif line.picking_id.date >= from_date: # done BF
-                # XXX Note: Added 02/01/2017 elif clause before else
+                    line.date_expected or '')[:10])    
+                                    
+            # XXX Note: Added 02/01/2017 elif clause before else
+            #elif line.picking_id.date >= from_date: # done BF
+            # Removed for inventory 03/01/2017
+            else:
                 res[line.product_id.id][
                     'mx_bf_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_bf_ids'].append(line.id)
