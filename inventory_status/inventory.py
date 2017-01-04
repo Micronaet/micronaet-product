@@ -44,26 +44,19 @@ class StockMove(orm.Model):
     _inherit = 'stock.move'
     
     def open_picking_from_stock_move(self, cr, uid, ids, context=None):
+        ''' Open button
         '''
-        '''
-        #model_pool = self.pool.get('ir.model.data')
-        #view_id = model_pool.get_object_reference('module_name', 'view_name')[1]
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
-        picking_id = current_proxy.picking_id.id
-        
         return {
             'type': 'ir.actions.act_window',
             'name': _('Picking'),
             'view_type': 'form',
             'view_mode': 'tree,form',
-            'res_id': picking_id,
+            'res_id': current_proxy.picking_id.id,
             'res_model': 'stock.picking',
-            #'view_id': view_id, # False
             'views': [(False, 'form')],
-            #'domain': [],
             'context': context,
             'target': 'new', 
-            #'nodestroy': False,
             }
         
     _columns = {
@@ -77,7 +70,6 @@ class StockMove(orm.Model):
             string='Partner', store=False), 
         }
     
-
 class ProductProduct(orm.Model):
     ''' Model name: ProductProduct
     '''   
@@ -550,7 +542,7 @@ class ProductProduct(orm.Model):
             # XXX Note: Added 02/01/2017 elif clause before else
             #elif line.picking_id.date >= from_date: # done BF
             # Removed for inventory 03/01/2017
-            else:
+            else:                                   # TODO %Y **************************************************************************************   
                 res[line.product_id.id][
                     'mx_bf_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_bf_ids'].append(line.id)
