@@ -553,16 +553,16 @@ class ProductProduct(orm.Model):
         # Update with calculated fields        
         for key in res:
             res[key]['mx_net_qty'] = \
-                res_extra[key]['mx_start_in'] +\ # + Inventory start
-                res[key]['mx_inv_qty'] +\ # + Inventory adjust
-                res[key]['mx_bf_in'] -\ # + In movement
-                res[key]['mx_bc_out'] -\ # - Out movement
-                res_extra[key]['mx_mrp_out'] # - MRP temporary unload
+                res_extra[key]['mx_start_qty'] +\
+                res[key]['mx_inv_qty'] +\
+                res[key]['mx_bf_in'] -\
+                res[key]['mx_bc_out'] -\
+                res_extra[key]['mx_mrp_out']
                 
             res[key]['mx_lord_qty'] = \
-                res[key]['mx_net_qty'] -\ # Previous net
-                res[key]['mx_oc_out'] +\ # - Out movement
-                res[key]['mx_of_in'] # + In movement
+                res[key]['mx_net_qty'] -\
+                res[key]['mx_oc_out'] +\
+                res[key]['mx_of_in']
                 
         _logger.warning('>>> STOP INVENTORY <<<')
         return res
@@ -576,7 +576,7 @@ class ProductProduct(orm.Model):
         # Quantity
         'mx_start_date': fields.date('Start date'),
         'mx_start_qty': fields.float('Inventory start qty', 
-            digits=(16, 5), # TODO parametrize
+            digits=(16, 2), # TODO parametrize
             help='Inventory at 1/1 for current year'),
         #'mx_delta_qty': fields.float('Inventory start qty', 
         #    digits=(16, 3), # TODO parametrize
