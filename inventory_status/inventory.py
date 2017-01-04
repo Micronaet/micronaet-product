@@ -466,6 +466,7 @@ class ProductProduct(orm.Model):
         line_ids = move_pool.search(cr, uid, [
             # Line:
             ('product_id', 'in', product_ids),
+            #('state', '!=', 'cancel'), # TODO active?
 
             # Header:
             # XXX date_done, min_date, date?
@@ -477,10 +478,8 @@ class ProductProduct(orm.Model):
             ], context=context)
         
         for line in move_pool.browse(cr, uid, line_ids, context=context):
-            res[line.product_id.id][
-                'mx_bc_out'] += line.product_uom_qty
-            # one2many field:  
-            res[line.product_id.id]['mx_bc_ids'].append(line.id) # XXX line_ids
+            res[line.product_id.id]['mx_bc_out'] += line.product_uom_qty            
+            res[line.product_id.id]['mx_bc_ids'].append(line.id) # one2many:  
 
         # ---------------------------------------------------------------------
         # OF. Get load picking
@@ -496,21 +495,8 @@ class ProductProduct(orm.Model):
             if item.id not in in_picking_type_ids:
                 in_picking_type_ids.append(item.id)
             
-        #pick_ids = pick_pool.search(cr, uid, [     
-        #    # type pick filter   
-        #    ('picking_type_id', 'in', in_picking_type_ids),            
-        #    # Partner exclusion
-        #    # TODO ('partner_id', 'not in', exclude_partner_ids),            
-        #    # check data date
-        #    # TODO Restore date (for start up period not)
-        #    
-        #    # Add filter 21 ott. 2016 for max limit of date:
-        #    ('date', '>=', from_date), # XXX correct for virtual?
-        #    ('date', '<=', to_date),            
-        #    # TODO state filter
-        #    ])
-
         line_ids = move_pool.search(cr, uid, [
+            # TODO ('partner_id', 'not in', exclude_partner_ids),            
             ('picking_id.picking_type_id', 'in', in_picking_type_ids),            
             # Add filter 21 ott. 2016 for max limit of date:
             #('picking_id.date', '>=', from_date), # XXX correct for virtual?
@@ -518,7 +504,6 @@ class ProductProduct(orm.Model):
             ('picking_id.date', '<=', to_date),            
 
             ('product_id', 'in', product_ids),
-            #('picking_id', 'in', pick_ids),
             ], context=context)
 
         for line in move_pool.browse(cr, uid, line_ids, context=context):
