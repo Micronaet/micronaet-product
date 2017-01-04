@@ -348,6 +348,8 @@ class ProductProduct(orm.Model):
         '''
         _logger.warning('>>> START INVENTORY <<<')
         res = {}
+        res_extra = {}
+        
         if context is None:
             context = {}
 
@@ -399,8 +401,17 @@ class ProductProduct(orm.Model):
         # ------------------
         # Create empty dict:
         # ------------------
-        for item_id in product_ids:
-            res[item_id] = {
+        for product in product_pool.browse(
+                cr, uid, product_ids, context=context):
+           # Extra data used     
+            res_extra[product.id] = {
+                'mx_mrp_out': product.mx_mrp_out,
+                'mx_start_qty': product.mx_start_qty,
+                'mx_start_date': product.mx_start_date,
+                }
+                
+            # Field data:    
+            res[product.id] = {
                 'mx_inv_qty': 0.0,
                 'mx_mm_qty': 0.0,
                 'mx_of_in': 0.0,
@@ -431,9 +442,9 @@ class ProductProduct(orm.Model):
         if stock_location_id:
             line_ids = move_pool.search(cr, uid, [
                 ('inventory_id', '!=', False),
+                ('product_id', 'in', product_ids),
                 ('date', '>=', from_date), 
                 ('date', '<=', to_date), 
-                ('product_id', 'in', product_ids),
                 ])
             for line in move_pool.browse(cr, uid, line_ids, context=context):
                 if 'mx_inv_ids' not in res[line.product_id.id]:
@@ -496,14 +507,15 @@ class ProductProduct(orm.Model):
                 in_picking_type_ids.append(item.id)
             
         line_ids = move_pool.search(cr, uid, [
+            # Line:
+            ('product_id', 'in', product_ids),
+            
+            # Header:
             # TODO ('partner_id', 'not in', exclude_partner_ids),            
             ('picking_id.picking_type_id', 'in', in_picking_type_ids),            
-            # Add filter 21 ott. 2016 for max limit of date:
-            #('picking_id.date', '>=', from_date), # XXX correct for virtual?
-            # Remove 27 ott. 2016 for old order cutted whit this clause
-            ('picking_id.date', '<=', to_date),            
-
-            ('product_id', 'in', product_ids),
+            # XXX Note: Only up period filter:
+            #('picking_id.date', '>=', from_date), 
+            ('picking_id.date', '<=', to_date),
             ], context=context)
 
         for line in move_pool.browse(cr, uid, line_ids, context=context):
@@ -516,11 +528,9 @@ class ProductProduct(orm.Model):
                                     
             # XXX Note: Added 02/01/2017 elif clause before else
             #elif line.picking_id.date >= from_date: # done BF
-            # Removed for inventory 03/01/2017
             else:                                   # TODO %Y **************************************************************************************   
-                res[line.product_id.id][
-                    'mx_bf_in'] += line.product_uom_qty
-                res[line.product_id.id]['mx_bf_ids'].append(line.id)
+                res[line.product_id.id]['mx_bf_in'] += line.product_uom_qty
+                res[line.product_id.id]['mx_bf_ids'].append(line.id) # one2many
         
         # ---------------------------------------------------------------------
         # Get order to delivery
@@ -529,19 +539,16 @@ class ProductProduct(orm.Model):
             ('product_id', 'in', product_ids),
             ('mx_closed', '=', False), # Forced as closed
             ('order_id.state', 'not in', ('cancel', 'draft', 'sent')),
-            # XXX Date filter? not for now (lord qty)
+            # XXX Note: no date filter
             ])
             
-        for line in sol_pool.browse(cr, uid, sol_ids):
-            # Check delivered:
+        for line in sol_pool.browse(cr, uid, sol_ids): # Check delivered:
             remain = line.product_uom_qty - line.delivered_qty
             if remain <= 0.0:
                 continue
             
-            res[line.product_id.id][
-                'mx_oc_out'] += remain
-            # Update o2m field:    
-            res[line.product_id.id]['mx_oc_ids'].append(line.id)
+            res[line.product_id.id]['mx_oc_out'] += remain
+            res[line.product_id.id]['mx_oc_ids'].append(line.id) # one2many
         
         # Update with calculated fields        
         for key in res:
@@ -562,11 +569,10 @@ class ProductProduct(orm.Model):
         'web_published': fields.boolean('Web published'),
                 
         # Quantity
-        # TODO manage in net and lord check:
-        #'mx_start_date': fields.date('Start date'),
-        #'mx_start_qty': fields.float('Inventory start qty', 
-        #    digits=(16, 3), # TODO parametrize
-        #    help='Inventory at 1/1 for current year'),
+        'mx_start_date': fields.date('Start date'),
+        'mx_start_qty': fields.float('Inventory start qty', 
+            digits=(16, 5), # TODO parametrize
+            help='Inventory at 1/1 for current year'),
         #'mx_delta_qty': fields.float('Inventory start qty', 
         #    digits=(16, 3), # TODO parametrize
         #    help='Inventory at 1/1 for current year'),
