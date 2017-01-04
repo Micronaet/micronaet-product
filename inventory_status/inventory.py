@@ -405,9 +405,9 @@ class ProductProduct(orm.Model):
                 cr, uid, product_ids, context=context):
            # Extra data used     
             res_extra[product.id] = {
-                'mx_mrp_out': product.mx_mrp_out,
+                'mx_mrp_out': product.mx_mrp_out, # TODO remove when stock move
                 'mx_start_qty': product.mx_start_qty,
-                'mx_start_date': product.mx_start_date,
+                #'mx_start_date': product.mx_start_date,
                 }
                 
             # Field data:    
@@ -553,11 +553,16 @@ class ProductProduct(orm.Model):
         # Update with calculated fields        
         for key in res:
             res[key]['mx_net_qty'] = \
-                res[key]['mx_bf_in'] - res[key]['mx_bc_out'] + \
-                res[key]['mx_inv_qty'] 
+                res_extra[key]['mx_start_in'] +\ # + Inventory start
+                res[key]['mx_inv_qty'] +\ # + Inventory adjust
+                res[key]['mx_bf_in'] -\ # + In movement
+                res[key]['mx_bc_out'] -\ # - Out movement
+                res_extra[key]['mx_mrp_out'] # - MRP temporary unload
+                
             res[key]['mx_lord_qty'] = \
-                res[key]['mx_net_qty'] - res[key]['mx_oc_out'] + \
-                res[key]['mx_of_in']                    
+                res[key]['mx_net_qty'] -\ # Previous net
+                res[key]['mx_oc_out'] +\ # - Out movement
+                res[key]['mx_of_in'] # + In movement
                 
         _logger.warning('>>> STOP INVENTORY <<<')
         return res
