@@ -359,12 +359,12 @@ class ProductProduct(orm.Model):
         limit_up_date = context.get('limit_up_date', False) # limit for invent.
 
         # Year filter:
-        from_date = datetime.now().strftime('2016-01-01 00:00:00')   # TODO %Y **************************************************************************************   
+        from_date = datetime.now().strftime('%Y-01-01 00:00:00')   # TODO %Y 2016**************************************************************************************   
         if limit_up_date:
             to_date = limit_up_date
             _logger.warning('Limite date: %s' % limit_up_date)
         else:    
-            to_date = datetime.now().strftime('2017-12-31 23:59:59') # TODO %Y **************************************************************************************   
+            to_date = datetime.now().strftime('%Y-12-31 23:59:59') # TODO %Y 2017**************************************************************************************   
 
         # ---------------------------------------------------------------------
         # Read parameter for inventory:
@@ -412,12 +412,14 @@ class ProductProduct(orm.Model):
                 
             # Field data:    
             res[product.id] = {
+                # Qty:
                 'mx_inv_qty': 0.0,
                 'mx_mm_qty': 0.0,
                 'mx_of_in': 0.0,
                 'mx_oc_out': 0.0,
                 'mx_bf_in': 0.0,
                 'mx_bc_out': 0.0,
+                # Total:
                 'mx_net_qty': 0.0,
                 'mx_lord_qty': 0.0,
                 'mx_net_mrp_qty': 0.0,
@@ -529,8 +531,8 @@ class ProductProduct(orm.Model):
                     line.date_expected or '')[:10])    
                                     
             # XXX Note: Added 02/01/2017 elif clause before else
-            #elif line.picking_id.date >= from_date: # done BF
-            else:                                   # TODO %Y **************************************************************************************   
+            elif line.picking_id.date >= from_date: # done BF
+            #else:                                   # TODO %Y **************************************************************************************   
                 res[line.product_id.id]['mx_bf_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_bf_ids'].append(line.id) # one2many
         

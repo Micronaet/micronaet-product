@@ -163,10 +163,12 @@
                        <newline/>
                        
                        <!--TOTAL BLOCK:-->
-                       <field name="mx_net_qty" readonly="1" string="Total net:" help="Also consider MRP unload" />
+                       <field name="mx_net_qty" readonly="1" string="Total net*:" help="Also consider MRP unload"/>
+                       <newline/>
                        <field name="mx_net_mrp_qty" readonly="1" string="Total net:" invisible="1"/>
                        <newline/>
-                       <field name="mx_lord_mrp_qty" readonly="1" string="Total lord:" help="Also consider MRP unload"/>
+                       <field name="mx_lord_mrp_qty" readonly="1" string="Total lord*:" help="Also consider MRP unload"/>
+                       <newline/>
                        <field name="mx_lord_qty" readonly="1" string="Total lord:" invisible="1"/>
                        <newline/>
 

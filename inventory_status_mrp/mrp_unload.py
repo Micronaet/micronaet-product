@@ -82,7 +82,10 @@ class MrpProduction(orm.Model):
             'State',
             ])        
         
-        from_date = '2016-08-30'
+        #from_date = '2016-08-30'
+        # After inventory date:
+        from_date = '2017-01-01'
+        
         mrp_ids = self.search(cr, uid, [        
             # State filter:
             #('state', 'not in', ('done', 'cancel')),
