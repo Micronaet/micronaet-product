@@ -318,12 +318,8 @@ class ProductProduct(orm.Model):
             'type': 'ir.actions.act_window',
             'name': 'Order line status',
             'res_model': 'sale.order.line',
-            #'res_id': ids[0],
             'view_type': 'form',
             'view_mode': 'tree,form',
-            #'view_id': view_id,
-            #'target': 'new',
-            #'nodestroy': True,
             'domain': [('product_id', 'in', ids)],
             }
     
@@ -355,10 +351,22 @@ class ProductProduct(orm.Model):
         if context is None:
             context = {}
 
-        # Set limit for inventory purpose:
-        limit_up_date = context.get('limit_up_date', False)
-            
+        # ---------------------------------------------------------------------
+        # Parameter for evaluation:
+        # ---------------------------------------------------------------------                
+        limit_up_date = context.get('limit_up_date', False) # limit for invent.
+
+        # Year filter:
+        from_date = datetime.now().strftime('2016-01-01 00:00:00')   # TODO %Y **************************************************************************************   
+        if limit_up_date:
+            to_date = limit_up_date
+            _logger.warning('Limite date: %s' % limit_up_date)
+        else:    
+            to_date = datetime.now().strftime('2017-12-31 23:59:59') # TODO %Y **************************************************************************************   
+
+        # ---------------------------------------------------------------------
         # Read parameter for inventory:
+        # ---------------------------------------------------------------------
         user_id = context.get('uid', uid)
         user = self.pool.get('res.users').browse(
             cr, uid, user_id, context=context)
@@ -371,11 +379,11 @@ class ProductProduct(orm.Model):
         sale_pool = self.pool.get('sale.order') # XXX maybe not used 
         sol_pool = self.pool.get('sale.order.line') # XXX maybe not used 
         move_pool = self.pool.get('stock.move')
+        company_pool = self.pool.get('res.company')
 
         # ---------------------------------------------------------------------
         # Parameter for filters:
         # ---------------------------------------------------------------------
-        company_pool = self.pool.get('res.company')
         company_ids = company_pool.search(cr, uid, [], context=context)
         company_proxy = company_pool.browse(
             cr, uid, company_ids, context=context)[0]
@@ -388,14 +396,6 @@ class ProductProduct(orm.Model):
         exclude_partner_ids.append(company_proxy.partner_id.id)
         stock_location_id = company_proxy.stock_location_id.id
         
-        # Year filter:
-        from_date = datetime.now().strftime('2016-01-01 00:00:00')   # TODO %Y **************************************************************************************   
-        if limit_up_date:
-            to_date = limit_up_date
-            _logger.warning('Limite date: %s' % limit_up_date)
-        else:    
-            to_date = datetime.now().strftime('2017-12-31 23:59:59') # TODO %Y **************************************************************************************   
-
         # ------------------
         # Create empty dict:
         # ------------------
@@ -463,27 +463,17 @@ class ProductProduct(orm.Model):
             if item.id not in out_picking_type_ids:
                 out_picking_type_ids.append(item.id)
 
-        #pick_ids = pick_pool.search(cr, uid, [
-        #    # type pick filter   
-        #    ('picking_type_id', 'in', out_picking_type_ids),
-        #    # Partner exclusion
-        #    #('partner_id', 'not in', exclude_partner_ids), 
-        #    # TODO check data date
-        #    # TODO date_done, min_date, date
-        #    ('date', '>=', from_date), 
-        #    ('date', '<=', to_date), 
-        #    # TODO state filter
-        #    ])
-
         line_ids = move_pool.search(cr, uid, [
-            # Header:
-            ('picking_id.picking_type_id', 'in', out_picking_type_ids),
-            ('picking_id.date', '>=', from_date), 
-            ('picking_id.date', '<=', to_date), 
-
             # Line:
             ('product_id', 'in', product_ids),
-            #('picking_id', 'in', pick_ids),
+
+            # Header:
+            # XXX date_done, min_date, date?
+            ('picking_id.date', '>=', from_date), 
+            ('picking_id.date', '<=', to_date),
+            ('picking_id.picking_type_id', 'in', out_picking_type_ids),
+            # ('partner_id', 'not in', exclude_partner_ids), 
+            # TODO add state filter?
             ], context=context)
         
         for line in move_pool.browse(cr, uid, line_ids, context=context):
