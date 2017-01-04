@@ -9,8 +9,7 @@
                 <!--<button name="button_export_inventory" position="after">
                     <button name="button_import_campaign_web" string="Import campaign" type="object" />
                 </button>-->
-                <field name="mx_lord_qty" position="after">
-                    <newline/>
+                <field name="mx_of_in" position="before">
                     <field name="mx_campaign_out" readonly="1"/>
                     <newline/>
                     <field name="mx_campaign_detail" readonly="1" 

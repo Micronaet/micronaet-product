@@ -420,6 +420,8 @@ class ProductProduct(orm.Model):
                 'mx_bc_out': 0.0,
                 'mx_net_qty': 0.0,
                 'mx_lord_qty': 0.0,
+                'mx_net_mrp_qty': 0.0,
+                'mx_lord_mrp_qty': 0.0,
                 
                 # one2many fields: 
                 'mx_bc_ids': [],
@@ -552,17 +554,22 @@ class ProductProduct(orm.Model):
         
         # Update with calculated fields        
         for key in res:
+            # Without MRP:
             res[key]['mx_net_qty'] = \
                 res_extra[key]['mx_start_qty'] +\
                 res[key]['mx_inv_qty'] +\
                 res[key]['mx_bf_in'] -\
-                res[key]['mx_bc_out'] -\
-                res_extra[key]['mx_mrp_out']
-                
+                res[key]['mx_bc_out']
             res[key]['mx_lord_qty'] = \
                 res[key]['mx_net_qty'] -\
                 res[key]['mx_oc_out'] +\
                 res[key]['mx_of_in']
+                
+            # WIth MRP (unload MP):
+            res[key]['mx_net_mrp_qty'] = res[key]['mx_net_qty'] -\
+                res_extra[key]['mx_mrp_out']
+            res[key]['mx_lord_mrp_qty'] = res[key]['mx_lord_qty'] -\
+                res_extra[key]['mx_mrp_out']
                 
         _logger.warning('>>> STOP INVENTORY <<<')
         return res
@@ -616,6 +623,14 @@ class ProductProduct(orm.Model):
         'mx_lord_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
             string='Total Lord', 
+            store=False, multi=True),     
+        'mx_net_mrp_qty': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='Total Net with MRP', 
+            store=False, multi=True),
+        'mx_lord_mrp_qty': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='Total Lord with MRP', 
             store=False, multi=True),     
         
         # TODO temporary field for unload in production this season.

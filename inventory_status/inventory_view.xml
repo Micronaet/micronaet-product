@@ -163,13 +163,15 @@
                        <newline/>
                        
                        <!--TOTAL BLOCK:-->
-                       <field name="mx_net_qty" readonly="1" string="Total net:"/>
+                       <field name="mx_net_qty" readonly="1" string="Total net:" help="Also consider MRP unload" />
+                       <field name="mx_net_mrp_qty" readonly="1" string="Total net:" invisible="1"/>
                        <newline/>
-                       <field name="mx_lord_qty" readonly="1" string="Total lord:"/>
+                       <field name="mx_lord_mrp_qty" readonly="1" string="Total lord:" help="Also consider MRP unload"/>
+                       <field name="mx_lord_qty" readonly="1" string="Total lord:" invisible="1"/>
                        <newline/>
 
                        <!--START BLOCK:-->
-                       <field name="mx_start_qty" readonly="1"  string="Start inventory"/>
+                       <field name="mx_start_qty" readonly="1"  string="+ Start inventory"/>
                        <field name="mx_start_date" readonly="1" nolabel="1" help="Date of start inventory"/>
 
                        <!--MOVEMENT BLOCK:-->
