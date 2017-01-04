@@ -117,16 +117,11 @@ class MrpProduction(orm.Model):
                         unload_db[product.id] = cmpt_maked
                     
                     write_xls_log([
-                        mrp.name, 
-                        mrp.date_planned,
-                        sol.order_id.name,
+                        mrp.name, mrp.date_planned, sol.order_id.name,
                         # Product
-                        sol.product_id.default_code,
-                        maked,
+                        sol.product_id.default_code, maked,
                         # Component
-                        product.id,
-                        product.default_code,
-                        cmpt_maked,
+                        product.id, product.default_code, cmpt_maked,
                         mrp.state,
                         ])
                         
