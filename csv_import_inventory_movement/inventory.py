@@ -69,11 +69,6 @@ class ProductProductImportInventory(orm.Model):
         product_pool = self.pool.get('product.product')
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
          
-        log_file = open(
-            os.path.join(
-                self.filename,
-                'inventory_update_%s.csv' % (datetime.now()),
-                ), 'w')
 
         # ----------------
         # Read parameters:
@@ -81,6 +76,15 @@ class ProductProductImportInventory(orm.Model):
         # From import procedure:
         fullname = current_proxy.fullname
         max_line = current_proxy.max_line or 15000
+
+        log_file = open(
+            os.path.join(
+                self.filename,
+                'inventory_update_%s_%s.csv' % (
+                    fullname,
+                    datetime.now(),
+                    ),
+                ), 'w')
 
         try:
             filename = os.path.join(self.filename, fullname)
@@ -137,7 +141,8 @@ class ProductProductImportInventory(orm.Model):
             # Write log before:
             log_file.write('%s | %s | %s\n' % (
                 default_code,
-                product_proxy.inventory_start,
+                #product_proxy.inventory_start,
+                product_proxy.mx_start_qty,
                 product_qty,
                 ))
 
@@ -147,6 +152,8 @@ class ProductProductImportInventory(orm.Model):
                 #'inventory_delta': 0.0,# XXX reset delta adjust!!!
                 
                 # XXX now new inventory start 2017:
+                'inventory_start': 0.0,
+                'inventory_delta': 0.0,
                 'mx_start_qty': product_qty,
                 'mx_start_date': '2016-12-31 00:00:00', # TODO
                 }, context=context)
