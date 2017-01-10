@@ -86,6 +86,7 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
     
     _columns = {
+        # TODO No more use:
         'inventory_start': fields.float(
             'Inventory start', digits=(16, 3)),
         'inventory_delta': fields.float(
