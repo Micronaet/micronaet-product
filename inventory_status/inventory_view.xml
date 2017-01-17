@@ -145,29 +145,36 @@
                 <form string="String" version="7.0">        
                     <sheet>
                         <group col="4" colspan="4">
+                           <field name="name" cospan="4"/>
                            <field name="default_code" />
-                           <field name="name" />
+                           <newline/>
 
                            <field name="mx_net_mrp_qty" readonly="1" string="Total net*:" help="Also consider MRP unload"/>
                            <field name="mx_lord_mrp_qty" readonly="1" string="Total lord*:" help="Also consider MRP unload"/>
+                           <newline/>
 
                            <field name="mx_start_qty" readonly="1"  string="+ Start inventory"/>
                            <field name="mx_start_date" readonly="1" nolabel="1" help="Date of start inventory"/>
+                           <newline/>
 
                            <field name="mx_inv_qty" readonly="1" string="+/- Inventory adjust"/>
                            <button name="get_movements_inv" string="Inv (in)" colspan="2" type="object" icon="gtk-goto-first" class="oe_link" attrs="{'invisible': [('mx_inv_qty', '=', 0)]}"/>
+                           <newline/>
                            
                            <field name="mx_bf_in" readonly="1" string="+ MM in (BF, MRP)"/>
                            <button name="get_movements_in" string="MM (in)" colspan="2" type="object" icon="gtk-goto-first" class="oe_link" attrs="{'invisible': [('mx_bf_in', '=', 0)]}" />
+                           <newline/>
 
                            <field name="mx_bc_out" readonly="1" string="- MM out (BC, MRP)"/>
                            <button name="get_movements_out" string="MM (out)" colspan="2" type="object" icon="gtk-goto-first" class="oe_link" attrs="{'invisible': [('mx_bc_out', '=', 0)]}"/>
+                           <newline/>
 
                            <field name="mx_mrp_out" readonly="1" string="- MRP out" help="MRP calculated dynamically"/>
                            <newline/>
 
                            <field name="mx_of_in" readonly="1" string="+ OF in"/>
                            <button name="get_movements_of"  colspan="2" string="OF (in)" type="object" icon="gtk-goto-first" class="oe_link" attrs="{'invisible': [('mx_of_in', '=', 0)]}" />
+                           <newline/>
                            <field name="mx_oc_out" readonly="1" string="- OC out"/>
                            <button name="get_movements_oc" colspan="2" string="OC (out)" type="object" icon="gtk-goto-first" class="oe_link" attrs="{'invisible': [('mx_oc_out', '=', 0)]}" />
                         </group>
