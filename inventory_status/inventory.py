@@ -557,19 +557,20 @@ class ProductProduct(orm.Model):
         for key in res:
             # Without MRP:
             res[key]['mx_net_qty'] = \
-                res_extra[key]['mx_start_qty'] +\
-                res[key]['mx_inv_qty'] +\
-                res[key]['mx_bf_in'] -\
+                res_extra[key]['mx_start_qty'] + \
+                res[key]['mx_inv_qty'] + \
+                res[key]['mx_bf_in'] - \
                 res[key]['mx_bc_out']
             res[key]['mx_lord_qty'] = \
-                res[key]['mx_net_qty'] -\
-                res[key]['mx_oc_out'] +\
+                res[key]['mx_net_qty'] - \
+                res[key]['mx_oc_out'] + \
                 res[key]['mx_of_in']
+            # TODO - campaign
                 
             # WIth MRP (unload MP):
-            res[key]['mx_net_mrp_qty'] = res[key]['mx_net_qty'] -\
+            res[key]['mx_net_mrp_qty'] = res[key]['mx_net_qty'] - \
                 res_extra[key]['mx_mrp_out']
-            res[key]['mx_lord_mrp_qty'] = res[key]['mx_lord_qty'] -\
+            res[key]['mx_lord_mrp_qty'] = res[key]['mx_lord_qty'] - \
                 res_extra[key]['mx_mrp_out']
                 
         _logger.warning('>>> STOP INVENTORY <<<')
