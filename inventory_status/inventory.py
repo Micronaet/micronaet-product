@@ -680,6 +680,19 @@ class ResUsers(orm.Model):
     """    
     _inherit = 'res.users'
    
+    def set_no_inventory_status(self, cr, uid, value=True, context=None):
+        ''' Set inventory status uid
+            return previous value
+            default is True
+        '''
+        user_proxy = self.browse(cr, uid, uid, context=context)
+        
+        previous = user_proxy.no_inventory_status
+        self.write(cr, uid, uid, {
+            'no_inventory_status': value
+            }, context=context)
+        return previous
+            
     _columns = {
         'no_inventory_status': fields.boolean('No inventory status'),
         }
