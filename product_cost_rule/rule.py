@@ -658,6 +658,50 @@ class ProductProduct(orm.Model):
     """    
     _inherit = 'product.product'
     
+    # Button
+    def open_normal_form_view(self, cr, uid, ids, context=None):
+        '''
+        '''
+        model_pool = self.pool.get('ir.model.data')
+        form_id = model_pool.get_object_reference(
+            cr, uid, 'product', 'product_normal_form_view')[1]
+    
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Cost manage'),
+            'view_type': 'form',
+            'view_mode': 'form,tree',
+            'res_id': ids[0],
+            'res_model': 'product.product',
+            'view_id': form_id, # False
+            'views': [(form_id, 'form'), (False, 'tree')],
+            'domain': [],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }
+    def open_cost_form_view(self, cr, uid, ids, context=None):
+        '''
+        '''
+        model_pool = self.pool.get('ir.model.data')
+        form_id = model_pool.get_object_reference(
+            cr, uid, 'product_cost_rule', 'view_product_product_cost_form')[1]
+    
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Cost manage'),
+            'view_type': 'form',
+            'view_mode': 'form,tree',
+            'res_id': ids[0],
+            'res_model': 'product.product',
+            'view_id': form_id, # False
+            'views': [(form_id, 'form'), (False, 'tree')],
+            'domain': [],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }
+    
     _columns = {
         # 3 Method:
         'company_method_id': fields.many2one(

@@ -121,7 +121,8 @@
                         <group col="4" colspan="4">
                             <field name="name" />
                             <field name="default_code" />
-                            
+                            <button name="open_normal_form_view" string="Normal product" type="object" icon="gtk-dnd"/>
+
                             <notebook colspan="4">
                                 <page string="Cost generation">
                                     <group col="8" colspan="4">
@@ -341,6 +342,29 @@
                     <field name="cost_currency_id" />
                     <field name="transport_id" />
                 </field>
+            </field>
+        </record>
+        
+        <!--Button for open view from product-->
+        <record model="ir.ui.view" id="view_product_open_cost_tree">
+            <field name="name">product.product.cost.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="lst_price" position="after">
+                    <button name="open_cost_form_view" string="Manage cost" type="object" icon="gtk-execute"/>
+                </field>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_product_open_cost_form">
+            <field name="name">product.product.cost.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="before">
+                    <button name="open_cost_form_view" string="Manage cost" type="object" icon="gtk-execute"/>
+                </xpath>
             </field>
         </record>
         
