@@ -153,9 +153,7 @@
                            <field name="mx_lord_mrp_qty" readonly="1" string="Total lord*:" help="Also consider MRP unload"/>
                            <newline/>
 
-                           <field name="mx_start_qty" groups="base.group_erp_manager" string="+ Start inventory (MODIFY)"/>
-                           <newline/>
-                           <field name="mx_start_qty" readonly="1"  string="+ Start inventory"/>
+                           <field name="mx_start_qty" readonly="1" string="+ Start inventory"/>
                            <field name="mx_start_date" readonly="1" nolabel="1" help="Date of start inventory"/>
                            <newline/>
 
@@ -222,7 +220,7 @@
                        <newline/>-->
 
                        <!--START BLOCK:-->
-                       <field name="mx_start_qty" readonly="1"  string="+ Start inventory"/>
+                       <field name="mx_start_qty" string="+ Start inventory"/>
                        <field name="mx_start_date" readonly="1" nolabel="1" help="Date of start inventory"/>
 
                        <!--MOVEMENT BLOCK:-->
