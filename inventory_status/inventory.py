@@ -680,7 +680,7 @@ class ResUsers(orm.Model):
     """    
     _inherit = 'res.users'
    
-    def set_no_inventory_status(self, cr, uid, value=True, context=None):
+    def set_no_inventory_status(self, cr, uid, value=False, context=None):
         ''' Set inventory status uid
             return previous value
             default is True
@@ -691,6 +691,8 @@ class ResUsers(orm.Model):
         self.write(cr, uid, uid, {
             'no_inventory_status': value
             }, context=context)
+        _logger.warning('>>> Set user [%s] No inventory status: %s > %s' % (
+            user_proxy.login, previous, value))
         return previous
             
     _columns = {
