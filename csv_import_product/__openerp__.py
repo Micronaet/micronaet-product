@@ -32,6 +32,7 @@
         'product',
         'base_log',
         'product_more_cost',
+        'base_accounting_program', # extra fields
         ],
     'init_xml': [],
     'demo': [],

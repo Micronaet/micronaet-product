@@ -94,6 +94,7 @@ class ProductProductImportationTraceColumn(orm.Model):
         
         ('default_supplier_code', 'Purchase product code'),
         ('description_purchase', 'Purchase description'), # Lang
+        ('large_description', 'Extended description for web'),        
 
         ('colour_code', 'Supplier color code'),
         ('colour', 'Our colour'),
