@@ -58,6 +58,8 @@ class StructureBlock(orm.Model):
     
     _columns = {
         'name': fields.char('Name', size=64, required=True, translate=True),
+        'code': fields.char('Code', size=10, required=True, 
+            help='Used for future ref (name is translated)'),
         'structure_id': fields.many2one(
             'structure.structure', 'Code structure'), 
         'mirror_structure_id': fields.many2one(
@@ -120,7 +122,16 @@ class ProductProduct(orm.Model):
     
     # -------------------------------------------------------------------------    
     # Utility:
-    # -------------------------------------------------------------------------    
+    # -------------------------------------------------------------------------
+    def get_all_fields_to_update(self, all_db=None):
+        ''' Overridable function for update other fields:
+        '''    
+        res = {}
+
+        if all_db is None:
+            all_db = {}
+        return res
+        
     def get_name_from_default_code(self, default_code, structure_proxy):
         ''' Utility function for calculate product name from code and structure
             selected (passed as arguments)
@@ -170,6 +181,7 @@ class ProductProduct(orm.Model):
         # ----------------
         # Name generation:
         # ----------------
+        all_db = {}
         name_db = {}
         error = ''
         for key in sorted(code_db):
@@ -219,6 +231,8 @@ class ProductProduct(orm.Model):
                     if output not in name_db:
                         name_db[output] = ''                         
                     name_db[output] += output_mask % value[v]
+                    all_db[key] = value[v]
+
                 else:
                     if v: 
                         error += 'Value %s not present in block (%s, %s)\n' % (
@@ -226,7 +240,7 @@ class ProductProduct(orm.Model):
 
         if error:
             _logger.error('Code error: [%s]' % error)        
-        return (name_db, error)
+        return (name_db, all_db, error)
         
     # -------------------------------------------------------------------------    
     # Button event:
@@ -251,8 +265,8 @@ class ProductProduct(orm.Model):
             default_code = default_code.upper()
             structure_proxy = product_proxy.structure_id
             
-            (name_db, error) = self.get_name_from_default_code(default_code, 
-                structure_proxy)
+            (name_db, all_db, error) = self.get_name_from_default_code(
+                default_code, structure_proxy)
             
             if language.code == (lang_org or 'it_IT'): # only for italian
                 _logger.warning('Update for lang: %s' % language.code)
@@ -269,6 +283,7 @@ class ProductProduct(orm.Model):
                     'default_code': default_code,
                     'structure_error': error,            
                     })
+            name_db.update(self.get_all_fields_to_update(all_db))        
 
             self.write(cr, uid, ids, name_db, context=context)
         context['lang'] = lang_org # restore

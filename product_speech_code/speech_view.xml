@@ -58,7 +58,8 @@
                 <form string="Structure block" version="7.0">        
                     <sheet>
                         <group col="4" colspan="4">
-                            <field name="name" />
+                            <field name="name" colspan="4"/>
+                            <field name="code" />
                             <field name="mandatory" />
                             
                             <field name="mirror_structure_id" domain="[('id','!=',structure_id)]"/>
@@ -98,6 +99,7 @@
                     <!--<field name="structure_id" />-->
                     <field name="mandatory" />
                     <field name="name" />
+                    <field name="code" />
                     <field name="mirror_structure_id" />
                     <field name="rely_id" />
                     <field name="from_char" />
