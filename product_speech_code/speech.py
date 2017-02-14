@@ -231,7 +231,7 @@ class ProductProduct(orm.Model):
                     if output not in name_db:
                         name_db[output] = ''                         
                     name_db[output] += output_mask % value[v]
-                    all_db[key] = value[v]
+                    all_db[block.code] = value[v]
 
                 else:
                     if v: 
