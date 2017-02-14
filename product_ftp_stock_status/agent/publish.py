@@ -21,7 +21,7 @@
 import ftplib
 
 # Parameters:
-filename = 'product.csv'
+filename = 'inventario.txt'
 folder = 'cartella'
 
 ftp = 'ftp.example.it'

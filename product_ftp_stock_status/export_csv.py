@@ -51,14 +51,43 @@ class ProductProduct(orm.Model):
         ''' Export and launch FTP publish
         '''        
         # ---------------------------------------------------------------------
+        # Utility:
+        # ---------------------------------------------------------------------
+        def clean_ascii(value):
+            ''' Clean not ascii char
+            '''
+            res = ''
+            if not value:
+                return tes
+            for c in value:
+                if ord(c) < 127:
+                    res += c
+                else:
+                    res += '#'    
+            return res
+            
+        # ---------------------------------------------------------------------
         # CSV file:
         # ---------------------------------------------------------------------
-        csv_file = '/home/administrator/photo/xls/ftp/product.csv'
+        csv_file = '/home/administrator/photo/xls/ftp/inventario.txt'
         sh_file = '/home/administrator/photo/xls/ftp/publish.sh'
+        supplier_id = '30993'
+        lang = 'en_US'
         
-        _logger.warning('Start generate CSV stock status: %s' % csv_file)
+        # Setup context in correct lang
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx['lang'] = lang
+        
+        _logger.warning('Start generate CSV stock status: %s [lang: %s]' % (
+            csv_file, lang))
 
-        ftp_file = open(csv_file, 'r')
+        ftp_file = open(csv_file, 'w')
+        header = 'Supplier ID,Item Number,Qty On Hand,Qty Backordered,' + \
+            'Qty On Order,Item Next Availability Date,Item Discontinued,' + \
+            'Item Description\n'
+        ftp_file.write(header)
                 
         # ---------------------------------------------------------------------
         # Start export product:
@@ -67,18 +96,25 @@ class ProductProduct(orm.Model):
         product_ids = product_pool.search(cr, uid, [
             #('statistic_category', 'in', (
             #    'I01', 'I02', 'I03', 'I04', 'I05', 'I06')),
-            ], context=context)
-            
+            ], context=ctx)
         for product in product_pool.browse(
-                cr, uid, product_ids, context=context):
-            ftp_file.write('%s;%s;%s\n' % (
-                product.default_code,
-                product.mx_net_qty,
-                product.mx_lord_qty,
-                product.lst_price,
-                )
-        ftp_file.close()                
-        
+                cr, uid, product_ids, context=ctx):
+            if not product.default_code:
+                _logger.warning('Error no code: %s' % product.id)
+                continue
+                
+            ftp_file.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (
+                supplier_id, # Supplier ID
+                product.default_code, # Code
+                product.mx_net_qty, # On hand
+                '', # Qty backordered
+                '', # Qty ordered
+                '', # Qty next availability date
+                '', # Item discontinued
+                clean_ascii(product.name), # Item description
+                ))
+        ftp_file.close()       
+                 
         # ---------------------------------------------------------------------
         # FTP publish
         # ---------------------------------------------------------------------
@@ -86,6 +122,8 @@ class ProductProduct(orm.Model):
             csv_file,
             sh_file,
             ))            
+
+        import pdb; pdb.set_trace()    
         os.system(sh_file)
         _logger.warning('End publish FTP stock status')
         return True
