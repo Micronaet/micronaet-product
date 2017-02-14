@@ -123,7 +123,6 @@ class ProductProduct(orm.Model):
             sh_file,
             ))            
 
-        import pdb; pdb.set_trace()    
         os.system(sh_file)
         _logger.warning('End publish FTP stock status')
         return True
