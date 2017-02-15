@@ -82,6 +82,8 @@ class ProductProduct(orm.Model):
     # Onchange function:
     def onchange_exclude_name(self, cr, uid, ids, name, context=None):
         res = {}
+        if not name:
+            return res
         if len(name) != 5:
             res['warning'] = {
                 'title': 'Wrong format',
