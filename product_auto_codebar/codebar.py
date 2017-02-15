@@ -45,15 +45,21 @@ class ProductProduct(orm.Model):
     _description = 'Code unused'
     _order = 'name'
     
-    def burn_ean13_code(self, cr, uid, ean13, context=None):
+    def burn_ean13_code(self, cr, uid, ean13, partial=False, context=None):
         ''' Remove code fron unused list
+            partial if is the article part
         '''
-        item_ids = self.search(cr, uid, [(
-            'name', '=', ean13),
-            ], context=context)
+        if partial:
+            domain = [('name', '=ilike', '_______%s_' % ean13)]
+        else:
+            domain = [('name', '=', ean13),
+            ]   
+        item_ids = self.search(cr, uid, domain, context=context)
         if item_ids:
             return self.unlink(cr, uid, item_ids, context=context)
-        return True    
+        else:
+            _logger.warning('Cannot burn EAN: %s' % ean13)
+            return True    
         
     def get_ean13(self, cr, uid, context=None):
         ''' Pop the number form database
@@ -72,13 +78,51 @@ class ProductProduct(orm.Model):
         'name': fields.char('Free EAN', size=13, required=True),
         }
 
-class ProductProduct(orm.Model):
+class ProductProductExclude(orm.Model):
     """ Model name: ProductProduct
     """
     _name = 'product.codebar.exclude'
     _description = 'Code excluded'
     _order = 'name'
+
+    def write(self, cr, uid, ids, vals, context=None):
+        """ Update redord(s) comes in {ids}, with new value comes as {vals}
+            return True on success, False otherwise
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param ids: list of record ids to be update
+            @param vals: dict of new values to be set
+            @param context: context arguments, like lang, time zone
+            
+            @return: True on success, False otherwise
+        """    
+        unused_pool = self.pool.get('product.codebar.unused')
+        name = vals.get('name', False)
+        if name:
+            unused_pool.burn_ean13_code(cr, uid, name, partial=True,
+                context=context)
         
+        return super(ProductProductExclude, self).write(
+            cr, uid, ids, vals, context=context)
+    
+    def create(self, cr, uid, vals, context=None):
+        """ Create a new record for a model ClassName
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param vals: provides a data for new record
+            @param context: context arguments, like lang, time zone
+            
+            @return: returns a id of new record
+        """
+        unused_pool = self.pool.get('product.codebar.unused')
+        name = vals.get('name', False)
+        if name:
+            unused_pool.burn_ean13_code(cr, uid, name, partial=True,
+                context=context)
+
+        return super(ProductProductExclude, self).create(
+            cr, uid, vals, context=context)
+                    
     # Onchange function:
     def onchange_exclude_name(self, cr, uid, ids, name, context=None):
         res = {}
