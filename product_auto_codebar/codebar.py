@@ -50,7 +50,7 @@ class ProductProduct(orm.Model):
         '''
         item_ids = self.search(cr, uid, [(
             'name', '=', ean13),
-            ], context=contet)
+            ], context=context)
         if item_ids:
             return self.unlink(cr, uid, item_ids, context=context)
         return True    
@@ -77,6 +77,7 @@ class ProductProduct(orm.Model):
     """
     _name = 'product.codebar.exclude'
     _description = 'Code excluded'
+    _order = 'name'
         
     # Onchange function:
     def onchange_exclude_name(self, cr, uid, ids, name, context=None):
@@ -104,6 +105,10 @@ class ProductProduct(orm.Model):
             help='Only code part, ex: 67890 for 8012345678901'), 
         }
     
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', 'The Name must be unique !'),        
+        ]
+    
 class ProductProduct(orm.Model):
     """ Model name: ProductProduct
     """
@@ -120,7 +125,7 @@ class ProductProduct(orm.Model):
             
             @return: True on success, False otherwise
         """    
-        unsed_pool = self.pool.get('product.codebar.unused')
+        unused_pool = self.pool.get('product.codebar.unused')
         ean13 = vals.get('ean13', False)
         if ean13:
             unused_pool.burn_ean13_code(cr, uid, ean13, context=context)
@@ -137,7 +142,7 @@ class ProductProduct(orm.Model):
             
             @return: returns a id of new record
         """
-        unsed_pool = self.pool.get('product.codebar.unused')
+        unused_pool = self.pool.get('product.codebar.unused')
         ean13 = vals.get('ean13', False)
         if ean13:
             unused_pool.burn_ean13_code(cr, uid, ean13, context=context)
@@ -202,7 +207,7 @@ class ResCompany(orm.Model):
         exclude_pool = self.pool.get('product.codebar.exclude')
         unused_pool = self.pool.get('product.codebar.unused')
         product_pool = self.pool.get('product.product')
-        product_pool = self.pool.get('product.packaging')
+        package_pool = self.pool.get('product.packaging')
         
         # ---------------------------------------------------------------------    
         # Read parameters:
@@ -230,11 +235,11 @@ class ResCompany(orm.Model):
         
         # From package:
         package_ids = package_pool.search(cr, uid, [
-            ('ean13', '=ilike', '%s%%' % fixed),
+            ('ean', '=ilike', '%s%%' % fixed),
             ], context=context)
         package_proxy = package_pool.browse(
             cr, uid, package_ids, context=context)
-        black_list.extend([p.ean13[7:12] for p in package_proxy])
+        black_list.extend([p.ean[7:12] for p in package_proxy])
         
         # From blacklist:
         exclude_ids = exclude_pool.search(cr, uid, [], context=context)

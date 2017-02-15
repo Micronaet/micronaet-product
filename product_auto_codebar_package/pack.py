@@ -43,7 +43,42 @@ class ProductPackaging(orm.Model):
     """ Model name: ProductPackaging
     """
     _inherit = 'product.packaging'
+
+    def write(self, cr, uid, ids, vals, context=None):
+        """ Update redord(s) comes in {ids}, with new value comes as {vals}
+            return True on success, False otherwise
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param ids: list of record ids to be update
+            @param vals: dict of new values to be set
+            @param context: context arguments, like lang, time zone
+            
+            @return: True on success, False otherwise
+        """    
+        unused_pool = self.pool.get('product.codebar.unused')
+        ean = vals.get('ean', False)
+        if ean:
+            unused_pool.burn_ean13_code(cr, uid, ean, context=context)
+        
+        return super(ProductPackaging, self).write(
+            cr, uid, ids, vals, context=context)
     
+    def create(self, cr, uid, vals, context=None):
+        """ Create a new record for a model ClassName
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param vals: provides a data for new record
+            @param context: context arguments, like lang, time zone
+            
+            @return: returns a id of new record
+        """
+        unused_pool = self.pool.get('product.codebar.unused')
+        ean = vals.get('ean', False)
+        if ean:
+            unused_pool.burn_ean13_code(cr, uid, ean, context=context)            
+        return super(ProductPackaging, self).create(
+            cr, uid, vals, context=context)    
+            
     # --------------
     # Button events:    
     # --------------
