@@ -169,7 +169,7 @@ class ProductProduct(orm.Model):
                 _('Error'), 
                 _('EAN yet present, delete and press button again'))
         
-        ean13 = self.pool.get('product.codebar.unused').exclude_pool.get_ean13(
+        ean13 = self.pool.get('product.codebar.unused').get_ean13(
             cr, uid, context=context)
         if ean13:
             return self.write(cr, uid, ids, {
