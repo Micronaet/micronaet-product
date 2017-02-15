@@ -9,6 +9,7 @@
                 <xpath expr="/form/sheet/notebook/page[@string='Configuration']/group" position="before">
                     <group string="Codebar">
                         <field name="codebar_fixed" />
+                        <button name="generate_whitelist_unused_code" string="Untitle" type="object/action/workflow" />
                     </group>
                 </xpath>
             </field>

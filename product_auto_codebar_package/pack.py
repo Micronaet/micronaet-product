@@ -55,14 +55,13 @@ class ProductPackaging(orm.Model):
             raise osv.except_osv(
                 _('Error'), 
                 _('EAN yet present, delete and press button again'))
-                
-        # TODO generate start up black list:
-        black_list = []
-        ean13 = self.pool.get('product.product')._get_ean13_auto(
-            cr, uid, black_list, context=context)
+
+        ean13 = self.pool.get('product.codebar.unused').get_ean13(
+            cr, uid, context=context)                              
         if ean13:
             return self.write(cr, uid, ids, {
-                'ean': ean13}, context=context)        
-        return True
+                'ean': ean13,
+                }, context=context)        
+        return False
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

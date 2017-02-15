@@ -38,6 +38,39 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+class ProductProduct(orm.Model):
+    """ Model name: ProductProduct
+    """
+    _name = 'product.codebar.unused'
+    _description = 'Code unused'
+    _order = 'name'
+    
+    def burn_ean13_code(self, cr, uid, ean13, context=None):
+        ''' Remove code fron unused list
+        '''
+        item_ids = self.search(cr, uid, [(
+            'name', '=', ean13),
+            ], context=contet)
+        if item_ids:
+            return self.unlink(cr, uid, item_ids, context=context)
+        return True    
+        
+    def get_ean13(self, cr, uid, context=None):
+        ''' Pop the number form database
+        '''
+        ean_ids = self.search(cr, uid, [], context=context)
+        if ean_ids:
+            # Read and delete key:
+            ean13 = self.browse(cr, uid, ean_ids, context=context)[0].name
+            self.unlink(cr, uid, ean_ids[0])
+            return ean13
+        else:
+            _logger.error('No EAN code in database!!!')
+            return ''
+        
+    _columns = {
+        'name': fields.char('Free EAN', size=13, required=True),
+        }
 
 class ProductProduct(orm.Model):
     """ Model name: ProductProduct
@@ -53,7 +86,6 @@ class ProductProduct(orm.Model):
                 'title': 'Wrong format',
                 'message': 'Exclude format must be: 00001 (only code part)',
                 }
-
         try:
             if int(name) <= 0:
                 res['warning'] = {
@@ -64,21 +96,38 @@ class ProductProduct(orm.Model):
             res['warning'] = {
                 'title': 'Wrong format',
                 'message': 'Error checking format',
-                }            
-            
+                }                       
         return res
         
     _columns = {
         'name': fields.char('Exclude', size=5, required=True,
             help='Only code part, ex: 67890 for 8012345678901'), 
-        # calculated part for EAN    
         }
-
+    
 class ProductProduct(orm.Model):
     """ Model name: ProductProduct
     """
     _inherit = 'product.product'
 
+    def write(self, cr, uid, ids, vals, context=None):
+        """ Update redord(s) comes in {ids}, with new value comes as {vals}
+            return True on success, False otherwise
+            @param cr: cursor to database
+            @param uid: id of current user
+            @param ids: list of record ids to be update
+            @param vals: dict of new values to be set
+            @param context: context arguments, like lang, time zone
+            
+            @return: True on success, False otherwise
+        """    
+        unsed_pool = self.pool.get('product.codebar.unused')
+        ean13 = vals.get('ean13', False)
+        if ean13:
+            unused_pool.burn_ean13_code(cr, uid, ean13, context=context)
+        
+        return super(ProductProduct, self).write(
+            cr, uid, ids, vals, context=context)
+    
     def create(self, cr, uid, vals, context=None):
         """ Create a new record for a model ClassName
             @param cr: cursor to database
@@ -88,18 +137,54 @@ class ProductProduct(orm.Model):
             
             @return: returns a id of new record
         """
-        if vals.get('ean13_auto', False) and not vals.get('ean13', False):
-            # Generate if not present and checked auto boolean:
-            vals['ean13'] = self._get_ean13_auto(cr, uid, context=context)
-        vals['ean13_auto'] = False
+        unsed_pool = self.pool.get('product.codebar.unused')
+        ean13 = vals.get('ean13', False)
+        if ean13:
+            unused_pool.burn_ean13_code(cr, uid, ean13, context=context)
             
+        elif vals.get('ean13_auto', False):
+            # Generate if not present and checked auto boolean:
+            vals['ean13'] = unused_pool.get_ean13(cr, uid, context=context)
+                
+        vals['ean13_auto'] = False   
         return super(ProductProduct, self).create(
             cr, uid, vals, context=context)
-    
-    # Utility button:
-    def _get_ean13_auto(self, cr, uid, black_list=None, context=None):
-        ''' Get an EAN 13 code 
-            Passed black list for initialize this list (used in package)
+
+    # --------------
+    # Button events:    
+    # --------------
+    def generate_barcode_ean13(self, cr, uid, ids, context=None):
+        ''' Create EAN code, not duplicated and not in exclude list
+        '''            
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        if current_proxy.ean13:
+            raise osv.except_osv(
+                _('Error'), 
+                _('EAN yet present, delete and press button again'))
+        
+        ean13 = self.pool.get('product.codebar.unused').exclude_pool.get_ean13(
+            cr, uid, context=context)
+        if ean13:
+            return self.write(cr, uid, ids, {
+                'ean13': ean13,                
+                }, context=context)      
+        return True
+
+    _columns = {
+        'ean13_auto': fields.boolean('Auto EAN'),                  
+        }
+        
+    _defaults = {
+        'ean13_auto': lambda *x: True,
+        }    
+        
+class ResCompany(orm.Model):
+    """ Model name: Company
+    """
+    _inherit = 'res.company'
+
+    def generate_whitelist_unused_code(self, cr, uid, ids, context=None):
+        ''' Generate white list of unused code
         '''
         def generate_code(value):
             ''' Add extra char
@@ -113,94 +198,65 @@ class ProductProduct(orm.Model):
             ean13 = EAN(value)
             return ean13.get_fullcode()
 
-        if black_list is None:
-            black_list = []
         # Pool used:
         exclude_pool = self.pool.get('product.codebar.exclude')
-
-        company_pool = self.pool.get('res.company')
-        company_ids = company_pool.search(cr, uid, [], context=context)
-        company_proxy = company_pool.browse(
+        unused_pool = self.pool.get('product.codebar.unused')
+        product_pool = self.pool.get('product.product')
+        product_pool = self.pool.get('product.packaging')
+        
+        # ---------------------------------------------------------------------    
+        # Read parameters:
+        # ---------------------------------------------------------------------    
+        company_ids = self.search(cr, uid, [], context=context)
+        company_proxy = self.browse(
             cr, uid, company_ids, context=context)[0]
         fixed = company_proxy.codebar_fixed
         if not fixed or len(fixed) != 7:
-            raise osv.except_osv(
-                _('Error'), 
-                _('Setup fixed part in company form (must be 7 char)'))
-                
-        # Load list of ean code yet present and black list
-        product_ids = self.search(
-            cr, uid, [('ean13_product', '!=', False)], context=context)
-        black_list.extend([item.ean13_product for item in self.browse(
-            cr, uid, product_ids, context=context)])
-            
+            _logger.error('No fixed part for generate EAN!')
+            return False
+        
+        # ---------------------------------------------------------------------    
+        # Generate black list:
+        # ---------------------------------------------------------------------
+        black_list = []
+        
+        # From product code:
+        product_ids = product_pool.search(cr, uid, [
+            ('ean13', '=ilike', '%s%%' % fixed),
+            ], context=context)
+        product_proxy = product_pool.browse(
+            cr, uid, product_ids, context=context)
+        black_list = [p.ean13[7:12] for p in product_proxy]
+        
+        # From package:
+        package_ids = package_pool.search(cr, uid, [
+            ('ean13', '=ilike', '%s%%' % fixed),
+            ], context=context)
+        package_proxy = package_pool.browse(
+            cr, uid, package_ids, context=context)
+        black_list.extend([p.ean13[7:12] for p in package_proxy])
+        
+        # From blacklist:
         exclude_ids = exclude_pool.search(cr, uid, [], context=context)
         exclude_proxy = exclude_pool.browse(
             cr, uid, exclude_ids, context=context)
-        black_list.extend([item.name for item in exclude_proxy])
+        black_list.extend([item.name for item in exclude_proxy])        
+        
+        # ---------------------------------------------------------------------    
+        # Regenerate codes:
+        # ---------------------------------------------------------------------    
+        # Remove current:
+        unused_ids = unused_pool.search(cr, uid, [], context=context)
+        unused_pool.unlink(cr, uid, unused_ids, context=context)
+        
+        # Regenerate:
         for i in range(1, 100000):
             code = '%05d' % i
             if code not in black_list:
-                return generate_code('%s%s' % (fixed, code))
-        return ''
-    
-    # --------------
-    # Button events:    
-    # --------------
-    def generate_barcode_ean13(self, cr, uid, ids, context=None):
-        ''' Create EAN code, not duplicated and not in exclude list
-        '''            
-        current_proxy = self.browse(cr, uid, ids, context=context)[0]
-        if current_proxy.ean13:
-            raise osv.except_osv(
-                _('Error'), 
-                _('EAN yet present, delete and press button again'))
-        
-        ean13 = self._get_ean13_auto(cr, uid, context=context)
-        if ean13:
-            return self.write(cr, uid, ids, {
-                'ean13': ean13, }, context=context)        
+                unused_pool.create(cr, uid, {
+                    'name': generate_code('%s%s' % (fixed, code)),
+                    }, context=context)        
         return True
-
-    # -------------------------------------------------------------------------
-    #                        Fields function:
-    # -------------------------------------------------------------------------
-    # Field function:
-    def _get_part_ean_code(self, cr, uid, ids, fields, args, context=None):
-        ''' Fields function for calculate 
-        '''
-        res = {}
-        for item in self.browse(cr, uid, ids, context=context):
-            if item.ean13:
-                res[item.id] = item.ean13[7:12]
-            else:
-                res[item.id] = ''                
-        return res
-
-    # Store function:
-    def _get_product_ean_changed(self, cr, uid, ids, context=None):
-        ''' Return changed product (store function
-        '''
-        return ids
-
-    _columns = {
-        'ean13_auto': fields.boolean('Auto EAN'),
-        'ean13_product': fields.function(
-            _get_part_ean_code, method=True, 
-            type='char', string='EAN13 product part', 
-            store={
-                'product.product': (_get_product_ean_changed, ['ean13'], 10),
-                }),                        
-        }
-        
-    _defaults = {
-        'ean13_auto': lambda *x: True,
-        }    
-        
-class ResCompany(orm.Model):
-    """ Model name: Company
-    """
-    _inherit = 'res.company'
 
     _columns = {
         'codebar_fixed': fields.char('Codebar fixed', size=7, 
