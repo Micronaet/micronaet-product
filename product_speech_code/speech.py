@@ -248,8 +248,11 @@ class ProductProduct(orm.Model):
     def generate_name_from_code(self, cr, uid, ids, context=None):
         ''' Generate product name depend on structure and code insert
         '''
+        assert len(ids) == 1, 'Works only with one record a time'
+        
         if context is None:
             context = context
+        update_only_field = context.get('update_only_field', False)
 
         # Load in every language:            
         lang_pool = self.pool.get('res.lang')
@@ -283,9 +286,19 @@ class ProductProduct(orm.Model):
                     'default_code': default_code,
                     'structure_error': error,            
                     })
-            name_db.update(self.get_all_fields_to_update(all_db))        
+            name_db.update(self.get_all_fields_to_update(all_db))
 
-            self.write(cr, uid, ids, name_db, context=context)
+            # Update only field if option selected:
+            if update_only_field:
+                only_db = {}
+                for f in update_only_field:
+                    if f in name_db:
+                        only_db[f] = name_db[f]
+                if only_db:
+                    self.write(cr, uid, ids, only_db, context=context)
+            else: # write all fields:                  
+                self.write(cr, uid, ids, name_db, context=context)
+                
         context['lang'] = lang_org # restore
         return True    
 
