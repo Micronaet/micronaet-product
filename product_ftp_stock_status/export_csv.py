@@ -47,7 +47,8 @@ class ProductProduct(orm.Model):
     # -------------------------------------------------------------------------
     # Scheduled action:
     # -------------------------------------------------------------------------
-    def export_csv_stock_status_via_ftp_file(self, cr, uid, context=None):
+    def export_csv_stock_status_via_ftp_file(self, cr, uid, order=False, 
+            context=None):
         ''' Export and launch FTP publish
         '''        
         # ---------------------------------------------------------------------
@@ -92,11 +93,27 @@ class ProductProduct(orm.Model):
         # ---------------------------------------------------------------------
         # Start export product:
         # ---------------------------------------------------------------------
-        product_pool = self.pool.get('product.product')
-        product_ids = product_pool.search(cr, uid, [
-            #('statistic_category', 'in', (
-            #    'I01', 'I02', 'I03', 'I04', 'I05', 'I06')),
-            ], context=ctx)
+        if order:
+            sale_pool = self.pool.get('sale.order')
+            
+            _logger.info('Export only order: %s' % order)
+            sale_ids = sale_pool.search(cr, uid, [
+                ('name', '=', order),
+                ], context=context)
+            if not sale_ids:    
+                _logger.error('Order not found: %s' % order)
+            sale_proxy = sale_pool.browse(
+                cr, uid, sale_ids, context=context)[0]    
+            product_ids = [
+                item.product_id.id for item in sale_proxy.order_line]
+        else:
+            _logger.info('Export all product database')
+            product_pool = self.pool.get('product.product')
+            product_ids = product_pool.search(cr, uid, [
+                #('statistic_category', 'in', (
+                #    'I01', 'I02', 'I03', 'I04', 'I05', 'I06')),
+                ], context=ctx)
+
         for product in product_pool.browse(
                 cr, uid, product_ids, context=ctx):
             if not product.default_code:
