@@ -247,12 +247,17 @@ class ProductProduct(orm.Model):
     # -------------------------------------------------------------------------    
     def generate_name_from_code(self, cr, uid, ids, context=None):
         ''' Generate product name depend on structure and code insert
+            context parameters:
+                update_only_field: means to update extra fields not name
+                log_file: if present log data error on file
+                
         '''
         assert len(ids) == 1, 'Works only with one record a time'
         
         if context is None:
             context = context
         update_only_field = context.get('update_only_field', False)
+        log_file = context.get('log_file', False)
 
         # Load in every language:            
         lang_pool = self.pool.get('res.lang')
@@ -300,6 +305,14 @@ class ProductProduct(orm.Model):
                 self.write(cr, uid, ids, name_db, context=context)
                 
         context['lang'] = lang_org # restore
+        if log_file and error:
+            try:
+                f = open(log_file, 'a')
+                f.write('%s: %s\n' % (default_code, error))
+                f.close()
+            except:
+                _logger.error('Error write on log file: %s' % log_file)
+                   
         return True    
 
     _columns = {
