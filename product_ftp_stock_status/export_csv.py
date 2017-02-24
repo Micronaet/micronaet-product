@@ -80,6 +80,13 @@ class ProductProduct(orm.Model):
             context = {}
         ctx = context.copy()
         ctx['lang'] = lang
+
+        product_pool = self.pool.get('product.product')
+        
+        # Activate stock_status
+        self.pool.get('res.users').write(cr, uid, uid, {
+            'no_stock_status': False,
+            }, context=context)
         
         _logger.warning('Start generate CSV stock status: %s [lang: %s]' % (
             csv_file, lang))
@@ -98,8 +105,8 @@ class ProductProduct(orm.Model):
                 campaign_pool = self.pool.get('campaign.campaign')
                 
                 _logger.info('Export only campaign: %s' % order)
-                campaign_ids = sale_pool.search(cr, uid, [
-                    ('name', '=', order),
+                campaign_ids = campaign_pool.search(cr, uid, [
+                    ('code', '=', order),
                     ], context=context)
                 if not campaign_ids:    
                     _logger.error('Campaign not found: %s' % order)
@@ -123,7 +130,6 @@ class ProductProduct(orm.Model):
                     item.product_id.id for item in sale_proxy.order_line]
         else:
             _logger.info('Export all product database')
-            product_pool = self.pool.get('product.product')
             product_ids = product_pool.search(cr, uid, [
                 #('statistic_category', 'in', (
                 #    'I01', 'I02', 'I03', 'I04', 'I05', 'I06')),
@@ -156,6 +162,7 @@ class ProductProduct(orm.Model):
             ))            
 
         os.system(sh_file)
-        _logger.warning('End publish FTP stock status')
+        _logger.warning(
+            'End publish FTP stock status (total: %s)' % len(product_ids))
         return True
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
