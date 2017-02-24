@@ -112,9 +112,23 @@ class ProductProduct(orm.Model):
                     _logger.error('Campaign not found: %s' % order)
                 campaign_proxy = campaign_pool.browse(
                     cr, uid, campaign_ids, context=context)[0]    
-                product_ids = [
-                    item.product_id.id for item in campaign_proxy.product_ids]
                 
+                for line in campaign_proxy.product_ids:
+                    product = line.product_id
+                    if not product.default_code:
+                        _logger.warning('Error no code: %s' % product.id)
+                        continue
+                        
+                    ftp_file.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (
+                        supplier_id, # Supplier ID
+                        product.default_code, # Code
+                        line.qty_ordered, # Order in campaign
+                        '', # Qty backordered
+                        '', # Qty ordered
+                        '', # Qty next availability date
+                        '', # Item discontinued
+                        clean_ascii(product.name), # Item description
+                        ))
             else: # 'order'
                 sale_pool = self.pool.get('sale.order')
                 
@@ -135,22 +149,23 @@ class ProductProduct(orm.Model):
                 #    'I01', 'I02', 'I03', 'I04', 'I05', 'I06')),
                 ], context=ctx)
 
-        for product in product_pool.browse(
-                cr, uid, product_ids, context=ctx):
-            if not product.default_code:
-                _logger.warning('Error no code: %s' % product.id)
-                continue
-                
-            ftp_file.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (
-                supplier_id, # Supplier ID
-                product.default_code, # Code
-                product.mx_net_qty, # On hand
-                '', # Qty backordered
-                '', # Qty ordered
-                '', # Qty next availability date
-                '', # Item discontinued
-                clean_ascii(product.name), # Item description
-                ))
+        if mode != 'campaign':
+            for product in product_pool.browse(
+                    cr, uid, product_ids, context=ctx):
+                if not product.default_code:
+                    _logger.warning('Error no code: %s' % product.id)
+                    continue
+                    
+                ftp_file.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (
+                    supplier_id, # Supplier ID
+                    product.default_code, # Code
+                    product.mx_net_qty, # On hand
+                    '', # Qty backordered
+                    '', # Qty ordered
+                    '', # Qty next availability date
+                    '', # Item discontinued
+                    clean_ascii(product.name), # Item description
+                    ))
         ftp_file.close()       
                  
         # ---------------------------------------------------------------------
@@ -163,6 +178,6 @@ class ProductProduct(orm.Model):
 
         os.system(sh_file)
         _logger.warning(
-            'End publish FTP stock status (total: %s)' % len(product_ids))
+            'End publish FTP stock status')
         return True
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
