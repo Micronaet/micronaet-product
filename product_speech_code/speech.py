@@ -309,7 +309,9 @@ class ProductProduct(orm.Model):
             try:
                 f = open(log_file, 'a')
                 f.write('%s: %s\n' % (
-                    default_code, error.replace('\n', ' - ')))
+                    default_code.replace(' ', '*'), 
+                    error.replace('\n', ' - '),
+                    ))
                 f.close()
             except:
                 _logger.error('Error write on log file: %s' % log_file)
