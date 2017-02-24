@@ -122,7 +122,7 @@ class ProductProduct(orm.Model):
                     ftp_file.write('%s,%s,%s,%s,%s,%s,%s,%s\n' % (
                         supplier_id, # Supplier ID
                         product.default_code, # Code
-                        line.qty_ordered, # Order in campaign
+                        line.qty, # Order in campaign
                         '', # Qty backordered
                         '', # Qty ordered
                         '', # Qty next availability date
