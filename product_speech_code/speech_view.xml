@@ -88,8 +88,8 @@
                                 </page>
                                 <page string="Empty data">
                                     <group col="4" colspan="4">
-                                        <field name="emptyvalue_ids" editable="bottom">
-                                            <tree string="Empty value">
+                                        <field name="emptyvalue_ids" >
+                                            <tree string="Empty value" editable="bottom">
                                                 <field name="empty_test" />
                                                 <field name="empty_name" />
                                                 <field name="empty_case" />

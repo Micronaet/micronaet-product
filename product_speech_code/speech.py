@@ -264,7 +264,8 @@ class ProductProduct(orm.Model):
                             empty_data = eval(empty.empty_test)
                             if empty_data in empty.empty_case.split('|'):
                                 # has empty block ref:
-                                name_db[output] += output_mask % empty.empty_name
+                                name_db[output] += \
+                                    output_mask % empty.empty_name
                                 all_db[block.code] = empty.empty_name
                                 break
 
