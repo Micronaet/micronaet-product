@@ -93,6 +93,23 @@ class StructureBlockValore(orm.Model):
         'note': fields.text('Note'),
         }
 
+class StructureBlockEmptyValore(orm.Model):
+    """ Model name: StructureBlockValue
+    """    
+    _name = 'structure.block.empty.value'
+    _description = 'Block empty value'
+    _order = 'empty_name'
+    
+    _columns = {
+        'empty_case': fields.text('Empty value parent', 
+            help='Example: 030|031|032', required=True),        
+        'empty_name': fields.char('Empty name', size=64, translate=True,
+            required=True),        
+        'empty_test': fields.char('Empty rule', size=64,
+            help='Example: default_code[0:3]', required=True),        
+        'block_id': fields.many2one('structure.block', 'Block'),
+        }
+
 class StructureBlock(orm.Model):
     """ Model name: StructureBlock inherited for add 2many relation fields
     """    
@@ -103,6 +120,8 @@ class StructureBlock(orm.Model):
             'structure.block', 'Rely block'), 
         'value_ids': fields.one2many(
             'structure.block.value', 'block_id', 'Value'), 
+        'emptyvalue_ids': fields.one2many(
+            'structure.block.empty.value', 'block_id', 'Empty Value'), 
         }
 
 class StructureStructure(orm.Model):
@@ -184,6 +203,7 @@ class ProductProduct(orm.Model):
         all_db = {}
         name_db = {}
         error = ''
+
         for key in sorted(code_db):
             # Explose database value:
             value = code_db[key][0]
@@ -227,16 +247,26 @@ class ProductProduct(orm.Model):
                         v,
                         )
 
+                if output not in name_db:
+                    name_db[output] = ''                         
                 if v in value:
-                    if output not in name_db:
-                        name_db[output] = ''                         
+                    #if output not in name_db:
+                    #    name_db[output] = ''                         
                     name_db[output] += output_mask % value[v]
                     all_db[block.code] = value[v]
-
                 else:
+                    # Check empty block:                    
                     if v: 
                         error += 'Value %s not present in block (%s, %s)\n' % (
                             v, key[0] + 1, key[1])
+                    elif block.emptyvalue_ids:
+                        for empty in block.emptyvalue_ids:        
+                            empty_data = eval(empty.empty_test)
+                            if empty_data in empty.empty_case.split('|'):
+                                # has empty block ref:
+                                name_db[output] += output_mask % empty.empty_name
+                                all_db[block.code] = empty.empty_name
+                                break
 
         if error:
             _logger.error('Code error: [%s]' % error)        

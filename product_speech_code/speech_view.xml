@@ -72,15 +72,32 @@
                                 domain="[('model','=','product.product'),('ttype','in',('char', 'text'))]" widget="selection"/>
                             <field name="output_mask" />
                             
-                            <separator string="Value" colspan="4" attrs="{'invisible':[('mirror_structure_id','!=',False)]}"/>
-                            <field name="value_ids" colspan="4" nolabel="1" attrs="{'invisible':[('mirror_structure_id','!=',False)]}">
-                                <tree string="Structure" editable="bottom">        
-                                    <field name="code" />
-                                    <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]" /><!--TODO attrs="{'readonly': [(parent.rely_id, '=', False)], 'required': [(parent.rely_id, '!=', False)]}"/>-->
-                                    <field name="name" />
-                                    <field name="note" />
-                                </tree>                            
-                            </field>
+                            <notebook colspan="4">
+                                <page string="Value">
+                                    <group col="4" colspan="4">
+                                        <separator string="Value" colspan="4" attrs="{'invisible':[('mirror_structure_id','!=',False)]}"/>
+                                        <field name="value_ids" colspan="4" nolabel="1" attrs="{'invisible':[('mirror_structure_id','!=',False)]}">
+                                            <tree string="Structure" editable="bottom">        
+                                                <field name="code" />
+                                                <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]" /><!--TODO attrs="{'readonly': [(parent.rely_id, '=', False)], 'required': [(parent.rely_id, '!=', False)]}"/>-->
+                                                <field name="name" />
+                                                <field name="note" />
+                                            </tree>                            
+                                        </field>
+                                    </group>
+                                </page>
+                                <page string="Empty data">
+                                    <group col="4" colspan="4">
+                                        <field name="emptyvalue_ids" editable="bottom">
+                                            <tree string="Empty value">
+                                                <field name="empty_test" />
+                                                <field name="empty_name" />
+                                                <field name="empty_case" />
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </page>
+                            </notebook>
                             
                             <separator string="Note" colspan="4"/>
                             <field name="note" nolabel="1" colspan="4"/>                            
