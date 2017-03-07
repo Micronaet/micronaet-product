@@ -19,7 +19,7 @@
             </field>
         </record>
 
-        <!--<record model="ir.ui.view" id="view_product_product_extra_campaign_data_lite_form">
+        <record model="ir.ui.view" id="view_product_product_extra_campaign_data_lite_form">
             <field name="name">product.product.form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="inventory_status.view_product_inventory_lite_form"/>
@@ -32,7 +32,7 @@
                         colspan="3"/>
                 </field>
             </field>
-        </record>-->
+        </record>
     </data>
 </openerp>
 
