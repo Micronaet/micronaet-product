@@ -29,9 +29,10 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
-        'inventory_status',
-        'csv_import_campaign', # TODO remove override fields here
+        'inventory_status', # for view
+        #'csv_import_campaign', # TODO remove override fields here
         'product',
+        'campaign_base',
         ],
     'init_xml': [],
     'demo': [],

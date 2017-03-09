@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_product_product_button_status_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="inventory_status.view_product_product_button_status_form"/>
+            <field name="arch" type="xml">        
+                <!--<button name="button_export_inventory" position="after">
+                    <button name="button_import_campaign_web" string="Import campaign" type="object" />
+                </button>-->
+                <field name="mx_of_in" position="before">
+                    <field name="mx_campaign_out" readonly="1"/>
+                    <newline/>
+                    <field name="mx_campaign_detail" readonly="1" 
+                        attrs="{'invisible':[('mx_campaign_out','=',0)]}" 
+                        colspan="3"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_product_product_extra_campaign_data_lite_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="inventory_status.view_product_inventory_lite_form"/>
+            <field name="arch" type="xml">        
+                <field name="mx_bf_in" position="before">
+                    <field name="mx_campaign_out" readonly="1"/>
+                    <newline/>
+                    <field name="mx_campaign_detail" readonly="1" 
+                        attrs="{'invisible':[('mx_campaign_out','=',0)]}" 
+                        colspan="3"/>
+                </field>
+            </field>
+        </record>
+        
+    </data>
+</openerp>
+

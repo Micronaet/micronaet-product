@@ -47,7 +47,7 @@ class ProductProduct(orm.Model):
             self, cr, uid, ids, fields, args, context=None):
         ''' Fields function for calculate 
         '''
-        res = {}
+        result = {}
         _logger.error('CAMPAIGN STATUS')
         campaign_pool = self.pool.get('campaign.product')
         campaign_ids = campaign_pool.search(cr, uid, [
@@ -66,68 +66,33 @@ class ProductProduct(orm.Model):
             text = '%s: %s (%s - %s)\n' % (
                 qty, campaign.code, campaign.from_date, 
                 campaign.to_date)                
-            if product_id not in res:
-                res[item.product_id.id] = qty #{
-                #    'mx_campaign_out': qty,
-                #    'mx_campaign_detail': text,
-                #    }
+            if product_id not in result:
+                result[item.product_id.id] = {
+                    'mx_campaign_out': qty,
+                    'mx_campaign_detail': text,
+                    }
             else:
-                res[product_id] += qty #['mx_campaign_out'] += qty
-                #res[product_id]['mx_campaign_detail'] += text
+                result[product_id]['mx_campaign_out'] += qty
+                result[product_id]['mx_campaign_detail'] += text
 
         # Add empty campaign:
         for item_id in ids:
-            if item_id not in res:
-                res[item_id] = 0.0 #{
-                #    'mx_campaign_out': 0.0,
-                #    'mx_campaign_detail': False,
-                #    }
-        return res
+            if item_id not in result:
+                result[item_id] = {
+                    'mx_campaign_out': 0.0,
+                    'mx_campaign_detail': False,
+                    }
+        return result
 
-    def _get_campaign_product_status_inventory_text(
-            self, cr, uid, ids, fields, args, context=None):
-        ''' Fields function for calculate 
-        '''
-        res = {}
-        _logger.error('CAMPAIGN STATUS TEXT')
-        campaign_pool = self.pool.get('campaign.product')
-        campaign_ids = campaign_pool.search(cr, uid, [
-            ('product_id.id', 'in', ids), # only selected product
-            ('campaign_id.state', '=', 'confirmed'), # onli confirmed campaign
-            ], context=context)
-            
-        for item in campaign_pool.browse(cr, uid, campaign_ids, 
-                context=context):                
-            # Readability:                
-            campaign = item.campaign_id
-            
-            # Data:
-            product_id = item.product_id.id
-
-            qty = item.qty#_ordered
-            text = '%s: %s (%s - %s)\n' % (
-                qty, campaign.code, campaign.from_date, 
-                campaign.to_date)                
-            if product_id not in res:
-                res[item.product_id.id] = text
-            else:
-                res[product_id] += text
-
-        # Add empty campaign:
-        for item_id in ids:
-            if item_id not in res:
-                res[item_id] = False
-        return res
-        
     _columns = {
         'mx_campaign_out': fields.function(
             _get_campaign_product_status_inventory, method=True, 
             type='float', string='(Campaign OC)', digits=(16, 2),
-            store=False, #multi=True,
+            store=False, multi=True,
             ), 
         'mx_campaign_detail': fields.function(
-            _get_campaign_product_status_inventory_text, method=True, 
-            type='text', string='(Campaign detail)', store=False#, multi=True,
+            _get_campaign_product_status_inventory, method=True, 
+            type='text', string='(Campaign detail)', store=False, multi=True,
             ), 
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
