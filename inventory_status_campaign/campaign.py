@@ -61,7 +61,7 @@ class ProductProduct(orm.Model):
             
             # Data:
             product_id = item.product_id.id
-            qty = item.qty_ordered
+            qty = item.qty#_ordered
             text = '%s: %s (%s - %s)\n' % (
                 qty, campaign.code, campaign.from_date, 
                 campaign.to_date)                
