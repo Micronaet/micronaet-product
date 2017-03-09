@@ -43,7 +43,7 @@ class ProductProduct(orm.Model):
     """    
     _inherit = 'product.product'
 
-    def _get_campaign_product_status(
+    def _get_campaign_product_status_inventory(
             self, cr, uid, ids, fields, args, context=None):
         ''' Fields function for calculate 
         '''
@@ -85,15 +85,13 @@ class ProductProduct(orm.Model):
 
     _columns = {
         'mx_campaign_out': fields.function(
-            _get_campaign_product_status, method=True, 
+            _get_campaign_product_status_inventory, method=True, 
             type='float', string='(Campaign OC)', digits=(16, 2),
             store=False, multi=True,
             ), 
         'mx_campaign_detail': fields.function(
-            _get_campaign_product_status, method=True, 
+            _get_campaign_product_status_inventory, method=True, 
             type='text', string='(Campaign detail)', store=False, multi=True,
             ), 
         }
-    
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

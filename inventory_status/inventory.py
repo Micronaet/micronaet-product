@@ -593,47 +593,37 @@ class ProductProduct(orm.Model):
 
         'mx_inv_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='Inventory adjust', 
-            store=False, multi=True),
+            string='Inventory adjust', store=False, multi=True),
         'mx_mm_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='Movement', 
-            store=False, multi=True),
+            string='Movement', store=False, multi=True),
 
         'mx_bf_in': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='BF in (MRP in)', 
-            store=False, multi=True),
+            string='BF in (MRP in)', store=False, multi=True),
         'mx_bc_out': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='BC out (MRP out)', 
-            store=False, multi=True),    
+            string='BC out (MRP out)', store=False, multi=True),    
 
         'mx_of_in': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='OF in', 
-            store=False, multi=True),
+            string='OF in', store=False, multi=True),
         'mx_oc_out': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='OC out', 
-            store=False, multi=True),
+            string='OC out', store=False, multi=True),
         
         'mx_net_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='Total Net', 
-            store=False, multi=True),
+            string='Total Net', store=False, multi=True),
         'mx_lord_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='Total Lord', 
-            store=False, multi=True),     
+            string='Total Lord', store=False, multi=True),     
         'mx_net_mrp_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='Total Net with MRP', 
-            store=False, multi=True),
+            string='Total Net with MRP', store=False, multi=True),
         'mx_lord_mrp_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='Total Lord with MRP', 
-            store=False, multi=True),     
+            string='Total Lord with MRP', store=False, multi=True),     
         
         # TODO temporary field for unload in production this season.
         'mx_mrp_out': fields.float('(MRP out)', digits=(16, 2),

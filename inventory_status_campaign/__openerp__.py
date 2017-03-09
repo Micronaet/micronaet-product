@@ -29,7 +29,7 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
-        #'inventory_status',
+        'inventory_status',
         'csv_import_campaign', # TODO remove override fields here
         'product',
         ],

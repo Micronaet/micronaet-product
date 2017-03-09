@@ -77,10 +77,10 @@ class ProductProduct(orm.Model):
             
             # Reset all data value:
             product_ids = self.search(cr, uid, [
-                ('mx_campaign_out', '!=', False)], context=context)
+                ('pm_campaign_out', '!=', False)], context=context)
             self.write(cr, uid, product_ids, {
-                'mx_campaign_out': False,
-                'mx_campaign_detail': False,
+                'pm_campaign_out': False,
+                'pm_campaign_detail': False,
                 }, context=context)    
                 
             for line in csv_in:
@@ -135,8 +135,8 @@ class ProductProduct(orm.Model):
             for product_id, data in load_data.iteritems():            
                 qty, detail = data
                 self.write(cr, uid, product_id, {
-                    'mx_campaign_out': qty,
-                    'mx_campaign_detail': detail,
+                    'pm_campaign_out': qty,
+                    'pm_campaign_detail': detail,
                     }, context=context)
         except:
             _logger.error('Error read filename: %s' % filename)
@@ -154,8 +154,8 @@ class ProductProduct(orm.Model):
             script, filename, header=1, separator='$|$', context=context)        
         
     _columns = {
-        'mx_campaign_out': fields.float(
+        'pm_campaign_out': fields.float(
             '(Campaign OC)', digits=(16, 2)),
-        'mx_campaign_detail': fields.text('Campaign detail'),    
+        'pm_campaign_detail': fields.text('Campaign detail'),    
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
