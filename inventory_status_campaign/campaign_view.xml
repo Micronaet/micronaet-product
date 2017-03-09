@@ -15,6 +15,7 @@
                     <field name="mx_campaign_detail" readonly="1" 
                         attrs="{'invisible':[('mx_campaign_out','=',0)]}" 
                         colspan="3"/>
+                    <newline/>
                 </field>
             </field>
         </record>
@@ -30,6 +31,7 @@
                     <field name="mx_campaign_detail" readonly="1" 
                         attrs="{'invisible':[('mx_campaign_out','=',0)]}" 
                         colspan="3"/>
+                    <newline/>
                 </field>
             </field>
         </record>
