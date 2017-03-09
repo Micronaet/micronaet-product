@@ -346,6 +346,7 @@ class ProductProduct(orm.Model):
             context=None):
         ''' Get information
         '''
+        import pdb; pdb.set_trace()
         _logger.warning('>>> START INVENTORY <<<')
         res = {}
         res_extra = {}
