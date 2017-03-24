@@ -51,8 +51,9 @@ class ProductProduct(orm.Model):
         '''
         if not ean13:
             _logger.error('No passed ean to burn!')
+            return False
+            
         if partial:
-                return False
             domain = [('name', '=ilike', '_______%s_' % ean13)]
         else:
             domain = [('name', '=', ean13)]   
