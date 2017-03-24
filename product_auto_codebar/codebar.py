@@ -49,16 +49,21 @@ class ProductProduct(orm.Model):
         ''' Remove code fron unused list
             partial if is the article part
         '''
+        if not ean13:
+            _logger.error('No passed ean to burn!')
         if partial:
+                return False
             domain = [('name', '=ilike', '_______%s_' % ean13)]
         else:
-            domain = [('name', '=', ean13),
-            ]   
+            domain = [('name', '=', ean13)]   
         item_ids = self.search(cr, uid, domain, context=context)
         if item_ids:
-            return self.unlink(cr, uid, item_ids, context=context)
+            try:
+                return self.unlink(cr, uid, item_ids, context=context)
+            except:
+                return False
         else:
-            _logger.warning('Cannot burn EAN: %s' % ean13)
+            _logger.warning('Cannot burn EAN (not in unused list): %s' % ean13)
             return True    
         
     def get_ean13(self, cr, uid, context=None):
