@@ -12,7 +12,8 @@
                 <field name="default_code" />
                 <field name="duty_id" />
                 <filter name="no_duty" string="No duty" domain="[('duty_id','=',False')]"/>
-                <group expand="0" string="Group By...">
+                <filter name="yes_duty" string="With duty" domain="[('duty_id','!=',False')]"/>
+               <group expand="0" string="Group By...">
                     <filter name="group_duty" string="Duty" context="{'group_by': 'duty_id'}"/>
                 </group>                
             </search>
