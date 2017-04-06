@@ -2,6 +2,22 @@
 <openerp>
     <data>
     <!--product.product-->
+    <record model="ir.ui.view" id="view_product_duty_search">
+        <field name="name">product.product.search</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="40" />
+        <field name="arch" type="xml">
+            <search string="String" version="7.0">        
+                <field name="name" />
+                <field name="default_code" />
+                <field name="duty_id" />
+                <filter name="no_duty" string="No duty" domain="[('duty_id','=',False')]"/>
+                <group expand="0" string="Group By...">
+                    <filter name="group_duty" string="Duty" context="{'group_by': 'duty_id'}"/>
+                </group>                
+            </search>
+        </field>
+    </record>
     <record model="ir.ui.view" id="view_product_product_duty_form">
         <field name="name">product.product.form</field>
         <field name="model">product.product</field>
@@ -32,6 +48,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="view_product_product_duty_tree"/>
+        <field name="search_view_id" ref="view_product_duty_search"/>
         <field name="context">{}</field>
         <field name="domain">[]</field>
     </record>

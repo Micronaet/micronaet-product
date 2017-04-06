@@ -36,7 +36,6 @@
     'data': [
         'security/ir.model.access.csv',    
         'duty_view.xml',
-        'wizard/set_category_view.xml',
         ],
     'active': False,
     'installable': True,
