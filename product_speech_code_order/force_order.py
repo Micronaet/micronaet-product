@@ -48,14 +48,34 @@ class SaleOrder(orm.Model):
         '''
         assert len(ids) == 1, 'Works only with one record a time'
         
-        curreny_proxy = self.browse(cr, uid, ids, context=context)[0]
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
         product_pool = self.pool.get('product.product')
         done_ids = []
-        for product in current_proxy.order_line:
-            if product.id in done_ids:
+        for line in current_proxy.order_line:
+            product_id = line.product_id.id
+            if product_id in done_ids:
                 continue
             product_pool.generate_name_from_code(
-                cr, uid, product.id, context=context)
-            done_ids.append(product.id)    
+                cr, uid, [product_id], context=context)
+            done_ids.append(product_id)    
         return True
+
+class SaleOrderLine(orm.Model):
+    """ Model name: Sale Order Line
+    """    
+    _inherit = 'sale.order.line'
+    
+    def force_product_speech_code_from_order_line(
+            self, cr, uid, ids, context=None):
+        ''' Force calculation for details product
+        '''
+        assert len(ids) == 1, 'Works only with one record a time'
+        
+        line = self.browse(cr, uid, ids, context=context)[0]
+        product_pool = self.pool.get('product.product')
+        product_id = line.product_id.id
+        product_pool.generate_name_from_code(
+            cr, uid, [product_id], context=context)
+        return True
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

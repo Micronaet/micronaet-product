@@ -6,9 +6,20 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <field name="order_line" position="before">
+                <field name="order_line" position="after">
                     <button name="force_product_speech_code_from_order" string="Rigenera prodotti" type="object" icon="gtk-refresh"/>
                 </field>    
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_sale_order_line_force_speech_form">
+            <field name="name">sale.order.force.speech.line.form</field>            
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+                    <button name="force_product_speech_code_from_order_line" string="Rigenera nome prodotto" type="object" icon="gtk-refresh"/>
+                </xpath>    
             </field>
         </record>
     </data>
