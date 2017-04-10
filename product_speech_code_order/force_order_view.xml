@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_sale_order_force_speech_form">
+            <field name="name">sale.order.force.speech.form</field>            
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="order_line" position="before">
+                    <button name="force_product_speech_code_from_order" string="Rigenera prodotti" type="object" icon="gtk-refresh"/>
+                </field>    
+            </field>
+        </record>
+    </data>
+</openerp>
+
