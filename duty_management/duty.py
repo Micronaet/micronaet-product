@@ -59,6 +59,18 @@ class ProductCustomDuty(orm.Model):
     _name = 'product.custom.duty'
     _description = 'Product custom duty'
 
+    def load_product_duty_category(self, cr, uid, connector_id, context=None):
+        ''' Assign category to product selected
+        '''
+        res = {}
+        category_ids = self.search(cr, uid, [
+            ('start', '!=', False),
+            ], context=context)
+        for category in self.browse(cr, uid, category_ids, context=context):
+            for start in category.start.split('|'):
+                res[start] = category.id
+        return res
+
     _columns = {
         'name': fields.char('Custom duty', size=100, required=True),
         'code': fields.char('Code', size=24),
@@ -71,6 +83,7 @@ class ProductCustomDuty(orm.Model):
 class ProductProductExtra(orm.Model):
     _inherit = 'product.product'
 
+    # TODO override write or create element for generate duty code!!!!!!!!!!!!
     _columns = {
         'duty_id': fields.many2one('product.custom.duty', 'Custom duty'),
         'duty_code': fields.related(
