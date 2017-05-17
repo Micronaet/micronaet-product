@@ -661,8 +661,8 @@ class ProductProduct(orm.Model):
             string='OF date', store=False, multi=True),
         
         # History information:
-        'mx_net_qty_h': fields.float('Net (h)', digits=(16, 2)),
-        'mx_lord_qty_h': fields.float('Lord (h)', digits=(16, 2)),            
+        #'mx_net_qty_h': fields.float('Net (h)', digits=(16, 2)),
+        #'mx_lord_qty_h': fields.float('Lord (h)', digits=(16, 2)),            
         }
         
     _defaults = {
