@@ -125,8 +125,6 @@
             action="action_product_duty_list"
             sequence="10"
             />
-        
-
     </data>
 </openerp>
 
