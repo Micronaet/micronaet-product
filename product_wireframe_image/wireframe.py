@@ -47,7 +47,7 @@ class ProductProduct(orm.Model):
 
     # Parameters:
     _wireframe_path = 'linedrawing'
-    _wireframe_extension = 'png'
+    _wireframe_extension = 'jpg'
     
     # -------------------------------------------------------------------------
     # Utility:
@@ -111,6 +111,7 @@ class ProductProduct(orm.Model):
         parent_block = self.get_config_parameter_list(
             cr, uid, context=context)
         res = {}
+
         for product in self.browse(cr, uid, ids, context=context):
             default_code = self.prepare_filename(product.default_code)
             
@@ -134,11 +135,12 @@ class ProductProduct(orm.Model):
                     f = open(filename , 'rb')
                     res[product.id] = base64.encodestring(f.read())
                     f.close()
+                    _logger.info('Linedrawing: %s' % filename)        
                 except:
+                    _logger.warning('No Linedrawing: %s' % filename)        
                     res[product.id] = ''            
                 if res[product.id]:
-                    break    
-                
+                    break                
         return res
 
     _columns = {
