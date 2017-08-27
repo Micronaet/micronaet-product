@@ -1,0 +1,141 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* inventory_field
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:25+0000\n"
+"PO-Revision-Date: 2017-08-05 22:34+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: inventory_field
+#: field:product.product.inventory.category,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: inventory_field
+#: field:product.product.inventory.category,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: inventory_field
+#: help:product.product,inventory_delta:0
+msgid "Delta inventory for post correction retroactive"
+msgstr "Delta inventario per correzione posteriore retroattiva"
+
+#. module: inventory_field
+#: view:product.product.inventory.category:inventory_field.view_product_product_inventory_category_form
+#: field:product.product.inventory.category,code:0
+msgid "Force code"
+msgstr "Forza codice"
+
+#. module: inventory_field
+#: view:product.product.inventory.category:inventory_field.view_product_product_inventory_category_form
+msgid "Force code category"
+msgstr "Forza categoria codice"
+
+#. module: inventory_field
+#: view:product.product.inventory.category:inventory_field.view_product_product_inventory_category_form
+msgid "Force no code"
+msgstr "Forza no codice"
+
+#. module: inventory_field
+#: view:product.product:inventory_field.view_inventory_category_search
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: inventory_field
+#: field:product.product.inventory.category,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: inventory_field
+#: model:ir.actions.act_window,name:inventory_field.action_inventory_category
+#: model:ir.model,name:inventory_field.model_product_product_inventory_category
+#: model:ir.ui.menu,name:inventory_field.menu_inventory_category
+#: view:product.product:inventory_field.view_inventory_category_search
+#: field:product.product,inventory_category_id:0
+#: view:product.product.inventory.category:inventory_field.view_product_product_inventory_category_form
+msgid "Inventory category"
+msgstr "Categoria inventario"
+
+#. module: inventory_field
+#: view:product.product:inventory_field.view_product_product_category_tree
+msgid "Inventory category product"
+msgstr "Categoria prodotto inventario"
+
+#. module: inventory_field
+#: field:product.product,inventory_delta:0
+msgid "Inventory delta"
+msgstr "Delta inventario"
+
+#. module: inventory_field
+#: field:product.product,inventory_excluded:0
+msgid "Inventory excluded"
+msgstr "Escluso inventario"
+
+#. module: inventory_field
+#: view:product.product:inventory_field.view_product_startup_inventory_form
+msgid "Inventory report:"
+msgstr "Stampa inventario:"
+
+#. module: inventory_field
+#: field:product.product.inventory.category,write_uid:0
+msgid "Last Updated by"
+msgstr "Aggiornato da"
+
+#. module: inventory_field
+#: field:product.product.inventory.category,write_date:0
+msgid "Last Updated on"
+msgstr "Aggiornato il"
+
+#. module: inventory_field
+#: field:product.product.inventory.category,name:0
+msgid "Name"
+msgstr "Nome"
+
+#. module: inventory_field
+#: view:product.product:inventory_field.view_inventory_category_search
+msgid "No category"
+msgstr "No categoria"
+
+#. module: inventory_field
+#: view:product.product:inventory_field.view_inventory_category_search
+msgid "No code"
+msgstr "No codice"
+
+#. module: inventory_field
+#: view:product.product.inventory.category:inventory_field.view_product_product_inventory_category_form
+#: field:product.product.inventory.category,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: inventory_field
+#: model:ir.model,name:inventory_field.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: inventory_field
+#: model:ir.actions.act_window,name:inventory_field.action_category_inventory_product
+#: model:ir.ui.menu,name:inventory_field.menu_inventory_category_product
+msgid "Product inventory category"
+msgstr "Categoria prodotto inventario"
+
+#. module: inventory_field
+#: view:product.product:inventory_field.view_product_startup_inventory_form
+msgid "Start up:"
+msgstr "Partenza:"
+
+#. module: inventory_field
+#: view:product.product.inventory.category:inventory_field.view_product_product_inventory_category_tree
+msgid "String"
+msgstr "Stringa"

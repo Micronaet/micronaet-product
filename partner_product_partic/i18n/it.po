@@ -1,0 +1,109 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* partner_product_partic
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:28+0000\n"
+"PO-Revision-Date: 2017-08-04 13:53+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: partner_product_partic
+#: help:res.partner,use_partic:0
+msgid "Customer use partic. for product descriptions"
+msgstr "Cliente utilizza particolarità per descrizioni prodotto"
+
+#. module: partner_product_partic
+#: help:res.partner.product.partic,partner_description:0
+msgid "Description in partner's language"
+msgstr "Descrizione nella lingua partner"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,price_from_date:0
+msgid "From date"
+msgstr "Dalla data"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,write_date:0
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento da"
+
+#. module: partner_product_partic
+#: model:ir.model,name:partner_product_partic.model_res_partner
+#: field:res.partner.product.partic,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,partner_code:0
+msgid "Partner code"
+msgstr "Codice partner"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,partner_description:0
+msgid "Partner description"
+msgstr "Descrizione partner"
+
+#. module: partner_product_partic
+#: model:ir.model,name:partner_product_partic.model_res_partner_product_partic
+msgid "Partner product partic"
+msgstr "Particolarità partner-prodotto"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,partner_price:0
+msgid "Price"
+msgstr "Prezzo"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,product_id:0
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: partner_product_partic
+#: field:res.partner,partic_ids:0
+msgid "Product partic."
+msgstr "Particolarità prodotto"
+
+#. module: partner_product_partic
+#: model:ir.model,name:partner_product_partic.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Linea d'ordine di vendita"
+
+#. module: partner_product_partic
+#: field:res.partner.product.partic,price_to_date:0
+msgid "To date"
+msgstr "Alla data"
+
+#. module: partner_product_partic
+#: field:res.partner,use_partic:0
+msgid "Use partic."
+msgstr "Use partic."

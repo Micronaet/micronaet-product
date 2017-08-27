@@ -1,0 +1,91 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* duty_management_set
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:25+0000\n"
+"PO-Revision-Date: 2017-08-05 22:09+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: duty_management_set
+#: field:product.duty.set,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: duty_management_set
+#: field:product.duty.set,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: duty_management_set
+#: field:product.duty.set,duty_id:0
+msgid "Duty"
+msgstr "Dogana"
+
+#. module: duty_management_set
+#: model:ir.model,name:duty_management_set.model_product_duty_set
+#: view:product.product:duty_management_set.view_product_product_duty_set_form
+#: field:product.product,duty_set_ids:0
+msgid "Duty for set"
+msgstr "Dogana per set"
+
+#. module: duty_management_set
+#: help:product.duty.set,partial_value:0
+msgid "Duty part for this category"
+msgstr "Parte dogana per questa categoria"
+
+#. module: duty_management_set
+#: view:product.product:duty_management_set.view_product_product_duty_set_form
+msgid "Duty set"
+msgstr "Dogana set"
+
+#. module: duty_management_set
+#: field:product.duty.set,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: duty_management_set
+#: field:product.product,is_duty_set:0
+msgid "Is duty set"
+msgstr "E' un set dogana"
+
+#. module: duty_management_set
+#: field:product.duty.set,write_uid:0
+msgid "Last Updated by"
+msgstr "Aggiornato da"
+
+#. module: duty_management_set
+#: field:product.duty.set,write_date:0
+msgid "Last Updated on"
+msgstr "Aggiornato il"
+
+#. module: duty_management_set
+#: field:product.duty.set,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: duty_management_set
+#: field:product.duty.set,partial:0
+msgid "Partial %"
+msgstr "Parziale %"
+
+#. module: duty_management_set
+#: field:product.duty.set,partial_value:0
+msgid "Partial value"
+msgstr "Valore parziale"
+
+#. module: duty_management_set
+#: model:ir.model,name:duty_management_set.model_product_product
+#: field:product.duty.set,product_id:0
+msgid "Product"
+msgstr "Prodotto"

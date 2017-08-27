@@ -1,0 +1,351 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* inventory_status
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:25+0000\n"
+"PO-Revision-Date: 2017-08-05 22:41+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: inventory_status
+#: field:product.product,mx_mrp_out:0
+msgid "(MRP out)"
+msgstr "(Produzione scaricata)"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "+ MM in (BF, MRP)"
+msgstr "+ MM ingresso (BF, Produzione)"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "+ OF in"
+msgstr "+ OF ingresso"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "+ Start inventory"
+msgstr "+ Inventario iniziale"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "+/- Inventory adjust"
+msgstr "+/- Aggiustamento inventario"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "- MM out (BC, MRP)"
+msgstr "- MM uscita (BC, Produzione)"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "- MRP out"
+msgstr "- MRP uscita"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "- OC out"
+msgstr "- OC uscita"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "Also consider MRP unload"
+msgstr "Considerando anche gli scarichi produzione"
+
+#. module: inventory_status
+#: field:product.product,mx_bc_ids:0
+msgid "BC movement"
+msgstr "BC movimenti"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_web_product_state_web_publish_tree
+msgid "BC out"
+msgstr "BC uscita"
+
+#. module: inventory_status
+#: field:product.product,mx_bc_out:0
+msgid "BC out (MRP out)"
+msgstr "BC uscita (Produzione scarico)"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_web_product_state_web_publish_tree
+msgid "BF in"
+msgstr "BF uscita"
+
+#. module: inventory_status
+#: field:product.product,mx_bf_in:0
+msgid "BF in (MRP in)"
+msgstr "BF ingresso (Produzione caricata)"
+
+#. module: inventory_status
+#: field:product.product,mx_bf_ids:0
+msgid "BF movement"
+msgstr "BF movimenti"
+
+#. module: inventory_status
+#: field:product.product,imported_bom_id:0
+msgid "Bom ref."
+msgstr "Rif. DB"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Code"
+msgstr "Codice"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "Date of start inventory"
+msgstr "Data di inizio inventario"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "Export state"
+msgstr "Esporta stato"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Group by..."
+msgstr "Raggruppa per..."
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "Inv (in)"
+msgstr "Inventario (ingresso)"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_web_product_state_web_publish_tree
+msgid "Inv in"
+msgstr "Inventario ingresso"
+
+#. module: inventory_status
+#: field:product.product,mx_inv_ids:0
+msgid "Inv. movement"
+msgstr "Inv. movimento"
+
+#. module: inventory_status
+#: field:product.product,mx_inv_qty:0
+msgid "Inventory adjust"
+msgstr "Inventario aggiustamento"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "MM (in)"
+msgstr "MM (ingresso)"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "MM (out)"
+msgstr "MM (uscita)"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "MRP calculated dynamically"
+msgstr "Produzione calcolata dinamicamente"
+
+#. module: inventory_status
+#: field:product.product,mx_mm_qty:0
+msgid "Movement"
+msgstr "Movimento"
+
+#. module: inventory_status
+#: field:res.users,no_inventory_status:0
+msgid "No inventory status"
+msgstr "No stato inventario"
+
+#. module: inventory_status
+#: help:product.product,mx_mrp_out:0
+msgid "Not included in net or lord qty, just a data placeholder"
+msgstr ""
+"Non incluso nella quantità netta e lorda, è solamente un dato segnaposto"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Not on web"
+msgstr "Non sul sito"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "OC (out)"
+msgstr "OC (uscita)"
+
+#. module: inventory_status
+#: field:product.product,mx_oc_ids:0
+msgid "OC movement"
+msgstr "OC movimenti"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_web_product_state_web_publish_tree
+#: field:product.product,mx_oc_out:0
+msgid "OC out"
+msgstr "OC uscita"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "OF (in)"
+msgstr "OF (ingresso)"
+
+#. module: inventory_status
+#: field:product.product,mx_of_date:0
+msgid "OF date"
+msgstr "OF data"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_web_product_state_web_publish_tree
+#: field:product.product,mx_of_in:0
+msgid "OF in"
+msgstr "OF ingresso"
+
+#. module: inventory_status
+#: field:product.product,mx_of_ids:0
+msgid "OF movement"
+msgstr "OF movimento"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "On web"
+msgstr "Sul Sito"
+
+#. module: inventory_status
+#: view:stock.move:inventory_status.view_stock_move_ref_form
+msgid "Open picking"
+msgstr "Apri prelievo"
+
+#. module: inventory_status
+#: code:addons/inventory_status/inventory.py:52
+#, python-format
+msgid "Picking"
+msgstr "Prelievo"
+
+#. module: inventory_status
+#: model:ir.model,name:inventory_status.model_product_product
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Publishing"
+msgstr "Pubblicazione"
+
+#. module: inventory_status
+#: view:sale.order.line:inventory_status.view_sale_order_line_tree
+msgid "Sale order line"
+msgstr "Riga ordine"
+
+#. module: inventory_status
+#: model:ir.actions.act_window,name:inventory_status.action_sale_order_line
+msgid "Sale order line analysis"
+msgstr "Analisi righe ordine"
+
+#. module: inventory_status
+#: model:ir.model,name:inventory_status.model_sale_order
+msgid "Sales Order"
+msgstr "Ordine di vendita"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Stat. category"
+msgstr "Categoria statistica"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Statistic category"
+msgstr "Categoria statistica"
+
+#. module: inventory_status
+#: model:ir.model,name:inventory_status.model_stock_move
+msgid "Stock Move"
+msgstr "Movimento di magazzino"
+
+#. module: inventory_status
+#: view:stock.move:inventory_status.view_stock_move_ref_form
+msgid "Stock move"
+msgstr "Movimento magazzino"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+msgid "String"
+msgstr "Stringa"
+
+#. module: inventory_status
+#: field:product.product,mx_lord_qty:0
+msgid "Total Lord"
+msgstr "Totale lordo"
+
+#. module: inventory_status
+#: field:product.product,mx_net_qty:0
+msgid "Total Net"
+msgstr "Totale netto"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "Total lord*:"
+msgstr "Totale lordo*:"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_product_inventory_lite_form
+#: view:product.product:inventory_status.view_product_product_button_status_form
+msgid "Total net*:"
+msgstr "Totale netto*:"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Type"
+msgstr "Tipo"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.product_product_search_view
+msgid "Unit of Measure"
+msgstr "Unità di misura"
+
+#. module: inventory_status
+#: model:ir.model,name:inventory_status.model_res_users
+msgid "Users"
+msgstr "Utenti"
+
+#. module: inventory_status
+#: model:ir.actions.act_window,name:inventory_status.action_web_product_state
+#: model:ir.ui.menu,name:inventory_status.menu_web_product_state
+msgid "Web product state"
+msgstr "Stato prodotti web"
+
+#. module: inventory_status
+#: view:product.product:inventory_status.view_web_product_state_web_publish_tree
+msgid "Web product status"
+msgstr "Stato prodotti web"
+
+#. module: inventory_status
+#: field:product.product,web_published:0
+msgid "Web published"
+msgstr "Pubblicato sul web"
+
+#. module: inventory_status
+#: view:stock.move:inventory_status.view_stock_move_ref_form
+msgid "total"
+msgstr "totale"

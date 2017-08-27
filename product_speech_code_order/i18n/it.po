@@ -1,0 +1,37 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* product_speech_code_order
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:31+0000\n"
+"PO-Revision-Date: 2017-07-27 16:31+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_speech_code_order
+#: view:sale.order:product_speech_code_order.view_sale_order_line_force_speech_form
+msgid "Rigenera nome prodotto"
+msgstr "Rigenera nome prodotto"
+
+#. module: product_speech_code_order
+#: view:sale.order:product_speech_code_order.view_sale_order_force_speech_form
+msgid "Rigenera prodotti"
+msgstr "Rigenera prodotti"
+
+#. module: product_speech_code_order
+#: model:ir.model,name:product_speech_code_order.model_sale_order
+msgid "Sales Order"
+msgstr "Ordine di vendita"
+
+#. module: product_speech_code_order
+#: model:ir.model,name:product_speech_code_order.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Linea d'ordine di vendita"
+

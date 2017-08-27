@@ -1,0 +1,230 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* csv_import_inventory_movement
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:24+0000\n"
+"PO-Revision-Date: 2017-08-04 16:12+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:303
+#, python-format
+msgid "%s. Error code not found, code: %s\n"
+msgstr "%s. Errore codice non trovato, codice: %s\n"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:378
+#, python-format
+msgid "%s. Import error code: %s [%s]\n"
+msgstr "%s. Errore importazione codice: %s [%s]\n"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:279
+#, python-format
+msgid "%s. No default code on file found\n"
+msgstr "%s. Non trovato codice prodotto nel file\n"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:308
+#, python-format
+msgid "%s. Warning more code (take first), code: %s\n"
+msgstr "%s. Attenzione codici doppi (prendo il primo), codice: %s\n"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:227
+#, python-format
+msgid "CL from: %s"
+msgstr "CL da: %s"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:97
+#: code:addons/csv_import_inventory_movement/inventory.py:258
+#, python-format
+msgid "Cannot found file: %s"
+msgstr "Non posso trovare il file: %s"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,create_product:0
+msgid "Create product"
+msgstr "Prodotto creato"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,date:0
+msgid "Date"
+msgstr "Data"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,error:0
+msgid "Error"
+msgstr "Errore"
+
+#. module: csv_import_inventory_movement
+#: view:product.product.import.inventory:csv_import_inventory_movement.view_import_inventory_tree
+msgid "Error:"
+msgstr "Errore:"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,fullname:0
+msgid "File name"
+msgstr "Nome file"
+
+#. module: csv_import_inventory_movement
+#: help:product.product.import.inventory,uom_id:0
+msgid "For new product"
+msgstr "Per nuovo prodotto"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: csv_import_inventory_movement
+#: view:product.product.import.inventory:csv_import_inventory_movement.view_import_inventory_tree
+msgid "Import"
+msgstr "Importa"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:267
+#, python-format
+msgid "Import end at line: %s\n"
+msgstr "Importazione terminata alla riga; %s\n"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:102
+#: code:addons/csv_import_inventory_movement/inventory.py:212
+#, python-format
+msgid "Import error"
+msgstr "Errore importazione"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,inventory_cl_id:0
+msgid "Inventory CL"
+msgstr "Inventario CL"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,inventory_sl_id:0
+msgid "Inventory SL"
+msgstr "Inventario SL"
+
+#. module: csv_import_inventory_movement
+#: model:ir.actions.act_window,name:csv_import_inventory_movement.action_import_inventory_tree
+#: model:ir.ui.menu,name:csv_import_inventory_movement.menu_import_inventory
+msgid "Inventory adjust"
+msgstr "Aggiustamento inventario"
+
+#. module: csv_import_inventory_movement
+#: model:ir.model,name:csv_import_inventory_movement.model_product_product_import_inventory
+msgid "Inventory partial import"
+msgstr "Importazione parziale inventario"
+
+#. module: csv_import_inventory_movement
+#: field:stock.move,inventory_quants_id:0
+msgid "Inventory quant"
+msgstr "Quant. inventario"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,write_uid:0
+msgid "Last Updated by"
+msgstr "Aggiornato da"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,write_date:0
+msgid "Last Updated on"
+msgstr "Aggiornato il"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,max_line:0
+msgid "Max line"
+msgstr "Linea massima"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:103
+#: code:addons/csv_import_inventory_movement/inventory.py:213
+#, python-format
+msgid "Need a file name to import in path %s"
+msgstr "Necessita di un nome file nel percorso: %s"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: csv_import_inventory_movement
+#: view:product.product.import.inventory:csv_import_inventory_movement.view_import_inventory_tree
+msgid "Note:"
+msgstr "Note:"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:96
+#: code:addons/csv_import_inventory_movement/inventory.py:257
+#, python-format
+msgid "Open file error"
+msgstr "Errore aprendo file"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: csv_import_inventory_movement
+#: help:stock.move,inventory_quants_id:0
+msgid "Quants linked to this stock movement"
+msgstr "Quant. collegate al movimento magazzino"
+
+#. module: csv_import_inventory_movement
+#: code:addons/csv_import_inventory_movement/inventory.py:239
+#, python-format
+msgid "SL from: %s"
+msgstr "SL da: %s"
+
+#. module: csv_import_inventory_movement
+#: view:product.product.import.inventory:csv_import_inventory_movement.view_import_inventory_tree
+msgid "Set inventory start"
+msgstr "Imposta inventario iniziale"
+
+#. module: csv_import_inventory_movement
+#: model:ir.model,name:csv_import_inventory_movement.model_stock_move
+msgid "Stock Move"
+msgstr "Movimento di magazzino"
+
+#. module: csv_import_inventory_movement
+#: view:product.product.import.inventory:csv_import_inventory_movement.view_import_inventory_form
+#: view:product.product.import.inventory:csv_import_inventory_movement.view_import_inventory_tree
+msgid "String"
+msgstr "Stringa"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,cl_picking_type_id:0
+msgid "Type CL"
+msgstr "Tipo CL"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,sl_picking_type_id:0
+msgid "Type SL"
+msgstr "Tipo SL"
+
+#. module: csv_import_inventory_movement
+#: field:product.product.import.inventory,uom_id:0
+msgid "UOM"
+msgstr "UM"

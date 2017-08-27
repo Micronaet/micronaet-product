@@ -1,0 +1,170 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_delivered
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:31+0000\n"
+"PO-Revision-Date: 2017-08-16 14:36+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: product_delivered
+#: help:product.product.moved.wizard,report_code_break:0
+msgid "Break and write total when product change x char of code"
+msgstr ""
+"Spezza e indica il totale quando il prodotto cambia il carattere del codice"
+
+#. module: product_delivered
+#: view:product.product.moved.wizard:product_delivered.stock_moves_from_type_wizard_view
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,code:0
+msgid "Code"
+msgstr "Codice"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,report_code_break:0
+msgid "Code break"
+msgstr "Rottura codice"
+
+#. module: product_delivered
+#: view:product.product.moved.wizard:product_delivered.stock_moves_from_type_wizard_view
+msgid "Code filter:"
+msgstr "Filtro codice:"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: product_delivered
+#: help:product.product.moved.wizard,to_date:0
+msgid "Date <="
+msgstr "Data <="
+
+#. module: product_delivered
+#: help:product.product.moved.wizard,from_date:0
+msgid "Date >="
+msgstr "Data >="
+
+#. module: product_delivered
+#: view:product.product.moved.wizard:product_delivered.stock_moves_from_type_wizard_view
+msgid "Date filter:"
+msgstr "Filtro data:"
+
+#. module: product_delivered
+#: model:ir.actions.report.xml,name:product_delivered.aeroo_delivered_status_report_report_id
+msgid "Delivered status report"
+msgstr "Stampa stato consegnato"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,from_date:0
+msgid "From >="
+msgstr "Da >="
+
+#. module: product_delivered
+#: view:product.product:product_delivered.product_product_search_view
+msgid "Group by..."
+msgstr "Raggruppa per ..."
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,write_uid:0
+msgid "Last Updated by"
+msgstr "Aggiornato da"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,write_date:0
+msgid "Last Updated on"
+msgstr "Aggiornato il"
+
+#. module: product_delivered
+#: view:product.product.moved.wizard:product_delivered.stock_moves_from_type_wizard_view
+msgid "Moves"
+msgstr "Movimenti"
+
+#. module: product_delivered
+#: view:product.product:product_delivered.product_product_search_view
+msgid "Partner"
+msgstr "Partner"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,type_id:0
+msgid "Picking type"
+msgstr "Tipo prelievo"
+
+#. module: product_delivered
+#: view:product.product.moved.wizard:product_delivered.stock_moves_from_type_wizard_view
+msgid "Print"
+msgstr "Stampa"
+
+#. module: product_delivered
+#: view:product.product:product_delivered.product_product_search_view
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: product_delivered
+#: model:ir.model,name:product_delivered.model_product_product_moved_wizard
+msgid "Product moved"
+msgstr "Prodotto movimentato"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,report_detailed:0
+msgid "Report detailed"
+msgstr "Stampa dettagliata"
+
+#. module: product_delivered
+#: view:product.product.moved.wizard:product_delivered.stock_moves_from_type_wizard_view
+msgid "Report:"
+msgstr "Stampa:"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,start_code:0
+msgid "Start code"
+msgstr "Inizio codice"
+
+#. module: product_delivered
+#: view:stock.move:product_delivered.view_stock_move_packed_form
+msgid "Stock move"
+msgstr "Movimento di magazzin"
+
+#. module: product_delivered
+#: model:ir.ui.menu,name:product_delivered.menu_stock_moves_from_type_wizard
+msgid "Stock movement analysis"
+msgstr "Analisi movimenti di magazzino"
+
+#. module: product_delivered
+#: model:ir.actions.act_window,name:product_delivered.action_stock_moves_from_type_wizard
+#: view:product.product.moved.wizard:product_delivered.stock_moves_from_type_wizard_view
+msgid "Stock moves from type"
+msgstr "Movimenti di magazzino per tipo"
+
+#. module: product_delivered
+#: field:product.product.moved.wizard,to_date:0
+msgid "To <="
+msgstr "A <="
+
+#. module: product_delivered
+#: view:stock.move:product_delivered.view_stock_move_packed_form
+msgid "total"
+msgstr "totale"

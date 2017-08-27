@@ -1,0 +1,343 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* csv_import_product
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:24+0000\n"
+"PO-Revision-Date: 2017-08-04 16:20+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: csv_import_product
+#: code:addons/csv_import_product/wizard/csv_import_wizard.py:168
+#, python-format
+msgid ""
+"%s. Col %s, field <b>%s</b>, not present!</br>\n"
+"                            "
+msgstr ""
+"%s. Col %s, campo <b>%s</b>, non presente!</br>\n"
+"                            "
+
+#. module: csv_import_product
+#: code:addons/csv_import_product/wizard/csv_import_wizard.py:217
+#, python-format
+msgid "%s. Error code not found, code: <b>%s</b></br>"
+msgstr "%s. Errore codice non trovato, valore: <b>%s</b></br>"
+
+#. module: csv_import_product
+#: code:addons/csv_import_product/wizard/csv_import_wizard.py:211
+#, python-format
+msgid ""
+"%s. Error more code (take first), \n"
+"                                code: <b>%s</b></br>"
+msgstr ""
+"%s. Errore codici duplicati (preso il primo), \n"
+"                                codice: <b>%s</b></br>"
+
+#. module: csv_import_product
+#: code:addons/csv_import_product/wizard/csv_import_wizard.py:250
+#, python-format
+msgid "%s. Import error code: <b>%s</b> [%s]</br>"
+msgstr "%s. Errore importando codice: <b>%s</b> [%s]</br>"
+
+#. module: csv_import_product
+#: view:product.product.csv.import.wizard:csv_import_product.product_product_csv_import_wizard_view
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace.column,name:0
+msgid "Column #"
+msgstr "Colonna #"
+
+#. module: csv_import_product
+#: view:product.product.importation.trace:csv_import_product.product_product_importation_trace_form_view
+msgid "Column:"
+msgstr "Colonna:"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace,column_ids:0
+msgid "Columns"
+msgstr "Colonne"
+
+#. module: csv_import_product
+#: model:ir.model,name:csv_import_product.model_product_product_importation_trace_column
+msgid "Columns to import"
+msgstr "Colonne da importare"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,cost_id:0
+msgid "Cost"
+msgstr "Costo"
+
+#. module: csv_import_product
+#: selection:product.product.csv.import.wizard,price_force:0
+msgid "Create Pricelist"
+msgstr "Crea listino"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,with_new:0
+msgid "Create product"
+msgstr "Crea prodotto"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,create_uid:0
+#: field:product.product.importation.trace,create_uid:0
+#: field:product.product.importation.trace.column,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,create_date:0
+#: field:product.product.importation.trace,create_date:0
+#: field:product.product.importation.trace.column,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace,filename:0
+msgid "Default filename"
+msgstr "File predefinito"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace.column,description:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: csv_import_product
+#: selection:product.product.csv.import.wizard,price_force:0
+msgid "Direct in product"
+msgstr "Diretto nel prodotto"
+
+#. module: csv_import_product
+#: code:addons/csv_import_product/wizard/csv_import_wizard.py:201
+#, python-format
+msgid "Error no code present in line: <b>%s</b></br>"
+msgstr "Errore codice non presente riga: <b>%s</b></br>"
+
+#. module: csv_import_product
+#: field:log.importation,exchange:0
+#: field:product.product.csv.import.wizard,exchange:0
+msgid "Exchange"
+msgstr "Cambio"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace.column,field:0
+msgid "Field linked"
+msgstr "Campo collegato"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,name:0
+msgid "File name"
+msgstr "Nome file"
+
+#. module: csv_import_product
+#: model:ir.model,name:csv_import_product.model_product_product_importation_trace
+msgid "File trace"
+msgstr "Traccia file"
+
+#. module: csv_import_product
+#: selection:product.product.importation.trace.column,type:0
+msgid "Float"
+msgstr "Numero con virgola"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,price_force:0
+msgid "Force price"
+msgstr "Forza prezzo"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace.column,from_line:0
+msgid "From line"
+msgstr "Dalla riga"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,from_line:0
+msgid "From line >="
+msgstr "Dalla riga >="
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,id:0
+#: field:product.product.importation.trace,id:0
+#: field:product.product.importation.trace.column,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: csv_import_product
+#: view:product.product.csv.import.wizard:csv_import_product.product_product_csv_import_wizard_view
+msgid "Import"
+msgstr "Importa"
+
+#. module: csv_import_product
+#: model:ir.actions.act_window,name:csv_import_product.act_window_product_product_csv_import_wizard_view
+msgid "Import CSV"
+msgstr "CSV importato"
+
+#. module: csv_import_product
+#: code:addons/csv_import_product/wizard/csv_import_wizard.py:159
+#, python-format
+msgid "Import end at line: %s\n"
+msgstr "Importazione terminata alla riga: %s\n"
+
+#. module: csv_import_product
+#: model:ir.actions.act_window,name:csv_import_product.act_window_mrp_production_create_wizard_view
+msgid "Import product"
+msgstr "Importa prodotto"
+
+#. module: csv_import_product
+#: model:ir.ui.menu,name:csv_import_product.menu_product_import_trace_item
+msgid "Import trace"
+msgstr "Tracciato di importazione"
+
+#. module: csv_import_product
+#: model:ir.ui.menu,name:csv_import_product.menu_product_import_wizard
+msgid "Import wizard"
+msgstr "Wizard importazione"
+
+#. module: csv_import_product
+#: model:ir.model,name:csv_import_product.model_log_importation
+msgid "Importation log"
+msgstr "Log importazione"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace.column,lang_id:0
+msgid "Language"
+msgstr "Lingua"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,write_uid:0
+#: field:product.product.importation.trace,write_uid:0
+#: field:product.product.importation.trace.column,write_uid:0
+msgid "Last Updated by"
+msgstr "Aggiornato da"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,write_date:0
+#: field:product.product.importation.trace,write_date:0
+#: field:product.product.importation.trace.column,write_date:0
+msgid "Last Updated on"
+msgstr "Aggiornato il"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,comment:0
+msgid "Log comment"
+msgstr "Commento log"
+
+#. module: csv_import_product
+#: field:product.product,csv_import_id:0
+msgid "Log import"
+msgstr "Log importazione"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace.column,max_line:0
+msgid "Max line"
+msgstr "Riga massima"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace.column,need_exchange:0
+msgid "Need exchange"
+msgstr "Cambio richiesto"
+
+#. module: csv_import_product
+#: view:product.product.csv.import.wizard:csv_import_product.product_product_csv_import_wizard_view
+#: field:product.product.csv.import.wizard,note:0
+#: view:product.product.importation.trace:csv_import_product.product_product_importation_trace_form_view
+#: field:product.product.importation.trace,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: csv_import_product
+#: view:log.importation:csv_import_product.product_product_importation_form_view
+msgid "Open list"
+msgstr "Apri lista"
+
+#. module: csv_import_product
+#: model:ir.model,name:csv_import_product.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: csv_import_product
+#: view:product.product.csv.import.wizard:csv_import_product.product_product_csv_import_wizard_view
+msgid "Product CSV import"
+msgstr "Importa prodotti CSV"
+
+#. module: csv_import_product
+#: model:ir.actions.act_window,name:csv_import_product.action_product_product_importation_trace
+#: view:product.product.importation.trace:csv_import_product.product_product_importation_trace_form_view
+#: view:product.product.importation.trace:csv_import_product.product_product_importation_trace_tree_view
+msgid "Product import trace"
+msgstr "Tracciato importazione prodotti"
+
+#. module: csv_import_product
+#: view:log.importation:csv_import_product.product_product_importation_form_view
+#: view:product.product.importation.trace:csv_import_product.product_product_importation_trace_form_view
+msgid "Product:"
+msgstr "Prodotto:"
+
+#. module: csv_import_product
+#: view:log.importation:csv_import_product.product_product_importation_form_view
+#: field:log.importation,product_ids:0
+msgid "Products"
+msgstr "Prodotti"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace,name:0
+msgid "Record trace"
+msgstr "Tracciato record"
+
+#. module: csv_import_product
+#: help:product.product.importation.trace.column,need_exchange:0
+msgid "Requested in import wizard  (* exchange = company curr.)"
+msgstr "Richiesto nel wizard di importazione (* cambio = valuta aziendale)"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,revenue_id:0
+msgid "Revenue"
+msgstr "Ricavo"
+
+#. module: csv_import_product
+#: selection:product.product.importation.trace.column,type:0
+msgid "String"
+msgstr "Stringa"
+
+#. module: csv_import_product
+#: field:log.importation,partner_id:0
+#: field:product.product.csv.import.wizard,partner_id:0
+msgid "Supplier"
+msgstr "Fornitore"
+
+#. module: csv_import_product
+#: field:product.product.csv.import.wizard,to_line:0
+msgid "To line <="
+msgstr "Alla riga <="
+
+#. module: csv_import_product
+#: field:log.importation,trace_id:0
+#: field:product.product.csv.import.wizard,trace_id:0
+#: field:product.product.importation.trace.column,trace_id:0
+msgid "Trace"
+msgstr "Tracciato"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace.column,type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: csv_import_product
+#: selection:product.product.importation.trace,format:0
+msgid "XLS (old file)"
+msgstr "XLS (vecchio formato)"
+
+#. module: csv_import_product
+#: field:product.product.importation.trace,format:0
+msgid "format"
+msgstr "formato"

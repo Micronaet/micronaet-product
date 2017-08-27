@@ -1,0 +1,194 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_multi_package
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:31+0000\n"
+"PO-Revision-Date: 2017-08-16 15:58+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,code:0
+msgid "Code"
+msgstr "Codice"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,name:0
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: product_multi_package
+#: view:product.template:product_multi_package.product_template_form_pack_part_view
+msgid "Dimension in pack extra description"
+msgstr "Dimensione nella scatola descrizione extra"
+
+#. module: product_multi_package
+#: field:product.template,has_multipackage:0
+msgid "Has multipackage"
+msgstr "Ha multipacco"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,height:0
+msgid "Height"
+msgstr "Altezza"
+
+#. module: product_multi_package
+#: help:product.multi.packaging,height:0
+msgid "Height of the pack"
+msgstr "Altezza per la scatola"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: product_multi_package
+#: help:product.template,has_multipackage:0
+msgid "If product has multipackage not use pack variant mode"
+msgstr ""
+"Se il prodotto ha la multiscatola non utilizza la modalità variante di "
+"imballo"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,write_uid:0
+msgid "Last Updated by"
+msgstr "Aggiornato da"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,write_date:0
+msgid "Last Updated on"
+msgstr "Aggiornato il"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,length:0
+msgid "Length"
+msgstr "Lunghezza"
+
+#. module: product_multi_package
+#: help:product.multi.packaging,length:0
+msgid "Length of the pack"
+msgstr "Lunghezza della scatola"
+
+#. module: product_multi_package
+#: view:product.template:product_multi_package.product_template_form_pack_part_view
+msgid "Load fro pack"
+msgstr "Carica dalla scatola"
+
+#. module: product_multi_package
+#: model:ir.model,name:product_multi_package.model_product_multi_packaging
+msgid "Multi packaging"
+msgstr "Multi imballo"
+
+#. module: product_multi_package
+#: view:product.template:product_multi_package.product_template_form_pack_part_view
+#: field:product.template,multi_pack_ids:0
+msgid "Multipack"
+msgstr "Multi scatola"
+
+#. module: product_multi_package
+#: field:product.template,multipack_dimension:0
+msgid "Multipack dimension"
+msgstr "Dimensione multiscatola"
+
+#. module: product_multi_package
+#: help:product.template,multi_pack_ids:0
+msgid "Multipack for package one item"
+msgstr "Multiscatola per imballo articolo singolo"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,ul_id:0
+msgid "Package"
+msgstr "Scatola"
+
+#. module: product_multi_package
+#: view:product.template:product_multi_package.product_template_form_pack_part_view
+msgid "Packaging"
+msgstr "Confezionamento"
+
+#. module: product_multi_package
+#: model:ir.model,name:product_multi_package.model_product_product
+#: field:product.multi.packaging,product_id:0
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: product_multi_package
+#: model:ir.model,name:product_multi_package.model_product_template
+msgid "Product Template"
+msgstr "Modello Prodotto"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,sequence:0
+msgid "Seq."
+msgstr "Seq."
+
+#. module: product_multi_package
+#: help:product.multi.packaging,sequence:0
+msgid "Sequence order when displaying a list of packaging."
+msgstr "Ordinamento quando mostrato nella lista imballaggi."
+
+#. module: product_multi_package
+#: help:product.multi.packaging,code:0
+msgid "The code of the transport unit."
+msgstr "Il codice dell'unità di trasporto"
+
+#. module: product_multi_package
+#: help:product.multi.packaging,number:0
+msgid "The total number of this package."
+msgstr "Totale numero di questi imballi"
+
+#. module: product_multi_package
+#: help:product.multi.packaging,weight:0
+msgid "The weight of a full package, pallet or box."
+msgstr "Il peso di una scatola completa, pallet o scatola."
+
+#. module: product_multi_package
+#: field:product.multi.packaging,number:0
+msgid "Tot."
+msgstr "Tot."
+
+#. module: product_multi_package
+#: field:product.multi.packaging,weight:0
+msgid "Weight"
+msgstr "Peso"
+
+#. module: product_multi_package
+#: field:product.multi.packaging,width:0
+msgid "Width"
+msgstr "Larghezza"
+
+#. module: product_multi_package
+#: help:product.multi.packaging,width:0
+msgid "Width of the pack"
+msgstr "Larghezza della scatola"
+
+#. module: product_multi_package
+#: view:product.template:product_multi_package.product_template_form_pack_part_view
+msgid "total"
+msgstr "totale"
+
+#. module: product_multi_package
+#: view:product.template:product_multi_package.product_template_form_pack_part_view
+msgid ""
+"{'invisible':['|',('has_multipackage','=',True),('type','=','service')]}"
+msgstr ""
+"{'invisible':['|',('has_multipackage','=',True),('type','=','service')]}"

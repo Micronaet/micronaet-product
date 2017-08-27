@@ -1,0 +1,113 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* base_log
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:23+0000\n"
+"PO-Revision-Date: 2017-07-27 18:41+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: base_log
+#: model:ir.ui.menu,name:base_log.menu_product_import_root
+msgid "CSV Import"
+msgstr "Importa CSV"
+
+#. module: base_log
+#: field:log.importation,create_uid:0 field:log.importation.mode,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: base_log
+#: field:log.importation,create_date:0
+#: field:log.importation.mode,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: base_log
+#: view:log.importation:base_log.log_importation_form_view
+#: field:log.importation,error:0
+msgid "Error"
+msgstr "Errore"
+
+#. module: base_log
+#: view:log.importation:base_log.log_importation_form_view
+msgid "Error log:"
+msgstr "Log errore:"
+
+#. module: base_log
+#: field:log.importation,id:0 field:log.importation.mode,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: base_log
+#: field:log.importation,datetime:0
+msgid "Import date"
+msgstr "Data importazione"
+
+#. module: base_log
+#: view:log.importation:base_log.log_importation_form_view
+msgid "Import note:"
+msgstr "Nota importazione:"
+
+#. module: base_log
+#: model:ir.model,name:base_log.model_log_importation
+msgid "Importation log"
+msgstr "Log importazione"
+
+#. module: base_log
+#: model:ir.model,name:base_log.model_log_importation_mode
+msgid "Importation mode"
+msgstr "Modalita' importazione"
+
+#. module: base_log
+#: field:log.importation,write_uid:0 field:log.importation.mode,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: base_log
+#: field:log.importation,write_date:0 field:log.importation.mode,write_date:0
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: base_log
+#: model:ir.ui.menu,name:base_log.menu_product_import_log
+msgid "Log Import"
+msgstr "Log importazioni"
+
+#. module: base_log
+#: field:log.importation,name:0
+msgid "Log description"
+msgstr "Log descrizione"
+
+#. module: base_log
+#: view:log.importation:base_log.log_importation_form_view
+#: field:log.importation,note:0 field:log.importation.mode,note:0
+msgid "Note"
+msgstr "Note"
+
+#. module: base_log
+#: model:ir.actions.act_window,name:base_log.action_log_importation_form_view
+#: view:log.importation:base_log.log_importation_form_view
+#: view:log.importation:base_log.log_importation_tree_view
+msgid "Product import log"
+msgstr "Log importazione prodotti"
+
+#. module: base_log
+#: field:log.importation.mode,name:0
+msgid "Type of log"
+msgstr "Tipo di log"
+
+#. module: base_log
+#: field:log.importation,user_id:0
+msgid "User"
+msgstr "Utente"

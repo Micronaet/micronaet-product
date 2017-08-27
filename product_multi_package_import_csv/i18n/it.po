@@ -1,0 +1,23 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_multi_package_import_csv
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:31+0000\n"
+"PO-Revision-Date: 2017-08-08 23:58+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: product_multi_package_import_csv
+#: model:ir.model,name:product_multi_package_import_csv.model_product_product_importation_trace_column
+msgid "Columns to import"
+msgstr "Colonne da importare"

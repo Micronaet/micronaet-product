@@ -1,0 +1,110 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* duty_category_force
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:25+0000\n"
+"PO-Revision-Date: 2017-08-05 22:06+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: duty_category_force
+#: code:addons/duty_category_force/wizard/set_duty.py:90
+#, python-format
+msgid "Calc set product esit:"
+msgstr "Calcolare esito set prodotto:"
+
+#. module: duty_category_force
+#: view:product.method.force.duty.wizard:duty_category_force.product_method_force_duty_wizard_view
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,code_from:0
+msgid "Code from char"
+msgstr "Codice dal carattere"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,code_partial:0
+msgid "Code partial"
+msgstr "Codice parziale"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,code_start:0
+msgid "Code start"
+msgstr "Codice inizia"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: duty_category_force
+#: view:product.method.force.duty.wizard:duty_category_force.product_method_force_duty_wizard_view
+msgid "Execute"
+msgstr "Esegui"
+
+#. module: duty_category_force
+#: view:product.method.force.duty.wizard:duty_category_force.product_method_force_duty_wizard_view
+msgid "Filter"
+msgstr "Filtro"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,duty_id:0
+msgid "Force Duty category"
+msgstr "Forza categoria doganale"
+
+#. module: duty_category_force
+#: model:ir.actions.act_window,name:duty_category_force.action_product_method_force_duty_wizard
+#: model:ir.ui.menu,name:duty_category_force.menu_product_method_force_duty_wizard
+msgid "Force duty category"
+msgstr "Forza categoria doganale"
+
+#. module: duty_category_force
+#: model:ir.model,name:duty_category_force.model_product_method_force_duty_wizard
+msgid "Force duty or assign method to product"
+msgstr "Forza dogana o assegna metodo al prodotto"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,write_uid:0
+msgid "Last Updated by"
+msgstr "Aggiornato da"
+
+#. module: duty_category_force
+#: field:product.method.force.duty.wizard,write_date:0
+msgid "Last Updated on"
+msgstr "Aggiornato il"
+
+#. module: duty_category_force
+#: view:product.product:duty_category_force.view_product_product_duty_tree
+msgid "Product duty category"
+msgstr "Categoria doganale prodotto"
+
+#. module: duty_category_force
+#: view:product.method.force.duty.wizard:duty_category_force.product_method_force_duty_wizard_view
+msgid "Show selection"
+msgstr "Mostra selezione"
+
+#. module: duty_category_force
+#: view:product.method.force.duty.wizard:duty_category_force.product_method_force_duty_wizard_view
+msgid "Wizard"
+msgstr "Wizard"

@@ -1,0 +1,56 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_package_volume
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:31+0000\n"
+"PO-Revision-Date: 2017-08-08 23:56+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: product_package_volume
+#: field:product.packaging,pack_h:0
+msgid "H. Imb."
+msgstr "H. Imb."
+
+#. module: product_package_volume
+#: field:product.packaging,pack_l:0
+msgid "L. Imb."
+msgstr "L. Imb."
+
+#. module: product_package_volume
+#: view:product.packaging:product_package_volume.product_packaging_form_volume_no_product_view
+#: view:product.packaging:product_package_volume.product_packaging_form_volume_view
+msgid "Load fro pack"
+msgstr "Caricato da scatola"
+
+#. module: product_package_volume
+#: field:product.packaging,pack_p:0
+msgid "P. Imb."
+msgstr "P. Imb."
+
+#. module: product_package_volume
+#: model:ir.model,name:product_package_volume.model_product_packaging
+msgid "Packaging"
+msgstr "Confezionamento"
+
+#. module: product_package_volume
+#: view:product.packaging:product_package_volume.product_packaging_form_volume_no_product_view
+#: view:product.packaging:product_package_volume.product_packaging_form_volume_view
+msgid "Volume"
+msgstr "Volume"
+
+#. module: product_package_volume
+#: view:product.packaging:product_package_volume.product_packaging_form_volume_no_product_view
+#: view:product.packaging:product_package_volume.product_packaging_form_volume_view
+msgid "onchange_ul_dimension(ul)"
+msgstr "onchange_ul_dimension(ul)"

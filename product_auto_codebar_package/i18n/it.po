@@ -1,0 +1,41 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_auto_codebar_package
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:31+0000\n"
+"PO-Revision-Date: 2017-08-07 13:53+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: product_auto_codebar_package
+#: code:addons/product_auto_codebar_package/pack.py:92
+#, python-format
+msgid "EAN yet present, delete and press button again"
+msgstr "EAN già presente, cancella e premi il bottone ancora"
+
+#. module: product_auto_codebar_package
+#: code:addons/product_auto_codebar_package/pack.py:91
+#, python-format
+msgid "Error"
+msgstr "Errore"
+
+#. module: product_auto_codebar_package
+#: view:product.packaging:product_auto_codebar_package.product_packaging_form_ean13_view
+#: view:product.packaging:product_auto_codebar_package.product_packaging_form_ean13_without_product_view
+msgid "Generate EAN"
+msgstr "Genera EAN"
+
+#. module: product_auto_codebar_package
+#: model:ir.model,name:product_auto_codebar_package.model_product_packaging
+msgid "Packaging"
+msgstr "Confezionamento"

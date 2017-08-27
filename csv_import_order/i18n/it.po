@@ -1,0 +1,126 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* csv_import_order
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:24+0000\n"
+"PO-Revision-Date: 2017-08-04 16:15+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:151
+#: code:addons/csv_import_order/order.py:325
+#, python-format
+msgid "%s. Error code not found, code: <b>%s</b></br>"
+msgstr "%s. Errore codice non trovato, valore: <b>%s</b></br>"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:156
+#: code:addons/csv_import_order/order.py:330
+#, python-format
+msgid ""
+"%s. Error more code (take first), \n"
+"                            code: <b>%s</b></br>"
+msgstr ""
+"%s. Trovati codici multipli (preso il primo), \n"
+"                            codice: <b>%s</b></br>"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:193
+#: code:addons/csv_import_order/order.py:393
+#, python-format
+msgid "%s. Import error code: <b>%s</b> [%s]</br>"
+msgstr "%s. Errore importazione codice: <b>%s</b> [%s]</br>"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:91
+#: code:addons/csv_import_order/order.py:266
+#, python-format
+msgid "Cannot found file: %s"
+msgstr "File non trovato: %s"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:127
+#: code:addons/csv_import_order/order.py:301
+#, python-format
+msgid "Error no code present in line: <b>%s</b></br>"
+msgstr "Errore non trovato il codice nella riga: <b>%s</b></br>"
+
+#. module: csv_import_order
+#: field:sale.order,filename:0
+msgid "Filename"
+msgstr "Nome file"
+
+#. module: csv_import_order
+#: view:purchase.order:csv_import_order.view_purchase_order_import_form
+#: view:sale.order:csv_import_order.view_sale_order_import_form
+msgid "Import"
+msgstr "Importa"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:115
+#: code:addons/csv_import_order/order.py:289
+#, python-format
+msgid "Import end at line: %s\n"
+msgstr "Importazione terminata alla riga: %s\n"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:68
+#: code:addons/csv_import_order/order.py:243
+#, python-format
+msgid "Import error"
+msgstr "Errore importazione"
+
+#. module: csv_import_order
+#: model:ir.model,name:csv_import_order.model_log_importation
+msgid "Importation log"
+msgstr "Log importazione"
+
+#. module: csv_import_order
+#: field:sale.order,csv_import_id:0
+msgid "Log import"
+msgstr "Log importazione"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:69
+#: code:addons/csv_import_order/order.py:244
+#, python-format
+msgid "Need a file name to import in path %s"
+msgstr "Richiesto un nome file da importare nella cartella: %s"
+
+#. module: csv_import_order
+#: code:addons/csv_import_order/order.py:90
+#: code:addons/csv_import_order/order.py:265
+#, python-format
+msgid "Open file error"
+msgstr "Errore aprendo file"
+
+#. module: csv_import_order
+#: model:ir.model,name:csv_import_order.model_purchase_order
+msgid "Purchase Order"
+msgstr "Ordine Acquisto"
+
+#. module: csv_import_order
+#: field:log.importation,purchase_order_id:0
+msgid "Purchase order"
+msgstr "Ordine acquisto"
+
+#. module: csv_import_order
+#: field:log.importation,sale_order_id:0
+msgid "Sale order"
+msgstr "Ordine di vendita"
+
+#. module: csv_import_order
+#: model:ir.model,name:csv_import_order.model_sale_order
+msgid "Sales Order"
+msgstr "Ordine di vendita"

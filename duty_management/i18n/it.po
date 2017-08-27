@@ -1,0 +1,97 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* duty_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:25+0000\n"
+"PO-Revision-Date: 2017-08-05 22:08+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: duty_management
+#: view:product.custom.duty:duty_management.product_custom_duty_form
+msgid "Country tax:"
+msgstr "Tassa paese:"
+
+#. module: duty_management
+#: view:product.product:duty_management.view_product_duty_search
+msgid "Duty"
+msgstr "Dogana"
+
+#. module: duty_management
+#: field:product.product,duty_code:0
+msgid "Duty code"
+msgstr "Codice doganale"
+
+#. module: duty_management
+#: view:product.product:duty_management.view_product_duty_search
+msgid "Group By..."
+msgstr "Raggruppa per..."
+
+#. module: duty_management
+#: model:ir.actions.act_window,help:duty_management.product_custom_duty_action
+msgid "List of product custom duty"
+msgstr "Lista prodotti doganali personalizzati"
+
+#. module: duty_management
+#: view:product.product:duty_management.view_product_duty_search
+msgid "No duty"
+msgstr "No dogana"
+
+#. module: duty_management
+#: model:ir.model,name:duty_management.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: duty_management
+#: view:product.custom.duty:duty_management.product_custom_duty_tree
+msgid "Product Custom duty"
+msgstr "Personalizza dogana prodotto"
+
+#. module: duty_management
+#: model:ir.actions.act_window,name:duty_management.product_custom_duty_action
+#: model:ir.model,name:duty_management.model_product_custom_duty
+#: model:ir.ui.menu,name:duty_management.product_custom_duty_action_menu
+#: view:product.custom.duty:duty_management.product_custom_duty_form
+msgid "Product custom duty"
+msgstr "Personalizza dogana prodotto"
+
+#. module: duty_management
+#: model:ir.model,name:duty_management.model_product_custom_duty_tax
+msgid "Product custom duty tax"
+msgstr "Tassa doganale personalizzata prodotto"
+
+#. module: duty_management
+#: model:ir.actions.act_window,name:duty_management.action_product_duty_list
+#: model:ir.ui.menu,name:duty_management.menu_product_duty_list
+msgid "Product duty list"
+msgstr "Lista dogana prodotto"
+
+#. module: duty_management
+#: view:product.custom.duty:duty_management.product_custom_duty_form
+msgid "Start code"
+msgstr "Codice inizia"
+
+#. module: duty_management
+#: view:product.product:duty_management.view_product_duty_search
+msgid "String"
+msgstr "Stringa"
+
+#. module: duty_management
+#: view:product.custom.duty:duty_management.product_custom_duty_form
+msgid "Tax"
+msgstr "Tassa"
+
+#. module: duty_management
+#: view:product.product:duty_management.view_product_duty_search
+msgid "With duty"
+msgstr "Con dogana"

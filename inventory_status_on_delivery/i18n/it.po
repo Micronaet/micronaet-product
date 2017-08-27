@@ -1,0 +1,38 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* inventory_status_on_delivery
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:25+0000\n"
+"PO-Revision-Date: 2017-08-05 23:34+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: inventory_status_on_delivery
+#: field:sale.order.line,mx_oc_out:0
+msgid "OC out"
+msgstr "OC uscita"
+
+#. module: inventory_status_on_delivery
+#: field:sale.order.line,mx_of_date:0
+msgid "OF date"
+msgstr "OF data"
+
+#. module: inventory_status_on_delivery
+#: field:sale.order.line,mx_of_in:0
+msgid "OF in"
+msgstr "OF ingresso"
+
+#. module: inventory_status_on_delivery
+#: model:ir.model,name:inventory_status_on_delivery.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Linea d'ordine di vendita"

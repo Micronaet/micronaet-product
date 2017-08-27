@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-19 08:11+0000\n"
-"PO-Revision-Date: 2016-09-19 10:24+0100\n"
+"POT-Creation-Date: 2017-07-27 16:31+0000\n"
+"PO-Revision-Date: 2017-08-07 14:06+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,65 @@ msgstr ""
 "X-Generator: Poedit 1.6.10\n"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:259
+#: code:addons/product_cost_rule/rule.py:396
+#, python-format
+msgid ""
+"\n"
+"                                    <p><font color=\"orange\">\n"
+"                                        No currency in supplier use 1\n"
+"                                    </font></p>"
+msgstr ""
+"\n"
+"                                    <p><font color=\"orange\">\n"
+"                                        Nessuna valuta nel fornitore, usare "
+"1\n"
+"                                    </font></p>"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:494
+#, python-format
+msgid ""
+"\n"
+"                                <p><font color=\"red\">\n"
+"                                    No transport total volume present!!!\n"
+"                                </font></p>"
+msgstr ""
+"\n"
+"                                <p><font color=\"red\">\n"
+"                                    Non presente il volume totale "
+"trasporto!\n"
+"                                </font></p>"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:487
+#, python-format
+msgid ""
+"\n"
+"                                <p><font color=\"red\">\n"
+"                                    Volume x piece not present!!!\n"
+"                                </font></p>"
+msgstr ""
+"\n"
+"                                <p><font color=\"red\">\n"
+"                                    Volume x pezzo non presente!\n"
+"                                </font></p>"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:580
+#, python-format
+msgid ""
+"\n"
+"                            <p><font color=\"red\">\n"
+"                                Approx need to be setup (es. 0,01)!\n"
+"                            </font></p>"
+msgstr ""
+"\n"
+"                            <p><font color=\"red\">\n"
+"                                Impostazione approssimazione (es. 0,01)!\n"
+"                            </font></p>"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:262
 #, python-format
 msgid ""
 "\n"
@@ -32,36 +90,23 @@ msgstr ""
 "                            </font></p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:371
+#: code:addons/product_cost_rule/rule.py:404
 #, python-format
 msgid ""
 "\n"
 "                            <p><font color=\"red\">\n"
-"                                Exchange value not found!!!\n"
+"                                Exchange value not found (currency and "
+"method)!                                \n"
 "                            </font></p>"
 msgstr ""
 "\n"
 "                            <p><font color=\"red\">\n"
-"                                Valore del cambio non trovato!!!\n"
+"                                Valore per il cambio non trvato (valuta e "
+"metodo)!\n"
 "                            </font></p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:400
-#, python-format
-msgid ""
-"\n"
-"                            <p><font color=\"red\">\n"
-"                                No %s transport set up cost method!\n"
-"                            </font></p>"
-msgstr ""
-"\n"
-"                            <p><font color=\"red\">\n"
-"                                Nessun trasporto trovato per impostare il "
-"costo nel blocco %s!\n"
-"                            </font></p>"
-
-#. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:450
+#: code:addons/product_cost_rule/rule.py:540
 #, python-format
 msgid ""
 "\n"
@@ -75,35 +120,56 @@ msgstr ""
 "                            </font></p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:416
+#: code:addons/product_cost_rule/rule.py:440
 #, python-format
 msgid ""
 "\n"
 "                            <p><font color=\"red\">\n"
-"                                Volume x piece not present!!!\n"
+"                                Setup transport in cost method %s or \n"
+"                                partner!\n"
 "                            </font></p>"
 msgstr ""
 "\n"
 "                            <p><font color=\"red\">\n"
-"                                Volume per pezzo non presente!!!\n"
+"                                Imposta trasporto nel metodo di costo %s o \n"
+"                                partner!\n"
 "                            </font></p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:333
+#: code:addons/product_cost_rule/rule.py:347
 #, python-format
 msgid ""
 "\n"
 "                        <p><font color=\"orange\">\n"
-"                            Duty rate is 0!</font>\n"
+"                            Duty value is zero!</font>\n"
 "                        </p>"
 msgstr ""
 "\n"
 "                        <p><font color=\"orange\">\n"
-"                            Il tasso per il dazio è zero!</font>\n"
+"                            Valore dogana è zero!</font>\n"
 "                        </p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:309
+#: code:addons/product_cost_rule/rule.py:504
+#, python-format
+msgid ""
+"\n"
+"                        <p><font color=\"orange\">\n"
+"                            Transport is optimistic because based on volume\n"
+"                            not on pcs x tranport in product form!\n"
+"                            </font>\n"
+"                        </p>"
+msgstr ""
+"\n"
+"                        <p><font color=\"orange\">\n"
+"                            Il trasporto è ottimistico basato sul volume e "
+"non \n"
+"                            sui pezzi per trasporto nella scheda prodotto!\n"
+"                            </font>\n"
+"                        </p>"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:312
 #, python-format
 msgid ""
 "\n"
@@ -118,22 +184,26 @@ msgstr ""
 "                        </p><p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:318
+#: code:addons/product_cost_rule/rule.py:321
 #, python-format
 msgid ""
 "\n"
 "                        <p><font color=\"red\">\n"
-"                            Duty category not setted on product!</font>\n"
+"                            Duty category not setted on product\n"
+"                            And product is not a duty set!\n"
+"                            </font>\n"
 "                        </p>"
 msgstr ""
 "\n"
 "                        <p><font color=\"red\">\n"
-"                            Categoria doganale non impostata per l'attuale "
-"prodotto!</font>\n"
+"                            La categoria doganale non è impostata nel "
+"prodotto\n"
+"                            e il prodotto non è nel set dogana!\n"
+"                            </font>\n"
 "                        </p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:302
+#: code:addons/product_cost_rule/rule.py:305
 #, python-format
 msgid ""
 "\n"
@@ -147,7 +217,7 @@ msgstr ""
 "                        </p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:219
+#: code:addons/product_cost_rule/rule.py:221
 #, python-format
 msgid ""
 "\n"
@@ -172,7 +242,7 @@ msgstr ""
 "                        </font></p>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:490
+#: code:addons/product_cost_rule/rule.py:606
 #, python-format
 msgid ""
 "\n"
@@ -196,7 +266,26 @@ msgstr ""
 "                    </table>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:350
+#: code:addons/product_cost_rule/rule.py:385
+#, python-format
+msgid "(Met.)"
+msgstr "(Met.)"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:434
+#, python-format
+msgid "(Metod)"
+msgstr "(Metod)"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:390
+#: code:addons/product_cost_rule/rule.py:437
+#, python-format
+msgid "(Suppl.)"
+msgstr "(Forn.)"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:362
 #, python-format
 msgid ""
 "+ Duty %s%s<br/>\n"
@@ -208,22 +297,75 @@ msgstr ""
 "                            "
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:472
+#: code:addons/product_cost_rule/rule.py:562
 #, python-format
 msgid "+ Rechange %s%s"
 msgstr "+ Ricarico %s%s"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:433
+#: code:addons/product_cost_rule/rule.py:519
 #, python-format
-msgid "+ Transport (volume)"
-msgstr "+ Transporto (volume)"
+msgid ""
+"+ Transport (calc.)<br/><i><font color=\"orange\">[pcs/tr. %s > %s]</font></"
+"i>"
+msgstr ""
+"+ Transporto (calc.)<br/><i><font color=\"orange\">[pz./tr. %s > %s]</font></"
+"i>"
 
 #. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:281
+#: code:addons/product_cost_rule/rule.py:471
+#, python-format
+msgid "+ Transport (sett.)"
+msgstr "+ Transporto (sett.)"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:284
 #, python-format
 msgid "- Discount %s%s"
 msgstr "- Sconto %s%s"
+
+#. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+msgid "--------------------------------------"
+msgstr "--------------------------------------"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:420
+#, python-format
+msgid ": Exchange %s"
+msgstr ": Cambio %s"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:597
+#, python-format
+msgid "= Round %s"
+msgstr "= Arrot. %s"
+
+#. module: product_cost_rule
+#: selection:product.cost.rule,operation:0
+msgid "Approx"
+msgstr "Approssimazione"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/wizard/set_calc_rule.py:105
+#, python-format
+msgid "Calc set product esit:"
+msgstr "Calcola esito set prodotto:"
+
+#. module: product_cost_rule
+#: field:product.product.transport,calc_note:0
+msgid "Calc. note"
+msgstr "Note calc."
+
+#. module: product_cost_rule
+#: view:product.method.force.calc.wizard:product_cost_rule.product_method_force_calc_wizard_view
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: product_cost_rule
+#: selection:product.method.force.calc.wizard,status:0
+msgid "Catalog"
+msgstr "Catalogo"
 
 #. module: product_cost_rule
 #: view:product.cost.method:product_cost_rule.view_product_cost_method_search
@@ -232,24 +374,41 @@ msgid "Category"
 msgstr "Categoria"
 
 #. module: product_cost_rule
-#: field:product.template,company_method_id:0
+#: field:product.method.force.calc.wizard,code_from:0
+msgid "Code from char"
+msgstr "Codice dal carattere"
+
+#. module: product_cost_rule
+#: field:product.method.force.calc.wizard,code_partial:0
+msgid "Code partial"
+msgstr "Codice parziale"
+
+#. module: product_cost_rule
+#: field:product.method.force.calc.wizard,code_start:0
+msgid "Code start"
+msgstr "Partenza codice"
+
+#. module: product_cost_rule
+#: field:product.method.force.calc.wizard,company_method_id:0
+#: field:product.product,company_method_id:0
 msgid "Company Method"
-msgstr "Metodo Azienda"
+msgstr "Metodo azienda"
 
 #. module: product_cost_rule
-#: field:product.template,company_calc:0
+#: field:product.method.force.calc.wizard,company_calc:0
+#: field:product.product,company_calc:0
 msgid "Company calc"
-msgstr "Calcolo Azienda"
+msgstr "Calcolo azienda"
 
 #. module: product_cost_rule
-#: field:product.template,company_calc_error:0
+#: field:product.product,company_calc_error:0
 msgid "Company calc error"
-msgstr "Errore calcolo Azienda"
+msgstr "Errore calc. azienda"
 
 #. module: product_cost_rule
-#: field:product.template,company_calc_warning:0
+#: field:product.product,company_calc_warning:0
 msgid "Company calc warning"
-msgstr "Warning calcolo Azienda"
+msgstr "Attenzione calc. azienda"
 
 #. module: product_cost_rule
 #: code:addons/product_cost_rule/rule.py:198
@@ -263,19 +422,46 @@ msgid "Company method"
 msgstr "Metodo Azienda"
 
 #. module: product_cost_rule
+#: field:product.method.force.calc.wizard,company_set:0
+msgid "Company set method"
+msgstr "Imposta metodo azienda"
+
+#. module: product_cost_rule
+#: field:product.product,company_cost:0
+msgid "Cost FCO/Company"
+msgstr "Costo FCO/Azienda"
+
+#. module: product_cost_rule
+#: field:product.product,customer_cost:0
+msgid "Cost FCO/Customer"
+msgstr "Costo FCO/Cliente"
+
+#. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+msgid "Cost FOB"
+msgstr "Costo FOB"
+
+#. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+msgid "Cost FOB (supplier) >>>"
+msgstr "Costo FOB (fornitore) >>>"
+
+#. module: product_cost_rule
 #: model:ir.ui.menu,name:product_cost_rule.menu_product_cost_root
 msgid "Cost calc method"
 msgstr "Metodo di calcolo costo"
 
 #. module: product_cost_rule
-#: field:res.partner,cost_currency_id:0
-msgid "Cost currency"
-msgstr "Valuta del costo"
-
-#. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_form
 msgid "Cost generation"
 msgstr "Generazione del costo"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:671
+#: code:addons/product_cost_rule/rule.py:692
+#, python-format
+msgid "Cost manage"
+msgstr "Gestione costi"
 
 #. module: product_cost_rule
 #: model:ir.actions.act_window,name:product_cost_rule.action_product_cost_method
@@ -297,7 +483,7 @@ msgstr "Modalità costo"
 #: model:ir.actions.act_window,name:product_cost_rule.action_product_product_cost_tree
 #: model:ir.ui.menu,name:product_cost_rule.menu_product_product_cost
 msgid "Cost product"
-msgstr "Cost product"
+msgstr "Costo prodotto"
 
 #. module: product_cost_rule
 #: model:ir.model,name:product_cost_rule.model_product_cost_rule
@@ -313,6 +499,8 @@ msgstr "Costo di trasporto"
 #. module: product_cost_rule
 #: field:product.cost.method,create_uid:0 field:product.cost.rule,create_uid:0
 #: field:product.cost.transport,create_uid:0
+#: field:product.method.force.calc.wizard,create_uid:0
+#: field:product.product.transport,create_uid:0
 msgid "Created by"
 msgstr "Creato da"
 
@@ -320,40 +508,53 @@ msgstr "Creato da"
 #: field:product.cost.method,create_date:0
 #: field:product.cost.rule,create_date:0
 #: field:product.cost.transport,create_date:0
+#: field:product.method.force.calc.wizard,create_date:0
+#: field:product.product.transport,create_date:0
 msgid "Created on"
 msgstr "Creati il"
 
 #. module: product_cost_rule
-#: field:product.template,customer_method_id:0
+#: model:ir.model,name:product_cost_rule.model_res_currency
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: product_cost_rule
+#: field:res.partner,cost_currency_id:0
+msgid "Currency for cost"
+msgstr "Valuta per costo"
+
+#. module: product_cost_rule
+#: field:product.method.force.calc.wizard,customer_method_id:0
+#: field:product.product,customer_method_id:0
 msgid "Customer Method"
-msgstr "Metodo Cliente"
+msgstr "Metodo cliente"
 
 #. module: product_cost_rule
-#: field:product.template,customer_calc:0
+#: field:product.method.force.calc.wizard,customer_calc:0
+#: field:product.product,customer_calc:0
 msgid "Customer calc"
-msgstr "Calcolo Cliente"
+msgstr "Calcolo cliente"
 
 #. module: product_cost_rule
-#: field:product.template,customer_calc_error:0
+#: field:product.product,customer_calc_error:0
 msgid "Customer calc error"
-msgstr "Errore calcolo Cliente"
+msgstr "Errore calc. cliente"
 
 #. module: product_cost_rule
-#: field:product.template,customer_calc_warning:0
+#: field:product.product,customer_calc_warning:0
 msgid "Customer calc warning"
-msgstr "Warning calcolo Cliente"
+msgstr "Attenzione calc. cliente"
 
 #. module: product_cost_rule
 #: code:addons/product_cost_rule/rule.py:202
-#: field:product.template,customer_cost:0
 #, python-format
 msgid "Customer cost"
 msgstr "Costo Cliente"
 
 #. module: product_cost_rule
-#: help:product.template,customer_cost:0
+#: help:product.product,customer_cost:0
 msgid "Customer cost (base for calculate goods f/customer)"
-msgstr "Costo Cliente (base per calcolare merci f/cliente)"
+msgstr "Costo cliente (base per calcolare beni f/cliente)"
 
 #. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_search
@@ -361,9 +562,30 @@ msgid "Customer method"
 msgstr "Metodo Cliente"
 
 #. module: product_cost_rule
+#: field:product.method.force.calc.wizard,customer_set:0
+msgid "Customer set method"
+msgstr "Imposta metodo cliente"
+
+#. module: product_cost_rule
+#: field:product.cost.method,round:0
+msgid "Decimal subtotal"
+msgstr "Decimali subtotale"
+
+#. module: product_cost_rule
+#: field:res.partner,transport_id:0
+msgid "Default transport"
+msgstr "Trasporto predefinito"
+
+#. module: product_cost_rule
 #: field:product.cost.rule,name:0
 msgid "Description"
 msgstr "Descrizione"
+
+#. module: product_cost_rule
+#: code:addons/product_cost_rule/rule.py:367
+#, python-format
+msgid "Different duty categ."
+msgstr "Categ. doganale differente"
 
 #. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_form
@@ -381,6 +603,7 @@ msgid "Duty % (+)"
 msgstr "Dazio % (+)"
 
 #. module: product_cost_rule
+#: field:product.method.force.calc.wizard,duty_id:0
 #: view:product.product:product_cost_rule.view_product_product_cost_search
 msgid "Duty category"
 msgstr "Categoria doganale"
@@ -391,14 +614,24 @@ msgid "Duty data"
 msgstr "Dazio"
 
 #. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+msgid "Duty for set:"
+msgstr "Dazio per set:"
+
+#. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+msgid "Duty set"
+msgstr "Dazio set"
+
+#. module: product_cost_rule
 #: selection:product.cost.rule,operation:0
 msgid "Exchange (x)"
 msgstr "Cambio (x)"
 
 #. module: product_cost_rule
-#: view:product.product:product_cost_rule.view_product_product_cost_form
-msgid "F / Company"
-msgstr "F / Azienda"
+#: view:product.method.force.calc.wizard:product_cost_rule.product_method_force_calc_wizard_view
+msgid "Execute"
+msgstr "Esegui"
 
 #. module: product_cost_rule
 #: selection:product.cost.method,category:0
@@ -406,14 +639,29 @@ msgid "F / Company (base: supplier cost)"
 msgstr "F / Azienda (base: costo fornitore)"
 
 #. module: product_cost_rule
-#: view:product.product:product_cost_rule.view_product_product_cost_form
-msgid "F / Customer"
-msgstr "F / Cliente"
-
-#. module: product_cost_rule
 #: selection:product.cost.method,category:0
 msgid "F / Customer (base: company cost)"
 msgstr "F / Cliente (base: costo Azienda)"
+
+#. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+msgid "F / Our stock >>>"
+msgstr "F / Nostro magazzino >>>"
+
+#. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+msgid "FCO / Customer >>>"
+msgstr "FCO / Cliente >>>"
+
+#. module: product_cost_rule
+#: view:product.method.force.calc.wizard:product_cost_rule.product_method_force_calc_wizard_view
+msgid "Filter"
+msgstr "Filtro"
+
+#. module: product_cost_rule
+#: field:product.method.force.calc.wizard,first_supplier_id:0
+msgid "First supplier"
+msgstr "Primo fornitore"
 
 #. module: product_cost_rule
 #: selection:product.cost.rule,mode:0
@@ -421,9 +669,30 @@ msgid "Fixed"
 msgstr "Fisso"
 
 #. module: product_cost_rule
+#: view:product.method.force.calc.wizard:product_cost_rule.product_method_force_calc_wizard_view
+msgid "Force / Calc"
+msgstr "Forza / Calc."
+
+#. module: product_cost_rule
+#: model:ir.model,name:product_cost_rule.model_product_method_force_calc_wizard
+msgid "Force calc or assign method to product"
+msgstr "Forza calc. o metodo assegnamento al prodotto"
+
+#. module: product_cost_rule
 #: field:product.cost.method,force_exchange:0
 msgid "Force exchange"
 msgstr "Forza cambio"
+
+#. module: product_cost_rule
+#: model:ir.actions.act_window,name:product_cost_rule.action_product_method_force_calc_wizard
+#: model:ir.ui.menu,name:product_cost_rule.menu_product_method_force_calc_wizard
+msgid "Force or calc product cost"
+msgstr "Forza o calcola costo prodotto"
+
+#. module: product_cost_rule
+#: field:product.method.force.calc.wizard,status:0
+msgid "Gamma"
+msgstr "Gamma"
 
 #. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_form
@@ -452,25 +721,37 @@ msgstr "Raggruppa per..."
 #. module: product_cost_rule
 #: field:product.cost.method,id:0 field:product.cost.rule,id:0
 #: field:product.cost.transport,id:0
+#: field:product.method.force.calc.wizard,id:0
+#: field:product.product.transport,id:0
 msgid "ID"
 msgstr "ID"
 
 #. module: product_cost_rule
 #: field:product.cost.method,write_uid:0 field:product.cost.rule,write_uid:0
 #: field:product.cost.transport,write_uid:0
+#: field:product.method.force.calc.wizard,write_uid:0
+#: field:product.product.transport,write_uid:0
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento da"
 
 #. module: product_cost_rule
 #: field:product.cost.method,write_date:0 field:product.cost.rule,write_date:0
 #: field:product.cost.transport,write_date:0
+#: field:product.method.force.calc.wizard,write_date:0
+#: field:product.product.transport,write_date:0
 msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
 
 #. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_open_cost_form
+#: view:product.product:product_cost_rule.view_product_open_cost_tree
+msgid "Manage cost"
+msgstr "Gestione costi"
+
+#. module: product_cost_rule
 #: field:product.cost.rule,method_id:0
 msgid "Method"
-msgstr "Methodo"
+msgstr "Metodo"
 
 #. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_form
@@ -483,12 +764,22 @@ msgid "Name"
 msgstr "Nome"
 
 #. module: product_cost_rule
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+msgid "Normal product"
+msgstr "Prodotto normale"
+
+#. module: product_cost_rule
 #: view:product.cost.method:product_cost_rule.view_product_cost_method_form
 #: field:product.cost.method,note:0 field:product.cost.rule,note:0
 #: view:product.cost.transport:product_cost_rule.view_product_cost_transport_form
 #: field:product.cost.transport,note:0
 msgid "Note"
-msgstr "Note"
+msgstr "Nota"
+
+#. module: product_cost_rule
+#: selection:product.method.force.calc.wizard,status:0
+msgid "Obsolete"
+msgstr "Obsoleto"
 
 #. module: product_cost_rule
 #: field:product.cost.rule,operation:0
@@ -505,6 +796,11 @@ msgstr ""
 "operazione e al segno della stessa"
 
 #. module: product_cost_rule
+#: selection:product.method.force.calc.wizard,status:0
+msgid "Out catalog"
+msgstr "Nostro catalogo"
+
+#. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_form
 msgid "Packaging"
 msgstr "Imballaggio"
@@ -513,6 +809,11 @@ msgstr "Imballaggio"
 #: model:ir.model,name:product_cost_rule.model_res_partner
 msgid "Partner"
 msgstr "Partner"
+
+#. module: product_cost_rule
+#: field:product.product,cost_currency_id:0
+msgid "Partner cost currency"
+msgstr "Valuta costo partner"
 
 #. module: product_cost_rule
 #: selection:product.cost.rule,mode:0
@@ -530,24 +831,26 @@ msgid "Pricelist (base: customer cost)"
 msgstr "Listino (base: costo Cliente)"
 
 #. module: product_cost_rule
-#: field:product.template,pricelist_method_id:0
+#: field:product.method.force.calc.wizard,pricelist_method_id:0
+#: field:product.product,pricelist_method_id:0
 msgid "Pricelist Method"
-msgstr "Metodo Listino"
+msgstr "Metodo listino"
 
 #. module: product_cost_rule
-#: field:product.template,pricelist_calc:0
+#: field:product.method.force.calc.wizard,pricelist_calc:0
+#: field:product.product,pricelist_calc:0
 msgid "Pricelist calc"
-msgstr "Calcolo Listino"
+msgstr "Calc. listino"
 
 #. module: product_cost_rule
-#: field:product.template,pricelist_calc_error:0
+#: field:product.product,pricelist_calc_error:0
 msgid "Pricelist calc error"
-msgstr "Errore calcolo Listino"
+msgstr "Errore calcolo listino"
 
 #. module: product_cost_rule
-#: field:product.template,pricelist_calc_warning:0
+#: field:product.product,pricelist_calc_warning:0
 msgid "Pricelist calc warning"
-msgstr "Warning calcolo Listino"
+msgstr "Attenzione calcolo listino"
 
 #. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_search
@@ -555,14 +858,25 @@ msgid "Pricelist method"
 msgstr "Metodo Listino"
 
 #. module: product_cost_rule
+#: field:product.method.force.calc.wizard,pricelist_set:0
+msgid "Pricelist set method"
+msgstr "Imposta metodo listino"
+
+#. module: product_cost_rule
 #: model:ir.model,name:product_cost_rule.model_product_product
+#: field:product.product.transport,product_id:0
 msgid "Product"
 msgstr "Prodotto"
 
 #. module: product_cost_rule
 #: model:ir.model,name:product_cost_rule.model_product_template
 msgid "Product Template"
-msgstr "Prodotto"
+msgstr "Modello Prodotto"
+
+#. module: product_cost_rule
+#: model:ir.ui.menu,name:product_cost_rule.menu_product_custom_duty
+msgid "Product custom duty"
+msgstr "Dazio prodotto"
 
 #. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_form
@@ -570,14 +884,29 @@ msgid "Product pack"
 msgstr "Imballo prodotto"
 
 #. module: product_cost_rule
+#: model:ir.model,name:product_cost_rule.model_product_product_transport
+msgid "Product transport"
+msgstr "Trasporto prodotto"
+
+#. module: product_cost_rule
+#: selection:product.method.force.calc.wizard,mode:0
+msgid "Product transport force"
+msgstr "Forza trasporto prodotto"
+
+#. module: product_cost_rule
+#: field:product.product.transport,quantity:0
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: product_cost_rule
+#: field:res.currency,rate_silent_cost:0
+msgid "Rate for cost"
+msgstr "Tasso per costo"
+
+#. module: product_cost_rule
 #: selection:product.cost.rule,operation:0
 msgid "Recharge % (+)"
 msgstr "Ricarico % (+)"
-
-#. module: product_cost_rule
-#: field:product.cost.method,round:0
-msgid "Round"
-msgstr "Arrotondamento"
 
 #. module: product_cost_rule
 #: help:product.cost.method,round:0
@@ -591,9 +920,29 @@ msgid "Rule"
 msgstr "Regola"
 
 #. module: product_cost_rule
+#: selection:product.method.force.calc.wizard,status:0
+msgid "Sample"
+msgstr "Campione"
+
+#. module: product_cost_rule
 #: field:product.cost.rule,sequence:0
 msgid "Sequence"
 msgstr "#"
+
+#. module: product_cost_rule
+#: selection:product.method.force.calc.wizard,mode:0
+msgid "Set or calc product cost"
+msgstr "Imposta o calcola costo prodotto"
+
+#. module: product_cost_rule
+#: view:product.method.force.calc.wizard:product_cost_rule.product_method_force_calc_wizard_view
+msgid "Show selection"
+msgstr "Mostra selezione"
+
+#. module: product_cost_rule
+#: selection:product.method.force.calc.wizard,status:0
+msgid "Stock"
+msgstr "Magazzino"
 
 #. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_form
@@ -608,15 +957,29 @@ msgstr "Fornitore"
 
 #. module: product_cost_rule
 #: code:addons/product_cost_rule/rule.py:194
-#: field:product.template,supplier_cost:0
 #, python-format
 msgid "Supplier cost"
 msgstr "Costo Fornitore"
 
 #. module: product_cost_rule
-#: help:product.template,supplier_cost:0
+#: help:product.product,company_cost:0
 msgid "Supplier cost (pricelist cost, f/company)"
-msgstr "Costo Fornitore (listino fornitore)"
+msgstr "Costo fornitore (costo listino, f/azienda)"
+
+#. module: product_cost_rule
+#: selection:product.method.force.calc.wizard,status:0
+msgid "Todo"
+msgstr "Da fare"
+
+#. module: product_cost_rule
+#: help:product.product,duty_set_reference:0
+msgid "Total of single part in this list, used for perc calc."
+msgstr "Totale di una singola parte nella lista, utilizzato per calcoli perc."
+
+#. module: product_cost_rule
+#: field:product.product,duty_set_reference:0
+msgid "Total value for set"
+msgstr "Valore totale per set"
 
 #. module: product_cost_rule
 #: field:product.cost.transport,volume:0
@@ -633,6 +996,10 @@ msgstr "Traporto (Vol. x trasporto)"
 #: model:ir.ui.menu,name:product_cost_rule.menu_product_cost_transport
 #: view:product.cost.method:product_cost_rule.view_product_cost_method_search
 #: field:product.cost.method,transport_id:0
+#: field:product.method.force.calc.wizard,transport_ids:0
+#: view:product.product:product_cost_rule.view_product_product_cost_form
+#: field:product.product,transport_ids:0
+#: field:product.product.transport,transport_id:0
 msgid "Transport"
 msgstr "Trasporto"
 
@@ -652,6 +1019,16 @@ msgid "Transport method"
 msgstr "Metodo di trasporto"
 
 #. module: product_cost_rule
+#: view:product.method.force.calc.wizard:product_cost_rule.product_method_force_calc_wizard_view
+msgid "Update transport"
+msgstr "Aggiorna trasporto"
+
+#. module: product_cost_rule
+#: help:res.currency,rate_silent_cost:0
+msgid "Used for convert supplier cost in pricelist generation"
+msgstr "Utilizzato per convertire il costo fornitore nella generazione listino"
+
+#. module: product_cost_rule
 #: help:product.cost.method,category:0
 msgid "Used for get the cost to update, cost f/company, f/customerpricelist"
 msgstr ""
@@ -664,9 +1041,24 @@ msgid "Value"
 msgstr "Valore"
 
 #. module: product_cost_rule
+#: view:product.method.force.calc.wizard:product_cost_rule.product_method_force_calc_wizard_view
+msgid "View mode:"
+msgstr "Modalità vista:"
+
+#. module: product_cost_rule
 #: view:product.product:product_cost_rule.view_product_product_cost_form
 msgid "Volume data"
 msgstr "Volume"
+
+#. module: product_cost_rule
+#: view:product.method.force.calc.wizard:product_cost_rule.product_method_force_calc_wizard_view
+msgid "Wizard"
+msgstr "Wizard"
+
+#. module: product_cost_rule
+#: field:product.method.force.calc.wizard,mode:0
+msgid "Wizard mode"
+msgstr "Modalità wizard"
 
 #. module: product_cost_rule
 #: help:res.partner,cost_currency_id:0
@@ -681,9 +1073,3 @@ msgstr ""
 #: view:product.product:product_cost_rule.view_product_product_cost_form
 msgid "total"
 msgstr "totale"
-
-#. module: product_cost_rule
-#: code:addons/product_cost_rule/rule.py:388
-#, python-format
-msgid "x Exchange %s"
-msgstr "x Cambio %s"

@@ -1,0 +1,58 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* csv_import_campaign
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:24+0000\n"
+"PO-Revision-Date: 2017-08-04 15:46+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: csv_import_campaign
+#: field:product.product,pm_campaign_out:0
+msgid "(Campaign OC)"
+msgstr "(OC campagna)"
+
+#. module: csv_import_campaign
+#: field:product.product,pm_campaign_detail:0
+msgid "Campaign detail"
+msgstr "Dettaglio campagna"
+
+#. module: csv_import_campaign
+#: help:product.product,mx_start_qty:0
+msgid "Inventory at 1/1 for current year"
+msgstr "Inventario all'1/1 per l'anno corrente"
+
+#. module: csv_import_campaign
+#: field:product.product,mx_start_qty:0
+msgid "Inventory start qty"
+msgstr "Q. iniziale inventario"
+
+#. module: csv_import_campaign
+#: model:ir.model,name:csv_import_campaign.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: csv_import_campaign
+#: field:product.product,mx_start_date:0
+msgid "Start date"
+msgstr "Data partenza"
+
+#. module: csv_import_campaign
+#: field:product.product,mx_lord_mrp_qty:0
+msgid "Total Lord with MRP"
+msgstr "Totale lordo con produzione"
+
+#. module: csv_import_campaign
+#: field:product.product,mx_net_mrp_qty:0
+msgid "Total Net with MRP"
+msgstr "Totale netto con produzione"

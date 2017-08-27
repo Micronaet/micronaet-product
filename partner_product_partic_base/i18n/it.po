@@ -1,0 +1,63 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* partner_product_partic_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-27 16:28+0000\n"
+"PO-Revision-Date: 2017-08-04 14:11+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: partner_product_partic_base
+#: model:ir.model,name:partner_product_partic_base.model_res_company
+msgid "Companies"
+msgstr "Aziende"
+
+#. module: partner_product_partic_base
+#: view:res.partner.product.partic:partner_product_partic_base.view_partner_product_partic_search
+msgid "Group By"
+msgstr "Raggruppa per"
+
+#. module: partner_product_partic_base
+#: field:res.company,partic_parent_len:0
+msgid "Partic parent len"
+msgstr "Lunghezza particolarità padre"
+
+#. module: partner_product_partic_base
+#: model:ir.model,name:partner_product_partic_base.model_res_partner
+#: view:res.partner.product.partic:partner_product_partic_base.view_partner_product_partic_search
+msgid "Partner"
+msgstr "Partner"
+
+#. module: partner_product_partic_base
+#: model:ir.actions.act_window,name:partner_product_partic_base.action_partner_product_partic_form
+#: model:ir.model,name:partner_product_partic_base.model_res_partner_product_partic
+#: view:res.partner.product.partic:partner_product_partic_base.view_partner_product_partic_search
+#: view:res.partner.product.partic:partner_product_partic_base.view_partner_product_partic_tree
+#: view:res.partner.product.partic:partner_product_partic_base.view_res_partner_product_partic_form
+msgid "Partner product partic"
+msgstr "Partic. partner-prodotto"
+
+#. module: partner_product_partic_base
+#: view:res.partner:partner_product_partic_base.view_partner_product_partic_form
+msgid "Price partic."
+msgstr "Particolarità prezzo"
+
+#. module: partner_product_partic_base
+#: view:res.partner.product.partic:partner_product_partic_base.view_partner_product_partic_search
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: partner_product_partic_base
+#: view:res.partner:partner_product_partic_base.view_partner_product_partic_form
+msgid "Product partic."
+msgstr "Partic. prodotto"
