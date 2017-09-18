@@ -346,7 +346,6 @@ class ProductProduct(orm.Model):
             context=None):
         ''' Get information
         '''
-        _logger.warning('>>> START INVENTORY <<<')
         res = {}
         res_extra = {}
         
@@ -354,18 +353,25 @@ class ProductProduct(orm.Model):
             context = {}
 
         # ---------------------------------------------------------------------
-        # Parameter for evaluation:
-        # ---------------------------------------------------------------------                
-        limit_up_date = context.get('limit_up_date', False) # limit for invent.
+        # Range date calculation:
+        # ---------------------------------------------------------------------
+        now = datetime.now()
+        if now.month >= 9: # 9 - 12
+            season_year = now.year    
+        else: # 1 - 8    
+            season_year = now.year - 1 
 
-        # Year filter:
-        from_date = datetime.now().strftime('%Y-01-01 00:00:00') # XXX ex 2016
+        from_date = '%s-09-01 00:00:00' % season_year
+        # Limit up date parameter:
+        limit_up_date = context.get('limit_up_date', False) # limit for invent.
         if limit_up_date:
             to_date = limit_up_date
             _logger.warning('Limite date: %s' % limit_up_date)
         else:    
-            to_date = datetime.now().strftime('%Y-12-31 23:59:59')# XXX ex 2017
-
+            to_date = '%s-08-31 23:59:59' % (season_year + 1) 
+        _logger.warning('>>> START INVENTORY [%s - %s] <<<' % (
+            from_date, to_date))
+        
         # ---------------------------------------------------------------------
         # Read parameter for inventory:
         # ---------------------------------------------------------------------
