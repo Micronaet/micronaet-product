@@ -342,6 +342,26 @@ class ProductProduct(orm.Model):
     # ----------------
     # Fields function:    
     # ----------------
+    # Overridable:
+    def get_range_inventory_date(self, cr, uid, context=None):
+        ''' Overridable function for get the from date
+        '''
+        # Company 1 standard:
+        now = datetime.now()
+        season_year = now.year
+        from_date = '%s-01-01 00:00:00' % season_year
+
+        # Limit up date parameter:
+        limit_up_date = context.get('limit_up_date', False) # limit for invent.
+        if limit_up_date:
+            to_date = limit_up_date
+            _logger.warning('Limite date: %s' % limit_up_date)
+        else:    
+            to_date = '%s-12-31 23:59:59' % season_year
+        _logger.warning('>>> START INVENTORY [%s - %s] <<<' % (
+            from_date, to_date))
+        return from_date, to_date    
+        
     def _get_inventory_values(self, cr, uid, product_ids, fields, args, 
             context=None):
         ''' Get information
@@ -352,25 +372,9 @@ class ProductProduct(orm.Model):
         if context is None:
             context = {}
 
-        # ---------------------------------------------------------------------
         # Range date calculation:
-        # ---------------------------------------------------------------------
-        now = datetime.now()
-        if now.month >= 9: # 9 - 12
-            season_year = now.year    
-        else: # 1 - 8    
-            season_year = now.year - 1 
-
-        from_date = '%s-09-01 00:00:00' % season_year
-        # Limit up date parameter:
-        limit_up_date = context.get('limit_up_date', False) # limit for invent.
-        if limit_up_date:
-            to_date = limit_up_date
-            _logger.warning('Limite date: %s' % limit_up_date)
-        else:    
-            to_date = '%s-08-31 23:59:59' % (season_year + 1) 
-        _logger.warning('>>> START INVENTORY [%s - %s] <<<' % (
-            from_date, to_date))
+        from_date, to_date = self._get_from_inventory_date(
+            cr, uid, context=context)            
         
         # ---------------------------------------------------------------------
         # Read parameter for inventory:
