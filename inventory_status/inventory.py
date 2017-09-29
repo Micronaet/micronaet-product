@@ -373,7 +373,7 @@ class ProductProduct(orm.Model):
             context = {}
 
         # Range date calculation:
-        from_date, to_date = self._get_from_inventory_date(
+        from_date, to_date = self.get_range_inventory_date(
             cr, uid, context=context)            
         
         # ---------------------------------------------------------------------
