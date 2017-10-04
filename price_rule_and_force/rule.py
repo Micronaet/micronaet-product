@@ -47,51 +47,38 @@ class ProductProductPriceRule(orm.Model):
     _order = 'name'
     
     # Utility:
-    def get_list_with_this_rule(self, cr, uid, ids, context=None):
+    def product_ids_from_mask(self, cr, uid, mask, context=None):
+        ''' Get list of product from mask
+        '''        
+        cr.execute('''
+            SELECT distinct id 
+            FROM product_product 
+            WHERE default_code ilike \'%s\'
+            ''' % mask
+            )
+        return [item[0] for item in cr.fetchall()]        
+        
+    def force_product_list(self, cr, uid, ids, context=None):
         ''' Utility for generate list of product selected with current rule
         '''
-        where = ''
+        product_pool = self.pool.get('product.product')
+        
         for rule in sorted(self.browse(cr, uid, ids, context=context), 
                 key=lambda r: (-len(rule.name), name)):
-            where += '%s%s' % (
-                ' or ' if where else '',
-                'default_code ilike \'%s\'' % line.name
-                )
-
-        if not where:
-            raise osv.except_osv(
-                _('Error!'), _('No product with the mask selected!'), )
-                    
-        cr.execute('SELECT distinct id FROM product_product WHERE %s' % where)
-        product_ids = [item[0] for item in cr.fetchall()]        
-
-        if not product_ids:
-            raise osv.except_osv(
-                _('Error!'), _('No product with mask selected!'), )
-        return product_ids
-    
-    def force_product_list(self, cr, uid, ids, context=None):
-        ''' Force price with product mask
-        '''
+            product_ids = self.product_ids_from_mask(
+                cr, uid, mask, context=context)
+            if not product_ids:
+                continue
+            product_pool.write(cr, uid, product_ids, {
+                'lst_price': rule.price,
+                'price_rule_id': rule.id,                
+                }, context=context)
         return True
-
+        
     def get_product_list(self, cr, uid, ids, context=None):
-        ''' Get selection list:
-        '''
-        #current_proxy
-        #product_ids = self.get_list_with_this_rule(
-        #    cr, uid, ids, context=context)
-        #return self.write(cr, uid, 
-        return True
-
-    def product_use_this_mask(self, cr, uid, ids, context=None):
         ''' Check product that work with this rule
         '''
         rule_proxy = self.browse(cr, uid, ids, context=context)[0]
-        where = 'default_code ilike \'%s\'' % rule_proxy.name
-
-        cr.execute('SELECT distinct id FROM product_product WHERE %s' % where)
-        product_ids = [item[0] for item in cr.fetchall()]        
 
         if not product_ids:
             raise osv.except_osv(
@@ -118,5 +105,7 @@ class ProductProductPriceRule(orm.Model):
                 127_X%  >>> 172OX1  127AX34  etc.
                 '''),
         'price': fields.float('Price', digits=(16, 3), required=True),
+        'price_rule_id': fields.many2one(
+            'product.product.price.rule', 'Price rule'),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
