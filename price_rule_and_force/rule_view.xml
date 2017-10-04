@@ -54,16 +54,6 @@
                 </tree>         
             </field>
         </record>
-        <!--<record model="ir.ui.view" id="view_product_product_add_rule_form">
-             <field name="name">product.product.form</field>
-             <field name="model">product.product</field>
-             <field name="inherit_id" eval="product.product_normal_form_view"/>
-             <field name="arch" type="xml">
-                <field name="lst_price">
-                    <field name="price_rule_id" />
-                </field>
-             </field>
-        </record>-->
         <record model="ir.actions.act_window" id="action_product_with_rule">
             <field name="name">Product with rule</field>
             <field name="res_model">product.product</field>
