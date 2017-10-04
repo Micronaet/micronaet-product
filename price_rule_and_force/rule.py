@@ -59,11 +59,14 @@ class ProductProductPriceRule(orm.Model):
         return [item[0] for item in cr.fetchall()]        
         
     def force_product_list(self, cr, uid, ids, context=None):
-        ''' Utility for generate list of product selected with current rule
+        ''' Force all list (associate price and rule)
         '''
         product_pool = self.pool.get('product.product')
         
-        for rule in sorted(self.browse(cr, uid, ids, context=context), 
+        _logger.info('Start generating rule for price')
+        rule_ids = self.search(cr, uid, [], context=context) 
+        # TODO reset all rules before?       
+        for rule in sorted(self.browse(cr, uid, rule_ids, context=context), 
                 key=lambda r: (len(r.name), r.name)):
             product_ids = self.product_ids_from_mask(
                 cr, uid, rule.name, context=context)
@@ -71,6 +74,10 @@ class ProductProductPriceRule(orm.Model):
             if not product_ids:
                 continue
                 
+            _logger.info('Update product %s (mask: %s)' % (
+                len(product_ids), 
+                rule.name,
+                ))
             product_pool.write(cr, uid, product_ids, {
                 'lst_price': rule.price,
                 'price_rule_id': rule.id,                

@@ -9,7 +9,7 @@
                      <field name="name" />
                      <field name="price" />
                      <button name="get_product_list" string="Product with this rule" type="object" icon="gtk-justify-fill" />
-                     <button name="force_product_list" string="Force price with this rule" type="object" icon="gtk-refresh" />
+                     <button name="force_product_list" string="Force all price with this rule" type="object" icon="gtk-refresh" assert="Will force all rule present for associate product price and rule, confirm?"/>
                  </tree>
              </field>
          </record>

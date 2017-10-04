@@ -1,0 +1,97 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* price_rule_and_force
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-04 12:16+0000\n"
+"PO-Revision-Date: 2017-10-04 14:19+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: price_rule_and_force
+#: field:product.product.price.rule,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: price_rule_and_force
+#: field:product.product.price.rule,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: price_rule_and_force
+#: view:product.product.price.rule:price_rule_and_force.view_product_product_price_rule_tree
+msgid "Force all price with this rule"
+msgstr "Forza tutti i prezzi con queste regole"
+
+#. module: price_rule_and_force
+#: field:product.product.price.rule,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: price_rule_and_force
+#: field:product.product.price.rule,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento da"
+
+#. module: price_rule_and_force
+#: field:product.product.price.rule,write_date:0
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento di"
+
+#. module: price_rule_and_force
+#: field:product.product.price.rule,price:0
+msgid "Price"
+msgstr "Prezzo"
+
+#. module: price_rule_and_force
+#: model:ir.actions.act_window,name:price_rule_and_force.action_product_product_price_rule
+#: model:ir.model,name:price_rule_and_force.model_product_product_price_rule
+#: model:ir.ui.menu,name:price_rule_and_force.menu_product_product_price_rule
+#: field:product.product,price_rule_id:0
+#: view:product.product.price.rule:price_rule_and_force.view_product_product_price_rule_form
+#: view:product.product.price.rule:price_rule_and_force.view_product_product_price_rule_tree
+msgid "Price rule"
+msgstr "Regole prezzi"
+
+#. module: price_rule_and_force
+#: model:ir.model,name:price_rule_and_force.model_product_product
+#: view:product.product:price_rule_and_force.view_product_product_add_price_rule_tree
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: price_rule_and_force
+#: help:product.product.price.rule,name:0
+msgid ""
+"Product mask, use _ for replace char % for no care, ex.\n"
+"                127_X%  >>> 172OX1  127AX34  etc.\n"
+"                "
+msgstr ""
+"Maschera prodotto, usare _ per rimpiazzare un carattere e % per non "
+"considerare, es.\n"
+"127_X%  >>> 172OX1  127AX34  ecc.\n"
+"                "
+
+#. module: price_rule_and_force
+#: model:ir.actions.act_window,name:price_rule_and_force.action_product_with_rule
+#: model:ir.ui.menu,name:price_rule_and_force.menu_product_product_price_list_rule
+msgid "Product with rule"
+msgstr "Prodotti con regola"
+
+#. module: price_rule_and_force
+#: view:product.product.price.rule:price_rule_and_force.view_product_product_price_rule_tree
+msgid "Product with this rule"
+msgstr "Prodotto con questa regola"
+
+#. module: price_rule_and_force
+#: field:product.product.price.rule,name:0
+msgid "Rule mask"
+msgstr "Maschera regola"
