@@ -36,14 +36,25 @@
              <field name="context">{}</field>
              <field name="domain">[]</field>
          </record>
-         <menuitem 
-             parent="base.menu_base_config" 
-             id="menu_product_product_price_rule" 
-             action="action_product_product_price_rule"
-             sequence="40"
-             />
-         
-         <!--<record model="ir.ui.view" id="view_product_product_rule_form">
+
+        <record model="ir.ui.view" id="view_product_product_add_price_rule_tree">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="20" />
+            <field name="arch" type="xml">
+                <tree string="Product" colors="red:price_rule_id==False" editable="bottom">
+	                <field name="default_code" readonly="1"/>
+	                <field name="name" readonly="1" />
+	                <field name="uom_id" readonly="1" />
+	                <field name="ean13" readonly="1" />
+	                <field name="standard_price" readonly="1" />
+	                <field name="lst_price" />
+	                <field name="price_rule_id" />	                
+	                <field name="state" invisible="1" />
+                </tree>         
+            </field>
+        </record>
+        <!--<record model="ir.ui.view" id="view_product_product_add_rule_form">
              <field name="name">product.product.form</field>
              <field name="model">product.product</field>
              <field name="inherit_id" eval="product.product_normal_form_view"/>
@@ -52,7 +63,29 @@
                     <field name="price_rule_id" />
                 </field>
              </field>
-         </record>-->
+        </record>-->
+        <record model="ir.actions.act_window" id="action_product_with_rule">
+            <field name="name">Product with rule</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_product_product_add_price_rule_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[('price_rule_id', '!=', False)]</field>
+        </record>
+        
+        <menuitem 
+             parent="base.menu_base_config" 
+             id="menu_product_product_price_rule" 
+             action="action_product_product_price_rule"
+             sequence="40"
+             />
+             <menuitem 
+                 parent="menu_product_product_price_rule" 
+                 id="menu_product_product_price_list_rule" 
+                 action="action_product_with_rule"
+                 sequence="10"
+                 />
     </data>
 </openerp>
 

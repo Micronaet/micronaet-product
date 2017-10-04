@@ -64,11 +64,13 @@ class ProductProductPriceRule(orm.Model):
         product_pool = self.pool.get('product.product')
         
         for rule in sorted(self.browse(cr, uid, ids, context=context), 
-                key=lambda r: (-len(rule.name), name)):
+                key=lambda r: (len(r.name), r.name)):
             product_ids = self.product_ids_from_mask(
-                cr, uid, mask, context=context)
+                cr, uid, rule.name, context=context)
+                
             if not product_ids:
                 continue
+                
             product_pool.write(cr, uid, product_ids, {
                 'lst_price': rule.price,
                 'price_rule_id': rule.id,                
@@ -79,19 +81,27 @@ class ProductProductPriceRule(orm.Model):
         ''' Check product that work with this rule
         '''
         rule_proxy = self.browse(cr, uid, ids, context=context)[0]
-
+        product_ids = self.product_ids_from_mask(
+            cr, uid, rule_proxy.name, context=context)
+            
         if not product_ids:
             raise osv.except_osv(
                 _('Error!'), _('No product with mask selected!'), )
-             
+
+        model_pool = self.pool.get('ir.model.data')
+        tree_id = model_pool.get_object_reference(
+            cr, uid,
+            'price_rule_and_force', 'view_product_product_add_price_rule_tree'
+            )[1]
+        
         return {
             'type': 'ir.actions.act_window',
             'name': _('Product with rule'),
             'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'product.product',
-            #'view_id': tree_view_id,
-            'views': [(False, 'tree'), (False, 'form')],
+            'view_id': tree_id,
+            'views': [(tree_id, 'tree'), (False, 'form')],
             'domain': [('id', 'in', product_ids)],
             'context': context,
             'target': 'current',
@@ -105,7 +115,16 @@ class ProductProductPriceRule(orm.Model):
                 127_X%  >>> 172OX1  127AX34  etc.
                 '''),
         'price': fields.float('Price', digits=(16, 3), required=True),
+        }
+
+class ProductProduct(orm.Model):
+    """ Model name: ProductProduct
+    """    
+    _inherit = 'product.product'
+    
+    _columns = {
         'price_rule_id': fields.many2one(
             'product.product.price.rule', 'Price rule'),
         }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
