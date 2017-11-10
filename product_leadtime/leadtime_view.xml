@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_product_product_lot_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="purchase_lot_block.view_product_product_lot_form"/>
+            <field name="arch" type="xml">
+                <field name="purchase_lot_block" position="after">
+                    <field name="leadtime" />
+                </field>
+            </field>
+        </record>        
+    </data>
+</openerp>
+
