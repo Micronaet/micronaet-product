@@ -459,6 +459,7 @@ class ProductProduct(orm.Model):
                 ('product_id', 'in', product_ids),
                 ('date', '>=', from_date), 
                 ('date', '<=', to_date), 
+                ('state', '!=', 'cancel'), # actived 22/11/2017
                 ])
             for line in move_pool.browse(cr, uid, line_ids, context=context):
                 if 'mx_inv_ids' not in res[line.product_id.id]:
@@ -491,7 +492,7 @@ class ProductProduct(orm.Model):
         line_ids = move_pool.search(cr, uid, [
             # Line:
             ('product_id', 'in', product_ids),
-            #('state', '!=', 'cancel'), # TODO active?
+            ('state', '!=', 'cancel'), # actived 22/11/2017
 
             # Header:
             # XXX date_done, min_date, date?
@@ -523,6 +524,7 @@ class ProductProduct(orm.Model):
         line_ids = move_pool.search(cr, uid, [
             # Line:
             ('product_id', 'in', product_ids),
+            ('state', '!=', 'cancel'), # actived 22/11/2017
             
             # Header:
             # TODO ('partner_id', 'not in', exclude_partner_ids),            
