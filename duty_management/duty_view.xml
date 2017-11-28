@@ -62,7 +62,7 @@
             <search>
                <field name="code" />
                <field name="name" />
-                <field name="start" />               
+               <field name="start" />               
             </search>
         </field>
     </record>    
