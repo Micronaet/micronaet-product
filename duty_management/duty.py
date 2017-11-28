@@ -74,6 +74,7 @@ class ProductCustomDuty(orm.Model):
     _columns = {
         'name': fields.char('Custom duty', size=100, required=True),
         'code': fields.char('Code', size=24),
+        # TODO remove:
         'start': fields.text('Start code', 
             help='Write start code as: 127|027|029'),
         'tax_ids': fields.one2many(
