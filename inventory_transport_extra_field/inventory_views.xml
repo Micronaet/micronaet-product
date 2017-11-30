@@ -16,6 +16,22 @@
                 </xpath>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_stock_picking_form">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[0]" position="after">
+                    <page string="Transport">
+                        <group colspan="4" col="4">
+                            <field name="inventory_cost_transport" />
+                            <field name="inventory_cost_exchange" />
+                            <button name="force_purchase_data_in_product" string="Update" type="object" icon="gtk-refresh" confirm="Update product data with transport and USD exchange?"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>
 

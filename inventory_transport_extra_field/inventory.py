@@ -54,4 +54,37 @@ class ProductProduct(orm.Model):
             'Buy exchange', digits=(16, 3), 
             help='USD exchange from last delivery'),
         }
+
+class StockPicking(orm.Model):
+    """ Model name: Stock picking
+    """
+    
+    _inherit = 'stock.picking'
+    
+    # Button event:
+    def force_purchase_data_in_product(self, cr, uid, ids, context=None):
+        ''' Save in product the transport and USD exchange when created
+        '''
+        product_pool = self.pool.get('product.product')
+        for picking in self.browse(cr, uid, ids, context=context):
+            # TODO split cost!
+            #inventory_cost_transport = picking.inventory_cost_transport
+            inventory_cost_exchange = picking.inventory_cost_exchange
+            for line in picking.move_lines:
+                product = line.product_id
+                # XXX not check if is present, write with button!
+                product_pool.write(cr, uid, product.id, {
+                    #'inventory_cost_transport': inventory_cost_transport,
+                    'inventory_cost_exchange': inventory_cost_exchange,
+                    }, context=context)
+        return True
+        
+    _columns = {
+        'inventory_cost_transport': fields.float(
+            'Transport cost', digits=(16, 3),
+            help='Transport cost total for this order'),
+        'inventory_cost_exchange': fields.float(
+            'USD exchange', digits=(16, 3), 
+            help='USD exchange for this order'),
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
