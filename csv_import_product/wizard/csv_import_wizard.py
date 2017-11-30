@@ -147,7 +147,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
             return log_view
 
         from_line -= 1 # Start from 0 (different from line number)
-        import pdb; pdb.set_trace()
+
         for i in range(from_line, to_line or 10000):
             #  Prepare new record:
             data = {}
