@@ -65,13 +65,16 @@ class StockPicking(orm.Model):
     def force_purchase_data_in_product(self, cr, uid, ids, context=None):
         ''' Save in product the transport and USD exchange when created
         '''
+        # Pool used:
         product_pool = self.pool.get('product.product')
+        
         for picking in self.browse(cr, uid, ids, context=context):
             # TODO split cost!
             #inventory_cost_transport = picking.inventory_cost_transport
             inventory_cost_exchange = picking.inventory_cost_exchange
             for line in picking.move_lines:
                 product = line.product_id
+                
                 # XXX not check if is present, write with button!
                 product_pool.write(cr, uid, product.id, {
                     #'inventory_cost_transport': inventory_cost_transport,
