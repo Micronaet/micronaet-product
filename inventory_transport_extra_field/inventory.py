@@ -70,14 +70,27 @@ class StockPicking(orm.Model):
         
         for picking in self.browse(cr, uid, ids, context=context):
             # TODO split cost!
-            #inventory_cost_transport = picking.inventory_cost_transport
+            inventory_cost_transport = picking.inventory_cost_transport
             inventory_cost_exchange = picking.inventory_cost_exchange
+            transport_id = picking.container_id.id
+            
             for line in picking.move_lines:
                 product = line.product_id
                 
                 # XXX not check if is present, write with button!
+                container_q = 0
+                for container in product.transport_ids:
+                    if container.transport_id.id == transport_id:
+                        container_q = container.quantity
+                        break
+                    
+                if container_q:
+                    inventory_cost_transport /= container_q
+                else:
+                    product.item_per_pallet = 0.0 # reset! TODO save a warning?
+
                 product_pool.write(cr, uid, product.id, {
-                    #'inventory_cost_transport': inventory_cost_transport,
+                    'inventory_cost_transport': inventory_cost_transport,
                     'inventory_cost_exchange': inventory_cost_exchange,
                     }, context=context)
         return True
@@ -89,5 +102,7 @@ class StockPicking(orm.Model):
         'inventory_cost_exchange': fields.float(
             'USD exchange', digits=(16, 3), 
             help='USD exchange for this order'),
+        'container_id': fields.many2one(
+            'product.cost.transport', 'Container / Camion'),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

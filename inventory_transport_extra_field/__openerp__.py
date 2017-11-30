@@ -31,8 +31,11 @@
     'depends': [
         'base',
         'product',
+        'stock',
         'purchase',
         'inventory_status',
+        #'sale_extra_field', # q x pallet field
+        'product_cost_rule', # tranport 
         ],
     'init_xml': [],
     'demo': [],
