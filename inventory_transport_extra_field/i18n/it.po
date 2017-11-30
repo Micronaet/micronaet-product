@@ -1,0 +1,58 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* inventory_transport_extra_field
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-30 09:25+0000\n"
+"PO-Revision-Date: 2017-11-30 10:27+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: inventory_transport_extra_field
+#: field:product.product,inventory_cost_exchange:0
+msgid "Buy exchange"
+msgstr "Cambio su acquisto"
+
+#. module: inventory_transport_extra_field
+#: field:product.product,inventory_cost_no_move:0
+msgid "Cost no move"
+msgstr "Costo inventario non movimentato"
+
+#. module: inventory_transport_extra_field
+#: help:product.product,inventory_cost_no_move:0
+msgid "Init cost for no move product"
+msgstr "Costo inventario iniziale per prodotti non movimentati"
+
+#. module: inventory_transport_extra_field
+#: view:product.product:inventory_transport_extra_field.view_product_extra_form
+msgid "Inventory purchase field:"
+msgstr "Campi inventario su acquisti:"
+
+#. module: inventory_transport_extra_field
+#: model:ir.model,name:inventory_transport_extra_field.model_product_product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: inventory_transport_extra_field
+#: field:product.product,inventory_cost_transport:0
+msgid "Transport cost"
+msgstr "Costo traporto"
+
+#. module: inventory_transport_extra_field
+#: help:product.product,inventory_cost_transport:0
+msgid "Transport cost from last delivery"
+msgstr "Costo trasporto da ultima consegna"
+
+#. module: inventory_transport_extra_field
+#: help:product.product,inventory_cost_exchange:0
+msgid "USD exchange from last delivery"
+msgstr "Cambio USD da ultima consegna"
