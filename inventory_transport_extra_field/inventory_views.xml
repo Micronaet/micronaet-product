@@ -16,7 +16,7 @@
                 </xpath>
             </field>
         </record>
-        <record model="ir.ui.view" id="view_stock_picking_form">
+        <!--<record model="ir.ui.view" id="view_stock_picking_form">
             <field name="name">stock.picking.form</field>
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
@@ -31,7 +31,7 @@
                     </page>
                 </xpath>
             </field>
-        </record>
+        </record>-->
     </data>
 </openerp>
 

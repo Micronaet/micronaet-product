@@ -142,6 +142,20 @@ class ProductProduct(orm.Model):
             if tax.country_id.id == country_id:
                 return tax.tax
         return 0.0
+
+    def get_duty_this_product_rate(self, product):
+        ''' Utility for return duty range from duty browse category and
+            country ID of first supplier
+            Used in inventory report usually
+        '''        
+        try:
+            country_id = product.first_supplier_id.country_id.id
+        except:
+            return 0.0
+        for tax in product.duty_id.tax_ids:
+            if tax.country_id.id == country_id:
+                return tax.tax
+        return 0.0
         
     def get_volume_single_product(self, cr, uid, product, context=None):
         ''' Calculate volume with default pack or multipackage if present
