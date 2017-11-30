@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_product_extra_form">
+            <field name="name">product.product.purchase.fields.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='inventory']" position="after">
+                    <group colspan="4" col="2">
+                        <separator string="Inventory purchase field:" colspan="2"/>
+                        <field name="inventory_cost_no_move" />
+                        <field name="inventory_cost_transport" />
+                        <field name="inventory_cost_exchange" />                
+                    </group>    
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
+
