@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-30 09:25+0000\n"
-"PO-Revision-Date: 2017-11-30 10:27+0100\n"
+"POT-Creation-Date: 2017-11-30 15:41+0000\n"
+"PO-Revision-Date: 2017-11-30 16:42+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,11 @@ msgstr ""
 #: field:product.product,inventory_cost_exchange:0
 msgid "Buy exchange"
 msgstr "Cambio su acquisto"
+
+#. module: inventory_transport_extra_field
+#: field:stock.picking,container_id:0
+msgid "Container / Camion"
+msgstr "Container / Camion"
 
 #. module: inventory_transport_extra_field
 #: field:product.product,inventory_cost_no_move:0
@@ -38,12 +43,28 @@ msgid "Inventory purchase field:"
 msgstr "Campi inventario su acquisti:"
 
 #. module: inventory_transport_extra_field
+#: model:ir.model,name:inventory_transport_extra_field.model_stock_picking
+msgid "Picking List"
+msgstr "Lista prelievo"
+
+#. module: inventory_transport_extra_field
 #: model:ir.model,name:inventory_transport_extra_field.model_product_product
 msgid "Product"
 msgstr "Prodotto"
 
 #. module: inventory_transport_extra_field
+#: field:stock.picking,inventory_status:0
+msgid "Status"
+msgstr "Stato aggiornamento"
+
+#. module: inventory_transport_extra_field
+#: view:stock.picking:inventory_transport_extra_field.view_stock_picking_form
+msgid "Transport"
+msgstr "Trasporto"
+
+#. module: inventory_transport_extra_field
 #: field:product.product,inventory_cost_transport:0
+#: field:stock.picking,inventory_cost_transport:0
 msgid "Transport cost"
 msgstr "Costo traporto"
 
@@ -53,6 +74,32 @@ msgid "Transport cost from last delivery"
 msgstr "Costo trasporto da ultima consegna"
 
 #. module: inventory_transport_extra_field
+#: help:stock.picking,inventory_cost_transport:0
+msgid "Transport cost total for this order"
+msgstr "Costo trasporto totale per questo ordine"
+
+#. module: inventory_transport_extra_field
+#: field:stock.picking,inventory_cost_exchange:0
+msgid "USD exchange"
+msgstr "Cambio USD"
+
+#. module: inventory_transport_extra_field
+#: help:stock.picking,inventory_cost_exchange:0
+msgid "USD exchange for this order"
+msgstr "Cambio USD per questo ordine"
+
+#. module: inventory_transport_extra_field
 #: help:product.product,inventory_cost_exchange:0
 msgid "USD exchange from last delivery"
 msgstr "Cambio USD da ultima consegna"
+
+#. module: inventory_transport_extra_field
+#: view:stock.picking:inventory_transport_extra_field.view_stock_picking_form
+msgid "Update"
+msgstr "Aggiorna prodotti"
+
+#. module: inventory_transport_extra_field
+#: view:stock.picking:inventory_transport_extra_field.view_stock_picking_form
+msgid "Update product data with transport and USD exchange?"
+msgstr ""
+"Aggiorno i prodotti con i dati di trasporto e cambio impostati nel documento?"

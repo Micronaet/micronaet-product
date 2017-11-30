@@ -28,6 +28,7 @@
                             <field name="inventory_cost_transport" />
                             <field name="inventory_cost_exchange" />
                             <button name="force_purchase_data_in_product" string="Update" type="object" icon="gtk-refresh" confirm="Update product data with transport and USD exchange?"/>
+                            <field name="inventory_status" widget="html" nolabel="1" colspan="4" readonly="1"/>
                         </group>
                     </page>
                 </xpath>

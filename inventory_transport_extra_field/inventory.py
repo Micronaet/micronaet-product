@@ -68,6 +68,7 @@ class StockPicking(orm.Model):
         # Pool used:
         product_pool = self.pool.get('product.product')
         
+        status = ''
         for picking in self.browse(cr, uid, ids, context=context):
             # TODO split cost!
             inventory_cost_transport = picking.inventory_cost_transport
@@ -83,16 +84,68 @@ class StockPicking(orm.Model):
                     if container.transport_id.id == transport_id:
                         container_q = container.quantity
                         break
-                    
-                if container_q:
-                    inventory_cost_transport /= container_q
-                else:
-                    product.item_per_pallet = 0.0 # reset! TODO save a warning?
 
+                background = 'red'                    
+                if container_q: # XXX consider 0
+                    inventory_cost_transport /= container_q
+                    if abs(inventory_cost_transport) < 0.0001:
+                        inventory_cost_transport = 0.0 # consider zero                        
+                    else:    
+                        background = 'green'
+                else:
+                    inventory_cost_transport = 0.0 # reset! TODO save a warning?
+                    
                 product_pool.write(cr, uid, product.id, {
                     'inventory_cost_transport': inventory_cost_transport,
                     'inventory_cost_exchange': inventory_cost_exchange,
                     }, context=context)
+                status += '''
+                    <tr class='%s'>
+                        <td>%s</td>
+                        <td>%12.5f</td>
+                    </tr>''' % (
+                        background,
+                        product.default_code,
+                        inventory_cost_transport,
+                        )
+        status = '''
+            <style>
+                .red {
+                     background-color: #ffd9cc;
+                     }
+                .green {
+                     background-color: #e6ffe6;
+                     }                     
+                .table_bf {
+                     border:1px 
+                     padding: 3px;
+                     solid black;
+                 }
+                .table_bf td {
+                     border:1px 
+                     solid black;
+                     padding: 3px;
+                     text-align: center;
+                 }
+                .table_bf th {
+                     border:1px 
+                     solid black;
+                     padding: 3px;
+                     text-align: center;
+                     background-color: grey;
+                     color: white;
+                 }
+            </style>
+            <table class='table_bf'>
+                <tr>
+                    <th>Codice</th><th>Trasporto</th>
+                    %s
+                </tr>
+            </table>
+            ''' % status
+        self.write(cr, uid, ids, {
+            'inventory_status': status,
+            }, context=context)
         return True
         
     _columns = {
@@ -104,5 +157,6 @@ class StockPicking(orm.Model):
             help='USD exchange for this order'),
         'container_id': fields.many2one(
             'product.cost.transport', 'Container / Camion'),
+        'inventory_status': fields.text('Status'),
         }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
