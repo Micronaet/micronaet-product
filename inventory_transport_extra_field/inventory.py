@@ -71,7 +71,7 @@ class StockPicking(orm.Model):
         status = ''
         for picking in self.browse(cr, uid, ids, context=context):
             # TODO split cost!
-            inventory_cost_transport = picking.inventory_cost_transport
+            total_transport = picking.inventory_cost_transport
             inventory_cost_exchange = picking.inventory_cost_exchange
             transport_id = picking.container_id.id
             
@@ -87,7 +87,7 @@ class StockPicking(orm.Model):
 
                 background = 'red'                    
                 if container_q: # XXX consider 0
-                    inventory_cost_transport /= container_q
+                    inventory_cost_transport = total_transport / container_q
                     if abs(inventory_cost_transport) < 0.0001:
                         inventory_cost_transport = 0.0 # consider zero                        
                     else:    
