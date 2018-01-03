@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <!--TODO rimuovere il commento, da errore mx_lord_qty: 
         <record model="ir.ui.view" id="view_product_startup_inventory_form">
             <field name="name">product.product.startup.q.form</field>
             <field name="model">product.product</field>
@@ -17,13 +18,13 @@
                     <group name="startup_inventory_report_group" colspan="4">
                         <separator string="Inventory report:"  colspan="4"/>
                         <field name="inventory_category_id" />
-                        <!--TODO  <field name="inventory_excluded" />-->
+                        <!-TODO  <field name="inventory_excluded" />->
                     </group>
                 </group>
             </field>
-        </record>
+        </record>-->
         <record model="ir.ui.view" id="view_inventory_category_search">
-            <field name="name">product.product.inventory_categorsearch</field>
+            <field name="name">product.product.inventory_category.search</field>
             <field name="model">product.product</field>
             <field name="priority" eval="60" />
             <field name="arch" type="xml">

@@ -29,6 +29,7 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
+        'product', # for view update
         'inventory_status',
         ],
     'init_xml': [],

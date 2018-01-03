@@ -113,7 +113,7 @@
                      <button name="get_movements_oc" string="OC out" type="object" icon="gtk-goto-last" />
                      
                      <field name="mx_net_qty" readonly="1"/>
-                     <field name="mx_lord_qty" readonly="1"/>
+                     <field name="mx_lord_qty" readonly="1"/><!--TODO raise error?-->
                      
                      <field name="mx_mrp_out" readonly="1" />
                 </tree> 

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <!--TODO rimuovere il commento, da errore mx_lord_qty: 
         <record model="ir.ui.view" id="view_product_product_button_status_form">
             <field name="name">product.product.form</field>
             <field name="model">product.product</field>
@@ -14,7 +15,7 @@
                     </group>    
                 </label>
             </field>
-        </record>
+        </record>-->
     </data>
 </openerp>
 
