@@ -349,7 +349,8 @@ class ProductProduct(orm.Model):
         # Company 1 standard:
         now = datetime.now()
         season_year = now.year
-        from_date = '%s-01-01 00:00:00' % season_year
+        #from_date = '%s-01-01 00:00:00' % season_year # TODO after start inv.
+        from_date = '2017-01-01 00:00:00'
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False) # limit for invent.
