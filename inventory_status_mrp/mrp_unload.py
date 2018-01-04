@@ -85,7 +85,7 @@ class MrpProduction(orm.Model):
         #from_date = '2016-08-30'
         # After inventory date:
         from_date = '2017-09-01 00:00:00'
-        # TODO get_range_inventory_date(self, cr, uid, context=None)
+        # TODO TODO get_range_inventory_date(self, cr, uid, context=None)
         
         mrp_ids = self.search(cr, uid, [        
             # State filter:
@@ -96,9 +96,7 @@ class MrpProduction(orm.Model):
             ], context=context)
             
         product_pool = self.pool.get('product.product')   
-        cr.execute('''
-            UPDATE product_product set mx_mrp_out=0;
-            ''')                        
+        cr.execute('UPDATE product_product set mx_mrp_out=0;')                        
 
         # Generate MRP total componet report with totals:
         unload_db = {}
