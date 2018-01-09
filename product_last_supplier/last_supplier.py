@@ -49,7 +49,6 @@ class ProductProduct(orm.Model):
         ''' Update latest supplier field
         '''
         res = {}
-        import pdb; pdb.set_trace()
         for product in self.browse(cr, uid, ids, context=context):
             res[product.id] = {
                 'latest_supplier_id': False,
