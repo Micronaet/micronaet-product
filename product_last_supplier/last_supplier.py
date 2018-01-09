@@ -44,22 +44,33 @@ class ProductProduct(orm.Model):
     
     _inherit = 'product.product'
 
-    def _field_get_last_supplier_id(self, cr, uid, ids, context=None):
-        ''' Update last supplier field
+    def _field_latest_supplier_data(self, cr, uid, ids, fields, args, 
+            context=None):
+        ''' Update latest supplier field
         '''
         res = {}
+        import pdb; pdb.set_trace()
         for product in self.browse(cr, uid, ids, context=context):
-            res[product.id] = False
-            max_date = False
+            res[product.id] = {
+                'latest_supplier_id': False,
+                'latest_price': False,
+                'latest_price_date': False,
+                }            
             for supplier in product.supplier_ids:
                 for price in supplier.pricelist_ids:
                     if not price.active:
                         continue
+                    max_date = res[product.id]['latest_price_date'] # readability
                     if not max_date or (
                             price.date_quotation and \
                             price.date_quotation > max_date):
-                        max_date = price.date_quotation
-                        res[product.id] = price.suppinfo_id.name.id
+
+                        # This is the latest record:                        
+                        res[product.id]['latest_supplier_id'] = \
+                            price.suppinfo_id.name.id
+                        res[product.id]['latest_price'] = price
+                        res[product.id]['latest_price_date'] = \
+                            price.date_quotation
         return res
         
     # -------------------------------------------------------------------------
@@ -73,12 +84,20 @@ class ProductProduct(orm.Model):
     #    return sol_pool.search(cr, uid, [
     #        ('product_id', 'in', ids),
     #        ], context=context)
-
     _columns = {
-        'last_supplier_id': fields.function(
-            _field_get_last_supplier_id, method=True, 
-            type='many2one', string='Ultima fornitura di', 
-            store=False),
+        'latest_supplier_id': fields.function(
+            _field_latest_supplier_data, method=True, 
+            type='many2one', relation='res.partner', 
+            string='Ultima fornitura di', store=False, 
+            multi=True),
+        'latest_price': fields.function(
+            _field_latest_supplier_data, method=True, 
+            type='many2one', string='Ultimo prezzo',
+            store=False, multi=True),
+        'latest_price_date': fields.function(
+            _field_latest_supplier_data, method=True, 
+            type='date', string='Ultima data prezzo',
+            store=False, multi=True),
                         
         #'order_date': fields.related(
         #    'order_id', 'date_order', type='date',
