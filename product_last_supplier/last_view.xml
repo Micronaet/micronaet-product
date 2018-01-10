@@ -9,23 +9,23 @@
                <field name="seller_ids" position="after">
                     <group colspan="4" col="2">
                         <separator string="Ultimo acquisto:" colspan="4"/>
-                        <field name="latest_supplier_id" />
-                        <field name="latest_price" />
-                        <field name="latest_price_date" />
+                        <field name="recent_supplier_id" />
+                        <!--<field name="last_price" />
+                        <field name="last_price_date" />-->
                    </group>     
                </field>
            </field>
         </record>   
-        <!--<record id="product_product_tree_view_last_supplier_fields" model="ir.ui.view">
+        <record id="product_product_tree_view_last_supplier_fields" model="ir.ui.view">
             <field name="name">Product tree last supplier</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_product_tree_view"/>
             <field name="arch" type="xml">
                <field name="state" position="before">
-                    <field name="last_supplier_id" />
+                    <field name="recent_supplier_id" />
                </field>     
             </field>
-        </record>-->
+        </record>
     </data>
 </openerp>
 

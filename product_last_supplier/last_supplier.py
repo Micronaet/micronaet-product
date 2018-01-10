@@ -38,74 +38,71 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
-class ProductProduct(orm.Model):
-    """ Model name: Product
+class ProductTemplate(orm.Model):
+    """ Model name: Product template
     """
     
-    _inherit = 'product.product'
+    _inherit = 'product.template'
 
-    def _field_latest_supplier_data(self, cr, uid, ids, fields, args, 
+    def _field_last_supplier_data(self, cr, uid, ids, fields, args, 
             context=None):
-        ''' Update latest supplier field
+        ''' Update last supplier field
         '''
         res = {}
         for product in self.browse(cr, uid, ids, context=context):
-            res[product.id] = {
-                'latest_supplier_id': False,
-                'latest_price': False,
-                'latest_price_date': False,
-                }            
-            for supplier in product.supplier_ids:
-                for price in supplier.pricelist_ids:
-                    if not price.active:
+            res[product.id] = False
+            max_date = False
+            for seller in product.seller_ids:
+                for price in seller.pricelist_ids:
+                    if not price.is_active:
                         continue
-                    max_date = res[product.id]['latest_price_date'] # readability
                     if not max_date or (
                             price.date_quotation and \
                             price.date_quotation > max_date):
 
-                        # This is the latest record:                        
-                        res[product.id]['latest_supplier_id'] = \
-                            price.suppinfo_id.name.id
-                        res[product.id]['latest_price'] = price
-                        res[product.id]['latest_price_date'] = \
-                            price.date_quotation
+                        # This is the last record:
+                        res[product.id] = seller.name.id
+                        max_date = price.date_quotation
         return res
         
     # -------------------------------------------------------------------------
     # Store function:
     # -------------------------------------------------------------------------
-    #def _get_default_code_from_product(self, cr, uid, ids, context=None):
-    #    ''' Change defauld code in product
-    #    '''
-    #    _logger.warning('Change default_code in product.product')
-    #    sol_pool = self.pool.get('sale.order.line')
-    #    return sol_pool.search(cr, uid, [
-    #        ('product_id', 'in', ids),
-    #        ], context=context)
-    _columns = {
-        'latest_supplier_id': fields.function(
-            _field_latest_supplier_data, method=True, 
-            type='many2one', relation='res.partner', 
-            string='Ultima fornitura di', store=False, 
-            multi=True),
-        'latest_price': fields.function(
-            _field_latest_supplier_data, method=True, 
-            type='many2one', string='Ultimo prezzo',
-            store=False, multi=True),
-        'latest_price_date': fields.function(
-            _field_latest_supplier_data, method=True, 
-            type='date', string='Ultima data prezzo',
-            store=False, multi=True),
-                        
-        #'order_date': fields.related(
-        #    'order_id', 'date_order', type='date',
-        #    store={
-        #        'sale.order.line': (
-        #            _get_date_order_from_sol, ['order_id'], 10),
-        #        'sale.order': (
-        #            _get_date_order_from_order, ['date_order'], 10),
-        #        }, string='Order date'),
+    def _store_last_supplier_data(self, cr, uid, ids, context=None):
+        ''' Change supplierinfo data
+        '''
+        _logger.warning('Change name, product_tmpl_id product.supplierinfo')
+        template_ids = []
+        for supp in self.browse(cr, uid, ids, context=context):
+            template_ids.append(supp.product_tmpl_id.id)            
+        return template_ids
+
+    def _store_last_pricelist_data(self, cr, uid, ids, context=None):
+        ''' Change supplierinfo data
+        '''
+        _logger.warning('Change date_quotation pricelist.priceinfo')
+        template_pool = self.pool.get('product.template')
+
+        # Change date get suppinfo list:
+        template_ids = []        
+        for pl in self.browse(cr, uid, ids, context=context):
+            template_ids.append(pl.suppinfo_id.product_tmpl_id.id)
+        return template_ids
+            
+            
+    _last_supplier_store = {
+        'product.supplierinfo': (
+            _store_last_supplier_data, ['name', 'product_tmpl_id'], 10),
+        'pricelist.partnerinfo': (
+            _store_last_pricelist_data, ['date_quotation'], 10),
         }
-    
+        
+    _columns = {
+        'recent_supplier_id': fields.function(
+            _field_last_supplier_data, method=True, 
+            type='many2one', relation='res.partner', 
+            string='Recente fornitura di', 
+            store=_last_supplier_store, 
+            ),
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
