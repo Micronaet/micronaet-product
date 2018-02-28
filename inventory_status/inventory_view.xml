@@ -257,7 +257,8 @@
              <field name="name">sale.order.line.tree</field>
              <field name="model">sale.order.line</field>
              <field name="arch" type="xml">
-                 <tree string="Sale order line" editable="bottom">        
+                 <tree string="Sale order line" editable="bottom" colors="red:previsional==True">        
+                     <field name="previsional" invisible="1" />
                      <field name="order_id" readonly="1"/>
                      <field name="partner_id" readonly="1"/>
                      <field name="name" readonly="1" />
