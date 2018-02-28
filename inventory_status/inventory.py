@@ -568,6 +568,7 @@ class ProductProduct(orm.Model):
             res[line.product_id.id]['mx_oc_out'] += remain
             if line.order_id.previsional:
                 res[line.product_id.id]['mx_oc_out_prev'] += remain
+            # XXX put in else OC ?    
                 
             res[line.product_id.id]['mx_oc_ids'].append(line.id) # one2many
         
