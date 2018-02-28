@@ -109,8 +109,10 @@
 
                      <field name="mx_of_in" readonly="1"/>
                      <button name="get_movements_of" string="OF in" type="object" icon="gtk-goto-last" />
+
                      <field name="mx_oc_out" readonly="1"/>
                      <button name="get_movements_oc" string="OC out" type="object" icon="gtk-goto-last" />
+                     <field name="mx_oc_out_prev" readonly="1" string="- OC out (prev.)"/>
                      
                      <field name="mx_net_qty" readonly="1"/>
                      <field name="mx_lord_qty" readonly="1"/><!--TODO raise error?-->
@@ -177,6 +179,8 @@
                            <newline/>
                            <field name="mx_oc_out" readonly="1" string="- OC out"/>
                            <button name="get_movements_oc" colspan="2" string="OC (out)" type="object" icon="gtk-goto-first" class="oe_link" attrs="{'invisible': [('mx_oc_out', '=', 0)]}" />
+                           <field name="mx_oc_out_prev" readonly="1" string="- OC out (prev.)"/>
+                           <newline/>
                         </group>
                     </sheet>        
                 </form>
@@ -242,6 +246,8 @@
 
                        <field name="mx_oc_out" readonly="1" string="- OC out"/>
                        <button name="get_movements_oc" string="OC (out)" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_oc_out', '=', 0)]}" />
+                       <field name="mx_oc_out_prev" readonly="1" string="- OC out (prev.)"/>
+                       <newline/>
                     </group>
                 </label>    
             </field>

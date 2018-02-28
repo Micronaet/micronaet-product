@@ -428,8 +428,10 @@ class ProductProduct(orm.Model):
                 'mx_mm_qty': 0.0,
                 'mx_of_in': 0.0,
                 'mx_oc_out': 0.0,
+                'mx_oc_out_prev': 0.0,
                 'mx_bf_in': 0.0,
                 'mx_bc_out': 0.0,
+
                 # Total:
                 'mx_net_qty': 0.0,
                 'mx_lord_qty': 0.0,
@@ -624,6 +626,9 @@ class ProductProduct(orm.Model):
         'mx_oc_out': fields.function(
             _get_inventory_values, method=True, type='float', 
             string='OC out', store=False, multi=True),
+        'mx_oc_out_prev': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='OC out (prev.)', store=False, multi=True),
         
         'mx_net_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
@@ -728,6 +733,5 @@ class SaleOrder(orm.Model):
         self.pool.get('res.users').write(cr, uid, [uid], {
             'no_inventory_status': False,
             }, context=context)
-        return     
-       
+        return            
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

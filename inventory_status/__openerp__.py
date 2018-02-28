@@ -36,6 +36,7 @@
         'sale_order_line_stat', # partner_id field
         'l10n_it_ddt', 
         'mx_close_order', # for close parameters
+        'order_previsional', # previsional order management
         ],
     'init_xml': [],
     'demo': [],
