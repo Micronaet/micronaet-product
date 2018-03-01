@@ -429,6 +429,7 @@ class ProductProduct(orm.Model):
                 'mx_of_in': 0.0,
                 'mx_oc_out': 0.0,
                 'mx_oc_out_prev': 0.0,
+                'mx_mrp_b_prev': 0.0,
                 'mx_bf_in': 0.0,
                 'mx_bc_out': 0.0,
 
@@ -568,6 +569,11 @@ class ProductProduct(orm.Model):
             res[line.product_id.id]['mx_oc_out'] += remain
             if line.order_id.previsional:
                 res[line.product_id.id]['mx_oc_out_prev'] += remain
+                # TODO manage B for previsional
+                if 'product_uom_maked_sync_qty' in line._columns:
+                    res[line.product_id.id]['mx_mrp_b_prev'] += \
+                        line.product_uom_maked_sync_qty
+                    
             # XXX put in else OC ?    
                 
             res[line.product_id.id]['mx_oc_ids'].append(line.id) # one2many
@@ -586,7 +592,7 @@ class ProductProduct(orm.Model):
                 res[key]['mx_of_in']
             # TODO - campaign
                 
-            # WIth MRP (unload MP):
+            # With MRP (unload MP):
             res[key]['mx_net_mrp_qty'] = res[key]['mx_net_qty'] - \
                 res_extra[key]['mx_mrp_out']
             res[key]['mx_lord_mrp_qty'] = res[key]['mx_lord_qty'] - \
@@ -633,6 +639,9 @@ class ProductProduct(orm.Model):
         'mx_oc_out_prev': fields.function(
             _get_inventory_values, method=True, type='float', 
             string='OC out (prev.)', store=False, multi=True),
+        'mx_mrp_b_prev': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='B (prod. prev.)', store=False, multi=True),
         
         'mx_net_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
