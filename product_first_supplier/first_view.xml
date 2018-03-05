@@ -23,7 +23,7 @@
             <field name="inherit_id" ref="product.product_product_tree_view"/>
             <field name="arch" type="xml">
                <field name="state" position="before">
-                    <field name="first_supplier_id" />
+                    <field name="first_supplier_id" invisible="1"/>
                </field>     
             </field>
         </record>
