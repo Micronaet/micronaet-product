@@ -218,6 +218,10 @@
                        <newline/>
                        <field name="mx_mrp_b_prev" readonly="1" string="(B prev.):" help="Prodotti da ordini previsionali"/>
                        <newline/>
+
+                       <field name="mx_mrp_b_locked" readonly="1" string="(B lock.):" help="Prodotti per clienti ancora da consegnare"/>
+                       <newline/>
+                       
                        <field name="mx_lord_mrp_qty" readonly="1" string="Total lord*:" help="Also consider MRP unload"/>
                        <newline/>
                        <!--<field name="mx_net_qty" readonly="1" string="Total net:"/>-->

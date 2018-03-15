@@ -431,6 +431,7 @@ class ProductProduct(orm.Model):
                 'mx_oc_out': 0.0,
                 'mx_oc_out_prev': 0.0,
                 'mx_mrp_b_prev': 0.0,
+                'mx_mrp_b_locked': 0.0,
                 'mx_bf_in': 0.0,
                 'mx_bc_out': 0.0,
 
@@ -563,7 +564,7 @@ class ProductProduct(orm.Model):
             ])
             
         for line in sol_pool.browse(cr, uid, sol_ids): # Check delivered:
-            remain = line.product_uom_qty - line.delivered_qty
+            remain = line.product_uom_qty - line.delivered_qty            
             if remain <= 0.0:
                 continue
             
@@ -571,12 +572,19 @@ class ProductProduct(orm.Model):
             if line.order_id.previsional:
                 res[line.product_id.id]['mx_oc_out_prev'] += remain
                 # TODO manage B for previsional
-                if 'product_uom_maked_sync_qty' in line._columns:
+                if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
                     res[line.product_id.id]['mx_mrp_b_prev'] += \
                         line.product_uom_maked_sync_qty
+            else:
+                # B to be delivered (no previsional)
+                if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
+                    locked_qty = \
+                        line.product_uom_maked_sync_qty - line.delivered_qty
+                    if locked_qty > 0.0:
+                        res[line.product_id.id][
+                            'mx_mrp_b_locked'] += locked_qty
                     
-            # XXX put in else OC ?    
-                
+            # XXX put in else OC ?                
             res[line.product_id.id]['mx_oc_ids'].append(line.id) # one2many
         
         # Update with calculated fields        
@@ -643,6 +651,10 @@ class ProductProduct(orm.Model):
         'mx_mrp_b_prev': fields.function(
             _get_inventory_values, method=True, type='float', 
             string='B (prod. prev.)', store=False, multi=True),
+        'mx_mrp_b_locked': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='B (locked)', store=False, multi=True,
+            help='Prodotti per un cliente non consegnati (no prev.)'),
         
         'mx_net_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
