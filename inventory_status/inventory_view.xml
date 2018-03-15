@@ -216,8 +216,8 @@
                        <!--TOTAL BLOCK:-->
                        <field name="mx_net_mrp_qty" readonly="1" string="Total net*:" help="Also consider MRP unload"/>
                        <newline/>
-                       <field name="mx_mrp_b_prev" readonly="1" string="(B prev.):" help="Prodotti da ordini previsionali"/>
-                       <newline/>
+                       <!--<field name="mx_mrp_b_prev" readonly="1" string="(B prev.):" help="Prodotti da ordini previsionali"/>
+                       <newline/>-->
 
                        <field name="mx_mrp_b_locked" readonly="1" string="(B lock.):" help="Prodotti per clienti ancora da consegnare"/>
                        <newline/>
