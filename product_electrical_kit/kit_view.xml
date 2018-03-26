@@ -69,10 +69,12 @@
                     <label for="kit"/>
                 </field>
                 <xpath expr="//page[1]" position="after">
-                    <page string="Kit">
-                        <field name="kit_variant" />
-                        <field name="kit_variant_check" attrs="{'invisible': [('kit_variant_check','=',False)]}"/>
-                        <field name="component_ids" context="{'embedded':True}"/>
+                    <page string="Kit" attrs="{'invisible': [('kit','=',False)]}">
+                        <group colspan="4" col="4">
+                            <field name="kit_variant" />
+                            <field name="kit_variant_check" attrs="{'invisible': [('kit_variant_check','=',False)]}"/>
+                            <field name="component_ids" context="{'embedded':True}"/>
+                        </group>
                     </page>
                 </xpath>
             </field>
