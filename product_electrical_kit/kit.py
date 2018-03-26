@@ -72,6 +72,22 @@ class ProductProduct(orm.Model):
         res = {}
         for item in self.browse(cr, uid, ids, context=context):
             res[item.id] = ''
+            check_tot = item.kit_variant
+            if not check_tot:
+                continue
+            groups = {}
+            for cmpt in item.component_ids:
+                categ_id = cmpt.categ_id
+                if not categ_id:
+                    continue
+                if categ_id in groups:
+                    groups[categ_id] += 1
+                else:    
+                    groups[categ_id] = 1
+                
+            for group, tot in groups.iteritems():
+                if tot != check_tot:
+                    res[item.id] += '%s [%s]' % (group.name, tot)
         return res
         
     _columns = {

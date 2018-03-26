@@ -6,9 +6,9 @@
             <field name="name">product.product.kit.tree</field>
             <field name="model">product.product.kit</field>
             <field name="arch" type="xml">
-                <tree string="Kit" editable="bottom" color="grey:categ_id!=False">        
+                <tree string="Kit" editable="bottom" colors="blue:categ_id!=False">        
                     <field name="product_id" invisible="context.get('embedded',False)"/>
-                    <field name="component_id" />
+                    <field name="component_id" domain="[('id', '!=', product_id)]"/>
                     <field name="qty" />
                     <field name="categ_id" />
                 </tree>
@@ -22,7 +22,7 @@
                     <sheet>
                         <group colspan="4" col="4">
                             <field name="product_id" invisible="context.get('embedded',False)"/>
-                            <field name="component_id" />
+                            <field name="component_id" domain="[('id', '!=', product_id)]" />
                             <field name="qty" />
                             <field name="categ_id" />
                         </group>    
@@ -54,6 +54,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_product_product_kit_tree"/>
+            <field name="search_view_id" ref="view_product_product_kit_search"/>
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
@@ -73,7 +74,7 @@
                         <group colspan="4" col="4">
                             <field name="kit_variant" />
                             <field name="kit_variant_check" attrs="{'invisible': [('kit_variant_check','=',False)]}"/>
-                            <field name="component_ids" context="{'embedded':True}"/>
+                            <field name="component_ids" context="{'embedded':True,'default_product_id': active_id}" nolabel="1" colspan="4"/>
                         </group>
                     </page>
                 </xpath>
