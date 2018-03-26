@@ -66,6 +66,43 @@ class ProductProduct(orm.Model):
     
     _inherit = 'product.product'
     
+    def extract_check_report_xlsx(self, cr, uid, ids, context=None):
+        ''' Report for check kit definition
+        '''
+        # Pool used:
+        excel_pool = self.pool.get('excel.writer')
+        
+        # ---------------------------------------------------------------------
+        # Collect data:
+        # ---------------------------------------------------------------------
+        current_proxy = self.browse(cr, uid, ids, context=context)[0]
+        brand_db = {} # NOTE: False >> common part
+        title = []        
+        for line in current_proxy.component_ids: 
+            brand = line.categ_id:
+            if brand in brand_db:
+                brand_db[brand].append(line)
+            else:    
+                brand_db[brand] = [line]
+                title.extend([
+                    5, # qty
+                    15, # code
+                    40, # name
+                    10, # price
+                    1 # space
+                    ])
+
+        # ---------------------------------------------------------------------
+        # Generate XLS file:
+        # ---------------------------------------------------------------------
+        ws_name = _('KIT Check')        
+        excel_pool.create_worksheet(name=ws_name)
+        excel_pool.column_width(ws_name, title)
+        
+        #write_xls_line(ws_name, row, line, default_format=False)
+        return excel_pool.return_attachment(
+            cr, uid, name='KIT Check', name_of_file='kit_check.xlsx') 
+        
     def _check_kit_variant(self, cr, uid, ids, fields, args, context=None):
         ''' Fields function for calculate 
         '''
@@ -87,7 +124,7 @@ class ProductProduct(orm.Model):
                 
             for group, tot in groups.iteritems():
                 if tot != check_tot:
-                    res[item.id] += '%s [%s]' % (group.name, tot)
+                    res[item.id] += '%s [%s]\n' % (group.name, tot)
         return res
         
     _columns = {

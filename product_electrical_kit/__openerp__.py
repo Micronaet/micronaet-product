@@ -32,11 +32,12 @@
     'depends': [
         'base',
         'product',
+        'excel_export', # Report XLSX
         ],
     'init_xml': [],
     'demo': [],
     'data': [
-        #'security/ir.model.access.csv',    
+        'security/ir.model.access.csv',    
         'kit_view.xml',
         ],
     'active': False,

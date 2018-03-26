@@ -38,8 +38,10 @@
                     <field name="product_id" />
                     <field name="component_id" />
                     <field name="categ_id" />                    
-                    <!--<field name="partner_id" filter_domain="[('partner_id','=',self)]"/>
-                    <filter name="state_draft" string="Draft state" domain="[('state','=','draft')]"/>-->
+                    
+                    <filter name="categ_brand_on" string="With brand" domain="[('categ_id','!=',False)]"/>
+                    <filter name="categ_brand_off" string="Without brand" domain="[('categ_id','=',False)]"/>
+                    <!--<field name="partner_id" filter_domain="[('partner_id','=',self)]"/>-->
                     <group expand="0" string="Group By...">
                         <filter name="group_categ" string="Brand" context="{'group_by': 'categ_id'}"/>
                         <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
@@ -78,6 +80,16 @@
                         </group>
                     </page>
                 </xpath>
+            </field>
+        </record>        
+        <record model="ir.ui.view" id="view_product_product_search">
+            <field name="name">product.product.search</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[1]" position="before">
+                    <filter name="product_kit" string="KIT" domain="[('kit','=',True)]"/>
+                </xpath>    
             </field>
         </record>
         
