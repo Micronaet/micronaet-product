@@ -760,4 +760,20 @@ class SaleOrder(orm.Model):
             'no_inventory_status': False,
             }, context=context)
         return            
+
+class ProductProductStartInventory(orm.Model):
+    ''' Model name: Product Product
+    '''   
+    _name = 'product.product.start.inventory'
+    _description = 'Start inventory'
+    _rec_name = 'product_qty'
+    _order = 'date'
+    
+    _columns = {
+        'product_id': fields.many2one('product.product', 'Product'),
+        'date': fields.date('Start date'),
+        'product_qty': fields.float('Inventory start qty', 
+            digits=(16, 2), help='Inventory at 1/1 for current year'),
+        }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
