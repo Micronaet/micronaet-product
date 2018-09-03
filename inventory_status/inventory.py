@@ -769,11 +769,72 @@ class ProductProductStartInventory(orm.Model):
     _rec_name = 'product_qty'
     _order = 'date'
     
+    # -------------------------------------------------------------------------
+    # Utility (launched once a year):
+    # -------------------------------------------------------------------------
+    def history_all_product_inventory(self, cr, uid, new_date, context=None):
+        ''' Create empty inventory load and save new_date as start value
+        '''
+        # TODO activate (very risky)
+        #query = '''
+        #    UPDATE product_product
+        #    SET 
+        #        mx_start_qty = 0.0,
+        #        mx_start_date = '%s'
+        #    ''' % new_date
+        #    
+        #cr.execute(query)                    
+        return True
+        
+    def history_all_product_inventory(self, cr, uid, current_date, 
+            context=None):
+        ''' Save all product status now
+        '''
+        if not current_date:
+            _logger.error('No current data error!')
+            return False
+        
+        # Product to make history:    
+        product_pool = self.pool.get('product.product')
+        product_ids = product_pool.search([
+            ('mx_start_date', '=', current_date),
+            ])
+        _logger.info('Selected %s product with date: %s' % (
+            len(product_ids),
+            current_date,
+            ))
+
+        # Delete previous history:
+        unlink_ids = self.search(cr, uid, [
+            ('date', '=', current_date),
+            ('product_id', 'in', product_ids),
+            ])
+        self.unlink(cr, uid, unlink_ids, context=context)
+        _logger.info('Unlink previous history product # %s' % (
+            len(product_ids),
+            ))
+        
+        # History only value present:
+        for product in self.browse(cr, uid, product_ids, context=context):
+            self.create(cr, uid, {
+                'product_id': product.id,
+                'date': current_date,
+                'product_qty': product.mx_start_qty, 
+                }, context=context)
+        _logger.info('End history procedure')
+        return True
+        
     _columns = {
         'product_id': fields.many2one('product.product', 'Product'),
         'date': fields.date('Start date'),
         'product_qty': fields.float('Inventory start qty', 
             digits=(16, 2), help='Inventory at 1/1 for current year'),
+            
+        # Not used for now:
+        'load_qty': fields.float('Load qty', 
+            digits=(16, 2), help='Load q. in the year'),
+        'unload_qty': fields.float('Unload qty', 
+            digits=(16, 2), help='Unload q. in the year'),
         }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
