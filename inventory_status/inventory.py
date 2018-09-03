@@ -815,7 +815,8 @@ class ProductProductStartInventory(orm.Model):
             ))
         
         # History only value present:
-        for product in self.browse(cr, uid, product_ids, context=context):
+        for product in product_pool.browse(
+                cr, uid, product_ids, context=context):
             self.create(cr, uid, {
                 'product_id': product.id,
                 'date': current_date,
