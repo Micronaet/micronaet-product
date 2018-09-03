@@ -796,7 +796,7 @@ class ProductProductStartInventory(orm.Model):
         
         # Product to make history:    
         product_pool = self.pool.get('product.product')
-        product_ids = product_pool.search([
+        product_ids = product_pool.search(cr, uid, [
             ('mx_start_date', '=', current_date),
             ])
         _logger.info('Selected %s product with date: %s' % (
