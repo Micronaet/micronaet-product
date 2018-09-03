@@ -794,7 +794,6 @@ class ProductProductStartInventory(orm.Model):
             _logger.error('No current data error!')
             return False
         
-        import pdb; pdb.set_trace()
         # Product to make history:    
         product_pool = self.pool.get('product.product')
         product_ids = product_pool.search(cr, uid, [
@@ -805,7 +804,6 @@ class ProductProductStartInventory(orm.Model):
             current_date,
             ))
 
-        import pdb; pdb.set_trace()
         # Delete previous history:
         unlink_ids = self.search(cr, uid, [
             ('date', '=', current_date),
@@ -817,7 +815,6 @@ class ProductProductStartInventory(orm.Model):
             ))
         
         # History only value present:
-        import pdb; pdb.set_trace()
         for product in product_pool.browse(
                 cr, uid, product_ids, context=context):
             self.create(cr, uid, {
@@ -826,7 +823,6 @@ class ProductProductStartInventory(orm.Model):
                 'product_qty': product.mx_start_qty, 
                 }, context=context)
         _logger.info('End history procedure')
-        import pdb; pdb.set_trace()
         return True
         
     _columns = {
