@@ -766,7 +766,7 @@ class ProductProductStartInventory(orm.Model):
     '''   
     _name = 'product.product.start.inventory'
     _description = 'Start inventory'
-    _rec_name = 'product_qty'
+    _rec_name = 'product_id'
     _order = 'date'
     
     # -------------------------------------------------------------------------
@@ -815,6 +815,7 @@ class ProductProductStartInventory(orm.Model):
             ))
         
         # History only value present:
+        import pdb; pdb.set_trace()
         for product in product_pool.browse(
                 cr, uid, product_ids, context=context):
             self.create(cr, uid, {
