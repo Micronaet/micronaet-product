@@ -336,7 +336,8 @@
         <record model="ir.ui.view" id="view_res_partner_extra_cost_form">
             <field name="name">res.partner.extra.form</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form"/>
+            <!--<field name="inherit_id" ref="base.view_partner_form"/>-->
+            <field name="inherit_id" ref="account.view_partner_property_form"/>            
             <field name="arch" type="xml">
                 <field name="property_account_position" position="after">
                     <field name="cost_currency_id" />
