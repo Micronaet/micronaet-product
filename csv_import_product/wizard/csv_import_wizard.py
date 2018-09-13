@@ -149,6 +149,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         from_line -= 1 # Start from 0 (different from line number)
 
         for i in range(from_line, to_line or 10000):
+            import pdb; pdb.set_trace()
             #  Prepare new record:
             data = {}
             for lang in lang_trace:
@@ -160,9 +161,11 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 annotation += _('Import end at line: %s\n') % i
                 break
             try:
+                error_comment = ''
                 # Loop on colums (trace)                
                 default_code = False
                 for col, field in column_trace.iteritems():
+                    error_comment = 'Col %s Field %s' % (col, field)
                     try:        
                         v = row[col - 1].value
                     except: 
@@ -248,8 +251,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                             context=context)
                 _logger.info('Update product code: %s' % default_code)            
             except:
-                error += _('%s. Import error code: <b>%s</b> [%s]</br>') % (
-                    i, default_code, sys.exc_info())
+                error += _('%s. Import error code: <b>%s</b> [%s] %s</br>') % (
+                    i, default_code, sys.exc_info(), error_comment)
 
         # End operations:    
         context['lang'] = current_lang

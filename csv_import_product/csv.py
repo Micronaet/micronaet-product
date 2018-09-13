@@ -85,50 +85,51 @@ class ProductProductImportationTraceColumn(orm.Model):
         ''' Keep list in function for update in other modules
         '''
         return [
-        ('name', 'Name'),
-        ('ean13', 'EAN 13'),
-        ('supplier_ean13', 'Supplier EAN 13'),
+            ('name', 'Name'),
+            ('ean13', 'EAN 13'),
+            ('supplier_ean13', 'Supplier EAN 13'),
 
-        ('default_code', 'Product code (key field)'), # Key field
-        ('description_sale', 'Sale description'), # Lang
-        
-        ('default_supplier_code', 'Purchase product code'),
-        ('description_purchase', 'Purchase description'), # Lang
-        ('large_description', 'Extended description for web'),        
+            ('default_code', 'Product code (key field)'), # Key field
+            ('description_sale', 'Sale description'), # Lang
+            
+            ('default_supplier_code', 'Purchase product code'),
+            ('description_purchase', 'Purchase description'), # Lang
+            ('large_description', 'Extended description for web'),        
+            ('statistic_category', 'Cat. Statistica'),
 
-        ('colour_code', 'Supplier color code'),
-        ('colour', 'Our colour'),
-        ('fabric', 'Supplier material'),
+            ('colour_code', 'Supplier color code'),
+            ('colour', 'Our colour'),
+            ('fabric', 'Supplier material'),
 
-        ('length', 'Length'),
-        ('width', 'Width'),
-        ('height', 'Height'),
-        ('seat_height', 'Seat Height'),
-        ('diameter', 'Diameter'),
-        # Weight?
-        
-        ('volume', 'Volume'),
-        ('pack', 'Package'),
-        #('item_per_box', 'Item x pack'),
-        ('q_x_pack', 'Q. x pack'),
-        ('colls', 'Colls'),
-        ('pz_x_container', 'Pieces per container'),
-        ('item_per_camion', 'Pieces per camion'),
-       
-        ('package_type', 'Package type'),
-        ('pack_l', 'Package length'),
-        ('pack_p', 'Package width'),
-        ('pack_h', 'Package height'),
+            ('length', 'Length'),
+            ('width', 'Width'),
+            ('height', 'Height'),
+            ('seat_height', 'Seat Height'),
+            ('diameter', 'Diameter'),
+            # Weight?
+            
+            ('volume', 'Volume'),
+            ('pack', 'Package'),
+            #('item_per_box', 'Item x pack'),
+            ('q_x_pack', 'Q. x pack'),
+            ('colls', 'Colls'),
+            ('pz_x_container', 'Pieces per container'),
+            ('item_per_camion', 'Pieces per camion'),
+           
+            ('package_type', 'Package type'),
+            ('pack_l', 'Package length'),
+            ('pack_p', 'Package width'),
+            ('pack_h', 'Package height'),
 
-        ('lst_price', 'Sale price'),
-        ('standard_price', 'Cost price'),
-        ('cost_in_stock', 'Cost in stock'),
-        ('cost_for_sale', 'Cost for sale'),
+            ('lst_price', 'Sale price'),
+            ('standard_price', 'Cost price'),
+            ('cost_in_stock', 'Cost in stock'),
+            ('cost_for_sale', 'Cost for sale'),
 
-        # Not used now:
-        ('weight', 'Weight'),
-        ('weight_net', 'Weight net'),       
-        ]
+            # Not used now:
+            ('weight', 'Weight'),
+            ('weight_net', 'Weight net'),       
+            ]
 
     def _get_user_lang(self, cr, uid, context=None):
         ''' Get user language
