@@ -149,7 +149,6 @@ class ProductProductCsvImportWizard(orm.TransientModel):
         from_line -= 1 # Start from 0 (different from line number)
 
         for i in range(from_line, to_line or 10000):
-            import pdb; pdb.set_trace()
             #  Prepare new record:
             data = {}
             for lang in lang_trace:
@@ -165,7 +164,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 # Loop on colums (trace)                
                 default_code = False
                 for col, field in column_trace.iteritems():
-                    error_comment = 'Col %s Field %s' % (col, field)
+                    error_comment = 'Col %s Field %s' % (col, field.field)
                     try:        
                         v = row[col - 1].value
                     except: 
