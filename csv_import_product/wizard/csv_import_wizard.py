@@ -164,6 +164,8 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                 # Loop on colums (trace)                
                 default_code = False
                 for col, field in column_trace.iteritems():
+                    if field.field == 'fabric':
+                        import pdb; pdb.set_trace()
                     error_comment = 'Col %s Field %s' % (col, field.field)
                     try:        
                         v = row[col - 1].value
