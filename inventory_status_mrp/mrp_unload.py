@@ -45,7 +45,8 @@ class MrpProduction(orm.Model):
     
     _inherit = 'mrp.production'
     
-    def schedule_unload_mrp_material(self, cr, uid, context=None):
+    def schedule_unload_mrp_material(self, cr, uid, from_date=False, 
+            context=None):
         ''' Update product field with unloaded elements
         '''
         # ---------------------------------------------------------------------
@@ -61,6 +62,9 @@ class MrpProduction(orm.Model):
             self.counter += 1
             return
             
+        if not from_date:
+            _logger.error('Pass from date to the procedure!!!')
+            return False
         # ---------------------------------------------------------------------
         # XLS log export:        
         # ---------------------------------------------------------------------
@@ -83,7 +87,7 @@ class MrpProduction(orm.Model):
             ])        
         
         # After inventory date:
-        from_date = '2018-09-01 00:00:00'
+        #from_date = '2018-09-01 00:00:00'
         # TODO TODO get_range_inventory_date(self, cr, uid, context=None)
         
         mrp_ids = self.search(cr, uid, [        
