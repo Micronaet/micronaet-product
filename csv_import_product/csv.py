@@ -77,6 +77,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             'standard_price',
             'cost_in_stock',
             'cost_for_sale',
+            'lst_price',
             #'item_per_box', 'colls', 
             #'weight', 'weight_net',
             ]
