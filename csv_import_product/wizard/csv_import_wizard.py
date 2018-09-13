@@ -175,7 +175,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                         
                     # ---------------------------------------------------------    
                     #       Default_code:
-                    # ---------------------------------------------------------    
+                    # ---------------------------------------------------------
                     if field.field == 'default_code': # key:
                         default_code = v
                     
@@ -250,6 +250,7 @@ class ProductProductCsvImportWizard(orm.TransientModel):
                             context=context)
                 _logger.info('Update product code: %s' % default_code)            
             except:
+                import pdb; pdb.set_trace()
                 error += _('%s. Import error code: <b>%s</b> [%s] %s</br>') % (
                     i, default_code, sys.exc_info(), error_comment)
 
