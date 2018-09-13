@@ -65,6 +65,7 @@ class MrpProduction(orm.Model):
         if not from_date:
             _logger.error('Pass from date to the procedure!!!')
             return False
+        _logger.info('Start inventory MRP used from %s' % from_date)    
         # ---------------------------------------------------------------------
         # XLS log export:        
         # ---------------------------------------------------------------------
@@ -87,7 +88,6 @@ class MrpProduction(orm.Model):
             ])        
         
         # After inventory date:
-        #from_date = '2018-09-01 00:00:00'
         # TODO TODO get_range_inventory_date(self, cr, uid, context=None)
         
         mrp_ids = self.search(cr, uid, [        
