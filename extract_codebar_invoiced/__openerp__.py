@@ -37,7 +37,7 @@
         'excel_export',
         'account',
         'product',
-        'ean_single',
+        #'ean_single',
         ],
     'init_xml': [],
     'demo': [],
