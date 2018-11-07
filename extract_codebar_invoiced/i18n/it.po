@@ -1,0 +1,84 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* extract_codebar_invoiced
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-07 12:21+0000\n"
+"PO-Revision-Date: 2018-11-07 13:22+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: it\n"
+"X-Generator: Poedit 1.6.10\n"
+
+#. module: extract_codebar_invoiced
+#: view:account.invoice.extract.codebar.wizard:extract_codebar_invoiced.account_invoice_extract_codebar_wizard_view
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: extract_codebar_invoiced
+#: field:account.invoice.extract.codebar.wizard,create_uid:0
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: extract_codebar_invoiced
+#: field:account.invoice.extract.codebar.wizard,create_date:0
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: extract_codebar_invoiced
+#: view:account.invoice.extract.codebar.wizard:extract_codebar_invoiced.account_invoice_extract_codebar_wizard_view
+msgid "Done"
+msgstr "Fatto"
+
+#. module: extract_codebar_invoiced
+#: model:ir.actions.act_window,name:extract_codebar_invoiced.action_account_invoice_extract_codebar_wizard_view
+#: model:ir.ui.menu,name:extract_codebar_invoiced.menu_account_invoice_extract_codebar_wizard_view
+msgid "Extract invoiced product EAN"
+msgstr "Estrai EAN prodotti fatturati"
+
+#. module: extract_codebar_invoiced
+#: field:account.invoice.extract.codebar.wizard,from_date:0
+msgid "From date >="
+msgstr "Dalla data >="
+
+#. module: extract_codebar_invoiced
+#: field:account.invoice.extract.codebar.wizard,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: extract_codebar_invoiced
+#: field:account.invoice.extract.codebar.wizard,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: extract_codebar_invoiced
+#: field:account.invoice.extract.codebar.wizard,write_date:0
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: extract_codebar_invoiced
+#: field:account.invoice.extract.codebar.wizard,partner_id:0
+msgid "Partner"
+msgstr "Partner"
+
+#. module: extract_codebar_invoiced
+#: help:account.invoice.extract.codebar.wizard,partner_id:0
+msgid "Partner selected"
+msgstr "Partner selezionato"
+
+#. module: extract_codebar_invoiced
+#: field:account.invoice.extract.codebar.wizard,to_date:0
+msgid "To date <="
+msgstr "Alla data <="
+
+#. module: extract_codebar_invoiced
+#: view:account.invoice.extract.codebar.wizard:extract_codebar_invoiced.account_invoice_extract_codebar_wizard_view
+msgid "Wizard"
+msgstr "Wizard"
