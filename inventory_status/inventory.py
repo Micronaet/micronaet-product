@@ -349,9 +349,10 @@ class ProductProduct(orm.Model):
         # Company 1 standard:
         now = datetime.now()
         season_year = now.year
-        # TODO after start inv.
-        #from_date = '%s-01-01 00:00:00' % season_year 
-        from_date = '2018-01-01 00:00:00' # TODO REMOVE!!!!!!
+
+        # Update inventory now: 30/01/2019
+        from_date = '%s-01-01 00:00:00' % season_year 
+        #from_date = '2019-01-01 00:00:00' # TODO REMOVE!!!!!!
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False) # limit for invent.
