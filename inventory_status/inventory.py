@@ -82,14 +82,7 @@ class ProductProduct(orm.Model):
             loc_out, context=None):
         ''' Return movement for product and move type passed
         '''
-        # TODO
-        #move_pool = self.pool.get('stock.move')
-        #move_ids = move_pool.search(cr, uid, [
-        #    ('location_id', '=', loc_in),
-        #    ('location_desc_id', '=', loc_out),
-        #    ('product_id', '=', product_id),
-        #    ], context=context)
-        return []#move_ids
+        return []
         
     def get_stock_movement_from_type(self, cr, uid, product_id, type_id, 
             context=None):
@@ -98,12 +91,7 @@ class ProductProduct(orm.Model):
         type_pool = self.pool.get('stock.picking.type')
         type_proxy = type_pool.browse(cr, uid, type_id, context=context)
         
-        return [] # TODO
-        #return self.get_stock_movement_from_in_to_out(
-        #    cr, uid, product_id,
-        #    type_proxy.default_location_src_id.id, 
-        #    type_proxy.default_location_dest_id.id, 
-        #    context=context)
+        return []
         
     def get_movements_type(self, cr, uid, ids, move, context=None):
         ''' Open movements with type passed as:
