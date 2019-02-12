@@ -469,15 +469,17 @@ class ProductProduct(orm.Model):
                 ('state', '!=', 'cancel'), # actived 22/11/2017
                 ])
             for line in move_pool.browse(cr, uid, line_ids, context=context):
-                if 'mx_inv_ids' not in res[line.product_id.id]:
-                    res[line.product_id.id]['mx_inv_ids'] = []
-                res[line.product_id.id]['mx_inv_ids'].append(line.id)
+                product_id = line.product_id.id
+                if 'mx_inv_ids' in res[product_id]:
+                    res[product_id]['mx_inv_ids'].append(line.id)
+                else: # Init setup:
+                    res[product_id]['mx_inv_ids'] = [line.id]
                 
                 if line.location_id.id == stock_location_id:
-                    res[line.product_id.id][
+                    res[product_id][
                         'mx_inv_qty'] -= line.product_uom_qty
                 elif line.location_dest_id.id == stock_location_id:                        
-                    res[line.product_id.id][
+                    res[product_id][
                         'mx_inv_qty'] += line.product_uom_qty
         else:    
             _logger.error('No stock location set up in Company!!!')
@@ -485,12 +487,10 @@ class ProductProduct(orm.Model):
         # ---------------------------------------------------------------------
         # BC. Get unload picking
         # ---------------------------------------------------------------------
-        out_picking_type_ids = []
-        
         # Delivery out:
-        for item in company_proxy.stock_report_unload_ids:
-            out_picking_type_ids.append(item.id)
-            
+        out_picking_type_ids = [
+            item.id for item in company_proxy.stock_report_unload_ids]
+        
         # MRP out
         for item in company_proxy.stock_report_mrp_out_ids:
             if item.id not in out_picking_type_ids:
