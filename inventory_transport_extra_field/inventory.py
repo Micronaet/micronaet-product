@@ -44,6 +44,9 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
     
     _columns = {
+        'inventory_cost_only_buy': fields.float(
+            'Inventario costo solo acq.', digits=(16, 3),
+            help='Init cost for no move product'),
         'inventory_cost_no_move': fields.float(
             'Cost no move', digits=(16, 3),
             help='Init cost for no move product'),

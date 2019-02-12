@@ -9,6 +9,7 @@
                 <xpath expr="//group[@name='inventory']" position="after">
                     <group colspan="4" col="2">
                         <separator string="Inventory purchase field:" colspan="2"/>
+                        <field name="inventory_cost_only_buy" />
                         <field name="inventory_cost_no_move" />
                         <field name="inventory_cost_transport" />
                         <field name="inventory_cost_exchange" />                
