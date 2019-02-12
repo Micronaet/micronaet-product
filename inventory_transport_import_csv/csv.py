@@ -49,6 +49,7 @@ class ProductProductImportationTraceColumn(orm.Model):
         res = super(
             ProductProductImportationTraceColumn, self).get_float_list()        
         res.extend([
+            'inventory_cost_only_buy',
             'inventory_cost_no_move',
             'inventory_cost_transport',
             'inventory_cost_exchange',
@@ -61,6 +62,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             ProductProductImportationTraceColumn, self)._get_field_list(
                 cr, uid, context=context)
         res.extend([
+            ('inventory_cost_only_buy', 'Inventario costo solo acq.'),
             ('inventory_cost_no_move', 'Inventory start cost'),
             ('inventory_cost_transport', 'Purchase transport cost'),
             ('inventory_cost_exchange', 'Purchase USD exchange'),
