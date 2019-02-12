@@ -389,7 +389,6 @@ class ProductProduct(orm.Model):
         _logger.warning('USER: %s' % user_id)
 
         # pool used:
-        product_pool = self.pool.get('product.product')
         pick_pool = self.pool.get('stock.picking')
         sale_pool = self.pool.get('sale.order') # XXX maybe not used 
         sol_pool = self.pool.get('sale.order.line') # XXX maybe not used 
@@ -414,8 +413,7 @@ class ProductProduct(orm.Model):
         # ------------------
         # Create empty dict:
         # ------------------
-        for product in product_pool.browse(
-                cr, uid, product_ids, context=context):
+        for product in self.browse(cr, uid, product_ids, context=context):
            # Extra data used     
             res_extra[product.id] = {
                 'mx_mrp_out': product.mx_mrp_out, # TODO remove when stock move
