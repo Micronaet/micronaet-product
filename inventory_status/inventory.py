@@ -75,9 +75,9 @@ class ProductProduct(orm.Model):
     '''   
     _inherit = 'product.product'
     
-    # --------
+    # -------------------------------------------------------------------------
     # Utility:
-    # --------
+    # -------------------------------------------------------------------------
     def get_stock_movement_from_in_to_out(self, cr, uid, product_id, loc_in, 
             loc_out, context=None):
         ''' Return movement for product and move type passed
@@ -89,8 +89,7 @@ class ProductProduct(orm.Model):
         ''' Return movement for product and move type passed
         '''
         type_pool = self.pool.get('stock.picking.type')
-        type_proxy = type_pool.browse(cr, uid, type_id, context=context)
-        
+        type_proxy = type_pool.browse(cr, uid, type_id, context=context)        
         return []
         
     def get_movements_type(self, cr, uid, ids, move, context=None):
@@ -509,11 +508,11 @@ class ProductProduct(orm.Model):
         line_ids = move_pool.search(cr, uid, [
             # Line:
             ('product_id', 'in', product_ids),
-            ('state', '!=', 'cancel'), # actived 22/11/2017
+            ('state', '!=', 'cancel'),
             
             # Header:
             ('picking_id.picking_type_id', 'in', in_picking_type_ids),            
-            #('picking_id.date', '>=', from_date), # XXX Open botom search:
+            #('picking_id.date', '>=', from_date), # XXX Open bottom search:
             ('picking_id.date', '<=', to_date),
             ], context=context)
 
@@ -525,8 +524,7 @@ class ProductProduct(orm.Model):
                 res[line.product_id.id]['mx_of_date'] += '%s ' % ((
                     line.date_expected or '')[:10])    
                                     
-            # XXX Note: Added 02/01/2017 elif clause instead of else
-            elif line.picking_id.date >= from_date: # done BF
+            elif line.picking_id.date >= from_date: # Done BF
                 res[line.product_id.id]['mx_bf_in'] += line.product_uom_qty
                 res[line.product_id.id]['mx_bf_ids'].append(line.id) # one2many
         
