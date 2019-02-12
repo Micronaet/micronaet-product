@@ -415,6 +415,8 @@ class ProductProduct(orm.Model):
                 'mx_mrp_b_locked': 0.0,
                 'mx_bf_in': 0.0,
                 'mx_bc_out': 0.0,
+                
+                'mx_assigned_qty': 0.0,
 
                 # Total:
                 'mx_net_qty': 0.0,
@@ -517,16 +519,16 @@ class ProductProduct(orm.Model):
             ], context=context)
 
         for line in move_pool.browse(cr, uid, line_ids, context=context):
+            product_id = line.product_id.id
             if line.state == 'assigned': # OF (still open, so keep also prev.)
-                res[line.product_id.id][
+                res[product_id][
                     'mx_of_in'] += line.product_uom_qty
-                res[line.product_id.id]['mx_of_ids'].append(line.id)
-                res[line.product_id.id]['mx_of_date'] += '%s ' % ((
-                    line.date_expected or '')[:10])    
-                                    
+                res[product_id]['mx_of_ids'].append(line.id)
+                res[product_id]['mx_of_date'] += '%s ' % ((
+                    line.date_expected or '')[:10])                                    
             elif line.picking_id.date >= from_date: # Done BF
-                res[line.product_id.id]['mx_bf_in'] += line.product_uom_qty
-                res[line.product_id.id]['mx_bf_ids'].append(line.id) # one2many
+                res[product_id]['mx_bf_in'] += line.product_uom_qty
+                res[product_id]['mx_bf_ids'].append(line.id) # one2many
         
         # ---------------------------------------------------------------------
         # Get order to delivery
@@ -535,7 +537,7 @@ class ProductProduct(orm.Model):
             ('product_id', 'in', product_ids),
             ('mx_closed', '=', False), # Forced as closed
             ('order_id.state', 'not in', ('cancel', 'draft', 'sent')),
-            # XXX Note: no date filter
+            # XXX Note: No date filter
             ])
             
         for line in sol_pool.browse(cr, uid, sol_ids): # Check delivered:
@@ -543,12 +545,13 @@ class ProductProduct(orm.Model):
             if remain <= 0.0:
                 continue
             
-            res[line.product_id.id]['mx_oc_out'] += remain
+            product_id = line.product_id.id
+            res[product_id]['mx_oc_out'] += remain
             if line.order_id.previsional:
-                res[line.product_id.id]['mx_oc_out_prev'] += remain
+                res[product_id]['mx_oc_out_prev'] += remain
                 # TODO manage B for previsional
                 if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
-                    res[line.product_id.id]['mx_mrp_b_prev'] += \
+                    res[product_id]['mx_mrp_b_prev'] += \
                         line.product_uom_maked_sync_qty
             else:
                 # B to be delivered (no previsional)
@@ -556,13 +559,15 @@ class ProductProduct(orm.Model):
                     locked_qty = \
                         line.product_uom_maked_sync_qty - line.delivered_qty
                     if locked_qty > 0.0:
-                        res[line.product_id.id][
+                        res[product_id][
                             'mx_mrp_b_locked'] += locked_qty
                     
             # XXX put in else OC ?                
-            res[line.product_id.id]['mx_oc_ids'].append(line.id) # one2many
+            res[product_id]['mx_oc_ids'].append(line.id) # one2many
         
+        # ---------------------------------------------------------------------
         # Update with calculated fields        
+        # ---------------------------------------------------------------------
         for key in res:
             # Without MRP:
             res[key]['mx_net_qty'] = \
@@ -630,6 +635,12 @@ class ProductProduct(orm.Model):
             _get_inventory_values, method=True, type='float', 
             string='B (locked)', store=False, multi=True,
             help='Prodotti per un cliente non consegnati (no prev.)'),
+
+        # Assigne management:
+        'mx_assigned_qty': fields.function(
+            _get_inventory_values, method=True, type='float', 
+            string='Assigned from stock', store=False, multi=True),
+        # TODO o2m fields necessary?
         
         'mx_net_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
