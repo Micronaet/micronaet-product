@@ -402,12 +402,7 @@ class ProductProduct(orm.Model):
         company_proxy = company_pool.browse(
             cr, uid, company_ids, context=context)[0]
         
-        # Exclude partner list:
-        exclude_partner_ids = [] # NOT USED TO REMOVE!!!!!!
-        for item in company_proxy.stock_explude_partner_ids:
-            exclude_partner_ids.append(item.id)            
-        # Append also this company partner (for inventory)    
-        exclude_partner_ids.append(company_proxy.partner_id.id)
+        # XXX 2019-02-12 Exclude partner list no more used:
         stock_location_id = company_proxy.stock_location_id.id
         
         # ------------------
@@ -489,7 +484,7 @@ class ProductProduct(orm.Model):
         out_picking_type_ids = [
             item.id for item in company_proxy.stock_report_unload_ids]
         
-        # MRP out
+        # Integrate with MRP out
         for item in company_proxy.stock_report_mrp_out_ids:
             if item.id not in out_picking_type_ids:
                 out_picking_type_ids.append(item.id)
@@ -504,7 +499,6 @@ class ProductProduct(orm.Model):
             ('picking_id.date', '>=', from_date), 
             ('picking_id.date', '<=', to_date),
             ('picking_id.picking_type_id', 'in', out_picking_type_ids),
-            # ('partner_id', 'not in', exclude_partner_ids), 
             # TODO add state filter?
             ], context=context)
         
@@ -515,13 +509,11 @@ class ProductProduct(orm.Model):
         # ---------------------------------------------------------------------
         # OF. Get load picking
         # ---------------------------------------------------------------------
-        in_picking_type_ids = []
-        
         # Purchase delivery in:
-        for item in company_proxy.stock_report_load_ids:
-            in_picking_type_ids.append(item.id)
-
-        # MRP delivery in:
+        in_picking_type_ids = [
+            item.id for item in company_proxy.stock_report_load_ids]
+        
+        # Integrate with MRP delivery in:
         for item in company_proxy.stock_report_mrp_in_ids:
             if item.id not in in_picking_type_ids:
                 in_picking_type_ids.append(item.id)
@@ -532,10 +524,8 @@ class ProductProduct(orm.Model):
             ('state', '!=', 'cancel'), # actived 22/11/2017
             
             # Header:
-            # TODO ('partner_id', 'not in', exclude_partner_ids),            
             ('picking_id.picking_type_id', 'in', in_picking_type_ids),            
-            # XXX Note: Only up period filter:
-            #('picking_id.date', '>=', from_date), 
+            #('picking_id.date', '>=', from_date), # XXX Open botom search:
             ('picking_id.date', '<=', to_date),
             ], context=context)
 
