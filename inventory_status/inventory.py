@@ -554,6 +554,7 @@ class ProductProduct(orm.Model):
                     res[product_id]['mx_mrp_b_prev'] += \
                         line.product_uom_maked_sync_qty
             else:
+                # Manage: mx_assigned_qty
                 # B to be delivered (no previsional)
                 if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
                     locked_qty = \
@@ -636,12 +637,14 @@ class ProductProduct(orm.Model):
             string='B (locked)', store=False, multi=True,
             help='Prodotti per un cliente non consegnati (no prev.)'),
 
-        # Assigne management:
+        # Assigned management:
         'mx_assigned_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
-            string='Assigned from stock', store=False, multi=True),
+            string='Assigned from stock', store=False, multi=True,
+            help='Assigned remain to this order'
+            ),
+
         # TODO o2m fields necessary?
-        
         'mx_net_qty': fields.function(
             _get_inventory_values, method=True, type='float', 
             string='Total Net', store=False, multi=True),
@@ -721,6 +724,19 @@ class ResUsers(orm.Model):
             
     _columns = {
         'no_inventory_status': fields.boolean('No inventory status'),
+        }
+
+class SaleOrderLine(orm.Model):
+    """ Model name: SaleOrder
+    """    
+    _inherit = 'sale.order.line'
+
+    _columns = {
+        'mx_assigned_qty': fields.float(
+            string='Manual assigned', 
+            help='Assigned manually from stock (initial q.)'),
+
+        # TODO real assigned net (function field):    
         }
 
 # TODO move away:
