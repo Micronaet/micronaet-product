@@ -416,8 +416,6 @@ class ProductProduct(orm.Model):
                 'mx_bf_in': 0.0,
                 'mx_bc_out': 0.0,
                 
-                'mx_assigned_qty': 0.0,
-
                 # Total:
                 'mx_net_qty': 0.0,
                 'mx_lord_qty': 0.0,
@@ -430,6 +428,7 @@ class ProductProduct(orm.Model):
                 'mx_of_ids': [],
                 'mx_bf_ids': [],
                 'mx_inv_ids': [],
+                'mx_assigned_ids': [],
                 
                 # text info:
                 'mx_of_date': '',           
@@ -541,6 +540,7 @@ class ProductProduct(orm.Model):
             ])
             
         for line in sol_pool.browse(cr, uid, sol_ids): # Check delivered:
+            # Note: No assigned qty for previsional:
             remain = line.product_uom_qty - line.delivered_qty            
             if remain <= 0.0:
                 continue
@@ -554,15 +554,27 @@ class ProductProduct(orm.Model):
                     res[product_id]['mx_mrp_b_prev'] += \
                         line.product_uom_maked_sync_qty
             else:
-                # Manage: mx_assigned_qty
+                # -------------------------------------------------------------
+                # Database with production modules:
                 # B to be delivered (no previsional)
+                # -------------------------------------------------------------
                 if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
-                    locked_qty = \
-                        line.product_uom_maked_sync_qty - line.delivered_qty
-                    if locked_qty > 0.0:
-                        res[product_id][
-                            'mx_mrp_b_locked'] += locked_qty
+                    mrp_qty = line.product_uom_maked_sync_qty
+                else:    
+                    mrp_qty = 0.0
                     
+                # -------------------------------------------------------------
+                # Assigned management:
+                # -------------------------------------------------------------
+                # A. Manage Q assigned or MRP to delivery:
+                locked_qty = \
+                    line.mx_assigned_qty + mrp_qty - line.delivered_qty
+
+                # B. Update total and sale line selector:
+                if locked_qty > 0.0:    
+                    res[product_id]['mx_mrp_b_locked'] += locked_qty
+                    mx_assigned_ids.append(line.id)
+
             # XXX put in else OC ?                
             res[product_id]['mx_oc_ids'].append(line.id) # one2many
         
@@ -637,12 +649,6 @@ class ProductProduct(orm.Model):
             string='B (locked)', store=False, multi=True,
             help='Prodotti per un cliente non consegnati (no prev.)'),
 
-        # Assigned management:
-        'mx_assigned_qty': fields.function(
-            _get_inventory_values, method=True, type='float', 
-            string='Assigned from stock', store=False, multi=True,
-            help='Assigned remain to this order'
-            ),
 
         # TODO o2m fields necessary?
         'mx_net_qty': fields.function(
@@ -687,6 +693,14 @@ class ProductProduct(orm.Model):
             _get_inventory_values, method=True, type='one2many', 
             string='Inv. movement', relation='stock.move',
             store=False, multi=True),
+
+        # Assigned management:
+        'mx_assigned_ids': fields.function(
+            _get_inventory_values, method=True, type='one2many', 
+            string='Assigned sale line', store=False, multi=True,
+            relation='sale.order.line',
+            help='Manually assigned quantity for sale order line'
+            ),
         
         # Text information:
         'mx_of_date': fields.function(
