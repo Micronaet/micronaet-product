@@ -220,7 +220,7 @@
                        <newline/>-->
 
                        <field name="mx_mrp_b_locked" readonly="1" string="(B lock.):" help="Prodotti o assegnati ai clienti e non ancora consegnati" />
-                       <button name="get_locked_qty_list" string="OC bloccati o assegnati" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_mrp_b_locked', '=', 0)]}"/>
+                       <button name="get_locked_qty_list" string="OC (Q. blocc.)" type="object" icon="gtk-goto-first" colspan="1" class="oe_link" attrs="{'invisible': [('mx_mrp_b_locked', '=', 0)]}"/>
                        
                        <field name="mx_lord_mrp_qty" readonly="1" string="Total lord*:" help="Also consider MRP unload"/>
                        <newline/>
@@ -269,8 +269,8 @@
                      <field name="product_id" readonly="1" /> 
                      <field name="product_uom" readonly="1" />
                      <field name="product_uom_qty" readonly="1" sum="Total" />
-                     <field name="mx_assigned_qty" />
-                     <field name="mx_locked_qty" />
+                     <field name="mx_assigned_qty" readonly="1" sum="Assigned"/>
+                     <field name="mx_locked_qty" readonly="1"/>
                      <field name="delivered_qty" readonly="1" />
                      <field name="state" readonly="1" />
                  </tree>

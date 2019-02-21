@@ -607,9 +607,10 @@ class ProductProduct(orm.Model):
                     line.mx_assigned_qty + mrp_qty - delivered_qty
 
                 # B. Update total and sale line selector:
-                if locked_qty > 0.0:    
+                if locked_qty > 0.0:
                     res[product_id]['mx_mrp_b_locked'] += locked_qty
                     res[product_id]['mx_assigned_ids'].append(line.id)
+                # Raise negative (over assigned)?    
 
             # XXX put in else OC ?                
             res[product_id]['mx_oc_ids'].append(line.id) # one2many
@@ -789,7 +790,7 @@ class SaleOrderLine(orm.Model):
         
         for sol in self.browse(cr, uid, ids, context=context):
             if production:
-                mrp_qty = line.product_uom_maked_sync_qty
+                mrp_qty = sol.product_uom_maked_sync_qty
             else:    
                 mrp_qty = 0.0
 
@@ -804,7 +805,7 @@ class SaleOrderLine(orm.Model):
         
     _columns = {
         'mx_assigned_qty': fields.float(
-            string='Manual assigned', 
+            string='Assegnato man.', 
             help='Assigned manually from stock (initial q.)'),
         'mx_locked_qty': fields.function(
             _get_mx_locked_qty, method=True, 
