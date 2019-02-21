@@ -781,11 +781,35 @@ class SaleOrderLine(orm.Model):
     """    
     _inherit = 'sale.order.line'
 
+    def _get_mx_locked_qty(self, cr, uid, ids, fields, args, context=None):
+        ''' Fields function for calculate 
+        '''
+        res = {}
+        production = 'product_uom_maked_sync_qty' in self._columns
+        
+        for sol in self.browse(cr, uid, ids, context=context):
+            if production:
+                mrp_qty = line.product_uom_maked_sync_qty
+            else:    
+                mrp_qty = 0.0
+
+            # TODO manage mx_closed
+            locked_qty = \
+                mrp_qty + sol.mx_assigned_qty - sol.delivered_qty
+            if locked_qty > 0.0:
+                res[sol.id] = locked_qty
+            else:    
+                res[sol.id] = 0.0
+        return res
+        
     _columns = {
         'mx_assigned_qty': fields.float(
             string='Manual assigned', 
             help='Assigned manually from stock (initial q.)'),
-
+        'mx_locked_qty': fields.function(
+            _get_mx_locked_qty, method=True, 
+            type='float', string='Bloccata'), 
+                        
         # TODO real assigned net (function field):    
         }
 

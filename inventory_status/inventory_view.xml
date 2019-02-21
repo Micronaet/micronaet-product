@@ -269,6 +269,8 @@
                      <field name="product_id" readonly="1" /> 
                      <field name="product_uom" readonly="1" />
                      <field name="product_uom_qty" readonly="1" sum="Total" />
+                     <field name="mx_assigned_qty" />
+                     <field name="mx_locked_qty" />
                      <field name="delivered_qty" readonly="1" />
                      <field name="state" readonly="1" />
                  </tree>
