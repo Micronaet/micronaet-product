@@ -223,6 +223,32 @@ class ProductProduct(orm.Model):
                 'view_mode': 'tree,form',
                 'domain': [('id', 'in', item_ids)],
                 }
+        elif move == 'lock':
+            product_proxy = self.browse(cr, uid, ids, context=context)[0]
+            item_ids = [item.id for item in product_proxy.mx_assigned_ids]
+            # TODO change view:
+            try:        
+                tree_view = model_pool.get_object_reference(
+                    cr, uid, 'inventory_status', 
+                    'view_sale_order_line_tree')[1]
+            except:
+                tree_view = False        
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Righe assegnate a cliente',
+                'res_model': 'sale.order.line',
+                'view_type': 'form',
+                'views': [
+                    #(form_view or False, 'form'),
+                    (tree_view or False, 'tree'), 
+                    #(False, 'kanban'),
+                    #(False, 'calendar'), 
+                    #(False, 'graph'),
+                    ],
+                'view_mode': 'tree,form',
+                'domain': [('id', 'in', item_ids)],
+                }
+
         return True # XXX do nothing (error)
 
     def get_movements_oc(self, cr, uid, ids, context=None):
@@ -239,6 +265,10 @@ class ProductProduct(orm.Model):
 
     def get_movements_inv(self, cr, uid, ids, context=None):
         return self.get_movements_type(cr, uid, ids, 'inv', context=context)
+
+    def get_locked_qty_list(self, cr, uid, ids, context=None):
+        return self.get_movements_type(cr, uid, ids, 'lock', context=context)
+        
         
     def dummy_temp(self, cr, uid, ids, context=None):
         ''' Temp button for associate event till no correct association
@@ -540,23 +570,29 @@ class ProductProduct(orm.Model):
             ])
             
         for line in sol_pool.browse(cr, uid, sol_ids): # Check delivered:
-            # Note: No assigned qty for previsional:
-            remain = line.product_uom_qty - line.delivered_qty            
+            # TODO manage mx_close?!?
+            delivered_qty = line.delivered_qty
+            remain = line.product_uom_qty - delivered_qty 
             if remain <= 0.0:
                 continue
             
             product_id = line.product_id.id
             res[product_id]['mx_oc_out'] += remain
+            
             if line.order_id.previsional:
+                # -------------------------------------------------------------
+                # Previsional order:
+                # -------------------------------------------------------------
                 res[product_id]['mx_oc_out_prev'] += remain
                 # TODO manage B for previsional
                 if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
                     res[product_id]['mx_mrp_b_prev'] += \
                         line.product_uom_maked_sync_qty
+
+                # Note: No assigned qty for previsional:
             else:
                 # -------------------------------------------------------------
-                # Database with production modules:
-                # B to be delivered (no previsional)
+                # B to be delivered (no previsional) TEST: DB without MRP:
                 # -------------------------------------------------------------
                 if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
                     mrp_qty = line.product_uom_maked_sync_qty
@@ -568,12 +604,12 @@ class ProductProduct(orm.Model):
                 # -------------------------------------------------------------
                 # A. Manage Q assigned or MRP to delivery:
                 locked_qty = \
-                    line.mx_assigned_qty + mrp_qty - line.delivered_qty
+                    line.mx_assigned_qty + mrp_qty - delivered_qty
 
                 # B. Update total and sale line selector:
                 if locked_qty > 0.0:    
                     res[product_id]['mx_mrp_b_locked'] += locked_qty
-                    mx_assigned_ids.append(line.id)
+                    res[product_id]['mx_assigned_ids'].append(line.id)
 
             # XXX put in else OC ?                
             res[product_id]['mx_oc_ids'].append(line.id) # one2many
