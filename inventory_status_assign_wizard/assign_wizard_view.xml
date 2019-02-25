@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!-- sale.order.line.assign.stock.wizard -->
+       <record id="sale_order_line_assign_stock_wizard_view" model="ir.ui.view">
+            <field name="name">Assign stock wizard</field>
+            <field name="model">sale.order.line.assign.stock.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Assign wizard" version="7.0">
+                   <header>
+                       <button string="Cancel" special="cancel" />
+                       <button string="Remove" confirm="Rimuovo la q. assegnata?"/>
+                       <button name="action_assign_qty" string="Assign" type="object" icon="gtk-jump-to" class="oe_highlight" />
+                   </header>
+                   <group colspan="4" col="4">
+                        <field name="line_id" readonly="1" colspan="4" />
+                        <newline/>
+                        <field name="new_assigned_qty" />
+                        
+                        <separator string="status" colspan="4" />
+                        <field name="status" colspan="4" nolabel="1" readonly="1" widget="html"/>
+                   </group>
+                </form>
+            </field>
+      </record>
+
+      <record model="ir.actions.act_window" id="action_sale_order_line_assign_stock_wizard">
+          <field name="name">Assign stock wizard</field>
+          <field name="res_model">sale.order.line.assign.stock.wizard</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">form</field>
+          <field name="target">new</field>
+          <field name="view_id" ref="sale_order_line_assign_stock_wizard_view"/>
+          <field name="context">{'default_line_id': active_id}</field>
+      </record>
+
+      <record model="ir.ui.view" id="view_sale_order_production_test_form_view">
+            <field name="name">sale.order.assign.stock</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <!--sale.order.line LINE:-->
+                <xpath expr="//page/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+                    <button name="return_view_assign_wizard" string="Assegna magazzino" type="object" icon="STOCK_GOTO_BOTTOM" context="{'default_line_id': active_id}"/>
+                </xpath>
+            </field>
+      </record>
+    </data>
+</openerp>
