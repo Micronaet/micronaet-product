@@ -113,14 +113,22 @@ class SaleOrderLine(orm.Model):
         # D. Remain positive:
         oc_qty = line.product_uom_qty
         delivery_qty = line.delivered_qty
-        remain = oc_qty - delivery_qty
+        assigned = line.mx_assigned_qty # current
 
+        to_assign = oc_qty # all ordered
+        maked = 0.0
+        warning = ''
         if 'product_uom_maked_sync_qty' in line._columns:
             maked = line.product_uom_maked_sync_qty
-            if maked > delivery_qty: # Has maked to delivery:
-                remain -= maked - delivery_qty
+            # XXX if yet production use wait the production?
+            if line.mrp_id:
+                warning = 'PRESENTE UNA PRODUZIONE COLLEGATA'
+            if maked:
+                to_assign = oc_qty - maked # remain to produce
+                warning += ' CON MATERIALE PRECEDENTEMENTE CARICATO'    
+            warning += '!!!'
 
-        if remain <= 0:
+        if to_assign <= 0:
             self.restore_stock_status_user_value(
                 cr, uid, no_inventory_status, context=context)
             raise osv.except_osv(
@@ -129,29 +137,47 @@ class SaleOrderLine(orm.Model):
                     product.default_code or product.name or '?'
                     )),
                 )
+        # XXX To remove assign I cannot add this check!!!
+        #elif abs(to_assign - assigned) <= 0.01: # approx check
+        #    self.restore_stock_status_user_value(
+        #        cr, uid, no_inventory_status, context=context)
+        #    raise osv.except_osv(
+        #        _(u'Errore'), 
+        #        _(u'Al prodotto %s sono già assegnati %s!' % (
+        #            product.default_code or product.name or '?',
+        #            assigned,
+        #            )),
+        #        )
 
         # ---------------------------------------------------------------------
         # Create record for wizard and open:
         # ---------------------------------------------------------------------
         # Default assignement:
-        if remain >= available:
+        if to_assign >= (available + assigned):
             new_assigned_qty = available
         else:
-            new_assigned_qty = remain   
+            new_assigned_qty = to_assign   
             
         wiz_id = wiz_pool.create(cr, uid, {
             'new_assigned_qty': new_assigned_qty,
             'line_id': ids[0],
             'status': '''
-                Attualmente assegnate (prodotte o manuali): <b>%s</b><br/>
-                Assegnabili per il prodotto: <b>%s</b><br/>
-                <i>(Assegnate manualmente in origine: %s)</i>
-                <i>(Mancanti: %s)</i>
+                OC: <b>%s</b><br/>
+                Produzione: <b>%s</b><br/>
+                Consegnate: <b>%s</b><br/><br/>
+                
+                <i>Assegnabili per il prodotto: <b>%s</b><br/>
+                (di cui assegnate a questo in precedenza: <b>%s</b>)<br/></i>
+                
+                <font color="red"><b>%s</b></font>
                 ''' % (
-                    line.mx_locked_qty,
+                    oc_qty,
+                    maked,
+                    delivery_qty,
+                    
                     available,
-                    line.mx_assigned_qty,
-                    remain,
+                    assigned,
+                    warning,
                     )
             }, context=context)
 
