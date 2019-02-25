@@ -9,7 +9,7 @@
                 <form string="Assign wizard" version="7.0">
                    <header>
                        <button string="Cancel" special="cancel" />
-                       <button string="Remove" confirm="Rimuovo la q. assegnata?"/>
+                       <button string="Remove" name="action_remove_qty" confirm="Rimuovo la q. assegnata?" type="object"/>
                        <button name="action_assign_qty" string="Assign" type="object" icon="gtk-jump-to" class="oe_highlight" />
                    </header>
                    <group colspan="4" col="4">
@@ -18,7 +18,7 @@
                         <field name="new_assigned_qty" />
                         
                         <separator string="status" colspan="4" />
-                        <field name="status" colspan="4" nolabel="1" readonly="1" widget="html"/>
+                        <field name="Status" colspan="4" nolabel="1" readonly="1" widget="html"/>
                    </group>
                 </form>
             </field>
@@ -41,7 +41,7 @@
             <field name="arch" type="xml">
                 <!--sale.order.line LINE:-->
                 <xpath expr="//page/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
-                    <button name="return_view_assign_wizard" string="Assegna magazzino" type="object" icon="STOCK_GOTO_BOTTOM" context="{'default_line_id': active_id}"/>
+                    <button name="return_view_assign_wizard" string="Assegna magazzino" type="object" icon="STOCK_GOTO_BOTTOM" />
                 </xpath>
             </field>
       </record>
