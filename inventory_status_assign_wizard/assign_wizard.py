@@ -142,10 +142,12 @@ class SaleOrderLineAssignStockWizard(orm.TransientModel):
         line = line_pool.browse(cr, uid, line_id, context=context)
         product = line.product_id
         available = product.mx_net_mrp_qty - product.mx_mrp_b_locked
-        if available < 0.0:
+        if available <= 0.0:
             raise osv.except_osv(
                 _(u'Errore'), 
-                _(u'Il prodotto non ha quantità disponibili a magazzino!'),
+                _(u'Il prodotto non ha quantità disponibili a magazzino!' % (
+                    product.default_code or product.name or '?'
+                    )),
                 )
         
         return '''
