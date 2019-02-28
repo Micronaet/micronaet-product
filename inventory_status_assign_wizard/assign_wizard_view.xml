@@ -17,8 +17,8 @@
                         <newline/>
                         <field name="new_assigned_qty" />
                         
-                        <separator string="status" colspan="4" />
-                        <field name="Status" colspan="4" nolabel="1" readonly="1" widget="html"/>
+                        <separator string="Status" colspan="4" />
+                        <field name="status" colspan="4" nolabel="1" readonly="1" widget="html"/>
                    </group>
                 </form>
             </field>
