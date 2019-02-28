@@ -155,7 +155,7 @@ class SaleOrderLine(orm.Model):
         # ---------------------------------------------------------------------
         # Default assignement:
         if to_assign >= (available + assigned):
-            new_assigned_qty = available
+            new_assigned_qty = available + assigned
         else:
             new_assigned_qty = to_assign   
             
@@ -163,13 +163,15 @@ class SaleOrderLine(orm.Model):
             'new_assigned_qty': new_assigned_qty,
             'line_id': ids[0],
             'status': '''
-                OC: <b>%s</b><br/>
-                Produzione: <b>%s</b><br/>
-                Consegnate: <b>%s</b><br/><br/>
+                OC originale: <b>[ %s ]</b>  -  
+                Prodotte: <b>[ %s ]</b> - 
+                Consegnate: <b>[ %s ]</b><br/><br/>
                 
-                <i>Assegnabili per il prodotto: <b>%s</b><br/>
-                (di cui assegnate a questo in precedenza: <b>%s</b>)<br/></i>
-                
+                <i>Disponibili a magazzino: <b>[ %s ]</b> + 
+                    Assegnati in precedenza <b>[ %s ]</b> = 
+                    Disponibili <b>[ %s ]</b>
+                    <br/>
+                </i>                
                 <font color="red"><b>%s</b></font>
                 ''' % (
                     oc_qty,
@@ -178,6 +180,7 @@ class SaleOrderLine(orm.Model):
                     
                     available,
                     assigned,
+                    available + assigned,
                     warning,
                     )
             }, context=context)
