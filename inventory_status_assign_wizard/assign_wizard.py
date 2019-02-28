@@ -126,7 +126,8 @@ class SaleOrderLine(orm.Model):
             if maked:
                 to_assign = oc_qty - maked # remain to produce
                 warning += ' CON MATERIALE PRECEDENTEMENTE CARICATO'    
-            warning += '!!!'
+            if warning:    
+                warning += '!!!'
 
         if to_assign <= 0:
             self.restore_stock_status_user_value(
