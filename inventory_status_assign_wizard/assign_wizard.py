@@ -100,7 +100,9 @@ class SaleOrderLine(orm.Model):
         # C. Available in stock:    
         product = line.product_id
         available = product.mx_net_mrp_qty - product.mx_mrp_b_locked
-        if available <= 0.0:
+       
+        # To reenter if this product has assigned
+        if available + line.mx_assigned_qty <= 0.0:
             self.restore_stock_status_user_value(
                 cr, uid, no_inventory_status, context=context)
             raise osv.except_osv(
@@ -163,7 +165,7 @@ class SaleOrderLine(orm.Model):
             'new_assigned_qty': new_assigned_qty,
             'line_id': ids[0],
             'status': '''
-                OC originale: <b>[ %s ]</b>  -  
+                OC originale: <b>[ %s ]</b> -  
                 Prodotte: <b>[ %s ]</b> - 
                 Consegnate: <b>[ %s ]</b><br/><br/>
                 
