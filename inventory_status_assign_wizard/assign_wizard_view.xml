@@ -15,7 +15,7 @@
                    <group colspan="4" col="4">
                         <field name="line_id" readonly="1" colspan="4" />
                         <newline/>
-                        <field name="new_assigned_qty" />
+                        <field name="new_assigned_qty" string="Assegn."/>
                         
                         <separator string="Status" colspan="4" />
                         <field name="status" colspan="4" nolabel="1" readonly="1" widget="html"/>
@@ -40,6 +40,9 @@
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
                 <!--sale.order.line LINE:-->
+                <xpath expr="//page/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="mx_assigned_qty" />
+                </xpath>
                 <xpath expr="//page/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
                     <button name="return_view_assign_wizard" string="Assegna magazzino" type="object" icon="STOCK_GOTO_BOTTOM" />
                 </xpath>
