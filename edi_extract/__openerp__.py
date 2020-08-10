@@ -46,8 +46,8 @@
     'data': [
         # 'security/ir.model.access.csv',
         'extra_field_view.xml',
-        
-        'wiazard/extract_wizard_view.xml',
+
+        'wizard/extract_wizard_view.xml',
         ],
     'active': False,
     'installable': True,
