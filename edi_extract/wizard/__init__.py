@@ -21,6 +21,7 @@
 #
 ###############################################################################
 
-from . import extra_field
-from . import wizard
+from . import extract_wizard
 
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

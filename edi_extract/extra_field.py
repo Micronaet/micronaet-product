@@ -21,22 +21,10 @@
 #
 ###############################################################################
 
-import os
-import sys
 import logging
-import openerp
 from openerp.osv import fields, osv, expression, orm
 from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-from openerp import SUPERUSER_ID, api
-from openerp import tools
 from openerp.tools.translate import _
-from openerp.tools import (
-    DEFAULT_SERVER_DATE_FORMAT,
-    DEFAULT_SERVER_DATETIME_FORMAT,
-    DATETIME_FORMATS_MAP,
-    float_compare)
-
 
 _logger = logging.getLogger(__name__)
 
@@ -58,13 +46,19 @@ class ProductProduct(orm.Model):
             'Padding material', size=64, translate=True),
         'edi_pillow_color': fields.char(
             'Pillow color', size=64, translate=True),
-        'edi_diameter': fields.float('Diameter', digits=(16, 2)),
-        'edi_seat_height': fields.float('Seat height', digits=(16, 2)),
-        'edi_armrest_height': fields.float('Armrest height', digits=(16, 2)),
+        'edi_diameter': fields.float(
+            'Diameter', digits=(16, 2)),
+        'edi_seat_height': fields.float(
+            'Seat height', digits=(16, 2)),
+        'edi_armrest_height': fields.float(
+            'Armrest height', digits=(16, 2)),
 
-        'edi_closed_height': fields.float('Closed height cm.', digits=(16, 2)),
-        'edi_closed_width': fields.float('Closed width cm.', digits=(16, 2)),
-        'edi_closed_length': fields.float('Closed length cm.', digits=(16, 2)),
+        'edi_closed_height': fields.float(
+            'Closed height cm.', digits=(16, 2)),
+        'edi_closed_width': fields.float(
+            'Closed width cm.', digits=(16, 2)),
+        'edi_closed_length': fields.float(
+            'Closed length cm.', digits=(16, 2)),
 
         'edi_set_data': fields.text(
              'Composition and dimension (for set)', translate=True),
@@ -74,8 +68,8 @@ class ProductProduct(orm.Model):
         'edi_position': fields.integer('Number of position'),
         'edi_max_weight': fields.float('Max weight Kg.', digits=(16, 2)),
 
-        'edi_removable':fields.boolean('Removable'),
-        'edi_mounted':fields.boolean('Product mounted'),
+        'edi_removable': fields.boolean('Removable'),
+        'edi_mounted': fields.boolean('Product mounted'),
 
         'edi_volume': fields.float('Volume m³', digits=(16, 2)),
         'edi_gross_weight': fields.float(
@@ -99,6 +93,5 @@ class ProductProduct(orm.Model):
             'Category', size=64, translate=True),
         'edi_origin_country': fields.char(
             'Origin country', size=64, translate=True),
-
     }
 

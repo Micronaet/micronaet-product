@@ -11,16 +11,24 @@
                         <group col="4" colspan="4">
                             <field name="default_code" />
                             <field name="name" />
+
+                            <field name="ean13" />
+                            <field name="q_x_pack" />
                         </group>
                         <notebook colspan="4">
                             <page string="Description">
                                 <group col="4" colspan="4">
+                                    <field name="telaio" />
                                     <field name="edi_short_description" />
-                                    <field name="edi_maintenance" />
-                                    <field name="edi_benefit" />
-                                    <field name="edi_warranty" />
+
                                     <field name="edi_category" />
                                     <field name="edi_origin_country" />
+
+                                    <field name="colour" string="Extra description (color)"/>
+                                    <field name="edi_maintenance" />
+
+                                    <field name="edi_benefit" />
+                                    <field name="edi_warranty" />
                                 </group>
                             </page>
                             <page string="Accessory">
@@ -42,18 +50,46 @@
                                 </group>
                             </page>
                             <page string="Dimension">
-                                <group col="4" colspan="4">
-                                    <field name="edi_diameter" />
-                                    <field name="edi_seat_height" />
-                                    <field name="edi_armrest_height" />
+                                <group col="6" colspan="4">
+                                    <separator name="Product:" colspan="6"/>
+                                    <field name="height" />
+                                    <field name="width" />
+                                    <field name="length" />
+
+                                    <separator name="Closed product:" colspan="6"/>
                                     <field name="edi_closed_height" />
                                     <field name="edi_closed_width" />
                                     <field name="edi_closed_length" />
+
+                                    <separator name="Pack:" colspan="6"/>
+                                    <field name="pack_l" />
+                                    <field name="pack_h" />
+                                    <field name="pack_p" />
+
+                                    <separator string="Extra dimension:" colspan="6"/>
+                                    <field name="edi_diameter" />
+                                    <field name="edi_seat_height" />
+                                    <field name="edi_armrest_height" />
+
+                                    <separator string="Volume and weight:" colspan="6"/>
+                                    <field name="volume" />
+                                    <field name="weight" />
+                                    <field name="weight_net" />
+
                                     <field name="edi_volume" />
                                     <field name="edi_gross_weight" />
                                     <field name="edi_package_weight" />
+
+                                    <separator string="Extra weight:" colspan="6"/>
                                     <field name="edi_cellophane_weight" />
                                     <field name="edi_pallet_dimension" />
+                                    <field name="weight_packaging" />
+
+                                    <separator string="Packaging:" colspan="6"/>
+                                    <field name="item_per_pallet" />
+                                    <field name="item_per_mq" />
+                                    <field name="item_per_camion" />
+
                                 </group>
                             </page>
                         </notebook>
@@ -71,7 +107,6 @@
             <field name="context">{'form_view_ref': 'edi_extract.view_product_product_edi_form'}</field>
             <field name="domain">[]</field>
         </record>
-
 
         <menuitem
             parent="base.menu_product"

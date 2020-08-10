@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- edi.product.product.extract.wizard' -->
+        <record id="view_edi_product_product_extract_wizard_form" model="ir.ui.view">
+            <field name="name">edi.product.product.extract.wizard'.form</field>
+            <field name="model">edi.product.product.extract.wizard'</field>
+            <field name="arch" type="xml">
+                <form string="Wizard" version="7.0">
+                   <header>
+                       <button string="Cancel" special="cancel" />
+                       <button name="action_extract" string="Extract" type="object" icon="gtk-jump-to" class="oe_highlight" />
+                   </header>
+                   <group colspan="4" col="4">
+                   </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_edi_product_product_extract_wizard">
+            <field name="name">Extract EDI</field>
+            <field name="res_model">edi.product.product.extract.wizard'</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_edi_product_product_extract_wizard_form"/>
+        </record>
+
+        <menuitem
+            parent="menu_product_edi_root"
+            id="menu_action_view_edi_product_product_extract_wizard"
+            action="action_view_edi_product_product_extract_wizard"
+            sequence="20"/>
+    </data>
+</openerp>
