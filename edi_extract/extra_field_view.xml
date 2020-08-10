@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_product_product_edi_form">
+            <field name="name">product.product.edi.form</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="40" />
+            <field name="arch" type="xml">
+                <form string="EDI product" version="7.0">
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <field name="default_code" />
+                            <field name="name" />
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Description">
+                                <group col="4" colspan="4">
+                                    <field name="edi_short_description" />
+                                    <field name="edi_maintenance" />
+                                    <field name="edi_benefit" />
+                                    <field name="edi_warranty" />
+                                    <field name="edi_category" />
+                                    <field name="edi_origin_country" />
+                                </group>
+                            </page>
+                            <page string="Accessory">
+                                <group col="4" colspan="4">
+                                    <field name="edi_seat_material" />
+                                    <field name="edi_pillow_material" />
+                                    <field name="edi_padding_material" />
+                                    <field name="edi_pillow_color" />
+                                    <field name="edi_set_data" />
+                                    <field name="edi_accessory" />
+                                </group>
+                            </page>
+                            <page string="Tech data">
+                                <group col="4" colspan="4">
+                                    <field name="edi_position" />
+                                    <field name="edi_max_weight" />
+                                    <field name="edi_removable" />
+                                    <field name="edi_mounted" />
+                                </group>
+                            </page>
+                            <page string="Dimension">
+                                <group col="4" colspan="4">
+                                    <field name="edi_diameter" />
+                                    <field name="edi_seat_height" />
+                                    <field name="edi_armrest_height" />
+                                    <field name="edi_closed_height" />
+                                    <field name="edi_closed_width" />
+                                    <field name="edi_closed_length" />
+                                    <field name="edi_volume" />
+                                    <field name="edi_gross_weight" />
+                                    <field name="edi_package_weight" />
+                                    <field name="edi_cellophane_weight" />
+                                    <field name="edi_pallet_dimension" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_product_product_edi">
+            <field name="name">EDI product</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="view_id" ref="view_model_name_form"/>-->
+            <field name="context">{'form_view_ref': 'edi_extract.view_product_product_edi_form'}</field>
+            <field name="domain">[]</field>
+        </record>
+
+
+        <menuitem
+            parent="base.menu_product"
+            id="menu_product_edi_root"
+            name="EDI Management"
+            />
+            <menuitem
+                parent="menu_product_edi_root"
+                id="menu_product_product_edi_product"
+                action="action_product_product_edi"
+                sequence="10"/>
+
+
+    </data>
+</openerp>
+
