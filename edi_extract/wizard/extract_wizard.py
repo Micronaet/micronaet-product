@@ -266,7 +266,8 @@ class EdiProductProductExtractWizard(orm.TransientModel):
                     records[default_code][42].append(product.edi_benefit)
                     records[default_code][43].append(product.edi_warranty)
                     records[default_code][44].append(product.edi_category)
-                    records[default_code][45].append(product.edi_origin_country)
+                    records[default_code][45].append(
+                        product.edi_origin_country)
 
         for default_code in records:
             record = records[default_code]
