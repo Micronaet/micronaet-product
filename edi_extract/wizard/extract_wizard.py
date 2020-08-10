@@ -76,7 +76,7 @@ class EdiProductProductExtractWizard(orm.TransientModel):
         # Search product:
         product_ids = product_pool.search(cr, uid, [
             ('default_code', 'not in', (False, '')),
-        ], context=context)[:10]  # TODO remove
+        ], context=context)  # [:10]
 
         # Excel:
         header = [
