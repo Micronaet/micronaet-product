@@ -105,7 +105,7 @@ class EdiProductProductExtractWizard(orm.TransientModel):
             domain.append(
                 ('inventory_category_id', '=', inventory_category_id))
             filter_text += u', con categoria inventario: %s' % \
-                           wiz_proxy.inventory_category_id.name
+                           wizard_browse.inventory_category_id.name
 
         if status:
             domain.append(('status', '=', status))
