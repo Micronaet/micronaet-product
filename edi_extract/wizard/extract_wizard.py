@@ -71,12 +71,47 @@ class EdiProductProductExtractWizard(orm.TransientModel):
         excel_pool = self.pool.get('excel.writer')
         product_pool = self.pool.get('product.product')
 
-        # wizard_browse = self.browse(cr, uid, ids, context=context)[0]
+        wizard_browse = self.browse(cr, uid, ids, context=context)[0]
+        default_code = wizard_browse.default_code
+        statistic_category = wizard_browse.statistic_category
+        categ_ids = wizard_browse.categ_ids
+        catalog_ids = wizard_browse.catalog_ids
+        inventory_category_id = wizard_browse.inventory_category_id.id
+        status = wizard_browse.status # gamma
+
 
         # Search product:
-        product_ids = product_pool.search(cr, uid, [
-            ('default_code', 'not in', (False, '')),
-        ], context=context)  # [:10]
+        domain = []
+        filter_text = 'Tutti i prodotti'
+        if default_code:
+            domain.append(('default_code', '=ilike', '%s%%' % default_code))
+            filter_text += u', con codice: %s' % default_code
+
+        if statistic_category:
+            domain.append(
+                ('statistic_category', 'in', statistic_category.split('|')))
+            filter_text += \
+                u', con categoria statistica: %s' % statistic_category
+
+        if categ_ids:
+            domain.append(('categ_id', 'in', categ_ids))
+            filter_text += u', con categorie in: %s' % categ_ids
+
+        if catalog_ids:  # TODO test
+            domain.append(('catalog_ids', 'in', catalog_ids))
+            filter_text += u', con catalogo: %s' % catalog_ids
+
+        if inventory_category_id:
+            domain.append(
+                ('inventory_category_id', '=', inventory_category_id))
+            filter_text += u', con categoria inventario: %s' % \
+                           wiz_proxy.inventory_category_id.name
+
+        if status:
+            domain.append(('status', '=', status))
+            filter_text += u', con gamma: %s' % status
+
+        product_ids = product_pool.search(cr, uid, domain, context=context)  # [:10]
 
         # Excel:
         header = [
