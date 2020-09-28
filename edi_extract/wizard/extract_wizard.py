@@ -115,7 +115,7 @@ class EdiProductProductExtractWizard(orm.TransientModel):
             'Peso scatola',
             'Peso cellophane',
             'EAN scatola',
-            #'EAN interno',
+            # 'EAN interno',
             'Pezzi bancale',
             'Pezzi M3',
             'Pezzi camion 13.6mt',
