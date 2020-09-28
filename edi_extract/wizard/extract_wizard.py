@@ -289,15 +289,15 @@ class EdiProductProductExtractWizard(orm.TransientModel):
         'statistic_category': fields.char('Statistic category (separ.: |)',
             size=50),
         'inventory_ids': fields.many2many(
-            'product.product.inventory.category', 'product_wiz_inv_cat_rel',
+            'product.product.inventory.category', 'edi_product_wiz_inv_cat_rel',
             'wizard_id', 'inventory_id',
             'Categorie inventario'),
         'categ_ids': fields.many2many(
-            'product.category', 'product_category_status_rel',
+            'product.category', 'edi_product_category_status_rel',
             'product_id', 'category_id',
             'Category'),
         'catalog_ids': fields.many2many(
-            'product.product.catalog', 'product_catalog_status_rel',
+            'product.product.catalog', 'edi_product_inventory_rel',
             'product_id', 'catalog_id',
             'Catalog'),
         'inventory_category_id': fields.many2one(
