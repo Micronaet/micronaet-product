@@ -279,5 +279,37 @@ class EdiProductProductExtractWizard(orm.TransientModel):
             cr, uid, 'EDI product', 'product.xlsx', context=context)
 
     _columns = {
-        # TODO inventory category?
+        'partner_id': fields.many2one('res.partner', 'Supplier',
+            domain=[
+                ('supplier', '=', True),
+                ('is_company', '=', True),
+                ('is_address', '=', False),
+                ]),
+        'default_code': fields.char('Partial code', size=30),
+        'statistic_category': fields.char('Statistic category (separ.: |)',
+            size=50),
+        'inventory_ids': fields.many2many(
+            'product.product.inventory.category', 'edi_product_wiz_inv_cat_rel',
+            'wizard_id', 'inventory_id',
+            'Categorie inventario'),
+        'categ_ids': fields.many2many(
+            'product.category', 'edi_product_category_status_rel',
+            'product_id', 'category_id',
+            'Category'),
+        'catalog_ids': fields.many2many(
+            'product.product.catalog', 'edi_product_inventory_rel',
+            'product_id', 'catalog_id',
+            'Catalog'),
+        'inventory_category_id': fields.many2one(
+            'product.product.inventory.category', 'Inventory category'),
+        'status': fields.selection([
+            ('catalog', 'Catalog'),
+            ('out', 'Out catalog'),
+            ('stock', 'Stock'),
+            ('obsolete', 'Obsolete'),
+            ('sample', 'Sample'),
+            ('promo', 'Promo'),
+            ('parent', 'Padre'),
+            ('todo', 'Todo'),
+        ], 'Gamma'),
         }
