@@ -77,8 +77,7 @@ class EdiProductProductExtractWizard(orm.TransientModel):
         categ_ids = wizard_browse.categ_ids
         catalog_ids = wizard_browse.catalog_ids
         inventory_category_id = wizard_browse.inventory_category_id.id
-        status = wizard_browse.status # gamma
-
+        status = wizard_browse.status  # gamma
 
         # Search product:
         domain = []
@@ -111,7 +110,7 @@ class EdiProductProductExtractWizard(orm.TransientModel):
             domain.append(('status', '=', status))
             filter_text += u', con gamma: %s' % status
 
-        product_ids = product_pool.search(cr, uid, domain, context=context)  # [:10]
+        product_ids = product_pool.search(cr, uid, domain, context=context)
 
         # Excel:
         header = [
