@@ -161,7 +161,7 @@ class EdiProductProductExtractWizard(orm.TransientModel):
             ['Paese produzione'],
         ]
         width = [
-            10, [30],
+            12, [30],
             [40], [40],
             [40],
             [40],
