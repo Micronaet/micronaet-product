@@ -74,5 +74,10 @@
             id="menu_action_view_edi_product_product_extract_wizard"
             action="action_view_edi_product_product_extract_wizard"
             sequence="20"/>
+        <menuitem
+            parent="menu_product_edi_root"
+            id="menu_action_view_edi_product_product_extract_template_wizard"
+            action="action_view_edi_product_product_extract_template"
+            sequence="30"/>
     </data>
 </openerp>
