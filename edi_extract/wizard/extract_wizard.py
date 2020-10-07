@@ -234,12 +234,14 @@ class EdiProductProductExtractWizard(orm.TransientModel):
                         [product.edi_short_description],  # 2
                         [product.telaio],  # 3
                         [product.colour],  # 4
+
                         [product.fabric],  # 5
                         [product.edi_seat_material],  # 6
                         [product.edi_pillow_material],  # 7
+
                         [product.edi_padding_material],  # 8
-                        ['Colore telaio?'],  # 9
-                        ['Colore seduta?'],  # 10
+                        [product.edi_frame_color],  # 9
+                        [product.edi_seat_color],  # 10
                         [product.edi_pillow_color],  # 11
                         product.height,  # 12
                         product.width,  # 13

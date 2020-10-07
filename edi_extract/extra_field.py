@@ -38,6 +38,10 @@ class ProductProduct(orm.Model):
     _columns = {
         'edi_short_description': fields.char(
             'Short description', size=64, translate=True),
+        'edi_seat_color': fields.char(
+            'Seat color', size=64, translate=True),
+        'edi_frame_color': fields.char(
+            'Frame color', size=64, translate=True),
         'edi_seat_material': fields.char(
             'Seat material', size=64, translate=True),
         'edi_pillow_material': fields.char(
