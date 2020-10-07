@@ -2,6 +2,26 @@
 <openerp>
     <data>
         <!-- edi.product.product.extract.wizard -->
+        <record id="view_edi_product_product_extract_wizard_tree" model="ir.ui.view">
+            <field name="name">edi.product.product.extract.wizard.tree</field>
+            <field name="model">edi.product.product.extract.wizard</field>
+            <field name="arch" type="xml">
+                <tree string="Wizard esportazione">
+                       <field name="template_partner_id" />
+                       <field name="partner_id" />
+                       <field name="select_mode" />
+                       <field name="from_date" />
+                       <field name="default_code" />
+                       <field name="inventory_ids" widget="many2many_tags" />
+                       <field name="statistic_category" />
+                       <field name="categ_ids" widget="many2many_tags" />
+                       <field name="inventory_category_id" />
+                       <field name="catalog_ids" widget="many2many_tags" invisible="1"/>
+                       <button name="action_extract" string="Extract" type="object" icon="gtk-jump-to" class="oe_highlight" />
+                </tree>
+            </field>
+        </record>
+
         <record id="view_edi_product_product_extract_wizard_form" model="ir.ui.view">
             <field name="name">edi.product.product.extract.wizard.form</field>
             <field name="model">edi.product.product.extract.wizard</field>
@@ -40,6 +60,13 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
             <field name="view_id" ref="view_edi_product_product_extract_wizard_form"/>
+        </record>
+        <record model="ir.actions.act_window" id="action_view_edi_product_product_extract_template">
+            <field name="name">EDI template cliente</field>
+            <field name="res_model">edi.product.product.extract.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_edi_product_product_extract_wizard_tree"/>
         </record>
 
         <menuitem
