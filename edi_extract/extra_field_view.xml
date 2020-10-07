@@ -6,7 +6,7 @@
             <field name="model">product.product</field>
             <field name="priority" eval="40" />
             <field name="arch" type="xml">
-                <form string="EDI product" version="7.0">
+                <form string="Prodotti EDI" version="7.0">
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="default_code" string="Riferimento interno *" />
@@ -16,7 +16,7 @@
                             <field name="q_x_pack" string="Q. per collo *"/>
                         </group>
                         <notebook colspan="4">
-                            <page string="Description">
+                            <page string="Descrizione">
                                 <group col="4" colspan="4">
                                     <field name="telaio" string="Telaio *"/>
                                     <field name="fabric" string="Tessuto - Vetro *"/>
@@ -36,7 +36,7 @@
                                     <field name="edi_warranty" />
                                 </group>
                             </page>
-                            <page string="Accessory">
+                            <page string="Accessori">
                                 <group col="4" colspan="4">
                                     <field name="edi_seat_material" />
                                     <field name="edi_pillow_material" />
@@ -46,7 +46,7 @@
                                     <field name="edi_accessory" />
                                 </group>
                             </page>
-                            <page string="Tech data">
+                            <page string="Dati tecnici">
                                 <group col="4" colspan="4">
                                     <field name="edi_position" />
                                     <field name="edi_max_weight" />
@@ -54,7 +54,7 @@
                                     <field name="edi_mounted" />
                                 </group>
                             </page>
-                            <page string="Dimension">
+                            <page string="Dimensioni">
                                 <group col="6" colspan="4">
                                     <separator name="Product:" colspan="6"/>
                                     <field name="height" string="Altezza *"/>
@@ -103,7 +103,7 @@
         </record>
 
         <record model="ir.actions.act_window" id="action_product_product_edi">
-            <field name="name">EDI product</field>
+            <field name="name">Prodotti EDI</field>
             <field name="res_model">product.product</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -122,8 +122,6 @@
                 id="menu_product_product_edi_product"
                 action="action_product_product_edi"
                 sequence="10"/>
-
-
     </data>
 </openerp>
 
