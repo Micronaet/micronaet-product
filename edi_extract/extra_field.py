@@ -37,65 +37,64 @@ class ProductProduct(orm.Model):
 
     _columns = {
         'edi_short_description': fields.char(
-            'Short description', size=64, translate=True),
+            'Descrizione breve', size=64, translate=True),
         'edi_seat_color': fields.char(
-            'Seat color', size=64, translate=True),
+            'Colore seduta', size=64, translate=True),
         'edi_frame_color': fields.char(
-            'Frame color', size=64, translate=True),
+            'Colore telaio', size=64, translate=True),
         'edi_seat_material': fields.char(
-            'Seat material', size=64, translate=True),
+            'Materiale seduta', size=64, translate=True),
         'edi_pillow_material': fields.char(
-            'Pillow material', size=64, translate=True),
+            'Materiale cuscino', size=64, translate=True),
         'edi_padding_material': fields.char(
-            'Padding material', size=64, translate=True),
+            'Materiale imbottitura', size=64, translate=True),
         'edi_pillow_color': fields.char(
-            'Pillow color', size=64, translate=True),
+            'Colore cuscino', size=64, translate=True),
         'edi_diameter': fields.float(
-            'Diameter', digits=(16, 2)),
+            'Diametero', digits=(16, 2)),
         'edi_seat_height': fields.float(
-            'Seat height', digits=(16, 2)),
+            'Altezza seduta', digits=(16, 2)),
         'edi_armrest_height': fields.float(
-            'Armrest height', digits=(16, 2)),
+            'Altezza bracciolo', digits=(16, 2)),
 
         'edi_closed_height': fields.float(
-            'Closed height cm.', digits=(16, 2)),
+            'Altezza chiuso cm.', digits=(16, 2)),
         'edi_closed_width': fields.float(
-            'Closed width cm.', digits=(16, 2)),
+            'Larghezza chiuso cm.', digits=(16, 2)),
         'edi_closed_length': fields.float(
-            'Closed length cm.', digits=(16, 2)),
+            'Lunghezza chiuso cm.', digits=(16, 2)),
 
         'edi_set_data': fields.text(
-             'Composition and dimension (for set)', translate=True),
+             'Composizione e dimensione (per i set)', translate=True),
         'edi_accessory': fields.text(
-             'Accessory', translate=True),
+             'Accessori', translate=True),
 
-        'edi_position': fields.integer('Number of position'),
-        'edi_max_weight': fields.float('Max weight Kg.', digits=(16, 2)),
+        'edi_position': fields.integer('Numero di posizioni'),
+        'edi_max_weight': fields.float('Peso max. Kg.', digits=(16, 2)),
 
-        'edi_removable': fields.boolean('Removable'),
-        'edi_mounted': fields.boolean('Product mounted'),
+        'edi_removable': fields.boolean('Removibile'),
+        'edi_mounted': fields.boolean('Arriva montato'),
 
         'edi_volume': fields.float('Volume m³', digits=(16, 2)),
         'edi_gross_weight': fields.float(
-            'Gross weight Kg.', digits=(16, 2)),
+            'Peso lordo Kg.', digits=(16, 2)),
         'edi_package_weight': fields.float(
-            'Package weight Kg.', digits=(16, 2)),
+            'Peso imballo Kg.', digits=(16, 2)),
         'edi_cellophane_weight': fields.float(
-            'Cellophane weight Kg.', digits=(16, 2)),
+            'Peso Cellophane Kg.', digits=(16, 2)),
 
         'edi_pallet_dimension': fields.char(
-            'Pallet dimension', size=64, translate=True),
+            'Dimensioni pallet', size=64, translate=True),
 
         'edi_maintenance': fields.text(
-             'Maintenance', translate=True),
+             'Manutenzione', translate=True),
         'edi_benefit': fields.text(
              'Benefit', translate=True),
         'edi_warranty': fields.text(
-             'Warranty', translate=True),
+             'Garanzia', translate=True),
 
         'edi_category': fields.char(
-            'Category', size=64, translate=True),
+            'Categoria', size=64, translate=True),
         'edi_origin_country': fields.char(
-            'Origin country', size=64, translate=True),
+            'Paese di origine', size=64, translate=True),
     }
-
