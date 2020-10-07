@@ -346,6 +346,7 @@ class EdiProductProductExtractWizard(orm.Model):
             cr, uid, 'EDI product', 'product.xlsx', context=context)
 
     _columns = {
+        'default_template': fields.boolean('Predefinito cliente'),
         'template_partner_id': fields.many2one(
             'res.partner', 'Template per cliente',
             domain=[
