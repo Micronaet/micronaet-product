@@ -261,6 +261,7 @@ class EdiProductProductExtractWizard(orm.Model):
         records = {}
         jump_ids = []
         album_cache = {}
+        pdb.set_trace()
         for lang in langs:
             lang_context['lang'] = lang
             for product in product_pool.browse(
@@ -273,23 +274,24 @@ class EdiProductProductExtractWizard(orm.Model):
                         continue
 
                     # Generate image list:
-                    images = ''
+                    images_cell = ''
                     if album_ids:
                         if default_code in album_cache:
-                            images = album_cache[default_code]
+                            images_cell = album_cache[default_code]
                         else:
                             # Load album images:
-                            image_ids = album_image_pool.search([
+                            image_ids = album_image_pool.search(cr, uid, [
                                 ('status', '=', 'ok'),
                                 ('album_id', 'in', album_ids),
                                 ('product_id.default_code', '=', default_code),
-                            ])
+                            ], context=context)
                             for image in album_image_pool.browse(
                                     cr, uid, image_ids, context=context):
-                                images += url_image_mask % (
+                                images_cell += url_image_mask % (
                                     image.album_id.name.code(),
                                     image.filename,
                                 )
+                            album_cache[default_code] = images_cell
 
                     records[default_code] = [
                         default_code,  # 0 default code
@@ -342,7 +344,7 @@ class EdiProductProductExtractWizard(orm.Model):
                         [product.edi_warranty],  # 43
                         [product.edi_category],  # 44
                         [product.edi_origin_country],  # 45
-                        images,
+                        images_cell,
                     ]
                 else:
                     if product.id in jump_ids:
