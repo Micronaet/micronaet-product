@@ -359,6 +359,10 @@ class EdiProductProductExtractWizard(orm.Model):
                 ('is_company', '=', True),
                 ('is_address', '=', False),
                 ]),
+        'album_ids': fields.many2many(
+            'product.image.album', 'edi_product_album_export_rel',
+            'product_id', 'album_id',
+            'Album'),
 
         'partner_id': fields.many2one(
             'res.partner', 'Fornitore',

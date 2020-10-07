@@ -40,6 +40,7 @@
         'sale_extra_field',  # Extra data for sale
         'base_accounting_program',  # Field for accounting
         'excel_export',  # Export report
+        'product_image_base',  # Album management
         ],
     'init_xml': [],
     'demo': [],

@@ -36,18 +36,32 @@
                        <field name="template_partner_id" />
                        <field name="default_template" />
 
-                       <field name="partner_id" />
-                       <newline />
+                       <notebook>
+                           <page string="Parametri standard" name="standard_parameters">
+                               <group col="4" colspan="4">
+                                   <field name="partner_id" />
+                                   <newline />
 
-                       <field name="select_mode" attrs="{'invisible': [('template_partner_id', '=', False)]}"/>
-                       <field name="from_date" attrs="{'invisible': [('template_partner_id', '=', False)]}" />
+                                   <field name="select_mode" attrs="{'invisible': [('template_partner_id', '=', False)]}"/>
+                                   <field name="from_date" attrs="{'invisible': [('template_partner_id', '=', False)]}" />
 
-                       <field name="inventory_ids" widget="many2many_tags" />
-                       <field name="default_code" />
-                       <field name="statistic_category" />
-                       <field name="categ_ids" widget="many2many_tags" />
-                       <field name="inventory_category_id" />
-                       <field name="catalog_ids" widget="many2many_tags" invisible="1"/>
+                                   <field name="inventory_ids" widget="many2many_tags" />
+                                   <field name="default_code" />
+                                   <field name="statistic_category" />
+                                   <field name="categ_ids" widget="many2many_tags" />
+                                   <field name="inventory_category_id" />
+                                   <field name="catalog_ids" widget="many2many_tags" invisible="1"/>
+                               </group>
+                           </page>
+                           <page string="Parametri partner" name="standard_parameters" attrs="{'invisible': [('template_partner_id', '=', False)]}">
+                               <group col="4" colspan="4">
+                                   <field name="album_ids" widget="many2many_tags" colspan="4" />
+
+                                   <field name="select_mode" />
+                                   <field name="from_date" />
+                               </group>
+                           </page>
+                       </notebook>
 
                    </group>
                 </form>
