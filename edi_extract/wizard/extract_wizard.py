@@ -66,12 +66,16 @@ class EdiProductProductExtractWizard(orm.Model):
             return res
 
         # Parameters:
+        # Album / image:
+        url_image_mask = 'http://my.%s.it/upload/EDI/%%s/%%s\n' % cr.dbname
+
         langs = ['it_IT', 'en_US']
         if context is None:
             context = {}
         lang_context = context.copy()
 
         excel_pool = self.pool.get('excel.writer')
+        album_image_pool = self.pool.get('product.image.file')
         product_pool = self.pool.get('product.product')
         line_pool = self.pool.get('sale.order.line')
         invoice_line_pool = self.pool.get('account.invoice.line')
@@ -87,6 +91,9 @@ class EdiProductProductExtractWizard(orm.Model):
 
         select_mode = wizard_browse.select_mode
         from_date = wizard_browse.from_date
+
+        # Image management:
+        album_ids = [item.id for item in wizard_browse.album_ids]
 
         # Search product:
         domain = []
@@ -193,6 +200,7 @@ class EdiProductProductExtractWizard(orm.Model):
             ['Garanzia'],
             ['Categoria'],
             ['Paese produzione'],
+            'Immagini',
         ]
         width = [
             12, [30],
@@ -240,6 +248,7 @@ class EdiProductProductExtractWizard(orm.Model):
             [40],
             [40],
             [30],
+            40,
         ]
         ws_name = _('EDI Product')
         row = 0
@@ -251,6 +260,7 @@ class EdiProductProductExtractWizard(orm.Model):
 
         records = {}
         jump_ids = []
+        album_cache = {}
         for lang in langs:
             lang_context['lang'] = lang
             for product in product_pool.browse(
@@ -261,6 +271,26 @@ class EdiProductProductExtractWizard(orm.Model):
                         _logger.error('Double code jumped')
                         jump_ids.append(product.id)
                         continue
+
+                    # Generate image list:
+                    images = ''
+                    if album_ids:
+                        if default_code in album_cache:
+                            images = album_cache[default_code]
+                        else:
+                            # Load album images:
+                            image_ids = album_image_pool.search([
+                                ('status', '=', 'ok'),
+                                ('album_id', 'in', album_ids),
+                                ('product_id.default_code', '=', default_code),
+                            ])
+                            for image in album_image_pool.browse(
+                                    cr, uid, image_ids, context=context):
+                                images += url_image_mask % (
+                                    image.album_id.name.code(),
+                                    image.filename,
+                                )
+
                     records[default_code] = [
                         default_code,  # 0 default code
                         [product.name],  # 1 name (lang)
@@ -312,6 +342,7 @@ class EdiProductProductExtractWizard(orm.Model):
                         [product.edi_warranty],  # 43
                         [product.edi_category],  # 44
                         [product.edi_origin_country],  # 45
+                        images,
                     ]
                 else:
                     if product.id in jump_ids:
