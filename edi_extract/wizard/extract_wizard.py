@@ -67,7 +67,8 @@ class EdiProductProductExtractWizard(orm.Model):
 
         # Parameters:
         # Album / image:
-        url_image_mask = 'http://my.%s.it/upload/EDI/%%s/%%s \n' % cr.dbname
+        url_image_mask = 'http://my.%s.it/upload/EDI/%%s/%%s \n' % \
+                         cr.dbname.lower()
 
         langs = ['it_IT', 'en_US']
         if context is None:
