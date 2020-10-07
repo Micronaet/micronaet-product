@@ -31,7 +31,7 @@ from openerp.tools.translate import _
 _logger = logging.getLogger(__name__)
 
 
-class EdiProductProductExtractWizard(orm.TransientModel):
+class EdiProductProductExtractWizard(orm.Model):
     """ Wizard for edi product extract wizard
     """
     _name = 'edi.product.product.extract.wizard'
@@ -70,6 +70,8 @@ class EdiProductProductExtractWizard(orm.TransientModel):
 
         excel_pool = self.pool.get('excel.writer')
         product_pool = self.pool.get('product.product')
+        line_pool = self.pool.get('sale.order.line')
+        invoice_line_pool = self.pool.get('account.invoice.line')
 
         wizard_browse = self.browse(cr, uid, ids, context=context)[0]
         default_code = wizard_browse.default_code
@@ -77,11 +79,40 @@ class EdiProductProductExtractWizard(orm.TransientModel):
         categ_ids = wizard_browse.categ_ids
         catalog_ids = wizard_browse.catalog_ids
         inventory_category_id = wizard_browse.inventory_category_id.id
+        template_partner_id = wizard_browse.template_partner_id.id
         status = wizard_browse.status  # gamma
+
+        select_mode = wizard_browse.select_mode
+        from_date = wizard_browse.from_date
 
         # Search product:
         domain = []
         filter_text = 'Tutti i prodotti'
+
+        # ---------------------------------------------------------------------
+        # Prefilter for select mode:
+        # ---------------------------------------------------------------------
+        if template_partner_id:
+            if select_mode == 'order_all':  # all order
+                # Select order domain:
+                select_domain = [
+                    ('order_id.partner_id', '=', template_partner_id)]
+                if from_date:
+                    select_domain.append(
+                        ('order_id.date_order', '>=',
+                         '%s 00:00:00' % from_date))
+
+                line_ids = line_pool.search(
+                    cr, uid, select_domain, context=context)
+                product_ids = tuple(set([
+                    sale_line.product_id.id for sale_line in
+                    line_pool.browse(cr, uid, line_ids, context=context)]))
+                domain.append(('id', 'in', product_ids))
+            elif select_mode == 'order_stock':  # all order on hand qty present
+                pass  # TODO not used for now
+            else:  # 'all' depend on other filters
+                pass
+
         if default_code:
             domain.append(('default_code', '=ilike', '%s%%' % default_code))
             filter_text += u', con codice: %s' % default_code
@@ -315,15 +346,24 @@ class EdiProductProductExtractWizard(orm.TransientModel):
             cr, uid, 'EDI product', 'product.xlsx', context=context)
 
     _columns = {
-        'partner_id': fields.many2one('res.partner', 'Supplier',
+        'template_partner_id': fields.many2one(
+            'res.partner', 'Template per cliente',
+            domain=[
+                ('customer', '=', True),
+                ('is_company', '=', True),
+                ('is_address', '=', False),
+                ]),
+
+        'partner_id': fields.many2one(
+            'res.partner', 'Fornitore',
             domain=[
                 ('supplier', '=', True),
                 ('is_company', '=', True),
                 ('is_address', '=', False),
                 ]),
-        'default_code': fields.char('Partial code', size=30),
-        'statistic_category': fields.char('Statistic category (separ.: |)',
-            size=50),
+        'default_code': fields.char('Codice parziale', size=30),
+        'statistic_category': fields.char(
+            'Categoria Statistica (separ.: |)', size=50),
         'inventory_ids': fields.many2many(
             'product.product.inventory.category', 'edi_product_wiz_inv_cat_rel',
             'wizard_id', 'inventory_id',
@@ -331,21 +371,27 @@ class EdiProductProductExtractWizard(orm.TransientModel):
         'categ_ids': fields.many2many(
             'product.category', 'edi_product_category_status_rel',
             'product_id', 'category_id',
-            'Category'),
+            'Categoria'),
         'catalog_ids': fields.many2many(
             'product.product.catalog', 'edi_product_inventory_rel',
             'product_id', 'catalog_id',
-            'Catalog'),
+            'Catalogo'),
         'inventory_category_id': fields.many2one(
-            'product.product.inventory.category', 'Inventory category'),
+            'product.product.inventory.category', 'Categoria Inventorio'),
+        'select_mode': fields.selection([
+            # ('order_present', 'Ordinato (a magazzino)'),
+            ('order_all', 'Ordinato (tutto)'),
+            ], 'Modalità selezione', required=True,
+            help='Filtro per elenco prodotti da esportare'),
+        'from_date': fields.datetime('Data riferimento (>=)'),
         'status': fields.selection([
-            ('catalog', 'Catalog'),
-            ('out', 'Out catalog'),
+            ('catalog', 'Catalogo'),
+            ('out', 'Fuori catalogo'),
             ('stock', 'Stock'),
-            ('obsolete', 'Obsolete'),
-            ('sample', 'Sample'),
+            ('obsolete', 'Obsoleto'),
+            ('sample', 'Campione'),
             ('promo', 'Promo'),
             ('parent', 'Padre'),
-            ('todo', 'Todo'),
+            ('todo', 'Da fare'),
         ], 'Gamma'),
         }

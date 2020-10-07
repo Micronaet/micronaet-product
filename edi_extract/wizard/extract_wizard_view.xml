@@ -6,19 +6,28 @@
             <field name="name">edi.product.product.extract.wizard.form</field>
             <field name="model">edi.product.product.extract.wizard</field>
             <field name="arch" type="xml">
-                <form string="Wizard" version="7.0">
+                <form string="Wizard esportazione" version="7.0">
                    <header>
                        <button string="Cancel" special="cancel" />
                        <button name="action_extract" string="Extract" type="object" icon="gtk-jump-to" class="oe_highlight" />
                    </header>
                    <group colspan="4" col="4">
-                        <field name="partner_id" />
-                        <field name="inventory_ids" widget="many2many_tags" />
-                        <field name="default_code" />
-                        <field name="statistic_category" />
-                        <field name="categ_ids" widget="many2many_tags" />
-                        <field name="inventory_category_id" />
-                        <field name="catalog_ids" widget="many2many_tags" invisible="1"/>
+                       <field name="template_partner_id" />
+                       <newline />
+
+                       <field name="partner_id" />
+                       <newline />
+
+                       <field name="select_mode" attrs="{'invisible': [('template_partner_id', '=', False)]}"/>
+                       <field name="from_date" attrs="{'invisible': [('template_partner_id', '=', False)]}" />
+
+                       <field name="inventory_ids" widget="many2many_tags" />
+                       <field name="default_code" />
+                       <field name="statistic_category" />
+                       <field name="categ_ids" widget="many2many_tags" />
+                       <field name="inventory_category_id" />
+                       <field name="catalog_ids" widget="many2many_tags" invisible="1"/>
+
                    </group>
                 </form>
             </field>
