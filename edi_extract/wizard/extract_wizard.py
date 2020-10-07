@@ -381,9 +381,9 @@ class EdiProductProductExtractWizard(orm.Model):
         'select_mode': fields.selection([
             # ('order_present', 'Ordinato (a magazzino)'),
             ('order_all', 'Ordinato (tutto)'),
-            ], 'Modalità selezione', required=True,
+            ], 'Modalità selezione',
             help='Filtro per elenco prodotti da esportare'),
-        'from_date': fields.datetime('Data riferimento (>=)'),
+        'from_date': fields.date('Data riferimento (>=)'),
         'status': fields.selection([
             ('catalog', 'Catalogo'),
             ('out', 'Fuori catalogo'),
