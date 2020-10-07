@@ -261,7 +261,6 @@ class EdiProductProductExtractWizard(orm.Model):
         records = {}
         jump_ids = []
         album_cache = {}
-        pdb.set_trace()
         for lang in langs:
             lang_context['lang'] = lang
             for product in product_pool.browse(
@@ -288,7 +287,7 @@ class EdiProductProductExtractWizard(orm.Model):
                             for image in album_image_pool.browse(
                                     cr, uid, image_ids, context=context):
                                 images_cell += url_image_mask % (
-                                    image.album_id.name.code(),
+                                    image.album_id.code.lower(),
                                     image.filename,
                                 )
                             album_cache[default_code] = images_cell
