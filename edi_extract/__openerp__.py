@@ -44,7 +44,7 @@
     'init_xml': [],
     'demo': [],
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'extra_field_view.xml',
 
         'wizard/extract_wizard_view.xml',

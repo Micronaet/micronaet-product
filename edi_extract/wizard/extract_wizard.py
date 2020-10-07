@@ -35,6 +35,9 @@ class EdiProductProductExtractWizard(orm.Model):
     """ Wizard for edi product extract wizard
     """
     _name = 'edi.product.product.extract.wizard'
+    _order = 'default_template desc'
+    _description = 'EDI Extract'
+    _rec_name = 'default_template'
 
     # --------------------
     # Wizard button event:
@@ -346,7 +349,9 @@ class EdiProductProductExtractWizard(orm.Model):
             cr, uid, 'EDI product', 'product.xlsx', context=context)
 
     _columns = {
-        'default_template': fields.boolean('Predefinito cliente'),
+        'default_template': fields.boolean(
+            'EDI', help='Utilizzato come predefinito per esportare i dati EDI '
+                        'cliente'),
         'template_partner_id': fields.many2one(
             'res.partner', 'Template per cliente',
             domain=[

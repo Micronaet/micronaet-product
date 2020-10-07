@@ -6,7 +6,7 @@
             <field name="name">edi.product.product.extract.wizard.tree</field>
             <field name="model">edi.product.product.extract.wizard</field>
             <field name="arch" type="xml">
-                <tree string="Wizard esportazione">
+                <tree string="Wizard esportazione" colors="blue: default_template==True">
                        <field name="default_template" />
                        <field name="template_partner_id" />
                        <field name="partner_id" />
