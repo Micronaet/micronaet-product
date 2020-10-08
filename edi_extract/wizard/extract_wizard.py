@@ -292,7 +292,7 @@ class EdiProductProductExtractWizard(orm.Model):
                         product.edi_short_description)
                     records[default_code][3].append('Descrizione dettagliata?')
                     records[default_code][4].append('Colore?')
-                    records[default_code][5].append(product.fabric)
+                    records[default_code][5].append(product.telaio)
                     records[default_code][6].append(product.edi_seat_material)
                     records[default_code][7].append(
                         product.edi_pillow_material)
