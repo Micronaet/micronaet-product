@@ -10,7 +10,7 @@
                     <field name="template_partner_id" />
                     <field name="partner_id" />
                     <field name="select_mode" />
-                    <filter name="only_partner_edi" domain="[('default_template', '=', True)]"/>
+                    <filter name="only_partner_edi" domain="[('default_template', '=', True)]" string="Filtri per EDI"/>
                 </search>
            </field>
         </record>
