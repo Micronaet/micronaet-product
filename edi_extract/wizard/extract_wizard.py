@@ -267,8 +267,8 @@ class EdiProductProductExtractWizard(orm.Model):
                         product.pack_l,  # 29
                         product.pack_h,  # 30
                         product.pack_p,  # 31
-                        product.volume,  # 32
-                        product.weight,  # 33
+                        product.edi_volume,  # 32
+                        product.edi_gross_weight,  # 33
                         product.edi_package_weight,  # 34
                         product.edi_cellophane_weight,  # 35
                         product.ean13,  # 36

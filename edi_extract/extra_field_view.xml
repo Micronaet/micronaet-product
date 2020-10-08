@@ -101,12 +101,13 @@
 
                                     <field name="edi_volume" />
                                     <field name="edi_gross_weight" />
-                                    <field name="edi_package_weight" />
+                                    <newline/>
 
                                     <separator string="Extra weight:" colspan="6"/>
                                     <field name="edi_cellophane_weight" />
                                     <field name="edi_pallet_dimension" />
-                                    <field name="weight_packaging" />
+                                    <field name="edi_package_weight" />
+                                    <!--<field name="weight_packaging" />-->
 
                                     <separator string="Packaging:" colspan="6"/>
                                     <field name="item_per_pallet" string="Pezzi per bancale *" />
