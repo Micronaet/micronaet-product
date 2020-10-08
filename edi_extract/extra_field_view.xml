@@ -95,9 +95,9 @@
                                     <field name="edi_armrest_height" />
 
                                     <separator string="Volume and weight:" colspan="6"/>
-                                    <field name="volume" string="Volume *"/>
+                                    <!--<field name="volume" string="Volume *"/>
                                     <field name="weight" string="Peso Lordo *"/>
-                                    <field name="weight_net" string="Peso Netto *" />
+                                    <field name="weight_net" string="Peso Netto *" />-->
 
                                     <field name="edi_volume" />
                                     <field name="edi_gross_weight" />
