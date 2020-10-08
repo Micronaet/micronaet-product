@@ -298,16 +298,16 @@ class EdiProductProductExtractWizard(orm.Model):
                         [product.name],  # 1 name (lang)
 
                         [product.edi_short_description],  # 2
-                        [product.telaio],  # 3
-                        [product.colour],  # 4
+                        ['Descrizione dettagliata?'],  # 3
+                        ['Colore?'],  # 4
 
-                        [product.fabric],  # 5
+                        [product.telaio],  # 5  product.fabric
                         [product.edi_seat_material],  # 6
                         [product.edi_pillow_material],  # 7
 
                         [product.edi_padding_material],  # 8
                         [product.edi_frame_color],  # 9
-                        [product.edi_seat_color],  # 10
+                        [product.colour],  # 10  product.edi_seat_color
                         [product.edi_pillow_color],  # 11
                         product.height,  # 12
                         product.width,  # 13
@@ -352,16 +352,16 @@ class EdiProductProductExtractWizard(orm.Model):
                     records[default_code][1].append(product.name)
                     records[default_code][2].append(
                         product.edi_short_description)
-                    records[default_code][3].append(product.telaio)
-                    records[default_code][4].append(product.colour)
+                    records[default_code][3].append('Descrizione dettagliata?')
+                    records[default_code][4].append('Colore?')
                     records[default_code][5].append(product.fabric)
                     records[default_code][6].append(product.edi_seat_material)
                     records[default_code][7].append(
                         product.edi_pillow_material)
                     records[default_code][8].append(
                         product.edi_padding_material)
-                    records[default_code][9].append('Colore telaio?')
-                    records[default_code][10].append('Colore seduta?')
+                    records[default_code][9].append(product.edi_frame_color)
+                    records[default_code][10].append(product.colour)
                     records[default_code][11].append(product.edi_pillow_color)
                     records[default_code][21].append(product.edi_set_data)
                     records[default_code][27].append(product.edi_accessory)
