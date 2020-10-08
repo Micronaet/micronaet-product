@@ -1,6 +1,24 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record model="ir.ui.view" id="view_edi_product_search_search">
+            <field name="name">edi.product.search</field>
+            <field name="model">product.product</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <search string="String" version="7.0">
+                    <field name="default_code" string="Inizio codice" filter_domain="[('default_code', '=ilike', self + '%')]"/>
+                    <field name="default_code" />
+                    <field name="name" />
+                    <field name="categ_id" string="Categoria" filter_domain="[('categ_id.name', 'ilike', self)]"/>
+                    <!--<filter name="state_draft" string="Draft state" domain="[('state','=','draft')]"/>-->
+                    <group expand="0" string="Group By...">
+                        <filter name="group_type" string="Tipo" context="{'group_by': 'type'}"/>
+                        <filter name="group_categ" string="Categoria" context="{'group_by': 'categ_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
         <record model="ir.ui.view" id="view_product_product_edi_form">
             <field name="name">product.product.edi.form</field>
             <field name="model">product.product</field>
@@ -108,6 +126,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <!--<field name="view_id" ref="view_model_name_form"/>-->
+            <field name="search_view_id" ref="view_edi_product_search_search"/>
             <field name="context">{'form_view_ref': 'edi_extract.view_product_product_edi_form'}</field>
             <field name="domain">[]</field>
         </record>
