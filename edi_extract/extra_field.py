@@ -71,7 +71,7 @@ class ProductProduct(orm.Model):
         'edi_accessory': fields.text(
              'Accessori', translate=True),
 
-        'edi_position': fields.integer('Numero di posizioni'),
+        'edi_position': fields.char('Numero di posizioni', size=20),
         'edi_max_weight': fields.float('Peso max. Kg.', digits=(16, 2)),
 
         'edi_removable': fields.boolean('Removibile'),
