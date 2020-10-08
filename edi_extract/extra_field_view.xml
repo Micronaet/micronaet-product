@@ -102,7 +102,7 @@
 
                                     <field name="edi_volume" />
                                     <field name="edi_gross_weight" />
-                                    <newline/>
+                                    <field name="edi_net_weight" />
 
                                     <separator string="Extra weight:" colspan="6"/>
                                     <field name="edi_cellophane_weight" />

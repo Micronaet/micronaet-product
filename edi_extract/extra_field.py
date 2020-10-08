@@ -78,6 +78,8 @@ class ProductProduct(orm.Model):
         'edi_mounted': fields.boolean('Arriva montato'),
 
         'edi_volume': fields.float('Volume m³', digits=(16, 2)),
+        'edi_net_weight': fields.float(
+            'Peso netto Kg.', digits=(16, 2)),
         'edi_gross_weight': fields.float(
             'Peso lordo Kg.', digits=(16, 2)),
         'edi_package_weight': fields.float(

@@ -270,7 +270,7 @@ class EdiProductProductExtractWizard(orm.Model):
                         product.edi_closed_width,  # 18
                         product.edi_closed_length,  # 19
                         [product.edi_set_data],  # 20
-                        product.weight_net,  # 21
+                        product.edi_net_weight,  # 21
                         product.edi_position,  # 22
                         product.edi_max_weight,  # 23
                         'S' if product.edi_removable else 'N',  # 24
