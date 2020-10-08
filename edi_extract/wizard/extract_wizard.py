@@ -189,7 +189,7 @@ class EdiProductProductExtractWizard(orm.Model):
             [40],
             10, 10, 10, 10, 10, 10, 10, 10, 20,  # 20 'EAN interno',
             10, 10, 10, 10,
-            [40], [40], [40], [40], [30], 40,
+            [40], [40], [40], [40], [30], 80,
         ]
         ws_name = _('EDI Product')
         row = 0
