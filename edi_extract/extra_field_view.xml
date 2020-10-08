@@ -36,13 +36,14 @@
                         <notebook colspan="4">
                             <page string="Descrizione">
                                 <group col="4" colspan="4">
-                                    <field name="telaio" string="[ Telaio ]"/>
-                                    <field name="fabric" string="[ Tessuto - Vetro ]"/>
-
-                                    <field name="edi_frame_color" />
-                                    <field name="edi_seat_color" />
-
+                                    <!--<field name="fabric" string="[ Tessuto - Vetro ]"/>-->
                                     <field name="edi_short_description" />
+                                    <field name="edi_long_description" />
+
+                                    <field name="telaio" string="[ Telaio ]"/>
+                                    <field name="edi_frame_color" />
+
+                                    <field name="edi_seat_color" />
                                     <field name="edi_category" />
 
                                     <field name="edi_origin_country" />

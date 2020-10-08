@@ -158,7 +158,8 @@ class EdiProductProductExtractWizard(orm.Model):
         header = [
             'Codice', ['Nome'],
             ['Descizione breve'], ['Descrizione dettagliata'],
-            ['Descrizione extra'], ['Materiale telaio'], ['Materiale seduta'],
+            # ['Descrizione extra'],
+            ['Materiale telaio'], ['Materiale seduta'],
             ['Materiale cuscino'], ['Materiale imbottitura'],
             ['Colore telaio'], ['Colore seduta'], ['Colore cuscino'],
             'Alt. prod.', 'Larg. prod.', 'Lung. prod.', 'Diametro',
@@ -180,7 +181,8 @@ class EdiProductProductExtractWizard(orm.Model):
         width = [
             12, [30],
             [40], [40],
-            [40], [40], [30], [30], [30], [30], [30], [30],
+            # [40],
+            [40], [30], [30], [30], [30], [30], [30],
             10, 10, 10, 10, 10, 10, 10, 10, 10,
             [40],
             10, 10, 10, 5, 5,
@@ -192,8 +194,20 @@ class EdiProductProductExtractWizard(orm.Model):
         ws_name = _('EDI Product')
         row = 0
         excel_pool.create_worksheet(ws_name)
+
+        # Format setup:
+        excel_pool.set_format()
+        excel_format = {
+            'title': excel_pool.get_format('title'),
+            'header': excel_pool.get_format('header'),
+            'text': excel_pool.get_format('text'),
+            'number': excel_pool.get_format('number'),
+        }
+
+        # First line:
         excel_pool.write_xls_line(
-            ws_name, row, flat_record(header, langs, header=True))
+            ws_name, row, flat_record(header, langs, header=True),
+            excel_format['header'])
         excel_pool.column_width(
             ws_name, flat_record(width, langs, header=False))
 
@@ -236,53 +250,52 @@ class EdiProductProductExtractWizard(orm.Model):
                         [product.name],  # 1 name (lang)
 
                         [product.edi_short_description],  # 2
-                        ['Descrizione dettagliata?'],  # 3
-                        ['Colore?'],  # 4
+                        [product.edi_long_description],  # 3
 
-                        [product.telaio],  # 5  product.fabric
-                        [product.edi_seat_material],  # 6
-                        [product.edi_pillow_material],  # 7
+                        [product.telaio],  # 4  product.fabric
+                        [product.edi_seat_material],  # 5
+                        [product.edi_pillow_material],  # 6
 
-                        [product.edi_padding_material],  # 8
-                        [product.edi_frame_color],  # 9
-                        [product.colour],  # 10  product.edi_seat_color
-                        [product.edi_pillow_color],  # 11
-                        product.height,  # 12
-                        product.width,  # 13
-                        product.length,  # 14
-                        product.edi_diameter,  # 15
-                        product.edi_seat_height,  # 16
-                        product.edi_armrest_height,  # 17
-                        product.edi_closed_height,  # 18
-                        product.edi_closed_width,  # 19
-                        product.edi_closed_length,  # 20
-                        [product.edi_set_data],  # 21
-                        product.weight_net,  # 22
-                        product.edi_position,  # 23
-                        product.edi_max_weight,  # 24
-                        'S' if product.edi_removable else 'N',  # 25
-                        'S' if product.edi_mounted else 'N',  # 26
-                        [product.edi_accessory],  # 27
-                        product.q_x_pack,  # 28
-                        product.pack_l,  # 29
-                        product.pack_h,  # 30
-                        product.pack_p,  # 31
-                        product.edi_volume,  # 32
-                        product.edi_gross_weight,  # 33
-                        product.edi_package_weight,  # 34
-                        product.edi_cellophane_weight,  # 35
-                        product.ean13,  # 36
+                        [product.edi_padding_material],  # 7
+                        [product.edi_frame_color],  # 8
+                        [product.colour],  # 9  product.edi_seat_color
+                        [product.edi_pillow_color],  # 10
+                        product.height,  # 11
+                        product.width,  # 12
+                        product.length,  # 13
+                        product.edi_diameter,  # 14
+                        product.edi_seat_height,  # 15
+                        product.edi_armrest_height,  # 16
+                        product.edi_closed_height,  # 17
+                        product.edi_closed_width,  # 18
+                        product.edi_closed_length,  # 19
+                        [product.edi_set_data],  # 20
+                        product.weight_net,  # 21
+                        product.edi_position,  # 22
+                        product.edi_max_weight,  # 23
+                        'S' if product.edi_removable else 'N',  # 24
+                        'S' if product.edi_mounted else 'N',  # 25
+                        [product.edi_accessory],  # 26
+                        product.q_x_pack,  # 27
+                        product.pack_l,  # 28
+                        product.pack_h,  # 29
+                        product.pack_p,  # 30
+                        product.edi_volume,  # 31
+                        product.edi_gross_weight,  # 32
+                        product.edi_package_weight,  # 33
+                        product.edi_cellophane_weight,  # 34
+                        product.ean13,  # 35
                         # 'EAN interno',
-                        product.item_per_pallet,  # 37
-                        product.item_per_mq,  # 38
-                        product.item_per_camion,  # 39
-                        product.edi_pallet_dimension,  # 40
-                        [product.edi_maintenance],  # 41
-                        [product.edi_benefit],  # 42
-                        [product.edi_warranty],  # 43
-                        [product.edi_category],  # 44
-                        [product.edi_origin_country],  # 45
-                        images_cell,
+                        product.item_per_pallet,  # 36
+                        product.item_per_mq,  # 37
+                        product.item_per_camion,  # 40
+                        product.edi_pallet_dimension,  # 41
+                        [product.edi_maintenance],  # 42
+                        [product.edi_benefit],  # 43
+                        [product.edi_warranty],  # 44
+                        [product.edi_category],  # 45
+                        [product.edi_origin_country],  # 46
+                        images_cell,  # 47
                     ]
                 else:
                     if product.id in jump_ids:
@@ -290,24 +303,24 @@ class EdiProductProductExtractWizard(orm.Model):
                     records[default_code][1].append(product.name)
                     records[default_code][2].append(
                         product.edi_short_description)
-                    records[default_code][3].append('Descrizione dettagliata?')
-                    records[default_code][4].append('Colore?')
-                    records[default_code][5].append(product.telaio)
-                    records[default_code][6].append(product.edi_seat_material)
-                    records[default_code][7].append(
+                    records[default_code][3].append(
+                        product.edi_long_description)
+                    records[default_code][4].append(product.telaio)
+                    records[default_code][5].append(product.edi_seat_material)
+                    records[default_code][6].append(
                         product.edi_pillow_material)
-                    records[default_code][8].append(
+                    records[default_code][7].append(
                         product.edi_padding_material)
-                    records[default_code][9].append(product.edi_frame_color)
-                    records[default_code][10].append(product.colour)
-                    records[default_code][11].append(product.edi_pillow_color)
-                    records[default_code][21].append(product.edi_set_data)
-                    records[default_code][27].append(product.edi_accessory)
-                    records[default_code][41].append(product.edi_maintenance)
-                    records[default_code][42].append(product.edi_benefit)
-                    records[default_code][43].append(product.edi_warranty)
-                    records[default_code][44].append(product.edi_category)
-                    records[default_code][45].append(
+                    records[default_code][8].append(product.edi_frame_color)
+                    records[default_code][9].append(product.colour)
+                    records[default_code][10].append(product.edi_pillow_color)
+                    records[default_code][20].append(product.edi_set_data)
+                    records[default_code][26].append(product.edi_accessory)
+                    records[default_code][40].append(product.edi_maintenance)
+                    records[default_code][41].append(product.edi_benefit)
+                    records[default_code][42].append(product.edi_warranty)
+                    records[default_code][43].append(product.edi_category)
+                    records[default_code][44].append(
                         product.edi_origin_country)
 
         for default_code in records:
