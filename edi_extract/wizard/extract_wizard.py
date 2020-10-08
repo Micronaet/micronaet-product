@@ -258,7 +258,7 @@ class EdiProductProductExtractWizard(orm.Model):
 
                         [product.edi_padding_material],  # 7
                         [product.edi_frame_color],  # 8
-                        [product.colour],  # 9  product.edi_seat_color
+                        [product.edi_seat_color],  # 9  product.colour
                         [product.edi_pillow_color],  # 10
                         product.height,  # 11
                         product.width,  # 12
@@ -312,7 +312,7 @@ class EdiProductProductExtractWizard(orm.Model):
                     records[default_code][7].append(
                         product.edi_padding_material)
                     records[default_code][8].append(product.edi_frame_color)
-                    records[default_code][9].append(product.colour)
+                    records[default_code][9].append(product.edi_seat_color)
                     records[default_code][10].append(product.edi_pillow_color)
                     records[default_code][20].append(product.edi_set_data)
                     records[default_code][26].append(product.edi_accessory)
