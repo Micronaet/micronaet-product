@@ -327,7 +327,8 @@ class EdiProductProductExtractWizard(orm.Model):
             record = records[default_code]
 
             row += 1
-            excel_pool.write_xls_line(ws_name, row, flat_record(record))
+            excel_pool.write_xls_line(
+                ws_name, row, flat_record(record), excel_format['text'])
 
         return excel_pool.return_attachment(
             cr, uid, 'EDI product', 'product.xlsx', context=context)
