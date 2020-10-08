@@ -47,11 +47,10 @@
                                     <field name="edi_category" />
 
                                     <field name="edi_origin_country" />
-                                    <field name="colour" string="[ Descrizione extra (colore) ]"/>
-
+                                    <!--<field name="colour" string="[ Descrizione extra (colore) ]"/>-->
                                     <field name="edi_maintenance" />
-                                    <field name="edi_benefit" />
 
+                                    <field name="edi_benefit" />
                                     <field name="edi_warranty" />
                                 </group>
                             </page>
