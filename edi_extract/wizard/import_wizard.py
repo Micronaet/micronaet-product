@@ -86,15 +86,16 @@ class EdiProductProductImportWizard(orm.TransientModel):
         # Loop on all pages:
         # ---------------------------------------------------------------------
         # today = now[:10]
-        ws = wb.sheet_by_index(0):
+        ws = wb.sheet_by_index(0)
         pos = 0
-        for row in range(row_start, WS.nrows):
+        error = ''
+        for row in range(row_start, ws.nrows):
             pos += 1
             if pos == 1:
                 # ---------------------------------------------------------
                 # Read product code:
                 # ---------------------------------------------------------
-                default_code = WS.cell(row, 0).value
+                default_code = ws.cell(row, 0).value
                 _logger.info('Find material: %s' % default_code)
 
                 # Manage code error:
@@ -129,7 +130,6 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 product_id = product_ids[0]
                 product_proxy = product_pool.browse(
                     cr, uid, product_id, context=context)
-
 
     _columns = {
         'filename': fields.binary('XLSX file', filters=None),

@@ -9,16 +9,14 @@
                 <form string="Wizard esportazione" version="7.0">
                    <header>
                        <button string="Cancel" special="cancel" />
-                       <button name="action_extract" string="Extract" type="object" icon="gtk-jump-to" class="oe_highlight" />
+                       <button name="action_import_edi_update" string="Import" type="object" icon="gtk-jump-to" class="oe_highlight" />
                    </header>
                    <group colspan="4" col="4">
-                       <field name="template_partner_id" />
-                       <field name="default_template" />
+                       <field name="filename" />
                    </group>
                 </form>
             </field>
         </record>
-
         <record model="ir.actions.act_window" id="action_view_edi_product_product_import_wizard">
             <field name="name">Import XLSX EDI</field>
             <field name="res_model">edi.product.product.import.wizard</field>
@@ -27,7 +25,6 @@
             <field name="target">new</field>
             <field name="view_id" ref="view_edi_product_product_import_wizard_form"/>
         </record>
-
         <menuitem
             parent="menu_product_edi_root"
             id="menu_view_edi_product_product_import_wizard"

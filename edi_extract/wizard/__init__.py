@@ -22,4 +22,4 @@
 ###############################################################################
 
 from . import extract_wizard
-from . import import_wizard.py
+from . import import_wizard
