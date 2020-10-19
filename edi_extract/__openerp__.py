@@ -49,6 +49,7 @@
         'extra_field_view.xml',
 
         'wizard/extract_wizard_view.xml',
+        'wizard/import_wizard_view.xml',
         ],
     'active': False,
     'installable': True,
