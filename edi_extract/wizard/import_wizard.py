@@ -190,7 +190,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
 
             # Lang loop for write data:
             context_lang = context.copy()
-            for lang in extract_data_lang_line(ws, row):
+            for lang in extract_data_lang_line(ws, row, mask_line):
                 context_lang['lang'] = lang
                 product_pool.write(cr, uid, [product_id], context=context_lang)
 
