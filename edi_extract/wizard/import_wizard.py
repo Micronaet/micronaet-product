@@ -46,14 +46,14 @@ class EdiProductProductImportWizard(orm.TransientModel):
         """ Update product data from Excel file
         """
         # Internal function:
-        def read_all_line(ws, row, mask_mode=False):
+        def read_all_line(ws, row, mask_mode=False, mask_default=False):
             """ Real all line from WS selected
             """
             line = []
             for col in range(ws.ncols):
                 data = ws.cell(row, col).value.upper()
                 if mask_mode:
-                    line.append(data and data in 'XS')
+                    line.append((data and data in 'XS') or mask_default)
                 else:
                     line.append(data)
             return line
@@ -83,17 +83,13 @@ class EdiProductProductImportWizard(orm.TransientModel):
 
                 # C. Manage data:
                 data = ws.cell(row, col).value
-                pdb.set_trace()
                 if data_type in ('char', 'text', 'float'):  # as is
                     pass  #
                 elif data_type in ('boolean'):
-                    pdb.set_trace()
                     data = (data and data in 'YS')
                 elif data_type in ('integer'):  # TODO check
-                    pdb.set_trace()
                     data = int(ws.cell(row, col).value)
                 elif data_type in ('many2one'):  # TODO
-                    pdb.set_trace()
                     data = int(ws.cell(row, col).value)
                 # TODO Date, Datetime
                 else:  # Not used
@@ -150,22 +146,25 @@ class EdiProductProductImportWizard(orm.TransientModel):
         pos = 0
         error = ''
         mask_line = False
-        pdb.set_trace()
+        mask_default = False
         for row in range(row_start, ws.nrows):
             pos += 1
             default_code = ws.cell(row, 0).value
 
             if pos == 1:
-                if default_code not in 'xXSs':
+                if default_code.upper() in ('tutte', 'tutto', 'all'):
+                    mask_default = True
+                elif default_code not in 'xXSs':
                     raise osv.except_osv(
                         _('Errore riga maschera'),
                         _('Il file per essere improtato deve aver come prima'
-                          'riga la masachera code indicare le colonne da '
+                          'riga la maschera code indicare le colonne da '
                           'utilizzare, la prima deve sempre essere marcata con'
                           'x, X, s o S!'),
                     )
 
-                mask_line = read_all_line(ws, row, mask_mode=True)
+                mask_line = read_all_line(
+                    ws, row, mask_mode=True, mask_default=mask_default)
                 continue
             elif pos == 2:
                 continue   # Header line
@@ -201,14 +200,12 @@ class EdiProductProductImportWizard(orm.TransientModel):
 
             product_id = product_ids[0]
 
-            # Lang loop for write data:
+            # Lang loop for write data records:
             context_lang = context.copy()
             data_lang = extract_data_lang_line(ws, row, mask_line)
-            pdb.set_trace()
             for lang in data_lang:
                 context_lang['lang'] = lang
-                for default_code in data_lang[lang]:
-                    data = data_lang[lang][default_code]
+                data = data_lang[lang][default_code]
                 product_pool.write(
                     cr, uid, [product_id], data, context=context_lang)
 
