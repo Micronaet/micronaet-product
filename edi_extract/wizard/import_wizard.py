@@ -45,6 +45,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
     def action_import_edi_update(self, cr, uid, ids, context=None):
         """ Update product data from Excel file
         """
+        # Internal function:
         def read_all_line(ws, row):
             """ Real all line from WS selected
             """
@@ -52,6 +53,40 @@ class EdiProductProductImportWizard(orm.TransientModel):
             for col in range(ws.ncols):
                 line.append(ws.cell(row, col).value)
             return line
+
+        def extract_data_lang_line(ws, row, mask):
+            """ Extract data from row with mask
+                @return dict with data setup
+            """
+            data_lang = {}
+            for col in range(ws.ncols):
+                # Check read from mask
+                try:
+                    field = mask[col]
+                    if mask[col] not in 'xXsS':
+                        # jump cell
+                        continue
+                except:
+                    # Cell not present (mask short than row)
+                    continue
+
+                field_name, data_type, lang = field
+                if lang not in data_lang:
+                    data_type[lang] = {}
+
+                if data_type in ('char', 'text'):
+                    data = ws.cell(row, col).value
+                elif data_type in ('integer'):  # TODO check
+                    data = int(ws.cell(row, col).value)
+                elif data_type in ('float'):  # TODO check
+                    data = int(ws.cell(row, col).value)
+                elif data_type in ('many2one'):  # TODO
+                    data = int(ws.cell(row, col).value)
+                else:  # Not used
+                    _logger.error('Mapped field not used: %s' % field_name)
+
+                data_lang[lang][field] = data
+            return data_lang
 
         if context is None:
             context = {}
@@ -81,8 +116,8 @@ class EdiProductProductImportWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # Load force name (for web publish)
         # ---------------------------------------------------------------------
-        field_mapping = product_pool.load_edi_parameter(
-            cr, uid, context=context)
+        product_pool.load_edi_parameter(cr, uid, context=context)
+        field_mapping = self._edi_field_parameter
 
         row_start = 0
         try:
@@ -104,8 +139,10 @@ class EdiProductProductImportWizard(orm.TransientModel):
         pdb.set_trace()
         for row in range(row_start, ws.nrows):
             pos += 1
+            default_code = ws.cell(row, 0).value
+
             if pos == 1:
-                if ws.cell(row, 0).value not in 'xXSs':
+                if default_code not in 'xXSs':
                     raise osv.except_osv(
                         _('Errore riga maschera'),
                         _('Il file per essere improtato deve aver come prima'
@@ -117,45 +154,40 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 mask_line = read_all_line(ws, row)
                 continue
 
-            if pos == 1:
-                # ---------------------------------------------------------
-                # Read product code:
-                # ---------------------------------------------------------
-                default_code = ws.cell(row, 0).value
-                _logger.info('Find material: %s' % default_code)
+            # Key field:
+            if not default_code:
+                _logger.error('No product code')
+                error += 'Riga: %s > No codice prodotto\n' % row
+                continue
 
-                # Manage code error:
-                if not default_code:
-                    _logger.error('No material code')
-                    error += 'Riga: %s > No codice materiale\n' % row
-                    continue
+            # Search product:
+            product_ids = product_pool.search(cr, uid, [
+                ('default_code', '=', default_code)
+                ], context=context)
 
-                # Search product:
-                product_ids = product_pool.search(cr, uid, [
-                    ('default_code', '=', default_code)
-                    ], context=context)
+            # Manage product error:
+            if not product_ids:
+                _logger.error(
+                    'No product with passed code: %s' % default_code)
+                # FATAL ERROR (maybe file not in correct format, raise:
+                raise osv.except_osv(
+                    _('Errore controllare anche il formato del file'),
+                    _('Non trovato il codice prodotto: %s' % (
+                        default_code)),
+                    )
 
-                # Manage product error:
-                if not product_ids:
-                    _logger.error(
-                        'No product with code: %s' % default_code)
-                    # FATAL ERROR (maybe file not in correct format, raise:
-                    raise osv.except_osv(
-                        _('Errore controllare anche il formato del file'),
-                        _('Non trovato il codice prodotto: %s' % (
-                            default_code)),
-                        )
+            # TODO manage warning more than one product
+            elif len(product_ids) > 1:
+                _logger.error('More material code: %s' % default_code)
+                error += 'Riga: %s > Codice doppio: %s\n' % (
+                    row, default_code)
+                pass  # TODO multi code
 
-                # TODO manage warning more than one product
-                elif len(product_ids) > 1:
-                    _logger.error('More material code: %s' % default_code)
-                    error += 'Riga: %s > Codice doppio: %s\n' % (
-                        row, default_code)
-                    pass # TODO multi code
+            product_id = product_ids[0]
 
-                product_id = product_ids[0]
-                product_proxy = product_pool.browse(
-                    cr, uid, product_id, context=context)
+            # TODO lang loop for write data:
+            for lang in extract_data_lang_line(ws, row):
+                pass
 
     _columns = {
         'filename': fields.binary('XLSX file', filters=None),

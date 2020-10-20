@@ -93,7 +93,7 @@ class ProductProduct(orm.Model):
         """ Load EDI parameter for import (done once if present)
         """
         try:
-            return self._edi_field_parameter
+            self._edi_field_parameter  # Simple test
         except:
             # Create parameter once:
             self._edi_field_parameter = []  # Create from _edi_field
