@@ -209,7 +209,6 @@ class EdiProductProductImportWizard(orm.TransientModel):
             # Lang loop for write data records:
             context_lang = context.copy()
             data_lang = extract_data_lang_line(ws, row, mask_line)
-            pdb.set_trace()
             for lang in data_lang:
                 context_lang['lang'] = lang
                 product_pool.write(

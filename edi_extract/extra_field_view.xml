@@ -131,7 +131,6 @@
             <field name="context">{'form_view_ref': 'edi_extract.view_product_product_edi_form'}</field>
             <field name="domain">[]</field>
         </record>
-
         <menuitem
             parent="base.menu_product"
             id="menu_product_edi_root"
@@ -142,5 +141,6 @@
                 id="menu_product_product_edi_product"
                 action="action_product_product_edi"
                 sequence="10"/>
+
     </data>
 </openerp>
