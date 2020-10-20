@@ -77,10 +77,13 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 if data_type in ('char', 'text'):
                     data = ws.cell(row, col).value
                 elif data_type in ('integer'):  # TODO check
+                    pdb.set_trace()
                     data = int(ws.cell(row, col).value)
                 elif data_type in ('float'):  # TODO check
+                    pdb.set_trace()
                     data = int(ws.cell(row, col).value)
                 elif data_type in ('many2one'):  # TODO
+                    pdb.set_trace()
                     data = int(ws.cell(row, col).value)
                 else:  # Not used
                     _logger.error('Mapped field not used: %s' % field_name)
@@ -185,9 +188,11 @@ class EdiProductProductImportWizard(orm.TransientModel):
 
             product_id = product_ids[0]
 
-            # TODO lang loop for write data:
+            # Lang loop for write data:
+            context_lang = context.copy()
             for lang in extract_data_lang_line(ws, row):
-                pass
+                context_lang['lang'] = lang
+                product_pool.write(cr, uid, [product_id], context=context_lang)
 
     _columns = {
         'filename': fields.binary('XLSX file', filters=None),
