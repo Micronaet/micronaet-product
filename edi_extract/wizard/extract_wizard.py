@@ -107,11 +107,11 @@ class ProductProduct(orm.Model):
                 # TODO add load of many2many object?
                 for lang in langs:
                     field = self._columns[field_name]
-                    self._edi_field_parameter.append = [
+                    self._edi_field_parameter.append([
                         field_name,  # Field name
                         field._type,  # Type of field
                         lang,  # Lang
-                    ]
+                    ])
 
 
 class EdiProductProductExtractWizard(orm.Model):
