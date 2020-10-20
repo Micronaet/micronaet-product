@@ -31,6 +31,63 @@ from openerp.tools.translate import _
 _logger = logging.getLogger(__name__)
 
 
+class ProductProduct(ord.Model):
+    """ Product parameters:
+    """
+    _edi_lang = ['it_IT', 'en_US']
+    _edi_field_db = [
+        'default_code',  # 0 default code
+        ['name'],  # 1 name (lang)
+
+        ['edi_short_description'],  # 2
+        ['edi_long_description'],  # 3
+
+        ['telaio'],  # 4  'fabric
+        ['edi_seat_material'],  # 5
+        ['edi_pillow_material'],  # 6
+
+        ['edi_padding_material'],  # 7
+        ['edi_frame_color'],  # 8
+        ['edi_seat_color'],  # 9
+        ['edi_pillow_color'],  # 10
+        'height',  # 11
+        'width',  # 12
+        'length',  # 13
+        'edi_diameter',  # 14
+        'edi_seat_height',  # 15
+        'edi_armrest_height',  # 16
+        'edi_closed_height',  # 17
+        'edi_closed_width',  # 18
+        'edi_closed_length',  # 19
+        ['edi_set_data'],  # 20
+        'edi_net_weight',  # 21
+        'edi_position',  # 22
+        'edi_max_weight',  # 23
+        'edi_removable',  # 24 (bool S / N)
+        'edi_mounted',  # 25 (bool S / N)
+        ['edi_accessory'],  # 26
+        'q_x_pack',  # 27
+        'pack_l',  # 28
+        'pack_h',  # 29
+        'pack_p',  # 30
+        'edi_volume',  # 31
+        'edi_gross_weight',  # 32
+        'edi_package_weight',  # 33
+        'edi_cellophane_weight',  # 34
+        'ean13',  # 35
+        'item_per_pallet',  # 36
+        'item_per_mq',  # 37
+        'item_per_camion',  # 40
+        'edi_pallet_dimension',  # 41
+        ['edi_maintenance'],  # 42
+        ['edi_benefit'],  # 43
+        ['edi_warranty'],  # 44
+        ['edi_category'],  # 45
+        ['edi_origin_country'],  # 46
+        # images_cell,  # 47 Not use
+    ]
+
+
 class EdiProductProductExtractWizard(orm.Model):
     """ Wizard for edi product extract wizard
     """
