@@ -46,7 +46,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
         """ Update product data from Excel file
         """
         # Internal function:
-        def read_all_line(ws, row, mask_mode):
+        def read_all_line(ws, row, mask_mode=False):
             """ Real all line from WS selected
             """
             line = []
@@ -157,7 +157,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
                           'x, X, s o S!'),
                     )
 
-                mask_line = read_all_line(ws, row, mask_mode)
+                mask_line = read_all_line(ws, row, mask_mode=True)
                 continue
             elif pos == 2:
                 continue   # Header line
