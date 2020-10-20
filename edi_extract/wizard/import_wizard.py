@@ -80,7 +80,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
 
                 # B. Manage lang:
                 if lang not in data_lang:
-                    data_type[lang] = {}
+                    data_lang[lang] = {}
 
                 # C. Manage data:
                 if data_type in ('char', 'text'):
