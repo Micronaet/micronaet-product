@@ -83,9 +83,8 @@ class EdiProductProductImportWizard(orm.TransientModel):
                     data_lang[lang] = {}
 
                 # C. Manage data:
-                if data_type in ('char', 'text'):
-                    data = ws.cell(row, col).value
-                elif data_type in ('integer'):  # TODO check
+                data = ws.cell(row, col).value  # char as is
+                if data_type in ('integer'):  # TODO check
                     pdb.set_trace()
                     data = int(ws.cell(row, col).value)
                 elif data_type in ('float'):  # TODO check
@@ -94,6 +93,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 elif data_type in ('many2one'):  # TODO
                     pdb.set_trace()
                     data = int(ws.cell(row, col).value)
+                # TODO Date, Datetime
                 else:  # Not used
                     _logger.error('Mapped field not used: %s' % field_name)
 
