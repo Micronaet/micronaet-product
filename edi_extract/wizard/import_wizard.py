@@ -46,12 +46,16 @@ class EdiProductProductImportWizard(orm.TransientModel):
         """ Update product data from Excel file
         """
         # Internal function:
-        def read_all_line(ws, row):
+        def read_all_line(ws, row, mask_mode):
             """ Real all line from WS selected
             """
             line = []
             for col in range(ws.ncols):
-                line.append(ws.cell(row, col).value)
+                data = ws.cell(row, col).value
+                if mask_mode:
+                    line.append(data not in 'xXSs')
+                else:
+                    line.append(data)
             return line
 
         def extract_data_lang_line(ws, row, mask):
@@ -154,8 +158,10 @@ class EdiProductProductImportWizard(orm.TransientModel):
                           'x, X, s o S!'),
                     )
 
-                mask_line = read_all_line(ws, row)
+                mask_line = read_all_line(ws, row, mask_mode)
                 continue
+            elif pos == 2:
+                continue   # Header line
 
             # Key field:
             if not default_code:
