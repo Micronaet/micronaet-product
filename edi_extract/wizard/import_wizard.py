@@ -51,11 +51,13 @@ class EdiProductProductImportWizard(orm.TransientModel):
             """
             line = []
             for col in range(ws.ncols):
-                data = ws.cell(row, col).value
+                data = ws.cell(row, col).value.upper()
                 if mask_mode:
-                    line.append(data in 'xXSs')
+                    _logger.info(col, data, data in 'XS')
+                    line.append(data in 'XS')
                 else:
                     line.append(data)
+            pdb.set_trace()
             return line
 
         def extract_data_lang_line(ws, row, mask):
