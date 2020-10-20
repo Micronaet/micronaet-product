@@ -85,7 +85,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 _('Please pass a XLSX file for import EDI product'),
                 )
 
-        b64_file = base64.decodestring(wizard.file)
+        b64_file = base64.decodestring(wizard.filename)
         now = datetime.now().strftime(
             DEFAULT_SERVER_DATETIME_FORMAT).replace(
             ':', '_').replace('-', '_')
