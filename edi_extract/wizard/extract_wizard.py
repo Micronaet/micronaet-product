@@ -37,7 +37,7 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
 
     _edi_lang = ['it_IT', 'en_US']
-    _edi_field_db = [
+    _edi_field = [
         'default_code',  # 0 default code
         ['name'],  # 1 name (lang)
 
@@ -98,15 +98,15 @@ class ProductProduct(orm.Model):
             pdb.set_trace()
             # Create parameter once:
             product_pool = self.pool.get('product.product')
-            self._edi_field_parameter = {}
-            for field_name in self._edi_field_parameter:
+            self._edi_field_parameter = {}  # Create from _edi_field
+            for field_name in self._edi_field:
                 if type(field_name) == list:
                     field_name = field_name[0]
-                    langs = product_pool._edi_lang
+                    langs = self._edi_lang
                 else:
                     langs = ['it_IT']
                 for lang in langs:
-                    field = product_pool._columns[field_name]
+                    field = self._columns[field_name]
                     self._edi_field_parameter[field] = [
                         field_name,
                         lang,
