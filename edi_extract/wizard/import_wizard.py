@@ -45,6 +45,14 @@ class EdiProductProductImportWizard(orm.TransientModel):
     def action_import_edi_update(self, cr, uid, ids, context=None):
         """ Update product data from Excel file
         """
+        def read_all_line(ws, row):
+            """ Real all line from WS selected
+            """
+            line = []
+            for col in range(ws.ncols):
+                line.append(ws.cell(row, col).value)
+            return line
+
         if context is None:
             context = {}
 
@@ -92,8 +100,23 @@ class EdiProductProductImportWizard(orm.TransientModel):
         ws = wb.sheet_by_index(0)
         pos = 0
         error = ''
+        mask_line = False
+        pdb.set_trace()
         for row in range(row_start, ws.nrows):
             pos += 1
+            if pos == 1:
+                if ws.cell(row, 0).value not in 'xXSs':
+                    raise osv.except_osv(
+                        _('Errore riga maschera'),
+                        _('Il file per essere improtato deve aver come prima'
+                          'riga la masachera code indicare le colonne da '
+                          'utilizzare, la prima deve sempre essere marcata con'
+                          'x, X, s o S!'),
+                    )
+
+                mask_line = read_all_line(ws, row)
+                continue
+
             if pos == 1:
                 # ---------------------------------------------------------
                 # Read product code:

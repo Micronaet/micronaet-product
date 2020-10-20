@@ -153,16 +153,17 @@ class EdiProductProductExtractWizard(orm.Model):
         url_image_mask = 'my.%s.it/upload/EDI/%%s/%%s\n' % \
                          cr.dbname.lower()
 
-        langs = self._edi_lang
-        if context is None:
-            context = {}
-        lang_context = context.copy()
-
+        # Pool used:
         excel_pool = self.pool.get('excel.writer')
         album_image_pool = self.pool.get('product.image.file')
         product_pool = self.pool.get('product.product')
         line_pool = self.pool.get('sale.order.line')
         invoice_line_pool = self.pool.get('account.invoice.line')
+
+        langs = product_pool._edi_lang
+        if context is None:
+            context = {}
+        lang_context = context.copy()
 
         wizard_browse = self.browse(cr, uid, ids, context=context)[0]
         default_code = wizard_browse.default_code
