@@ -83,11 +83,10 @@ class EdiProductProductImportWizard(orm.TransientModel):
                     data_lang[lang] = {}
 
                 # C. Manage data:
-                data = ws.cell(row, col).value  # char as is
-                if data_type in ('integer'):  # TODO check
-                    pdb.set_trace()
-                    data = int(ws.cell(row, col).value)
-                elif data_type in ('float'):  # TODO check
+                data = ws.cell(row, col).value
+                if data_type in ('char', 'text', 'float'):  # as is
+                    pass  #
+                elif data_type in ('integer'):  # TODO check
                     pdb.set_trace()
                     data = int(ws.cell(row, col).value)
                 elif data_type in ('many2one'):  # TODO
@@ -95,7 +94,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
                     data = int(ws.cell(row, col).value)
                 # TODO Date, Datetime
                 else:  # Not used
-                    _logger.error('Mapped field not used: %s' % field_name)
+                    _logger.warning('Mapped field not used: %s' % field_name)
 
                 data_lang[lang][field_name] = data
             return data_lang
@@ -201,9 +200,14 @@ class EdiProductProductImportWizard(orm.TransientModel):
 
             # Lang loop for write data:
             context_lang = context.copy()
-            for lang in extract_data_lang_line(ws, row, mask_line):
+            data_lang = extract_data_lang_line(ws, row, mask_line)
+            pdb.set_trace()
+            for lang in data_lang:
                 context_lang['lang'] = lang
-                product_pool.write(cr, uid, [product_id], context=context_lang)
+                for default_code in data_lang[lang]:
+                    data = data_lang[lang][default_code]
+                product_pool.write(
+                    cr, uid, [product_id], data, context=context_lang)
 
     _columns = {
         'filename': fields.binary('XLSX file', filters=None),
