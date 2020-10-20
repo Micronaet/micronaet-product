@@ -153,9 +153,12 @@ class EdiProductProductImportWizard(orm.TransientModel):
         for row in range(row_start, ws.nrows):
             pos += 1
             default_code = ws.cell(row, 0).value
+            if not default_code:
+                _logger.warning('Jump empyt line %s' % default_code)
+                continue
 
             if pos == 1:
-                if default_code.upper() in ('tutte', 'tutto', 'all'):
+                if default_code.lower() in ('tutte', 'tutto', 'all'):
                     mask_default = True
                 elif default_code not in 'xXSs':
                     raise osv.except_osv(
@@ -206,11 +209,13 @@ class EdiProductProductImportWizard(orm.TransientModel):
             # Lang loop for write data records:
             context_lang = context.copy()
             data_lang = extract_data_lang_line(ws, row, mask_line)
+            pdb.set_trace()
             for lang in data_lang:
                 context_lang['lang'] = lang
-                data = data_lang[lang][default_code]
                 product_pool.write(
-                    cr, uid, [product_id], data, context=context_lang)
+                    cr, uid, [product_id],
+                    data_lang[lang],
+                    context=context_lang)
 
     _columns = {
         'filename': fields.binary('XLSX file', filters=None),
