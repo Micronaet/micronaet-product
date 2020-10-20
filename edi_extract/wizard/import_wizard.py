@@ -62,21 +62,26 @@ class EdiProductProductImportWizard(orm.TransientModel):
             """ Extract data from row with mask
                 @return dict with data setup
             """
+            product_pool = self.pool.get('product.product')
             data_lang = {}
             for col in range(ws.ncols):
                 # Check read from mask
                 try:
-                    field = mask[col]
                     if not mask[col]:  # jump cell
                         continue
                 except:
                     # Cell not present (mask short than row)
                     continue
 
-                field_name, data_type, lang = field
+                # A. Manage field:
+                field_name, data_type, lang = \
+                    product_pool._edi_field_parameter[col]
+
+                # B. Manage lang:
                 if lang not in data_lang:
                     data_type[lang] = {}
 
+                # C. Manage data:
                 if data_type in ('char', 'text'):
                     data = ws.cell(row, col).value
                 elif data_type in ('integer'):  # TODO check
@@ -91,7 +96,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 else:  # Not used
                     _logger.error('Mapped field not used: %s' % field_name)
 
-                data_lang[lang][field] = data
+                data_lang[lang][field_name] = data
             return data_lang
 
         if context is None:
