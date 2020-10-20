@@ -97,6 +97,9 @@ class EdiProductProductImportWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # Load force name (for web publish)
         # ---------------------------------------------------------------------
+        field_mapping = product_pool.load_edi_parameter(
+            cr, uid, context=context)
+
         row_start = 0
         try:
             wb = xlrd.open_workbook(filename)
