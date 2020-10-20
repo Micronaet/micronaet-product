@@ -89,6 +89,30 @@ class ProductProduct(orm.Model):
         # images_cell,  # 47 Not use
     ]
 
+    def load_edi_parameter(self, cr, uid, context=None):
+        """ Load EDI parameter for import (done once if present)
+        """
+        try:
+            return self._edi_field_parameter
+        except:
+            pdb.set_trace()
+            # Create parameter once:
+            product_pool = self.pool.get('product.product')
+            self._edi_field_parameter = {}
+            for field_name in self._edi_field_parameter:
+                if type(field_name) == list:
+                    field_name = field_name[0]
+                    langs = product_pool._edi_lang
+                else:
+                    langs = ['it_IT']
+                for lang in langs:
+                    field = product_pool._columns[field_name]
+                    self._edi_field_parameter[field] = [
+                        field_name,
+                        lang,
+                        field.type,
+                    ]
+
 
 class EdiProductProductExtractWizard(orm.Model):
     """ Wizard for edi product extract wizard
