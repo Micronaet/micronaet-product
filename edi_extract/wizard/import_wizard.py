@@ -62,7 +62,6 @@ class EdiProductProductImportWizard(orm.TransientModel):
             """ Extract data from row with mask
                 @return dict with data setup
             """
-            pdb.set_trace()
             product_pool = self.pool.get('product.product')
             data_lang = {}
             for col in range(ws.ncols):
@@ -84,6 +83,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
 
                 # C. Manage data:
                 data = ws.cell(row, col).value
+                pdb.set_trace()
                 if data_type in ('char', 'text', 'float'):  # as is
                     pass  #
                 elif data_type in ('boolean'):
