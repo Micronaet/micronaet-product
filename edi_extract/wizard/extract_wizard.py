@@ -95,22 +95,22 @@ class ProductProduct(orm.Model):
         try:
             return self._edi_field_parameter
         except:
-            pdb.set_trace()
             # Create parameter once:
-            product_pool = self.pool.get('product.product')
-            self._edi_field_parameter = {}  # Create from _edi_field
+            self._edi_field_parameter = []  # Create from _edi_field
             for field_name in self._edi_field:
                 if type(field_name) == list:
                     field_name = field_name[0]
                     langs = self._edi_lang
                 else:
                     langs = ['it_IT']
+
+                # TODO add load of many2many object?
                 for lang in langs:
                     field = self._columns[field_name]
-                    self._edi_field_parameter[field] = [
-                        field_name,
-                        lang,
-                        field.type,
+                    self._edi_field_parameter.append = [
+                        field_name,  # Field name
+                        field._type,  # Type of field
+                        lang,  # Lang
                     ]
 
 
@@ -153,7 +153,7 @@ class EdiProductProductExtractWizard(orm.Model):
         url_image_mask = 'my.%s.it/upload/EDI/%%s/%%s\n' % \
                          cr.dbname.lower()
 
-        langs = ['it_IT', 'en_US']
+        langs = self._edi_lang
         if context is None:
             context = {}
         lang_context = context.copy()
