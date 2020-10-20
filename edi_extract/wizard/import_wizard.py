@@ -86,6 +86,9 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 data = ws.cell(row, col).value
                 if data_type in ('char', 'text', 'float'):  # as is
                     pass  #
+                elif data_type in ('boolean'):
+                    pdb.set_trace()
+                    data = (data and data in 'YS')
                 elif data_type in ('integer'):  # TODO check
                     pdb.set_trace()
                     data = int(ws.cell(row, col).value)
