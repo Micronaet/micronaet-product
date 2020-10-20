@@ -7,13 +7,13 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-                <group name="inventory" position="after">                         
+                <group name="inventory" position="after">
                     <group name="startup_inventory_group" attrs="{'invisible':[('inventory_delta', '=', 0),('inventory_start', '=', 0)]}" colspan="4">
                         <separator string="Start up:"  colspan="4"/>
                         <field name="inventory_start" />
                         <field name="inventory_delta" />
                         <field name="inventory_date" />
-                        
+
                     </group>
                     <group name="startup_inventory_report_group" colspan="4">
                         <separator string="Inventory report:"  colspan="4"/>
@@ -28,14 +28,14 @@
             <field name="model">product.product</field>
             <field name="priority" eval="60" />
             <field name="arch" type="xml">
-                <search string="Inventory category" version="7.0">        
+                <search string="Inventory category" version="7.0">
                     <field name="name" />
                     <field name="default_code" />
                     <filter name="no_code" string="No code" domain="[('default_code','=',False)]"/>
                     <filter name="no_category" string="No category" domain="[('inventory_category_id','=',False)]"/>
                     <group expand="0" string="Group By...">
                         <filter name="group_category" string="Inventory category" context="{'group_by': 'inventory_category_id'}"/>
-                    </group>                
+                    </group>
                 </search>
             </field>
         </record>
@@ -44,7 +44,7 @@
             <field name="model">product.product</field>
             <field name="priority" eval="60"/>
             <field name="arch" type="xml">
-                <tree string="Inventory category product" colors="red:inventory_category_id==False;blue:default_code==False">        
+                <tree string="Inventory category product" colors="red:inventory_category_id==False;blue:default_code==False">
                     <field name="name" />
                     <field name="default_code" />
                     <field name="uom_id" />
@@ -63,13 +63,13 @@
             <field name="context">{'search_default_group_category':1}</field>
             <field name="domain">[]</field>
         </record>
-        
+
         <!--product.product.inventory.category-->
         <record model="ir.ui.view" id="view_product_product_inventory_category_form">
             <field name="name">product.product.inventory.category.form</field>
             <field name="model">product.product.inventory.category</field>
             <field name="arch" type="xml">
-                <form string="Inventory category" version="7.0">        
+                <form string="Inventory category" version="7.0">
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="name" />
@@ -80,7 +80,7 @@
                             <button name="force_no_code_category" string="Force no code" type="object" colspan="1" attrs="{'invisible': [('code','!=',False)]}"/>
                             <field name="code" nolabel="1" colspan="4"/>
                         </group>
-                    </sheet>        
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -88,7 +88,7 @@
             <field name="name">product.product.inventory.category.tree</field>
             <field name="model">product.product.inventory.category</field>
             <field name="arch" type="xml">
-                <tree string="String" >        
+                <tree string="String" >
                     <field name="name" />
                     <field name="note" />
                 </tree>
@@ -103,18 +103,37 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
-        <menuitem 
-            parent="base.menu_base_config" 
-            id="menu_inventory_category" 
+
+        <!--Hidden product (maybe move anywhere)-->
+        <record model="ir.actions.act_window" id="action_product_product_hidden">
+            <field name="name">Prodotti disattivati</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('active', '=', False)]</field>
+        </record>
+        <menuitem
+            parent="product.menu_products"
+            id="menu_product_product_hidden_product"
+            action="action_product_product_hidden"
+            sequence="90"/>
+        <!--hidden product-->
+
+        <menuitem
+            parent="base.menu_base_config"
+            id="menu_inventory_category"
             action="action_inventory_category"
             sequence="60"
             />
-            <menuitem 
-                parent="menu_inventory_category" 
-                id="menu_inventory_category_product" 
+            <menuitem
+                parent="menu_inventory_category"
+                id="menu_inventory_category_product"
                 action="action_category_inventory_product"
                 sequence="10"
                 />
+
+
     </data>
 </openerp>
 
