@@ -79,7 +79,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # Save file passed:
         # ---------------------------------------------------------------------
-        if not wizard.file:
+        if not wizard.filename:
             raise osv.except_osv(
                 _('No file:'),
                 _('Please pass a XLSX file for import EDI product'),

@@ -31,9 +31,11 @@ from openerp.tools.translate import _
 _logger = logging.getLogger(__name__)
 
 
-class ProductProduct(ord.Model):
+class ProductProduct(orm.Model):
     """ Product parameters:
     """
+    _inherit = 'product.product'
+
     _edi_lang = ['it_IT', 'en_US']
     _edi_field_db = [
         'default_code',  # 0 default code
