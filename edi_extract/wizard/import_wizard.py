@@ -67,8 +67,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 # Check read from mask
                 try:
                     field = mask[col]
-                    if mask[col] not in 'xXsS':
-                        # jump cell
+                    if not mask[col]:  # jump cell
                         continue
                 except:
                     # Cell not present (mask short than row)
