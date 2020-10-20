@@ -76,6 +76,9 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 # A. Manage field:
                 field_name, data_type, lang = \
                     product_pool._edi_field_parameter[col]
+                if field_name == 'default_code':
+                    # Never write default_code (always correct)
+                    continue
 
                 # B. Manage lang:
                 if lang not in data_lang:
