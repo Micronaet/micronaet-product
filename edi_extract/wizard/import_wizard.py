@@ -53,7 +53,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
             for col in range(ws.ncols):
                 data = ws.cell(row, col).value
                 if mask_mode:
-                    line.append(data not in 'xXSs')
+                    line.append(data in 'xXSs')
                 else:
                     line.append(data)
             return line
