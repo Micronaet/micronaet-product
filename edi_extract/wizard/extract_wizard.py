@@ -92,6 +92,7 @@ class ProductProduct(orm.Model):
     def load_edi_parameter(self, cr, uid, context=None):
         """ Load EDI parameter for import (done once if present)
         """
+        template_pool = self.pool.get('product.template')
         try:
             self._edi_field_parameter  # Simple test
         except:
@@ -106,7 +107,10 @@ class ProductProduct(orm.Model):
 
                 # TODO add load of many2many object?
                 for lang in langs:
-                    field = self._columns[field_name]
+                    if field_name in self._columns:
+                        field = self._columns[field_name]
+                    else:
+                        field = template_pool._columns[field_name]
                     self._edi_field_parameter.append([
                         field_name,  # Field name
                         field._type,  # Type of field
