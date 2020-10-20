@@ -120,7 +120,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
         # Load force name (for web publish)
         # ---------------------------------------------------------------------
         product_pool.load_edi_parameter(cr, uid, context=context)
-        field_mapping = self._edi_field_parameter
+        field_mapping = product_pool._edi_field_parameter
 
         row_start = 0
         try:
