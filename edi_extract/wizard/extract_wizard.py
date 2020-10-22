@@ -278,7 +278,7 @@ class EdiProductProductExtractWizard(orm.Model):
                 ['Frame color'], ['Seat color'], ['Cushion color'],
                 'Product Height', 'Product width',
                 'Product lenght', 'Diameter',
-                'Seat height', 'Armrest height', 'Closed height'
+                'Seat height', 'Armrest height', 'Closed height',
                 'Closed width', 'Closed length',
                 ['Composition and size'],
                 'Net weight', 'Positions', 'Maximum weight',
@@ -286,9 +286,9 @@ class EdiProductProductExtractWizard(orm.Model):
                 ['Accessories'],
                 'Pcs per box', 'Box Height', 'Box width',
                 'Box lenght', 'Volume', 'Gross weight', 'Box weight',
-                'Cellophane weight', 'EAN'
-                'Pcs per pallet', 'Pcs per M3', 'Pcs per truck'
-                'Pallet size'
+                'Cellophane weight', 'EAN',
+                'Pcs per pallet', 'Pcs per M3', 'Pcs per truck',
+                'Pallet size',
                 ['Maintenance'], ['Benefit'], ['Warranty'], ['Category'],
                 ['Country of production'],
                 'Pictures',
