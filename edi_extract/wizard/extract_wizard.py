@@ -259,7 +259,7 @@ class EdiProductProductExtractWizard(orm.Model):
             ['Accessori'],
             'Q. per collo', 'Alt. imballo', 'Larg. imballo',
             'Lung. imballo', 'Volume', 'Peso lordo', 'Peso scatola',
-            'Peso cellophane', 'EAN scatola',  # 'EAN interno',
+            'Peso cellophane', 'EAN scatola',
             'Pezzi bancale', 'Pezzi M3', 'Pezzi camion 13.6mt',
             'Dim. bancale',
             ['Manutenzioni'], ['Vantaggi'], ['Garanzia'], ['Categoria'],
@@ -269,13 +269,12 @@ class EdiProductProductExtractWizard(orm.Model):
         width = [
             12, [30],
             [40], [40],
-            # [40],
             [40], [30], [30], [30], [30], [30], [30],
             10, 10, 10, 10, 10, 10, 10, 10, 10,
             [40],
             10, 10, 10, 5, 5,
             [40],
-            10, 10, 10, 10, 10, 10, 10, 10, 20,  # 20 'EAN interno',
+            10, 10, 10, 10, 10, 10, 10, 10, 20,
             10, 10, 10, 10,
             [40], [40], [40], [40], [30], 80,
         ]
@@ -288,7 +287,7 @@ class EdiProductProductExtractWizard(orm.Model):
         excel_format = {
             'title': excel_pool.get_format('title'),
             'header': excel_pool.get_format('header'),
-            'text': excel_pool.get_format('text'),
+            'text': excel_pool.get_format('text_wrap'),
             'number': excel_pool.get_format('number'),
         }
 
@@ -304,8 +303,9 @@ class EdiProductProductExtractWizard(orm.Model):
         album_cache = {}
         for lang in langs:
             lang_context['lang'] = lang
-            for product in product_pool.browse(
-                    cr, uid, product_ids, context=lang_context):
+            for product in sorted(product_pool.browse(
+                    cr, uid, product_ids, context=lang_context),
+                    key=lambda p: p.default_code):
                 default_code = product.default_code
                 if lang == 'it_IT':  # First loop
                     if default_code in records:
