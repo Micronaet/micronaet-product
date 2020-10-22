@@ -224,6 +224,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
         model_pool = self.pool.get('ir.model.data')
         tree_view_id = False
         form_view_id = model_pool.get_object_reference(
+            cr, uid,
             'edi_extract', 'view_product_product_edi_form')[1]
 
         return {
