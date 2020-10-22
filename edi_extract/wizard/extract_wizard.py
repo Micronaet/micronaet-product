@@ -332,9 +332,8 @@ class EdiProductProductExtractWizard(orm.Model):
         album_cache = {}
         for lang in langs:
             lang_context['lang'] = lang
-            for product in sorted(product_pool.browse(
-                    cr, uid, product_ids, context=lang_context),
-                    key=lambda p: p.default_code):
+            for product in product_pool.browse(
+                    cr, uid, product_ids, context=lang_context):
                 default_code = product.default_code
                 if lang == 'it_IT':  # First loop
                     if default_code in records:
@@ -439,7 +438,7 @@ class EdiProductProductExtractWizard(orm.Model):
                     records[default_code][44].append(
                         product.edi_origin_country)
 
-        for default_code in records:
+        for default_code in sorted(records):
             record = records[default_code]
 
             row += 1
