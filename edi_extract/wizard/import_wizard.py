@@ -150,6 +150,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
         error = ''
         mask_line = False
         mask_default = False
+        selected_ids = []
         for row in range(row_start, ws.nrows):
             pos += 1
             default_code = ws.cell(row, 0).value
@@ -191,11 +192,12 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 _logger.error(
                     'No product with passed code: %s' % default_code)
                 # FATAL ERROR (maybe file not in correct format, raise:
-                raise osv.except_osv(
+                '''raise osv.except_osv(
                     _('Errore controllare anche il formato del file'),
                     _('Non trovato il codice prodotto: %s' % (
                         default_code)),
-                    )
+                    )'''
+                continue
 
             # TODO manage warning more than one product
             elif len(product_ids) > 1:
@@ -215,6 +217,29 @@ class EdiProductProductImportWizard(orm.TransientModel):
                     cr, uid, [product_id],
                     data_lang[lang],
                     context=context_lang)
+            selected_ids.append(product_id)
+            _logger.info('Update code: %s' % default_code)
+
+        # Return product updated:
+        model_pool = self.pool.get('ir.model.data')
+        tree_view_id = False
+        form_view_id = model_pool.get_object_reference(
+            'edi_extract', 'view_product_product_edi_form')[1]
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Prodotti aggiornati'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            # 'res_id': 1,
+            'res_model': 'product.product',
+            'view_id': tree_view_id,
+            'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
+            'domain': [('id', 'in', selected_ids)],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }
 
     _columns = {
         'filename': fields.binary('XLSX file', filters=None),
