@@ -191,7 +191,9 @@ class EdiProductProductExtractWizard(orm.Model):
         # ---------------------------------------------------------------------
         # Prefilter for select mode:
         # ---------------------------------------------------------------------
+        use_lang = 'it_IT'
         if template_partner_id:
+            use_lang = template_partner_id.lang or use_lang
             if select_mode == 'order_all':  # all order
                 # Select order domain:
                 select_domain = [
@@ -243,29 +245,54 @@ class EdiProductProductExtractWizard(orm.Model):
         product_ids = product_pool.search(cr, uid, domain, context=context)
 
         # Excel:
-        header = [
-            'Codice', ['Nome'],
-            ['Descizione breve'], ['Descrizione dettagliata'],
-            # ['Descrizione extra'],
-            ['Materiale telaio'], ['Materiale seduta'],
-            ['Materiale cuscino'], ['Materiale imbottitura'],
-            ['Colore telaio'], ['Colore seduta'], ['Colore cuscino'],
-            'Alt. prod.', 'Larg. prod.', 'Lung. prod.', 'Diametro',
-            'H. seduta', 'H. bracciolo', 'Alt. chiuso',
-            'Larg. chiuso', 'Lung. chiuso',
-            ['Composizione e dimensione set'],
-            'Peso netto', 'N. posizioni', 'Peso massimo', 'Sfoderabile',
-            'Arriva montato',
-            ['Accessori'],
-            'Q. per collo', 'Alt. imballo', 'Larg. imballo',
-            'Lung. imballo', 'Volume', 'Peso lordo', 'Peso scatola',
-            'Peso cellophane', 'EAN scatola',
-            'Pezzi bancale', 'Pezzi M3', 'Pezzi camion 13.6mt',
-            'Dim. bancale',
-            ['Manutenzioni'], ['Vantaggi'], ['Garanzia'], ['Categoria'],
-            ['Paese produzione'],
-            'Immagini',
-        ]
+        headers = {
+            'it_IT': [
+                'Codice', ['Nome'],
+                ['Descizione breve'], ['Descrizione dettagliata'],
+                ['Materiale telaio'], ['Materiale seduta'],
+                ['Materiale cuscino'], ['Materiale imbottitura'],
+                ['Colore telaio'], ['Colore seduta'], ['Colore cuscino'],
+                'Alt. prod.', 'Larg. prod.', 'Lung. prod.', 'Diametro',
+                'H. seduta', 'H. bracciolo', 'Alt. chiuso',
+                'Larg. chiuso', 'Lung. chiuso',
+                ['Composizione e dimensione set'],
+                'Peso netto', 'N. posizioni', 'Peso massimo', 'Sfoderabile',
+                'Arriva montato',
+                ['Accessori'],
+                'Q. per collo', 'Alt. imballo', 'Larg. imballo',
+                'Lung. imballo', 'Volume', 'Peso lordo', 'Peso scatola',
+                'Peso cellophane', 'EAN scatola',
+                'Pezzi bancale', 'Pezzi M3', 'Pezzi camion 13.6mt',
+                'Dim. bancale',
+                ['Manutenzioni'], ['Vantaggi'], ['Garanzia'], ['Categoria'],
+                ['Paese produzione'],
+                'Immagini',
+            ],
+            'en_US': [
+                'Code', ['Name'],
+                ['Short description'], ['Long description'],
+                ['Frame materiali'], ['Seat material'],
+                ['Cushion material'], ['Padding material'],
+                ['Frame color'], ['Seat color'], ['Cushion color'],
+                'Product Height', 'Product width',
+                'Product lenght', 'Diameter',
+                'Seat height', 'Armrest height', 'Closed height'
+                'Closed width', 'Closed length',
+                ['Composition and size'],
+                'Net weight', 'Positions', 'Maximum weight',
+                'Removable fabric', 'Mounted',
+                ['Accessories'],
+                'Pcs per box', 'Box Height', 'Box width',
+                'Box lenght', 'Volume', 'Gross weight', 'Box weight',
+                'Cellophane weight', 'EAN'
+                'Pcs per pallet', 'Pcs per M3', 'Pcs per truck'
+                'Pallet size'
+                ['Maintenance'], ['Benefit'], ['Warranty'], ['Category'],
+                ['Country of production'],
+                'Pictures',
+            ]
+        }
+        header = headers[use_lang]
         width = [
             12, [30],
             [40], [40],
