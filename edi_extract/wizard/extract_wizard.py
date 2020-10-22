@@ -193,7 +193,9 @@ class EdiProductProductExtractWizard(orm.Model):
         # ---------------------------------------------------------------------
         use_lang = 'it_IT'
         if template_partner_id:
-            use_lang = template_partner_id.lang or use_lang
+            use_lang = wizard_browse.template_partner_id.lang
+            if use_lang not in langs:
+                use_lang = 'it_IT'
             if select_mode == 'order_all':  # all order
                 # Select order domain:
                 select_domain = [
