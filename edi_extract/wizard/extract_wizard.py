@@ -373,7 +373,6 @@ class EdiProductProductExtractWizard(orm.Model):
                         product.edi_package_weight,  # 33
                         product.edi_cellophane_weight,  # 34
                         product.ean13,  # 35
-                        # 'EAN interno',
                         product.item_per_pallet,  # 36
                         product.item_per_mq,  # 37
                         product.item_per_camion,  # 40
