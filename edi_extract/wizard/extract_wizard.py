@@ -189,7 +189,8 @@ class EdiProductProductExtractWizard(orm.Model):
         categ_ids = wizard_browse.categ_ids
         catalog_ids = wizard_browse.catalog_ids
         inventory_category_id = wizard_browse.inventory_category_id.id
-        template_partner_id = wizard_browse.template_partner_id.id
+        template_partner = wizard_browse.template_partner_id
+        template_partner_id = template_partner.id
         status = wizard_browse.status  # gamma
 
         # ---------------------------------------------------------------------
@@ -200,9 +201,9 @@ class EdiProductProductExtractWizard(orm.Model):
             'product': {},
         }
 
-        if template_partner_id and template_partner_id.master_pricelist_ids:
+        if template_partner and template_partner.master_pricelist_ids:
             # Load pricelist_db:
-            for pricelist in template_partner_id.master_pricelist_ids:
+            for pricelist in template_partner.master_pricelist_ids:
                 if pricelist.product_id:
                     pricelist_db['product'][pricelist.product_id] = \
                         pricelist.price
