@@ -10,11 +10,12 @@
                 <xpath expr="//page[2]" position="after">
                     <page name="master_pricelist_page" string="Listino base">
                         <group>
-                            <field name="master_pricelist_ids">
+                            <field name="master_pricelist_ids" nolabel="1">
                                 <tree string="Listino:" editable="bottom">
                                     <field name="partner_id" invisible="1"/>
                                     <field name="product_id" />
                                     <field name="name" />
+                                    <field name="single" />
                                     <field name="pricelist" />
                                 </tree>
                             </field>

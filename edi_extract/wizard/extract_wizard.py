@@ -132,6 +132,20 @@ class EdiProductProductExtractWizard(orm.Model):
     def action_extract(self, cr, uid, ids, context=None):
         """ Event for button done
         """
+        def get_price_from_pricelist(pricelist_db, product):
+            """ Extract price from pricelist database
+            """
+            # Partic:
+            if product in pricelist_db['product']:
+                return pricelist_db['product'][product]
+
+            # Start code:
+            for length in sorted(pricelist_db['start'], reverse=True):
+                price = pricelist_db['start'][length]
+                if price:
+                    return price
+            return 0.0
+
         def flat_record(record, langs=False, header=False):
             """ Put all list in extension of record
                 langs used for header only, if present
@@ -178,7 +192,31 @@ class EdiProductProductExtractWizard(orm.Model):
         template_partner_id = wizard_browse.template_partner_id.id
         status = wizard_browse.status  # gamma
 
+        # ---------------------------------------------------------------------
+        # Pricelist management:
+        # ---------------------------------------------------------------------
+        pricelist_db = {
+            'start': {},
+            'product': {},
+        }
+
+        if template_partner_id and template_partner_id.master_pricelist_ids:
+            # Load pricelist_db:
+            for pricelist in template_partner_id.master_pricelist_ids:
+                if pricelist.product_id:
+                    pricelist_db['product'][pricelist.product_id] = \
+                        pricelist.price
+                else:
+                    length = len(pricelist.name)
+                    if length not in pricelist_db['start']:
+                        pricelist_db['start'][length] = {}
+                    pricelist_db[length]['start'][
+                        (pricelist.single, pricelist.default_code)
+                    ] = pricelist.price
+
+        # ---------------------------------------------------------------------
         # Extra column:
+        # ---------------------------------------------------------------------
         code_partner = wizard_browse.code_partner_id
         code_partner_column = wizard_browse.code_partner_column
         code_partner_db = {}
@@ -441,8 +479,9 @@ class EdiProductProductExtractWizard(orm.Model):
                         [product.edi_warranty],  # 44
                         [product.edi_category],  # 45
                         [product.edi_origin_country],  # 46
-                        code_partner_db.get(default_code, ''),  # 47
-                        images_cell,  # 48
+                        get_price_from_pricelist(pricelist_db, product),  # 47
+                        code_partner_db.get(default_code, ''),  # 48
+                        images_cell,  # 49
                     ]
                 else:
                     if product.id in jump_ids:

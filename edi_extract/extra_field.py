@@ -39,10 +39,11 @@ class ProductProductMasterPricelist(orm.Model):
     _columns = {
         'partner_id': fields.many2one('res.partner', 'Partner'),
         'product_id': fields.many2one(
-            'product.product', 'Prodotto',
+            'product.product', u'Prodotto (particolarità)',
             help=u'Utilizzare per le particolarità prodotto '
                  u'(alternativo all\'iniziale del codice)'),
-
+        'single': fields.boolean(
+            'Singolo', help='S al 13o carattere'),
         'name': fields.char(
             'Iniziale codice', size=20,
             help='Parte iniziale del codice '
