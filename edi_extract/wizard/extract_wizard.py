@@ -180,11 +180,11 @@ class EdiProductProductExtractWizard(orm.Model):
 
         # Extra column:
         code_partner = wizard_browse.code_partner_id
-        code_partner_id = code_partner
+        code_partner_column = wizard_browse.code_partner_column
         code_partner_db = {}
         if code_partner:
             # Load product code database:
-            code_partner_name = code_partner.name
+            code_partner_column = code_partner_column or code_partner.name
             for partic in code_partner.partic_ids:
                 partic_code = partic.product_id.default_code
                 if partic_code:
@@ -192,8 +192,8 @@ class EdiProductProductExtractWizard(orm.Model):
         else:
             code_partner_name = False
         code_partner_column = {
-            'it_IT': code_partner_name or 'Codice extra (non presente)',
-            'en_US': code_partner_name or 'Extra code (not present)',
+            'it_IT': code_partner_column or 'Codice extra (non presente)',
+            'en_US': code_partner_column or 'Extra code (not present)',
         }
 
         select_mode = wizard_browse.select_mode
