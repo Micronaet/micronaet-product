@@ -140,8 +140,13 @@ class EdiProductProductExtractWizard(orm.Model):
                 return pricelist_db['product'][product]
 
             # Start code:
+            default_code = product.default_code
+            key = (
+                default_code[12:13].upper() == 'S',
+                default_code,
+            )
             for length in sorted(pricelist_db['start'], reverse=True):
-                price = pricelist_db['start'][length]
+                price = pricelist_db['start'][length].get(key)
                 if price:
                     return price
             return 0.0
@@ -211,9 +216,9 @@ class EdiProductProductExtractWizard(orm.Model):
                     length = len(pricelist.name)
                     if length not in pricelist_db['start']:
                         pricelist_db['start'][length] = {}
-                    pricelist_db[length]['start'][
-                        (pricelist.single, pricelist.default_code)
-                    ] = pricelist.price
+                    pricelist_db['start'][length][
+                        (pricelist.single, pricelist.name)
+                    ] = pricelist.pricelist
 
         # ---------------------------------------------------------------------
         # Extra column:
