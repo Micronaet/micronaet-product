@@ -48,6 +48,9 @@
                        <field name="template_partner_id" />
                        <field name="default_template" />
 
+                       <field name="code_partner_id" />
+                       <field name="code_partner_column" attrs="{'invisible': [('code_partner_id', '=', False)]}"/>
+
                        <notebook colspan="4">
                            <page string="Parametri standard" name="standard_parameters">
                                <group col="4" colspan="4">
