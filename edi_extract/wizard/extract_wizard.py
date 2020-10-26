@@ -141,14 +141,24 @@ class EdiProductProductExtractWizard(orm.Model):
 
             # Start code:
             default_code = product.default_code
-            key = (
-                default_code[12:13].upper() == 'S',
-                default_code,
-            )
             for length in sorted(pricelist_db['start'], reverse=True):
+                key = (
+                    default_code[12:13].upper() == 'S',
+                    default_code[:length],
+                )
                 price = pricelist_db['start'][length].get(key)
                 if price:
                     return price
+
+                # If single is not present check standard package:
+                key = (
+                    False,
+                    default_code[:length],
+                )
+                price = pricelist_db['start'][length].get(key)
+                if price:
+                    return price
+
             return 0.0
 
         def flat_record(record, langs=False, header=False):
