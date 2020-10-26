@@ -178,6 +178,24 @@ class EdiProductProductExtractWizard(orm.Model):
         template_partner_id = wizard_browse.template_partner_id.id
         status = wizard_browse.status  # gamma
 
+        # Extra column:
+        code_partner = wizard_browse.code_partner_id
+        code_partner_id = code_partner
+        code_partner_db = {}
+        if code_partner:
+            # Load product code database:
+            code_partner_name = code_partner.name
+            for partic in code_partner.partic_ids:
+                partic_code = partic.product_id.default_code
+                if partic_code:
+                    code_partner_db[partic_code] = partic.partner_code
+        else:
+            code_partner_name = False
+        code_partner_column = {
+            'it_IT': code_partner_name or 'Codice extra (non presente)',
+            'en_US': code_partner_name or 'Extra code (not present)',
+        }
+
         select_mode = wizard_browse.select_mode
         from_date = wizard_browse.from_date
 
@@ -268,6 +286,7 @@ class EdiProductProductExtractWizard(orm.Model):
                 'Dim. bancale',
                 ['Manutenzioni'], ['Vantaggi'], ['Garanzia'], ['Categoria'],
                 ['Paese produzione'],
+                code_partner_column['it_IT'],
                 'Immagini',
             ],
             'en_US': [
@@ -291,7 +310,7 @@ class EdiProductProductExtractWizard(orm.Model):
                 'Pallet size',
                 ['Maintenance'], ['Benefit'], ['Warranty'], ['Category'],
                 ['Country of production'],
-                'Extra code',  # Code (extra partner)
+                code_partner_column['en_US'],
                 'Pictures',
             ]
         }
@@ -307,7 +326,7 @@ class EdiProductProductExtractWizard(orm.Model):
             10, 10, 10, 10, 10, 10, 10, 10, 20,
             10, 10, 10, 10,
             [40], [40], [40], [40], [30],
-            20, # Extra code
+            30,  # Extra code
             80,
         ]
         ws_name = _('EDI Product')
@@ -413,7 +432,8 @@ class EdiProductProductExtractWizard(orm.Model):
                         [product.edi_warranty],  # 44
                         [product.edi_category],  # 45
                         [product.edi_origin_country],  # 46
-                        images_cell,  # 47
+                        code_partner_db.get(default_code, ''),  # 47
+                        images_cell,  # 48
                     ]
                 else:
                     if product.id in jump_ids:
@@ -462,6 +482,7 @@ class EdiProductProductExtractWizard(orm.Model):
                 ('is_company', '=', True),
                 ('is_address', '=', False),
                 ]),
+
         'code_partner_id': fields.many2one(
             'res.partner', 'Codice extra (cliente)',
             domain=[
@@ -472,6 +493,7 @@ class EdiProductProductExtractWizard(orm.Model):
         'code_partner_column': fields.char(
             'Nome colonna', size=30,
             help='Nome colonna contenente il codice extra'),
+
         'album_ids': fields.many2many(
             'product.image.album', 'edi_product_album_export_rel',
             'product_id', 'album_id',
