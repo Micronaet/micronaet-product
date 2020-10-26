@@ -1,4 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 access_edi_product_product_extract_wizard_user,edi.product.product.extract.wizard,model_edi_product_product_extract_wizard,base.group_user,1,1,1,1
+access_product_product_master_pricelist_user,product.product.master.pricelist,model_product_product_master_pricelist,base.group_user,1,1,1,1
 
 

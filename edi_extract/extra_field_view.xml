@@ -1,6 +1,30 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_res_partner_master_pricelist_form" model="ir.ui.view">
+            <field name="name">Partner master pricelist</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[2]" position="after">
+                    <page name="master_pricelist_page" string="Listino base">
+                        <group>
+                            <field name="master_pricelist_ids">
+                                <tree string="Listino:" editable="bottom">
+                                    <field name="partner_id" invisible="1"/>
+                                    <field name="product_id" />
+                                    <field name="name" />
+                                    <field name="pricelist" />
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="view_edi_product_search_search">
             <field name="name">edi.product.search</field>
             <field name="model">product.product</field>

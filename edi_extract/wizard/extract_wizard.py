@@ -286,6 +286,9 @@ class EdiProductProductExtractWizard(orm.Model):
                 'Dim. bancale',
                 ['Manutenzioni'], ['Vantaggi'], ['Garanzia'], ['Categoria'],
                 ['Paese produzione'],
+
+                # Not for import:
+                'Prezzo listino',
                 code_partner_column['it_IT'],
                 'Immagini',
             ],
@@ -310,6 +313,9 @@ class EdiProductProductExtractWizard(orm.Model):
                 'Pallet size',
                 ['Maintenance'], ['Benefit'], ['Warranty'], ['Category'],
                 ['Country of production'],
+
+                # Not for import:
+                'Pricelist',
                 code_partner_column['en_US'],
                 'Pictures',
             ]
@@ -326,6 +332,9 @@ class EdiProductProductExtractWizard(orm.Model):
             10, 10, 10, 10, 10, 10, 10, 10, 20,
             10, 10, 10, 10,
             [40], [40], [40], [40], [30],
+
+            # Not for import:
+            15,  # Pricelist
             30,  # Extra code
             80,
         ]

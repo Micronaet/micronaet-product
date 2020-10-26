@@ -29,6 +29,43 @@ from openerp.tools.translate import _
 _logger = logging.getLogger(__name__)
 
 
+class ProductProductMasterPricelist(orm.Model):
+    """ Model for manage pricelist for parent code
+    """
+    _name = 'product.product.master.pricelist'
+    _description = 'Master pricelist'
+    _order = 'name, product_id'
+
+    _columns = {
+        'partner_id': fields.many2one('res.partner', 'Partner'),
+        'product_id': fields.many2one(
+            'product.product', 'Prodotto',
+            help=u'Utilizzare per le particolarità prodotto '
+                 u'(alternativo all\'iniziale del codice)'),
+
+        'name': fields.char(
+            'Iniziale codice', size=20,
+            help='Parte iniziale del codice '
+                 '(alternativo al prodotto effettivo)'),
+        'pricelist': fields.float('Prezzo listino', digits=(16, 2)),
+    }
+
+
+class ResPartner(orm.Model):
+    """ Model name: res.partner
+    """
+
+    _inherit = 'res.partner'
+
+    _columns = {
+        'master_pricelist_ids': fields.one2many(
+            'product.product.master.pricelist', 'partner_id',
+            'Listino master',
+            help='Listino per iniziale codice e per particolarità prodotto',
+        ),
+    }
+
+
 class ProductProduct(orm.Model):
     """ Model name: ProductProduct
     """
