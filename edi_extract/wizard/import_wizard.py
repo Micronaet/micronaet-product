@@ -74,8 +74,12 @@ class EdiProductProductImportWizard(orm.TransientModel):
                     continue
 
                 # A. Manage field:
-                field_name, data_type, lang = \
-                    product_pool._edi_field_parameter[col]
+                try:
+                    field_name, data_type, lang = \
+                        product_pool._edi_field_parameter[col]
+                except IndexError:
+                    pass  # Extra limit column (not used)
+
                 if field_name == 'default_code':
                     # Never write default_code (always correct)
                     continue

@@ -21,18 +21,15 @@
 ###############################################################################
 import os
 import erppeek
-import xlsxwriter
 import ConfigParser
-from datetime import datetime
 
 partner_id = 30442
-import pdb; pdb.set_trace()
 
 # -----------------------------------------------------------------------------
 # Read configuration parameter:
 # -----------------------------------------------------------------------------
-# cfg_file = os.path.expanduser('../openerp.cfg')
-cfg_file = os.path.expanduser('../local.cfg')
+cfg_file = os.path.expanduser('../openerp.cfg')
+# cfg_file = os.path.expanduser('../local.cfg')
 
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
