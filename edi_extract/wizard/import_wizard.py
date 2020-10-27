@@ -41,6 +41,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
     """ Wizard for edi product extract wizard
     """
     _name = 'edi.product.product.import.wizard'
+    _bool_yes = 'yYsSxX'
 
     def action_import_edi_update(self, cr, uid, ids, context=None):
         """ Update product data from Excel file
@@ -92,11 +93,11 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 data = ws.cell(row, col).value
                 if data_type in ('char', 'text', 'float'):  # as is
                     pass  #
-                elif data_type in ('boolean'):
-                    data = (data and data in 'YS')
-                elif data_type in ('integer'):  # TODO check
+                elif data_type == 'boolean':
+                    data = (data and data in self._bool_yes)
+                elif data_type == 'integer':  # TODO check
                     data = int(ws.cell(row, col).value)
-                elif data_type in ('many2one'):  # TODO
+                elif data_type == 'many2one':  # TODO
                     data = int(ws.cell(row, col).value)
                 # TODO Date, Datetime
                 else:  # Not used
@@ -134,7 +135,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
         # Load force name (for web publish)
         # ---------------------------------------------------------------------
         product_pool.load_edi_parameter(cr, uid, context=context)
-        field_mapping = product_pool._edi_field_parameter
+        # field_mapping = product_pool._edi_field_parameter
 
         row_start = 0
         try:
@@ -165,15 +166,14 @@ class EdiProductProductImportWizard(orm.TransientModel):
             if pos == 1:
                 if default_code.lower() in ('tutte', 'tutto', 'all'):
                     mask_default = True
-                elif default_code not in 'xXSs':
+                elif default_code not in self._bool_yes:
                     raise osv.except_osv(
                         _('Errore riga maschera'),
                         _('Il file per essere improtato deve aver come prima'
                           'riga la maschera code indicare le colonne da '
                           'utilizzare, la prima deve sempre essere marcata con'
-                          'x, X, s o S!'),
+                          'x, X, s S, y o Y!'),
                     )
-
                 mask_line = read_all_line(
                     ws, row, mask_mode=True, mask_default=mask_default)
                 continue
