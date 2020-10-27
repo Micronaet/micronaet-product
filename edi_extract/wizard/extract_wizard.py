@@ -221,7 +221,7 @@ class EdiProductProductExtractWizard(orm.Model):
             for pricelist in template_partner.master_pricelist_ids:
                 if pricelist.product_id:
                     pricelist_db['product'][pricelist.product_id] = \
-                        pricelist.price
+                        pricelist.pricelist
                 else:
                     length = len(pricelist.name)
                     if length not in pricelist_db['start']:
