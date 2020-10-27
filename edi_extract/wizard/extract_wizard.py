@@ -207,6 +207,7 @@ class EdiProductProductExtractWizard(orm.Model):
         template_partner = wizard_browse.template_partner_id
         template_partner_id = template_partner.id
         status = wizard_browse.status  # gamma
+        only_with_price = wizard_browse.only_with_price
 
         # ---------------------------------------------------------------------
         # Pricelist management:
@@ -417,9 +418,17 @@ class EdiProductProductExtractWizard(orm.Model):
         album_cache = {}
         for lang in langs:
             lang_context['lang'] = lang
+
             for product in product_pool.browse(
                     cr, uid, product_ids, context=lang_context):
                 default_code = product.default_code
+
+                # Jump empty price (if request):
+                partner_pricelist = get_price_from_pricelist(
+                    pricelist_db, product)
+                if only_with_price and not partner_pricelist:
+                    continue
+
                 if lang == 'it_IT':  # First loop
                     if default_code in records:
                         _logger.error('Double code jumped')
@@ -495,7 +504,7 @@ class EdiProductProductExtractWizard(orm.Model):
                         [product.edi_warranty],  # 44
                         [product.edi_category],  # 45
                         [product.edi_origin_country],  # 46
-                        get_price_from_pricelist(pricelist_db, product),  # 47
+                        partner_pricelist,  # 47
                         code_partner_db.get(default_code, ''),  # 48
                         images_cell,  # 49
                     ]
@@ -546,6 +555,10 @@ class EdiProductProductExtractWizard(orm.Model):
                 ('is_company', '=', True),
                 ('is_address', '=', False),
                 ]),
+        'only_with_price': fields.boolean(
+            'Solo con prezzi',
+            help='Nel caso sia stato scelto il partner con il listino abbinato'
+                 ' e il prezzo non è presente viene saltata la riga'),
 
         'code_partner_id': fields.many2one(
             'res.partner', 'Codice extra (cliente)',
