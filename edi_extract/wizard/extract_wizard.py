@@ -441,11 +441,18 @@ class EdiProductProductExtractWizard(orm.Model):
                         if default_code in album_cache:
                             images_cell = album_cache[default_code]
                         else:
+                            search_code = [default_code]
+                            if default_code[12:13].upper() == 'S':
+                                standard_code = default_code[:12].strip()
+                                search_code.append(standard_code)
+                            else:
+                                standard_code = False
+
                             # Load album images:
                             image_ids = album_image_pool.search(cr, uid, [
                                 ('status', '=', 'ok'),
                                 ('album_id', 'in', album_ids),
-                                ('product_id.default_code', '=', default_code),
+                                ('product_id.default_code', 'in', search_code),
                             ], context=context)
                             for image in album_image_pool.browse(
                                     cr, uid, image_ids, context=context):
@@ -454,6 +461,8 @@ class EdiProductProductExtractWizard(orm.Model):
                                     image.filename,
                                 )
                             album_cache[default_code] = images_cell
+                            if standard_code:
+                                album_cache[standard_code] = images_cell
 
                     records[default_code] = [
                         default_code,  # 0 default code
