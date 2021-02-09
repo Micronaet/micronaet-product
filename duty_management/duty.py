@@ -39,6 +39,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+
 class AccountFiscalPosition(orm.Model):
     '''Cost for country to import in Italy
     '''
@@ -46,6 +47,79 @@ class AccountFiscalPosition(orm.Model):
 
     _columns = {
         'duty_print': fields.boolean('Stampa codice doganale'),
+        }
+
+
+class AccountInvoice(orm.Model):
+    ''' Custom duty block
+    '''
+    _inherit = 'account.invoice'
+
+    # Override default Workflow action:
+    def invoice_validate(self, cr, uid, ids, context=None):
+        """ Override default action for write custom duty box:
+        """
+        res = super(AccountInvoice, self).invoice_validate(cr, uid, ids,
+            context=context)
+        
+        # If Extra CEE generate Duty box:
+        invoice = self.browse(cr, uid, ids, context=context)[0]    
+        if invoice.fiscal_position.duty_print and not invoice.duty_block:
+            try:
+                self.generate_duty_block(cr, uid, ids, context=context)
+            except:
+                _logger.error('Errore generating duty box')
+        
+        return res    
+
+    def generate_duty_block(self, cr, uid, ids, context=None):
+        """ Button event for generate duty block
+        """ 
+        assert len(ids) == 1, 'Funziona per una fattura alla volta!'
+        
+        invoice = self.browse(cr, uid, ids, context=context)[0]
+        if not invoice.fiscal_position.duty_print:
+            return False
+        
+        table = {}
+        error = ''
+        for line in invoice.invoice_line:
+            product = line.product_id
+            duty_code = product.duty_code
+            quantity = line.quantity
+            net = product.weight_net
+            gross = product.weight
+            
+            if not duty_code:
+                continue
+            if duty_code not in table:
+                table[duty_code] = [0.0, 0.0, 0.0]  # Amount, net, gross
+            table[duty_code][0] += line.price_subtotal  # Subtotal amount
+            table[duty_code][1] += net * quantity  # W. net
+            table[duty_code][2] += gross * quantity  # W. gross
+            
+            if not net:
+                error += '%s >> Peso netto mancante\n' % product.default_code
+            if not gross:
+                error += '%s >> Peso lordo mancante\n' % product.default_code
+
+        res = 'Custom table:\n'
+        for duty_code in sorted(table):            
+            res += u'Code %s: %.2f € [Net: %s Kg - Gross %s Kg]\n' % (
+                duty_code, table[duty_code][0], 
+                table[duty_code][1], table[duty_code][2]
+                )
+                    
+        if error: 
+            error = 'ERRORI:\n%s' % error            
+        return self.write(cr, uid, ids, {
+            'duty_block': res,
+            'duty_error': error,
+            }, context=context)
+        
+    _columns = {
+        'duty_block': fields.text('Tabella doganale'),
+        'duty_error': fields.text('Errori calcolo doganale'),
         }
         
 class ProductCustomDutyTax(orm.Model):
