@@ -169,7 +169,7 @@ class EdiProductProductImportWizard(orm.TransientModel):
                 elif default_code not in self._bool_yes:
                     raise osv.except_osv(
                         _('Errore riga maschera'),
-                        _('Il file per essere improtato deve aver come prima'
+                        _('Il file per essere importato deve aver come prima'
                           'riga la maschera code indicare le colonne da '
                           'utilizzare, la prima deve sempre essere marcata con'
                           'x, X, s S, y o Y!'),
@@ -224,6 +224,29 @@ class EdiProductProductImportWizard(orm.TransientModel):
             selected_ids.append(product_id)
             _logger.info('Update code: %s' % default_code)
 
+        # ---------------------------------------------------------------------
+        # Update product weight:
+        # ---------------------------------------------------------------------
+        for product in product_pool.browse(
+                cr, uid, selected_ids, context=context):
+            # Update real weight:    
+            weight_net = product.edi_net_weight
+            weight = product.edi_gross_weight    
+            q_x_pack = product.q_x_pack
+            
+            if q_x_pack > 1:
+                weight = weight / q_x_pack
+            data = {}
+
+            if weight_net:
+                data['weight_net'] = weight_net
+            if weight:
+                data['weight'] = weight
+            
+            if data:
+                product_pool.write(
+                    cr, uid, [product.id], data, context=context)
+            
         # Return product updated:
         model_pool = self.pool.get('ir.model.data')
         tree_view_id = False
