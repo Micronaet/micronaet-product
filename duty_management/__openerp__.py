@@ -30,6 +30,7 @@
     'depends': [
         'base',
         'product',
+        'account',
         ],
     'init_xml': [],
     'demo': [],

@@ -39,6 +39,15 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+class AccountFiscalPosition(orm.Model):
+    '''Cost for country to import in Italy
+    '''
+    _inherit = 'account.fiscal.position'
+
+    _columns = {
+        'duty_print': fields.boolean('Stampa codice doganale'),
+        }
+        
 class ProductCustomDutyTax(orm.Model):
     '''Cost for country to import in Italy
     '''
@@ -95,4 +104,3 @@ class ProductProductExtra(orm.Model):
         #    multi="total_cost"),
         }
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

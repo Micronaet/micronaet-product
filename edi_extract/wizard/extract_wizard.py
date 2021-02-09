@@ -442,6 +442,7 @@ class EdiProductProductExtractWizard(orm.Model):
                             images_cell = album_cache[default_code]
                         else:
                             search_code = [default_code]
+                            # Single code:
                             if default_code[12:13].upper() == 'S':
                                 standard_code = default_code[:12].strip()
                                 search_code.append(standard_code)
@@ -460,6 +461,7 @@ class EdiProductProductExtractWizard(orm.Model):
                                     image.album_id.code.lower(),
                                     image.filename,
                                 )
+
                             album_cache[default_code] = images_cell
                             if standard_code:
                                 album_cache[standard_code] = images_cell

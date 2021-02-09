@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+    
+    <record model="ir.ui.view" id="view_account_fiscal_position_duty_form">
+        <field name="name">account.fiscal.position.duty.form</field>
+        <field name="model">account.fiscal.position</field>
+        <field name="inherit_id" ref="account.view_account_position_form" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="duty_print" />                
+            </field>
+        </field>
+    </record>
+    
     <!--product.product-->
     <record model="ir.ui.view" id="view_product_duty_search">
         <field name="name">product.product.search</field>
