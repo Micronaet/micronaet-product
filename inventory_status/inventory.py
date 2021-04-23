@@ -303,7 +303,7 @@ class ProductProduct(orm.Model):
             #        )
             value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % ( #|%s
                 product.default_code,
-                #product.statistic_category, # TODO remove
+                # product.statistic_category, # TODO remove
                 product.name,
                 product.mx_net_qty,
                 product.mx_oc_out,
@@ -368,8 +368,8 @@ class ProductProduct(orm.Model):
         season_year = now.year
 
         # Update inventory now: 30/01/2019
-        #from_date = '%s-01-01 00:00:00' % season_year 
-        from_date = '2020-01-01 00:00:00' # TODO REMOVE!!!!!!
+        # from_date = '%s-01-01 00:00:00' % season_year 
+        # from_date = '2020-01-01 00:00:00' # TODO REMOVE!!!!!!
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False) # limit for invent.
