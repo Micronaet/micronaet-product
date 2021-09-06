@@ -54,8 +54,8 @@ class ProductProduct(orm.Model):
         else: # 1 - 8    
             season_year = now.year - 1 
 
-        from_date = '%s-09-01 00:00:00' % season_year
-        # from_date = '2019-09-01 00:00:00' # XXX REMOVE!!
+        # from_date = '%s-09-01 00:00:00' % season_year
+        from_date = '2020-09-01 00:00:00' # XXX REMOVE!!
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False) # limit for invent.
