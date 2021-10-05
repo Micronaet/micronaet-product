@@ -558,7 +558,7 @@ class ProductProduct(orm.Model):
                     line.date_expected or '')[:10], int(product_uom_qty))
             elif line.picking_id.date >= from_date:  # Done BF
                 res[product_id]['mx_bf_in'] += product_uom_qty
-                res[product_id]['mx_bf_ids'].append(line.id) # one2many
+                res[product_id]['mx_bf_ids'].append(line.id)  # one2many
 
         # ---------------------------------------------------------------------
         # Get order to delivery
