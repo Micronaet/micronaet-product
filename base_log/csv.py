@@ -77,4 +77,3 @@ class LogImportation(orm.Model):
             DEFAULT_SERVER_DATETIME_FORMAT),
         'user_id': lambda s, cr, uid, ctx: uid,
         }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
