@@ -288,7 +288,7 @@ class ProductProduct(orm.Model):
         assert len(ids) == 1, 'Works only with one record a time'
 
         if context is None:
-            context = context
+            context = {}
         update_only_field = context.get('update_only_field', False)
         log_file = context.get('log_file', False)
 
