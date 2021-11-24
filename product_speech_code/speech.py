@@ -284,7 +284,6 @@ class ProductProduct(orm.Model):
                 log_file: if present log data error on file
 
         """
-        pdb.set_trace()
         assert len(ids) == 1, 'Works only with one record a time'
 
         if context is None:
