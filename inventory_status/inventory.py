@@ -367,9 +367,9 @@ class ProductProduct(orm.Model):
         now = datetime.now()
         season_year = now.year
 
-        # Update inventory now: 30/01/2019
-        # from_date = '%s-01-01 00:00:00' % season_year
-        from_date = '2021-01-01 00:00:00' # TODO REMOVE!!!!!!
+        # Update inventory from:
+        from_date = '%s-01-01 00:00:00' % season_year
+        # from_date = '2021-01-01 00:00:00'  # todo temporary for load invent!
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False) # limit for invent.
