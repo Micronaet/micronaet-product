@@ -249,6 +249,7 @@ class StockInventoryHistoryYear(orm.Model):
             ws_name, row, header, default_format=excel_format['header'])
 
         jump = False
+        pickle_data = []
         for line in product_pool.browse(cr, uid, product_ids, context=context):
             row += 1
             product = line.product_id
@@ -301,7 +302,7 @@ class StockInventoryHistoryYear(orm.Model):
                 continue
 
             # Save in pickle only used data:
-            inventory.append({
+            pickle_data.append({
                 'product_id': product_id,
                 'name': name,
                 'category': category,
@@ -310,7 +311,7 @@ class StockInventoryHistoryYear(orm.Model):
                 'compress_code': default_code,
             })
 
-        pickle.dump(inventory, open(pickle_file, 'wb'))
+        pickle.dump(pickle_data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
         return True
 
