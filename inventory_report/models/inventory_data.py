@@ -251,7 +251,6 @@ class StockInventoryHistoryYear(orm.Model):
         jump = False
         pickle_data = []
         for line in product_pool.browse(cr, uid, product_ids, context=context):
-            row += 1
             product = line.product_id
             product_id = product.id
             default_code = product.default_code
@@ -294,6 +293,7 @@ class StockInventoryHistoryYear(orm.Model):
             excel_line = [
                 product_id, real_code, name, category, default_code, qty, 0,
             ]
+            row += 1
             excel_pool.write_xls_line(
                 ws_name, row, excel_line,
                 default_format=excel_format['white']['text'])
