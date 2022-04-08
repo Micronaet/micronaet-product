@@ -21,34 +21,4 @@
 #
 ###############################################################################
 
-import os
-import sys
-import logging
-import openerp
-import openerp.netsvc as netsvc
-import openerp.addons.decimal_precision as dp
-from openerp.osv import fields, osv, expression, orm
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-from openerp import SUPERUSER_ID, api
-from openerp import tools
-from openerp.tools.translate import _
-from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
-    DEFAULT_SERVER_DATETIME_FORMAT,
-    DATETIME_FORMATS_MAP,
-    float_compare)
-
-
-_logger = logging.getLogger(__name__)
-
-
-class ProductProduct(orm.Model):
-    """ Model name: ProductProduct
-    """
-    _inherit = 'product.product'
-
-    _columns = {
-        'cost_only_buy': fields.float(
-            'Costo inv. solo acquisto', digits=(16, 2)),
-        }
+from . import inventory_data

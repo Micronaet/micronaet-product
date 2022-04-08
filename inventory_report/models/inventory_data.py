@@ -43,12 +43,19 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
-class ProductProduct(orm.Model):
-    """ Model name: ProductProduct
+class StockInventoryHistoryYear(orm.Model):
+    """ Model name: stock.inventory.history.year
     """
-    _inherit = 'product.product'
+
+    _name = 'stock.inventory.history.year'
+    _description = 'Inventario fine anno'
+    _rec_name = 'name'
+    _order = 'name'
 
     _columns = {
-        'cost_only_buy': fields.float(
-            'Costo inv. solo acquisto', digits=(16, 2)),
-        }
+        'name': fields.char('Anno', size=64, required=True),
+        'from': fields.date('Dalla data', required=True),
+        'to': fields.date('Alla data', required=True),
+    }
+
+
