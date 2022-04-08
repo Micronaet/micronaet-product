@@ -73,6 +73,35 @@ class StockInventoryHistoryYear(orm.Model):
         os.system('mkdir -p %s' % folder)
         return base_folder
 
+    def get_excel_format(self, excel_pool):
+        """ Setup excel format
+        """
+        excel_pool.set_format(number_format='#,##0.####0')
+        return {
+            'title': excel_pool.get_format('title'),
+            'header': excel_pool.get_format('header'),
+            'text': excel_pool.get_format('text'),
+            'number': excel_pool.get_format('number'),
+            'white': {
+                'title': excel_pool.get_format('title'),
+                'header': excel_pool.get_format('header'),
+                'text': excel_pool.get_format('text'),
+                'number': excel_pool.get_format('number'),
+            },
+            'red': {
+                'title': excel_pool.get_format('title'),
+                'header': excel_pool.get_format('header'),
+                'text': excel_pool.get_format('bg_red'),
+                'number': excel_pool.get_format('bg_red_number'),
+            },
+            'green': {
+                'title': excel_pool.get_format('title'),
+                'header': excel_pool.get_format('header'),
+                'text': excel_pool.get_format('bg_green'),
+                'number': excel_pool.get_format('bg_green_number'),
+            },
+        }
+
     def button_extract_invoice(self, cr, uid, ids, context=None):
         """ Extract invoice and put in pickle file
         """
@@ -112,45 +141,23 @@ class StockInventoryHistoryYear(orm.Model):
                 ('invoice_id.type', '=', mode),
             ], context=context)
 
-            # --------------------------------------1--------------------------
+            # -----------------------------------------------------------------
             #                          Excel export:
             # -----------------------------------------------------------------
             ws_name = setup
             excel_pool.create_worksheet(name=ws_name)
-            excel_pool.set_format(number_format='#,##0.####0')
-            excel_format = {
-                'title': excel_pool.get_format('title'),
-                'header': excel_pool.get_format('header'),
-                'text': excel_pool.get_format('text'),
-                'number': excel_pool.get_format('number'),
-                'white': {
-                    'title': excel_pool.get_format('title'),
-                    'header': excel_pool.get_format('header'),
-                    'text': excel_pool.get_format('text'),
-                    'number': excel_pool.get_format('number'),
-                },
-                'red': {
-                    'title': excel_pool.get_format('title'),
-                    'header': excel_pool.get_format('header'),
-                    'text': excel_pool.get_format('bg_red'),
-                    'number': excel_pool.get_format('bg_red_number'),
-                },
-                'green': {
-                    'title': excel_pool.get_format('title'),
-                    'header': excel_pool.get_format('header'),
-                    'text': excel_pool.get_format('bg_green'),
-                    'number': excel_pool.get_format('bg_green_number'),
-                },
-
-            }
+            excel_format = self.get_excel_format(excel_pool)
 
             # Start writing in the sheet:
-            width = [15, 40, 10, 35, 10, 10, 10]
+            width = [
+                15, 40,
+                10, 15, 35, 10,
+                10, 10]
             excel_pool.column_width(ws_name, width)
 
             header = [
                 'Data', 'Rif.',
-                'ID prodotto', 'Nome', 'Q.',
+                'ID prodotto', 'Codice', 'Nome', 'Q.',
                 'Ricodifica', 'Prezzo inventario',
             ]
             row = 0
@@ -166,6 +173,7 @@ class StockInventoryHistoryYear(orm.Model):
                     u'%s [%s]' % (
                         invoice.number, invoice.partner_id.name),
                     line.product_id.id,
+                    line.product_id.default_code
                     u'%s' % line.name,
                     sign * line.quantity,
                     u'',
@@ -175,10 +183,11 @@ class StockInventoryHistoryYear(orm.Model):
                     'date': excel_record[0],
                     'ref': excel_record[1],
                     'product_id': excel_record[2],
-                    'name': excel_record[3],
-                    'quantity': excel_record[4],
-                    'compress_code': excel_record[5],
-                    'inventory_price': excel_record[6],
+                    'default_code': excel_record[3],
+                    'name': excel_record[4],
+                    'quantity': excel_record[5],
+                    'compress_code': excel_record[6],
+                    'inventory_price': excel_record[7],
                 }
                 data.append(record)
 
@@ -188,6 +197,121 @@ class StockInventoryHistoryYear(orm.Model):
 
             pickle.dump(data, open(pickle_file, 'wb'))
             excel_pool.save_file_as(excel_file)
+        return True
+
+    def button_extract_final(self, cr, uid, ids, context=None):
+        """ Extract final status
+        """
+        product_pool = self.pool.get('product.product.start.history')
+        excel_pool = self.pool.get('excel.writer')
+
+        # External parameters:
+        pipe_codes = {
+            'TBAL': 'TUBAL',
+            'TBFE': 'TUBFE',
+            'TBFZ': 'TUBFZ',
+        }
+
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        to_date = inventory.to_date
+        base_folder = inventory.base_folder
+
+        pickle_file = os.path.join(
+            base_folder, 'pickle', '%s.pickle' % 'Finale')
+        excel_file = os.path.join(
+            base_folder, 'excel', 'Finale.xlsx')
+
+        product_ids = product_pool.search([
+            ('mx_start_date', '=', to_date),
+        ])
+
+        # -----------------------------------------------------------------
+        #                          Excel export:
+        # -----------------------------------------------------------------
+        ws_name = 'Stato finale'
+        excel_pool.create_worksheet(name=ws_name)
+        excel_format = self.get_excel_format(excel_pool)
+
+        # Start writing in the sheet:
+        width = [
+            15, 15, 40, 35, 10,
+            10, 12]
+        excel_pool.column_width(ws_name, width)
+
+        header = [
+            'ID', 'Codice', 'Nome', 'Categoria', 'Ricodifica',
+            'Q.', 'Prezzo inventario',
+        ]
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+
+        jump = False
+        for line in product_pool.browse(product_ids):
+            row += 1
+            product = line.product_id
+            product_id = product.id
+            default_code = product.default_code
+            real_code = default_code
+            name = product.name
+            qty = line.mx_start_qty
+            if product.inventory_category_id:
+                category = product.inventory_category_id.name
+            else:
+                category = ''
+
+            if not default_code:
+                _logger.error('Product not found: %s\n' % name)
+                continue
+
+            if default_code[:4] in pipe_codes:
+                # Clean pipe:
+                default_code = pipe_codes[default_code[:4]]
+                product_id = ''
+            elif default_code[:2] in ('PO', 'MS', 'MT', 'TL', 'TS'):
+                # Clean HW packed:
+                default_code = default_code[:8].strip()
+                product_id = ''
+            elif category == 'Prodotti finiti':
+                # Final product packed:
+                if not default_code[:3].isdigit():
+                    default_code = default_code[:6].strip()
+                    product_id = ''
+            elif category in ('Esclusi', 'Lavorazioni'):
+                # Remove category:
+                _logger.warning('Saltati prodotti categoria: %s: %s '
+                                '[q. %s]\n' % (
+                                    category, default_code, qty))
+                jump = True
+
+            if qty <= 0:
+                _logger.warning('Code not found jumped: %s [q. %s]\n' % (
+                    default_code, qty))
+                jump = True
+
+            # Write line in Excel:
+            excel_line = [
+                product_id, real_code, name, category, default_code, qty, 0,
+            ]
+            excel_pool.write_xls_line(
+                ws_name, row, excel_line,
+                excel_line=excel_format['white']['text'])
+
+            if jump:
+                continue
+
+            inventory.append({
+                'product_id': product_id,
+                'name': name,
+                'category': category,
+                'qty': qty,
+                'default_code': real_code,
+                'compress_code': default_code,
+            })
+
+        pickle.dump(inventory, open(pickle_file, 'wb'))
+        excel_pool.save_file_as(excel_file)
         return True
 
     _columns = {

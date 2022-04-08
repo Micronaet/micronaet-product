@@ -24,6 +24,7 @@
                             <field name="from_date" />
                             <field name="to_date" />
                             <button name="button_extract_invoice" type="object" string="Estrai fatturato"/>
+                            <button name="button_extract_final" type="object" string="Estrai stato finale"/>
                         </group>
                     </sheet>
                 </form>
