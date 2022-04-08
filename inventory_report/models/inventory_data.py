@@ -224,8 +224,8 @@ class StockInventoryHistoryYear(orm.Model):
 
         product_ids = product_pool.search(
             cr, uid, [
-            ('mx_start_date', '=', to_date),
-        ], context=context)
+                ('mx_start_date', '=', to_date),
+            ], context=context)
 
         # -----------------------------------------------------------------
         #                          Excel export:
@@ -287,8 +287,6 @@ class StockInventoryHistoryYear(orm.Model):
                 jump = True
 
             if qty <= 0:
-                _logger.warning('Code not found jumped: %s [q. %s]\n' % (
-                    default_code, qty))
                 jump = True
 
             # Write line in Excel:
@@ -297,11 +295,12 @@ class StockInventoryHistoryYear(orm.Model):
             ]
             excel_pool.write_xls_line(
                 ws_name, row, excel_line,
-                excel_line=excel_format['white']['text'])
+                default_format=excel_format['white']['text'])
 
             if jump:
                 continue
 
+            # Save in pickle only used data:
             inventory.append({
                 'product_id': product_id,
                 'name': name,
