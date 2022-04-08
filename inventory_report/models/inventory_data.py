@@ -253,7 +253,7 @@ class StockInventoryHistoryYear(orm.Model):
         for line in product_pool.browse(cr, uid, product_ids, context=context):
             product = line.product_id
             product_id = product.id
-            default_code = product.default_code
+            default_code = product.default_code or ''
             real_code = default_code
             name = product.name
             qty = line.mx_start_qty
