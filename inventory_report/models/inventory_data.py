@@ -24,6 +24,7 @@
 import os
 import sys
 import logging
+import pickle
 import openerp
 import openerp.netsvc as netsvc
 import openerp.addons.decimal_precision as dp
@@ -52,10 +53,147 @@ class StockInventoryHistoryYear(orm.Model):
     _rec_name = 'name'
     _order = 'name'
 
+    def generate_folder_structure(self, cr, uid, year, context=None):
+        """ Generate folder structure
+        """
+        root_path = os.path.expanduser('~/inventory')
+
+        # Create folder structure
+        base_folder = os.path.join(root_path, year)
+        os.system('mkdir -p %s' % base_folder)
+        folder = os.path.join(base_folder, 'pickle')
+        os.system('mkdir -p %s' % folder)
+        folder = os.path.join(base_folder, 'excel')
+        os.system('mkdir -p %s' % folder)
+        folder = os.path.join(base_folder, 'log')
+        os.system('mkdir -p %s' % folder)
+        folder = os.path.join(base_folder, 'data')
+        os.system('mkdir -p %s' % folder)
+        folder = os.path.join(base_folder, 'result')
+        os.system('mkdir -p %s' % folder)
+        return base_folder
+
+    def button_extract_invoice(self, cr, uid, ids, context=None):
+        """ Extract invoice and put in pickle file
+        """
+        excel_pool = self.pool.get('excel.writer')
+
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        from_date = inventory.from_date
+        to_date = inventory.to_date
+
+        if inventory.base_folder:
+            base_folder = inventory.base_folder
+        else:
+            base_folder = self.generate_folder_structure(
+                cr, uid, inventory.name, context=context)
+            self.write(cr, uid, ids, {
+                'base_folder': base_folder,
+            }, context=context)
+
+        line_pool = self.pool.get('account.invoice.line')
+        modes = {
+            'Fatture': ('out_invoice', -1),  # unload
+            'NC': ('out_refund', +1),  # load
+        }
+        for setup in modes:
+            mode, sign = modes[setup]
+            pickle_file = os.path.join(
+                base_folder, 'pickle', '%s.pickle' % setup)
+            excel_file = os.path.join(
+                base_folder, 'excel', '%s.xlsx' % setup)
+
+            data = {}
+            # Collect data from invoices and credit note:
+            line_ids = line_pool.search(cr, uid, [
+                ('invoice_id.date_invoice', '>=', from_date),
+                ('invoice_id.date_invoice', '<=', to_date),
+                ('invoice_id.type', '=', mode),
+            ], context=context)[:30]
+
+            # --------------------------------------1--------------------------
+            #                          Excel export:
+            # -----------------------------------------------------------------
+            ws_name = setup
+            excel_pool.create_worksheet(name=ws_name)
+            excel_pool.set_format(number_format='#,##0.####0')
+            excel_format = {
+                'title': excel_pool.get_format('title'),
+                'header': excel_pool.get_format('header'),
+                'text': excel_pool.get_format('text'),
+                'number': excel_pool.get_format('number'),
+                'white': {
+                    'title': excel_pool.get_format('title'),
+                    'header': excel_pool.get_format('header'),
+                    'text': excel_pool.get_format('text'),
+                    'number': excel_pool.get_format('number'),
+                },
+                'red': {
+                    'title': excel_pool.get_format('title'),
+                    'header': excel_pool.get_format('header'),
+                    'text': excel_pool.get_format('bg_red'),
+                    'number': excel_pool.get_format('bg_red_number'),
+                },
+                'green': {
+                    'title': excel_pool.get_format('title'),
+                    'header': excel_pool.get_format('header'),
+                    'text': excel_pool.get_format('bg_green'),
+                    'number': excel_pool.get_format('bg_green_number'),
+                },
+
+            }
+
+            # Start writing in the sheet:
+            width = [20, 40, 10, 30, 10, 10, 10]
+            excel_pool.column_width(ws_name, width)
+
+            header = {
+                'Data', 'Rif.',
+                'ID prodotto', 'Nome', 'Q.',
+                'Ricodifica', 'Prezzo inventario',
+            }
+            row = 0
+            excel_pool.write_xls_line(
+                ws_name, row, header, default_format=excel_format['header'])
+
+            for line in line_pool.browse(
+                    cr, uid, line_ids, context=context):
+                row += 1
+                invoice = line.invoice_id
+                excel_record = [
+                    line.invoice_id,
+                    invoice.date_invoice,
+                    '%s [%s]' % (
+                        invoice.number, invoice.partner_id.name),
+                    line.product_id.id,
+                    line.name,
+                    sign * line.quantity,
+                    '',
+                    0.0,
+                    ]
+                record = {
+                    'date': excel_record[0],
+                    'ref': excel_record[1],
+                    'product_id': excel_record[2],
+                    'name': excel_record[3],
+                    'quantity': excel_record[4],
+                    'compress_code': excel_record[5],
+                    'inventory_price': excel_record[6],
+                }
+                excel_pool.write_xls_line(
+                    ws_name, row, excel_record,
+                    default_format=excel_format['white']['text'])
+
+            pickle.dump(data, open(pickle_file, 'wb'))
+            excel_pool.save_file_as(excel_file)
+        return True
+
     _columns = {
         'name': fields.char('Anno', size=64, required=True),
-        'from': fields.date('Dalla data', required=True),
-        'to': fields.date('Alla data', required=True),
+        'base_folder': fields.char('Anno', size=64, required=True),
+        'from_date': fields.date('Dalla data', required=True),
+        'to_date': fields.date('Alla data', required=True),
     }
 
 

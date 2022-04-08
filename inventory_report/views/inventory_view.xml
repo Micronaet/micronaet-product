@@ -7,8 +7,8 @@
             <field name="arch" type="xml">
                 <tree string="Inventario">
                     <field name="name" />
-                    <field name="from" />
-                    <field name="to" />
+                    <field name="from_date" />
+                    <field name="to_date" />
                 </tree>
             </field>
         </record>
@@ -20,9 +20,10 @@
                     <sheet>
                         <group col="4">
                             <field name="name" />
-                            <newline/>
-                            <field name="from" />
-                            <field name="to" />
+                            <field name="base_folder" />
+                            <field name="from_date" />
+                            <field name="to_date" />
+                            <button name="button_extract_invoice" type="object" string="Estrai fatturato"/>
                         </group>
                     </sheet>
                 </form>
