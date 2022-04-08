@@ -25,6 +25,8 @@
                             <field name="to_date" />
                             <button name="button_extract_invoice" type="object" string="Estrai fatturato"/>
                             <newline/>
+                            <button name="button_extract_mrp" type="object" string="Estrai MRP"/>
+                            <newline/>
                             <button name="button_extract_final" type="object" string="Estrai stato finale"/>
                         </group>
                     </sheet>
