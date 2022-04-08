@@ -221,15 +221,19 @@ class StockInventoryHistoryYear(orm.Model):
         data = []
         # Collect data from invoices and credit note:
         line_ids = line_pool.search(cr, uid, [
-            ('production_id.date_planner', '>=', '%s 00:00:00' % from_date),
-            ('production_id.date_planner', '<=', '%s 23:59:59' % to_date),
+            ('mrp_id.date_planned', '>=', '%s 00:00:00' % from_date),
+            ('mrp_id.date_planned', '<=', '%s 23:59:59' % to_date),
         ], context=context)
 
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         #                          Excel export:
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         ws_name = setup
         excel_pool.create_worksheet(name=ws_name)
+
+        ws_name_component = 'Componenti'
+        excel_pool.create_worksheet(name=ws_name_component)
+
         excel_format = self.get_excel_format(excel_pool)
 
         # Start writing in the sheet:
@@ -238,6 +242,7 @@ class StockInventoryHistoryYear(orm.Model):
             40, 15, 15, 15,
             15, 15]
         excel_pool.column_width(ws_name, width)
+        excel_pool.column_width(ws_name_component, width)
 
         header = [
             'Data', 'Rif.',
@@ -248,21 +253,33 @@ class StockInventoryHistoryYear(orm.Model):
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
+        row_2 = 0
+        excel_pool.write_xls_line(
+            ws_name_component, row_2, header,
+            default_format=excel_format['header'])
+
+        bom_cache = {}
         for line in line_pool.browse(
                 cr, uid, line_ids, context=context):
             row += 1
-            mrp = line.production_id
+            mrp = line.mrp_id
             product = line.product_id
+            product_id = product.id
+
+            # -----------------------------------------------------------------
+            # MRP Product:
+            # -----------------------------------------------------------------
+            qty = line.product_uom_qty
             excel_record = [
-                mrp.date_planner,
+                mrp.date_planned,
                 mrp.name,
 
                 u'%s' % product.name,
                 product.default_code,
-                product.id,
+                product_id,
                 '',  # Re-code
 
-                line.product_uom_qty,
+                qty,
                 0.0,
                 ]
 
@@ -277,12 +294,48 @@ class StockInventoryHistoryYear(orm.Model):
                 'inventory_price': excel_record[7],
             }
             data.append(record)
-
-            # todo update unload component
-
             excel_pool.write_xls_line(
                 ws_name, row, excel_record,
                 default_format=excel_format['white']['text'])
+
+            # -----------------------------------------------------------------
+            # Unload Component:
+            # -----------------------------------------------------------------
+            # Cache BOM:
+            if product_id not in bom_cache:
+                bom_cache[product_id] = product.dynamic_bom_line_ids
+
+            for component_line in bom_cache[product_id]:
+                component = component_line.product_id
+                excel_record = [
+                    mrp.date_planned,
+                    mrp.name,
+
+                    u'%s' % component.name,
+                    component.default_code,
+                    component.id,
+                    '',  # Re-code
+
+                    - line.product_uom_qty * qty,
+                    0.0,
+                ]
+
+                record = {
+                    'date': excel_record[0],
+                    'ref': excel_record[1],
+                    'name': excel_record[2],
+                    'default_code': excel_record[3],
+                    'product_id': excel_record[4],
+                    'compress_code': excel_record[5],
+                    'quantity': excel_record[6],
+                    'inventory_price': excel_record[7],
+                }
+                if not component.bom_placeholder:
+                    data.append(record)  # Only if not placeholder
+                row_2 += 1
+                excel_pool.write_xls_line(
+                    ws_name_component, row, excel_record,
+                    default_format=excel_format['white']['text'])
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
