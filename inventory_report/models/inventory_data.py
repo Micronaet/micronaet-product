@@ -104,7 +104,7 @@ class StockInventoryHistoryYear(orm.Model):
             excel_file = os.path.join(
                 base_folder, 'excel', '%s.xlsx' % setup)
 
-            data = {}
+            data = []
             # Collect data from invoices and credit note:
             line_ids = line_pool.search(cr, uid, [
                 ('invoice_id.date_invoice', '>=', from_date),
@@ -180,6 +180,8 @@ class StockInventoryHistoryYear(orm.Model):
                     'compress_code': excel_record[5],
                     'inventory_price': excel_record[6],
                 }
+                data.append(record)
+
                 excel_pool.write_xls_line(
                     ws_name, row, excel_record,
                     default_format=excel_format['white']['text'])
