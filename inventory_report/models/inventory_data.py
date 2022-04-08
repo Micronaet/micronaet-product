@@ -263,9 +263,10 @@ class StockInventoryHistoryYear(orm.Model):
             else:
                 category = ''
 
+            status = 'Usato'
             if not default_code:
-                _logger.error('Product not found: %s\n' % name)
-                continue
+                pickle_data = u'Prodotto non usato %s' % name
+                jump = True
 
             if default_code[:4] in pipe_codes:
                 # Clean pipe:
@@ -282,12 +283,11 @@ class StockInventoryHistoryYear(orm.Model):
                     product_id = ''
             elif category in ('Esclusi', 'Lavorazioni'):
                 # Remove category:
-                _logger.warning('Saltati prodotti categoria: %s: %s '
-                                '[q. %s]\n' % (
-                                    category, default_code, qty))
+                status = 'Categoria non in inventario: %s' % category
                 jump = True
 
             if qty <= 0:
+                status = 'Senza esistenza'
                 jump = True
 
             # Write line in Excel:
@@ -309,6 +309,7 @@ class StockInventoryHistoryYear(orm.Model):
                 'qty': qty,
                 'default_code': real_code,
                 'compress_code': default_code,
+                'status': status,
             })
 
         pickle.dump(pickle_data, open(pickle_file, 'wb'))
