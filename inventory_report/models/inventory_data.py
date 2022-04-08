@@ -173,7 +173,7 @@ class StockInventoryHistoryYear(orm.Model):
                     u'%s [%s]' % (
                         invoice.number, invoice.partner_id.name),
                     line.product_id.id,
-                    line.product_id.default_code
+                    line.product_id.default_code,
                     u'%s' % line.name,
                     sign * line.quantity,
                     u'',
@@ -222,9 +222,10 @@ class StockInventoryHistoryYear(orm.Model):
         excel_file = os.path.join(
             base_folder, 'excel', 'Finale.xlsx')
 
-        product_ids = product_pool.search([
+        product_ids = product_pool.search(
+            cr, uid, [
             ('mx_start_date', '=', to_date),
-        ])
+        ], context=context)
 
         # -----------------------------------------------------------------
         #                          Excel export:
@@ -248,7 +249,7 @@ class StockInventoryHistoryYear(orm.Model):
             ws_name, row, header, default_format=excel_format['header'])
 
         jump = False
-        for line in product_pool.browse(product_ids):
+        for line in product_pool.browse(cr, uid, product_ids, context=context):
             row += 1
             product = line.product_id
             product_id = product.id
