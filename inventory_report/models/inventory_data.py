@@ -237,12 +237,12 @@ class StockInventoryHistoryYear(orm.Model):
         # Start writing in the sheet:
         width = [
             15, 15, 40, 35, 10,
-            10, 12]
+            10, 12, 30]
         excel_pool.column_width(ws_name, width)
 
         header = [
             'ID', 'Codice', 'Nome', 'Categoria', 'Ricodifica',
-            'Q.', 'Prezzo inventario',
+            'Q.', 'Prezzo inventario', 'Stato',
         ]
         row = 0
         excel_pool.write_xls_line(
@@ -291,7 +291,8 @@ class StockInventoryHistoryYear(orm.Model):
 
             # Write line in Excel:
             excel_line = [
-                product_id, real_code, name, category, default_code, qty, 0,
+                product_id, real_code, name, category,
+                default_code, qty, 0, status,
             ]
             row += 1
             excel_pool.write_xls_line(
