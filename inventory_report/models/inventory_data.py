@@ -162,14 +162,13 @@ class StockInventoryHistoryYear(orm.Model):
                 row += 1
                 invoice = line.invoice_id
                 excel_record = [
-                    line.invoice_id,
                     invoice.date_invoice,
-                    '%s [%s]' % (
+                    u'%s [%s]' % (
                         invoice.number, invoice.partner_id.name),
                     line.product_id.id,
-                    line.name,
+                    u'%s' % line.name,
                     sign * line.quantity,
-                    '',
+                    u'',
                     0.0,
                     ]
                 record = {
