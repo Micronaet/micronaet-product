@@ -110,7 +110,7 @@ class StockInventoryHistoryYear(orm.Model):
                 ('invoice_id.date_invoice', '>=', from_date),
                 ('invoice_id.date_invoice', '<=', to_date),
                 ('invoice_id.type', '=', mode),
-            ], context=context)[:30]
+            ], context=context)
 
             # --------------------------------------1--------------------------
             #                          Excel export:
@@ -145,14 +145,14 @@ class StockInventoryHistoryYear(orm.Model):
             }
 
             # Start writing in the sheet:
-            width = [20, 40, 10, 30, 10, 10, 10]
+            width = [15, 40, 10, 35, 10, 10, 10]
             excel_pool.column_width(ws_name, width)
 
-            header = {
+            header = [
                 'Data', 'Rif.',
                 'ID prodotto', 'Nome', 'Q.',
                 'Ricodifica', 'Prezzo inventario',
-            }
+            ]
             row = 0
             excel_pool.write_xls_line(
                 ws_name, row, header, default_format=excel_format['header'])
