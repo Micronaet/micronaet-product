@@ -191,7 +191,9 @@ class StockInventoryHistoryYear(orm.Model):
 
     _columns = {
         'name': fields.char('Anno', size=64, required=True),
-        'base_folder': fields.char('Anno', size=64, required=True),
+        'base_folder': fields.char(
+            'Cartella base', size=180,
+            help='Cartella dove sono memorizzati tutti i file della gestione'),
         'from_date': fields.date('Dalla data', required=True),
         'to_date': fields.date('Alla data', required=True),
     }
