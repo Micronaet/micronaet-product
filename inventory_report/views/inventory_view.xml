@@ -27,6 +27,14 @@
                             <newline/>
                             <button name="button_extract_mrp" type="object" string="Estrai MRP"/>
                             <newline/>
+                            <button name="button_extract_job" type="object" string="Estrai Job"/>
+                            <newline/>
+                            <button name="button_extract_picking" type="object" string="Estrai Picking (SL CL)"/>
+                            <newline/>
+                            <button name="button_extract_purchase" type="object" string="Estrai acquisti"/>
+                            <newline/>
+                            <button name="button_extract_start" type="object" string="Estrai stato iniziale"/>
+                            <newline/>
                             <button name="button_extract_final" type="object" string="Estrai stato finale"/>
                         </group>
                     </sheet>

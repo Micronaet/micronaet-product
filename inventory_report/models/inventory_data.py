@@ -261,7 +261,6 @@ class StockInventoryHistoryYear(orm.Model):
         bom_cache = {}
         for line in line_pool.browse(
                 cr, uid, line_ids, context=context):
-            row += 1
             mrp = line.mrp_id
             product = line.product_id
             product_id = product.id
@@ -282,6 +281,10 @@ class StockInventoryHistoryYear(orm.Model):
                 qty,
                 0.0,
                 ]
+            row += 1
+            excel_pool.write_xls_line(
+                ws_name, row, excel_record,
+                default_format=excel_format['white']['text'])
 
             record = {
                 'date': excel_record[0],
@@ -294,9 +297,6 @@ class StockInventoryHistoryYear(orm.Model):
                 'inventory_price': excel_record[7],
             }
             data.append(record)
-            excel_pool.write_xls_line(
-                ws_name, row, excel_record,
-                default_format=excel_format['white']['text'])
 
             # -----------------------------------------------------------------
             # Unload Component:
@@ -319,6 +319,10 @@ class StockInventoryHistoryYear(orm.Model):
                     - line.product_uom_qty * qty,
                     0.0,
                 ]
+                row_2 += 1
+                excel_pool.write_xls_line(
+                    ws_name_component, row, excel_record,
+                    default_format=excel_format['white']['text'])
 
                 record = {
                     'date': excel_record[0],
@@ -332,10 +336,6 @@ class StockInventoryHistoryYear(orm.Model):
                 }
                 if not component.bom_placeholder:
                     data.append(record)  # Only if not placeholder
-                row_2 += 1
-                excel_pool.write_xls_line(
-                    ws_name_component, row, excel_record,
-                    default_format=excel_format['white']['text'])
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
