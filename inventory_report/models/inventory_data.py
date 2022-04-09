@@ -1314,14 +1314,17 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Start writing in the sheet:
         width = [
-            15, 15, 40, 35, 10,
-            10, 12, 30]
+            5,
+            15,
+            15, 15, 35, 5,
+            25, 35, 10, 10, 15]
         excel_pool.column_width(ws_name, width)
 
         header = [
+            'Nuovo',
             'Codice',
-            'ID', 'Codice', 'Nome', 'Categoria', 'Ricodifica',
-            'Q.', 'Prezzo inventario', 'Stato',
+            'Q. iniz.', 'Prezzo iniz.', 'Nome', 'UM',
+            'Modo', 'Categoria', 'Carico', 'Scarico', 'Prezzo',
         ]
         row = 0
         excel_pool.write_xls_line(
@@ -1332,6 +1335,7 @@ class StockInventoryHistoryYear(orm.Model):
             previous = start_db[default_code]
             next = inventory_db.get(default_code, ['', '', '', '', '', ''])
             excel_line = [
+                '',
                 default_code,
                 previous['qty_start'],
                 previous['price_start'],
@@ -1355,6 +1359,7 @@ class StockInventoryHistoryYear(orm.Model):
                 continue  # yet present
             next = inventory_db[default_code]
             excel_line = [
+                'X',
                 default_code,
                 0,
                 0,
