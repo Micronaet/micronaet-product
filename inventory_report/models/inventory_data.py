@@ -22,6 +22,7 @@
 ###############################################################################
 
 import os
+import pdb
 import sys
 import logging
 import pickle
@@ -45,6 +46,13 @@ _logger = logging.getLogger(__name__)
 
 
 # todo save in Form:
+metal_price = {
+    'TBAL': 3.30,
+    'TBFE': 0.78,
+    'TBFZ': 0.78,
+    'TBFN': 0.78,
+}
+
 pipe_codes = {
     'TBAL': 'TUBAL',
     'TBFE': 'TUBFE',
@@ -59,7 +67,7 @@ fabric_code = {
     'T3D': 'TES3D',
 
     'TESCOING': 'TESCOING',
-    'TESPOLT': 'TESPOLTU',
+    'TESPOL': 'TESPOLTU',
 
 }
 fabric_start6 = [
@@ -201,10 +209,12 @@ class StockInventoryHistoryYear(orm.Model):
             'Car.', 'Scar.',
             'Prezzo', 'Errore'
         ]
-
+        cols = len(header)
         row = 0
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, cols)
+        excel_pool.freeze_panes(ws_name, row, cols)
 
         for product in sorted(products, key=lambda x: x.default_code):
             product_id = product.id
@@ -214,8 +224,10 @@ class StockInventoryHistoryYear(orm.Model):
             category = product.inventory_category_id.name or ''
             dynamic_bom = product.dynamic_bom_line_ids
             hw_bom = product.half_bom_ids
+
             new_code = ''
             error = ''
+            price = 0.0
             if dynamic_bom:
                 mode = 'Prodotto Fiam'
                 if default_code[:3].isdigit():
@@ -223,32 +235,40 @@ class StockInventoryHistoryYear(orm.Model):
                 elif not default_code[:2].isdigit() and \
                         default_code[2:5].isdigit():
                     new_code = default_code[:8].strip()
+                price = 0.0  # todo from template!
             elif hw_bom:
                 mode = 'Semilavorato'
+                price = 0.0  # todo form HW
             elif category == 'Commercializzati':
                 mode = 'Commercializzato'
+                price = 0.0  # todo from purchase
             elif product.is_pipe:
                 mode = 'Tubo'
-                new_code = pipe_codes.get(default_code[:4])
+                code4 = default_code[:4]
+                new_code = pipe_codes.get(code4)
                 if not new_code:
                     error = 'Codice tubo non trovato'
+                price = metal_price.get(code4, 0.0) * product.weight
+
             elif category == 'Tessuti':
                 mode = 'Tessuto'
                 code6 = default_code[:6]
                 if code6 in fabric_start6:
                     new_code = code6
-                if not new_code:
+                else:
                     for start in fabric_code:
                         if default_code.startswith(start):
                             new_code = fabric_code[start]
                             break
                 if not new_code:
                     error = 'Codice tessuto non trovato'
-
+                price = 0.0  # From check price
             elif category in ('Esclusi', 'Lavorazioni'):
                 mode = 'Esclusi'
+                price = 0.0  # No price
             else:
                 mode = 'Materie prime'
+                price = 0.0  # From check price
 
             excel_record = [
                 product_id,
@@ -262,7 +282,7 @@ class StockInventoryHistoryYear(orm.Model):
                 'X' if hw_bom else '',
                 load,
                 unload,
-                0.0,
+                price,
                 error,
                 ]
             excel_pool.write_xls_line(
@@ -491,12 +511,12 @@ class StockInventoryHistoryYear(orm.Model):
 
             for component_line in bom_cache[product_id]:
                 component = component_line.product_id
-                cmp_qty = - line.product_uom_qty * qty
+                cmp_qty = - line.product_uom_qty * component_line.product_qty
                 excel_record = [
                     mrp.date_planned,
                     mrp.name,
 
-                    u'%s' % component.name,
+                    component.name,
                     component.default_code,
                     component.id,
                     '',  # Re-code
@@ -506,7 +526,7 @@ class StockInventoryHistoryYear(orm.Model):
                 ]
                 row_2 += 1
                 excel_pool.write_xls_line(
-                    ws_name_component, row, excel_record,
+                    ws_name_component, row_2, excel_record,
                     default_format=excel_format['white']['text'])
 
                 record = {
