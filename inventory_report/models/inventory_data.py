@@ -78,6 +78,17 @@ fabric_start6 = [
     'TSK160',
 ]
 
+total_mode = [
+    'Fatture',
+    'NC',
+    'MRP load',
+    'MRP unload',
+    'Job',
+    'Pick',
+    'Acquisti',
+    'Finale',
+]
+
 
 class StockInventoryHistoryYear(orm.Model):
     """ Model name: stock.inventory.history.year
@@ -137,15 +148,17 @@ class StockInventoryHistoryYear(orm.Model):
             },
         }
 
-    def product_db_update(self, product_db, product_id, qty):
+    def product_db_update(self, product_db, product_id, qty, origin):
         """ Load product file
         """
         if product_id not in product_db:
-            product_db[product_id] = [0.0, 0.0]  # Load, Unload
+            product_db[product_id] = {}
+        if origin not in product_db[product_id]:
+            product_db[product_id][origin] = [0.0, 0.0]  # Load, Unload
         if qty > 0:
-            product_db[product_id][0] += qty
+            product_db[product_id][origin][0] += qty
         else:
-            product_db[product_id][1] += qty
+            product_db[product_id][origin][1] += qty
 
     def get_product_db(self, base_folder):
         """ Load product file
@@ -199,7 +212,7 @@ class StockInventoryHistoryYear(orm.Model):
             10, 30, 15, 15, 40,
             30, 5, 5,
             15, 15,
-            10, 40,
+            10, 40, 50
         ]
         excel_pool.column_width(ws_name, width)
 
@@ -208,6 +221,7 @@ class StockInventoryHistoryYear(orm.Model):
             'Categoria', 'MRP', 'SL',
             'Car.', 'Scar.',
             'Prezzo', 'Errore'
+            'Dettaglio',
         ]
         cols = len(header)
         row = 0
@@ -220,7 +234,14 @@ class StockInventoryHistoryYear(orm.Model):
             product_id = product.id
             default_code = product.default_code or ''
             row += 1
-            load, unload = product_db[product_id]
+            load = unload = 0.0
+            move_detail = ''
+            for move in product_db[product_id]:
+                load, unload = product_db[product_id][move]
+                move_detail += '[%s C: %s, S: %s]' % (
+                    move, load, unload
+                )
+
             category = product.inventory_category_id.name or ''
             dynamic_bom = product.dynamic_bom_line_ids
             hw_bom = product.half_bom_ids
@@ -284,6 +305,7 @@ class StockInventoryHistoryYear(orm.Model):
                 unload,
                 price,
                 error,
+                move_detail,
                 ]
             excel_pool.write_xls_line(
                 ws_name, row, excel_record,
@@ -384,7 +406,7 @@ class StockInventoryHistoryYear(orm.Model):
                     'inventory_price': excel_record[7],
                 }
                 data.append(record)
-                self.product_db_update(product_db, product_id, qty)
+                self.product_db_update(product_db, product_id, qty, setup)
 
                 excel_pool.write_xls_line(
                     ws_name, row, excel_record,
@@ -500,7 +522,7 @@ class StockInventoryHistoryYear(orm.Model):
                 'inventory_price': excel_record[7],
             }
             data.append(record)
-            self.product_db_update(product_db, product_id, qty)
+            self.product_db_update(product_db, product_id, qty, 'MRP load')
 
             # -----------------------------------------------------------------
             # Unload Component:
@@ -542,7 +564,7 @@ class StockInventoryHistoryYear(orm.Model):
                 if not component.bom_placeholder:
                     data.append(record)  # Only if not placeholder
                     self.product_db_update(
-                        product_db, component.id, cmp_qty)
+                        product_db, component.id, cmp_qty, 'MRP unload')
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
@@ -659,7 +681,7 @@ class StockInventoryHistoryYear(orm.Model):
             }
             data.append(record)
             self.product_db_update(
-                product_db, product_id, qty)
+                product_db, product_id, qty, 'Job')
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
@@ -773,7 +795,7 @@ class StockInventoryHistoryYear(orm.Model):
                         'inventory_price': excel_record[7],
                     }
                     data.append(record)
-                    self.product_db_update(product_db, product_id, qty)
+                    self.product_db_update(product_db, product_id, qty, 'Pick')
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
@@ -877,7 +899,7 @@ class StockInventoryHistoryYear(orm.Model):
                 'inventory_price': excel_record[7],
             }
             data.append(record)
-            self.product_db_update(product_db, product_id, qty)
+            self.product_db_update(product_db, product_id, qty, ws_name)
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
@@ -996,7 +1018,7 @@ class StockInventoryHistoryYear(orm.Model):
                 'compress_code': default_code,
                 'status': status,
             })
-            self.product_db_update(product_db, product_id, qty)
+            self.product_db_update(product_db, product_id, qty, 'Finale')
 
         pickle.dump(pickle_data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
