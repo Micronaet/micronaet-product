@@ -389,6 +389,7 @@ class StockInventoryHistoryYear(orm.Model):
         product_db = self.get_product_db(base_folder)
         price_db = self.get_product_db(base_folder, 'price')  # For price
         semiproduct_db = self.get_product_db(base_folder, 'semiproduct')
+        mrp_db = self.get_product_db(base_folder, 'product_mrp')
 
         product_pool = self.pool.get('product.product')
 
@@ -458,7 +459,8 @@ class StockInventoryHistoryYear(orm.Model):
                 elif not default_code[:2].isdigit() and \
                         default_code[2:5].isdigit():
                     new_code = default_code[:8].strip()
-                price = 0.0  # todo from template!
+                code6 = default_code[:6].strip()
+                price = mrp_db.get(code6, product.standard_price)
             elif hw_bom:
                 mode = 'Semilavorato'
                 price = semiproduct_db.get(product_id)
