@@ -365,6 +365,7 @@ class StockInventoryHistoryYear(orm.Model):
         line_ids = move_pool.search(cr, uid, [
             ('picking_id.date', '>=', '%s 00:00:00' % from_date),
             ('picking_id.date', '<=', '%s 23:59:59' % to_date),
+            ('picking_id.dep_mode', 'in', ('cut', 'workshop')),
         ], context=context)
 
         # ---------------------------------------------------------------------
