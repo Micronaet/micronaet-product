@@ -261,6 +261,114 @@ class StockInventoryHistoryYear(orm.Model):
         self.save_product_db(base_folder, price_db, 'price')
         return True
 
+    def button_extract_semiproduct_price(self, cr, uid, ids, context=None):
+        """ Extract Calcolo prezzo semilavorati
+        """
+        excel_pool = self.pool.get('excel.writer')
+
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        base_folder = inventory.base_folder
+
+        # Product management:
+        product_db = self.get_product_db(base_folder)  # List of product
+        price_db = self.get_product_db(base_folder, 'price')  # Raw material
+        semiproduct_db = {}  # Clean everytime
+
+        product_pool = self.pool.get('product.product')
+        excel_file = os.path.join(
+            base_folder, 'excel', 'Prezzi_semilavorati.xlsx')
+
+        # Collect data from invoices and credit note:
+        products = product_pool.browse(cr, uid, product_db, context=context)
+
+        # -----------------------------------------------------------------
+        #                          Excel export:
+        # -----------------------------------------------------------------
+        ws_name = 'Prezzi Semilavorati'
+        excel_pool.create_worksheet(name=ws_name)
+        excel_format = self.get_excel_format(excel_pool)
+
+        # Start writing in the sheet:
+        width = [
+            10, 15, 30, 15, 30, 5
+        ]
+        excel_pool.column_width(ws_name, width)
+
+        header = [
+            'ID', 'Codice', 'Nome', 'Prezzo', 'Dettaglio', 'Errore',
+        ]
+        cols = len(header)
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, cols)
+        excel_pool.freeze_panes(ws_name, row, cols)
+
+        for product in products:
+            product_id = product.id
+            default_code = product.default_code or ''
+            hw = product.half_bom_ids
+            if not hw:
+                continue
+
+            price_detail = ''
+            price_error = ''
+            hw_price = 0.0
+            for component_line in hw:
+                component = component_line.product_id
+                component_id = component.id
+                component_code = component.default_code
+                component_qty = component_line.product_qty
+                if component.is_pipe:  # Prezzo tubo
+                    code4 = component_code[:4]
+                    weight = component.weight
+                    unit_price = metal_price.get(code4, 0.0)
+                    price = unit_price * weight
+                    total = price * component_qty
+                    hw_price += total
+                    price_detail += u'[%s€ >> Q.%s x %s: %sKg x %s€, %s€]' % (
+                        total,
+                        component_qty,
+                        component_code,
+                        weight,
+                        unit_price,
+                        price,
+                    )
+                    if not total:
+                        price_error = 'X'
+                else:
+                    price = price_db.get(component_id, 0.0)
+                    total = price * component_qty
+                    hw_price += total
+                    price_detail += u'[%s€ >> Q.%s x %s, %s€]' % (
+                        total,
+                        component_qty,
+                        component_code,
+                        price,
+                    )
+                    if not total:
+                        price_error = 'X'
+
+            excel_record = [
+                product_id,
+                default_code,
+                product.name,
+                hw_price,
+                price_detail,
+                price_error,
+                ]
+            semiproduct_db[product_id] = hw_price
+
+            row += 1
+            excel_pool.write_xls_line(
+                ws_name, row, excel_record,
+                default_format=excel_format['white']['text'])
+
+        excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, semiproduct_db, 'semiproduct')
+        return True
+
     def button_extract_product_move(self, cr, uid, ids, context=None):
         """ Extract invoice and put in pickle file
         """

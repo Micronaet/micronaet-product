@@ -19,16 +19,22 @@
                 <form string="Inventario" version="7.0">
                     <sheet>
                         <group col="4">
+                            <separator string="Setup:" colspan="4"/>
                             <field name="name" />
                             <field name="base_folder" />
                             <field name="from_date" />
                             <field name="to_date" />
+
+                            <separator string="Documenti:" colspan="4"/>
                             <button name="button_extract_invoice" type="object" string="Estrai fatturato" colspan="2"/>
                             <field name="done_invoice" />
+
                             <button name="button_extract_mrp" type="object" string="Estrai MRP" colspan="2"/>
                             <field name="done_mrp" />
+
                             <button name="button_extract_job" type="object" string="Estrai Job" colspan="2"/>
                             <field name="done_job" />
+
                             <button name="button_extract_picking" type="object" string="Estrai Picking (SL CL)" colspan="2"/>
                             <field name="done_picking" />
 
@@ -41,7 +47,13 @@
                             <field name="purchase_id" />
                             <newline/>
 
-                            <button name="button_extract_product_price" type="object" string="Estrai prezzi da storico" colspan="2"/>
+                            <separator string="Prezzi:" colspan="4"/>
+                            <button name="button_extract_product_price" type="object" string="Estrai prezzi materie prime" colspan="2"/>
+                            <newline/>
+                            <button name="button_extract_semiproduct_price" type="object" string="Estrai prezzi semilavorati" colspan="2"/>
+                            <button name="button_extract_product_price" type="object" string="Estrai prezzi MRP" colspan="2"/>
+
+                            <separator string="Stampe finali:" colspan="4"/>
                             <button name="button_extract_product_move" type="object" string="Estrai movimenti prodotto" colspan="2"/>
 
                             <button name="button_extract_start" type="object" string="Estrai stato iniziale" colspan="2"/>
