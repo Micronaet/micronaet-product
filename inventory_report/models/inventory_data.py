@@ -410,7 +410,7 @@ class StockInventoryHistoryYear(orm.Model):
             # -----------------------------------------------------------------
             # Job data: Semi product - Raw material
             # -----------------------------------------------------------------
-            qty = line.product_uom_qty
+            qty = line.qty
             if qty > 0:
                 use_ws = setup
                 row += 1
