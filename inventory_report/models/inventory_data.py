@@ -234,7 +234,7 @@ class StockInventoryHistoryYear(orm.Model):
                     error = 'Codice tubo non trovato'
             elif category == 'Tessuti':
                 mode = 'Tessuto'
-                code6 = u'%s*' % default_code[:6]  # todo mapping correct name
+                code6 = default_code[:6]
                 if code6 in fabric_start6:
                     new_code = code6
                 if not new_code:
