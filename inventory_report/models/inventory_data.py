@@ -129,7 +129,97 @@ class StockInventoryHistoryYear(orm.Model):
         _logger.info('Logger product')
         filename = os.path.join(base_folder, 'pickle', 'product.pickle')
         _logger.warning('Save # %s products' % len(product_db))
-        return pickle.dump(product_db, open(filename, 'rb'))
+        return pickle.dump(product_db, open(filename, 'wb'))
+
+    def button_extract_product_move(self, cr, uid, ids, context=None):
+        """ Extract invoice and put in pickle file
+        """
+        excel_pool = self.pool.get('excel.writer')
+
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        base_folder = inventory.base_folder
+
+        # Product management:
+        product_db = self.get_product_db(base_folder)
+
+        product_pool = self.pool.get('product.product')
+
+        excel_file = os.path.join(
+            base_folder, 'excel', 'Prodotti.xlsx')
+
+        data = []
+        # Collect data from invoices and credit note:
+        products = product_pool.browse(cr, uid, product_db, context=context)
+
+        # -----------------------------------------------------------------
+        #                          Excel export:
+        # -----------------------------------------------------------------
+        ws_name = 'Prodotti'
+        excel_pool.create_worksheet(name=ws_name)
+        excel_format = self.get_excel_format(excel_pool)
+
+        # Start writing in the sheet:
+        width = [
+            10, 40, 15,
+            40, 5, 5,
+            15, 15,
+            30, 10,
+        ]
+        excel_pool.column_width(ws_name, width)
+
+        header = [
+            'ID', 'Nome', 'Codice',
+            'Categoria', 'MRP', 'SL',
+            'Car.', 'Scar.',
+            'Tipo', 'Raggr.',
+            # todo price
+        ]
+
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+
+        for product in sorted(products, key=lambda x: x.default_code):
+            product_id = product.id
+            row += 1
+            load, unload = product_db[product_id]
+            category = product.inventory_category_id.name or ''
+            dynamic_bom = product.dynamic_bom_line_id
+            hw_bom = product.half_bom_ids
+            if dynamic_bom:
+                mode = 'Prodotto Fiam'
+            elif hw_bom:
+                mode = 'Semilavorato'
+            elif category == 'Commercializzati':
+                mode = 'Commercializzato'
+            if product.is_pipe:
+                mode = 'Tubo'
+            elif category == 'Tessuti':
+                mode = 'Tessuto'
+            elif category in ('Esclusi', 'Lavorazioni'):
+                mode = 'Esclusi'
+            else:
+                mode = 'Materie prime'
+
+            excel_record = [
+                product_id,
+                product.name,
+                product.default_code or '',
+
+                category,
+                'X' if dynamic_bom else '',
+                'X' if hw_bom else '',
+                load,
+                unload,
+                mode,
+                0.0,
+                ]
+            excel_pool.write_xls_line(
+                ws_name, row, excel_record,
+                default_format=excel_format['white']['text'])
+        excel_pool.save_file_as(excel_file)
+        return True
 
     def button_extract_invoice(self, cr, uid, ids, context=None):
         """ Extract invoice and put in pickle file
