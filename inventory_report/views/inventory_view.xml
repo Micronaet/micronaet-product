@@ -24,18 +24,23 @@
                             <field name="from_date" />
                             <field name="to_date" />
                             <button name="button_extract_invoice" type="object" string="Estrai fatturato"/>
-                            <newline/>
+                            <field name="done_invoice" />
                             <button name="button_extract_mrp" type="object" string="Estrai MRP"/>
-                            <newline/>
+                            <field name="done_mrp" />
                             <button name="button_extract_job" type="object" string="Estrai Job"/>
-                            <newline/>
+                            <field name="done_job" />
                             <button name="button_extract_picking" type="object" string="Estrai Picking (SL CL)"/>
-                            <newline/>
+                            <field name="done_picking" />
+
+                            <field name="cl_id" />
+                            <field name="sl_id" />
+
                             <button name="button_extract_purchase" type="object" string="Estrai acquisti"/>
-                            <newline/>
+                            <field name="done_purchase" />
                             <button name="button_extract_start" type="object" string="Estrai stato iniziale"/>
-                            <newline/>
+                            <field name="done_start" />
                             <button name="button_extract_final" type="object" string="Estrai stato finale"/>
+                            <field name="done_end" />
                         </group>
                     </sheet>
                 </form>

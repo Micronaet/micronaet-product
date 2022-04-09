@@ -197,7 +197,10 @@ class StockInventoryHistoryYear(orm.Model):
 
             pickle.dump(data, open(pickle_file, 'wb'))
             excel_pool.save_file_as(excel_file)
-        return True
+        return self.write(cr, uid, ids, {
+            'done_invoice':
+                datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+        }, context=context)
 
     def button_extract_mrp(self, cr, uid, ids, context=None):
         """ Extract invoice and put in pickle file
@@ -339,7 +342,9 @@ class StockInventoryHistoryYear(orm.Model):
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
-        return True
+        return self.write(cr, uid, ids, {
+            'done_mrp': datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        }, context=context)
 
     def button_extract_job(self, cr, uid, ids, context=None):
         """ Extract Job
@@ -448,7 +453,10 @@ class StockInventoryHistoryYear(orm.Model):
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
-        return True
+        return self.write(cr, uid, ids, {
+            'done_job':
+                datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        }, context=context)
 
     def button_extract_final(self, cr, uid, ids, context=None):
         """ Extract final status
@@ -566,7 +574,9 @@ class StockInventoryHistoryYear(orm.Model):
 
         pickle.dump(pickle_data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
-        return True
+        return self.write(cr, uid, ids, {
+            'done_end': datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        }, context=context)
 
     _columns = {
         'name': fields.char('Anno', size=64, required=True),
@@ -575,6 +585,17 @@ class StockInventoryHistoryYear(orm.Model):
             help='Cartella dove sono memorizzati tutti i file della gestione'),
         'from_date': fields.date('Dalla data', required=True),
         'to_date': fields.date('Alla data', required=True),
+
+        'done_invoice': fields.datetime('Fatturato esportato'),
+        'done_mrp': fields.datetime('Produzioni esportate'),
+        'done_job': fields.datetime('Lavorazioni esportate'),
+        'done_picking': fields.datetime('Picking CL SL esportati'),
+        'done_purchase': fields.datetime('Acquisti esportati'),
+        'done_start': fields.datetime('Stato iniziale esportato'),
+        'done_end': fields.datetime('Stato finale esportato'),
+
+        'cl_id': fields.many2one('stock.picking.type', 'CL', required=True),
+        'sl_id': fields.many2one('stock.picking.type', 'SL', required=True,
     }
 
 
