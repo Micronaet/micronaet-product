@@ -360,10 +360,15 @@ class StockInventoryHistoryYear(orm.Model):
                 ]
             semiproduct_db[product_id] = hw_price
 
+            if price_error == 'X':
+                excel_color = excel_format['red']
+            else:
+                excel_color = excel_format['white']
+
             row += 1
             excel_pool.write_xls_line(
                 ws_name, row, excel_record,
-                default_format=excel_format['white']['text'])
+                default_format=excel_color['text'])
 
         excel_pool.save_file_as(excel_file)
         self.save_product_db(base_folder, semiproduct_db, 'semiproduct')
