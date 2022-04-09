@@ -352,7 +352,7 @@ class StockInventoryHistoryYear(orm.Model):
                 else:
                     price = price_db.get(component_id, 0.0)
                     price_new = ''
-                    if not price:
+                    if not price:  # Take current
                         price = price_now_db.get(component_id, 0.0)
                         price_new = '*'
                     if not price:
