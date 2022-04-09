@@ -49,7 +49,26 @@ pipe_codes = {
     'TBAL': 'TUBAL',
     'TBFE': 'TUBFE',
     'TBFZ': 'TUBFZ',
+    'TBZN': 'TUBFZ',
     }
+
+fabric_code = {
+    'TEX': 'TESTEX',
+    'TXM': 'TESTEX',
+    'TJO': 'TESTEX',
+    'T3D': 'TES3D',
+
+    'TESCOING': 'TESCOING',
+    'TESPOLT': 'TESPOLTU',
+
+}
+fabric_start6 = [
+    'TESACR',
+    'TESINT',
+    'TESJUT',
+    'TESTNT',
+    'TSK160',
+]
 
 
 class StockInventoryHistoryYear(orm.Model):
@@ -215,7 +234,17 @@ class StockInventoryHistoryYear(orm.Model):
                     error = 'Codice tubo non trovato'
             elif category == 'Tessuti':
                 mode = 'Tessuto'
-                new_code = u'%s*' % default_code[:6]  # todo mapping correct name
+                code6 = u'%s*' % default_code[:6]  # todo mapping correct name
+                if code6 in fabric_start6:
+                    new_code = code6
+                if not new_code:
+                    for start in fabric_code:
+                        if default_code.startswith(start):
+                            new_code = fabric_code[start]
+                            break
+                if not new_code:
+                    error = 'Codice tessuto non trovato'
+
             elif category in ('Esclusi', 'Lavorazioni'):
                 mode = 'Esclusi'
             else:
