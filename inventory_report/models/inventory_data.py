@@ -169,10 +169,9 @@ class StockInventoryHistoryYear(orm.Model):
         excel_pool.column_width(ws_name, width)
 
         header = [
-            'ID', 'Nome', 'Codice',
+            'ID', 'Tipo', 'Codice', 'Codice ragg.', 'Nome',
             'Categoria', 'MRP', 'SL',
             'Car.', 'Scar.',
-            'Tipo', 'Raggr.',
             # todo price
         ]
 
@@ -182,21 +181,30 @@ class StockInventoryHistoryYear(orm.Model):
 
         for product in sorted(products, key=lambda x: x.default_code):
             product_id = product.id
+            default_code = product.default_code or ''
             row += 1
             load, unload = product_db[product_id]
             category = product.inventory_category_id.name or ''
-            dynamic_bom = product.dynamic_bom_line_id
+            dynamic_bom = product.dynamic_bom_line_ids
             hw_bom = product.half_bom_ids
+            new_code = ''
             if dynamic_bom:
                 mode = 'Prodotto Fiam'
+                if default_code[:3].isdigit()
+                    new_code = default_code[:6]
+                elif not default_code[:2].isdigit() and \
+                        default_code[2:5].isdigit():
+                    new_code = default_code[:8]
             elif hw_bom:
                 mode = 'Semilavorato'
             elif category == 'Commercializzati':
                 mode = 'Commercializzato'
-            if product.is_pipe:
+            elif product.is_pipe:
                 mode = 'Tubo'
+                new_code = '%s*' % default_code[:4]  # todo mapping correct name
             elif category == 'Tessuti':
                 mode = 'Tessuto'
+                new_code = u'%s*' % default_code[:6]  # todo mapping correct name
             elif category in ('Esclusi', 'Lavorazioni'):
                 mode = 'Esclusi'
             else:
@@ -204,15 +212,16 @@ class StockInventoryHistoryYear(orm.Model):
 
             excel_record = [
                 product_id,
-                product.name,
+                mode,
                 product.default_code or '',
+                new_code,
+                product.name,
 
                 category,
                 'X' if dynamic_bom else '',
                 'X' if hw_bom else '',
                 load,
                 unload,
-                mode,
                 0.0,
                 ]
             excel_pool.write_xls_line(
