@@ -44,6 +44,14 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+# todo save in Form:
+pipe_codes = {
+    'TBAL': 'TUBAL',
+    'TBFE': 'TUBFE',
+    'TBFZ': 'TUBFZ',
+    }
+
+
 class StockInventoryHistoryYear(orm.Model):
     """ Model name: stock.inventory.history.year
     """
@@ -161,10 +169,10 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Start writing in the sheet:
         width = [
-            10, 40, 15,
-            40, 5, 5,
+            10, 30, 15, 15, 40,
+            30, 5, 5,
             15, 15,
-            30, 10,
+            10, 40,
         ]
         excel_pool.column_width(ws_name, width)
 
@@ -172,7 +180,7 @@ class StockInventoryHistoryYear(orm.Model):
             'ID', 'Tipo', 'Codice', 'Codice ragg.', 'Nome',
             'Categoria', 'MRP', 'SL',
             'Car.', 'Scar.',
-            # todo price
+            'Prezzo', 'Errore'
         ]
 
         row = 0
@@ -188,20 +196,23 @@ class StockInventoryHistoryYear(orm.Model):
             dynamic_bom = product.dynamic_bom_line_ids
             hw_bom = product.half_bom_ids
             new_code = ''
+            error = ''
             if dynamic_bom:
                 mode = 'Prodotto Fiam'
-                if default_code[:3].isdigit()
+                if default_code[:3].isdigit():
                     new_code = default_code[:6]
                 elif not default_code[:2].isdigit() and \
                         default_code[2:5].isdigit():
-                    new_code = default_code[:8]
+                    new_code = default_code[:8].strip()
             elif hw_bom:
                 mode = 'Semilavorato'
             elif category == 'Commercializzati':
                 mode = 'Commercializzato'
             elif product.is_pipe:
                 mode = 'Tubo'
-                new_code = '%s*' % default_code[:4]  # todo mapping correct name
+                new_code = pipe_codes.get(default_code[:4])
+                if not new_code:
+                    error = 'Codice tubo non trovato'
             elif category == 'Tessuti':
                 mode = 'Tessuto'
                 new_code = u'%s*' % default_code[:6]  # todo mapping correct name
@@ -223,6 +234,7 @@ class StockInventoryHistoryYear(orm.Model):
                 load,
                 unload,
                 0.0,
+                error,
                 ]
             excel_pool.write_xls_line(
                 ws_name, row, excel_record,
@@ -831,13 +843,6 @@ class StockInventoryHistoryYear(orm.Model):
         """
         product_pool = self.pool.get('product.product.start.history')
         excel_pool = self.pool.get('excel.writer')
-
-        # External parameters:
-        pipe_codes = {
-            'TBAL': 'TUBAL',
-            'TBFE': 'TUBFE',
-            'TBFZ': 'TUBFZ',
-        }
 
         # Read parameters:
         inventory = self.browse(cr, uid, ids, context=context)[0]
