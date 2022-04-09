@@ -191,20 +191,18 @@ class StockInventoryHistoryYear(orm.Model):
         to_date = inventory.to_date
 
         # Product management:
-        product_db = self.get_product_db(base_folder)
         price_db = {}  # self.get_product_db(base_folder, 'price')
         price_now = {}
 
         price_pool = self.pool.get('pricelist.partnerinfo.history')
 
         loops = [
+            # Read all product present!
             (price_db, 'Prezzi.xlsx', 'price', [
-                # ('product_id', 'in', product_db),
                 ('date_quotation', '<=', to_date),
                 ('price', '>', 0),
             ]),
             (price_now, 'PrezziAttuali.xlsx', 'price_now', [
-                # ('product_id', 'in', product_db),
                 ('price', '>', 0),
             ]),
         ]
@@ -252,6 +250,9 @@ class StockInventoryHistoryYear(orm.Model):
                 used_ids.append(product_id)
                 default_code = product.default_code or ''
                 last_price = price.price
+                # In new price use as fall back standard price
+                if pickle_name == 'price_now' and not last_price:
+                    last_price = product.standard_price
 
                 excel_record = [
                     product_id,
