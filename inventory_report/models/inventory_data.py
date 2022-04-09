@@ -238,7 +238,7 @@ class StockInventoryHistoryYear(orm.Model):
                 price_max,
                 u'%s' % report_data,
                 ]
-            mrp_data[product_code] = min
+            mrp_data[product_code] = price_min
 
             row += 1
             excel_pool.write_xls_line(
