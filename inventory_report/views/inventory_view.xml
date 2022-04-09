@@ -23,23 +23,23 @@
                             <field name="base_folder" />
                             <field name="from_date" />
                             <field name="to_date" />
-                            <button name="button_extract_invoice" type="object" string="Estrai fatturato"/>
+                            <button name="button_extract_invoice" type="object" string="Estrai fatturato" colspan="2"/>
                             <field name="done_invoice" />
-                            <button name="button_extract_mrp" type="object" string="Estrai MRP"/>
+                            <button name="button_extract_mrp" type="object" string="Estrai MRP" colspan="2"/>
                             <field name="done_mrp" />
-                            <button name="button_extract_job" type="object" string="Estrai Job"/>
+                            <button name="button_extract_job" type="object" string="Estrai Job" colspan="2"/>
                             <field name="done_job" />
-                            <button name="button_extract_picking" type="object" string="Estrai Picking (SL CL)"/>
+                            <button name="button_extract_picking" type="object" string="Estrai Picking (SL CL)" colspan="2"/>
                             <field name="done_picking" />
 
                             <field name="cl_id" />
                             <field name="sl_id" />
 
-                            <button name="button_extract_purchase" type="object" string="Estrai acquisti"/>
+                            <button name="button_extract_purchase" type="object" string="Estrai acquisti" colspan="2"/>
                             <field name="done_purchase" />
-                            <button name="button_extract_start" type="object" string="Estrai stato iniziale"/>
+                            <button name="button_extract_start" type="object" string="Estrai stato iniziale" colspan="2"/>
                             <field name="done_start" />
-                            <button name="button_extract_final" type="object" string="Estrai stato finale"/>
+                            <button name="button_extract_final" type="object" string="Estrai stato finale" colspan="2"/>
                             <field name="done_end" />
                         </group>
                     </sheet>
