@@ -403,7 +403,7 @@ class StockInventoryHistoryYear(orm.Model):
 
         for line in move_pool.browse(
                 cr, uid, line_ids, context=context):
-            picking = line.picking_id
+            picking = line.lavoration_link_id
             product = line.product_id
             product_id = product.id
 
