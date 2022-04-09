@@ -353,7 +353,7 @@ class StockInventoryHistoryYear(orm.Model):
         to_date = inventory.to_date
         base_folder = inventory.base_folder
 
-        move_pool = self.pool.get('stock.quants')
+        move_pool = self.pool.get('stock.quant')
 
         pickle_file = os.path.join(
             base_folder, 'pickle', '%s.pickle' % setup)
@@ -363,9 +363,9 @@ class StockInventoryHistoryYear(orm.Model):
         data = []
         # Collect data from invoices and credit note:
         line_ids = move_pool.search(cr, uid, [
-            ('picking_id.date', '>=', '%s 00:00:00' % from_date),
-            ('picking_id.date', '<=', '%s 23:59:59' % to_date),
-            ('picking_id.dep_mode', 'in', ('cut', 'workshop')),
+            ('lavoration_link_id.date', '>=', '%s 00:00:00' % from_date),
+            ('lavoration_link_id.date', '<=', '%s 23:59:59' % to_date),
+            ('lavoration_link_id.dep_mode', 'in', ('cut', 'workshop')),
         ], context=context)
 
         # ---------------------------------------------------------------------
