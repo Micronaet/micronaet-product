@@ -341,6 +341,114 @@ class StockInventoryHistoryYear(orm.Model):
         excel_pool.save_file_as(excel_file)
         return True
 
+    def button_extract_job(self, cr, uid, ids, context=None):
+        """ Extract Job
+        """
+        excel_pool = self.pool.get('excel.writer')
+        setup = 'Semilavorati'
+
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        from_date = inventory.from_date
+        to_date = inventory.to_date
+        base_folder = inventory.base_folder
+
+        move_pool = self.pool.get('stock.quants')
+
+        pickle_file = os.path.join(
+            base_folder, 'pickle', '%s.pickle' % setup)
+        excel_file = os.path.join(
+            base_folder, 'excel', '%s.xlsx' % setup)
+
+        data = []
+        # Collect data from invoices and credit note:
+        line_ids = move_pool.search(cr, uid, [
+            ('picking_id.date', '>=', '%s 00:00:00' % from_date),
+            ('picking_id.date', '<=', '%s 23:59:59' % to_date),
+        ], context=context)
+
+        # ---------------------------------------------------------------------
+        #                          Excel export:
+        # ---------------------------------------------------------------------
+        ws_name = setup
+        excel_pool.create_worksheet(name=ws_name)
+
+        ws_name_component = 'Materie prime'
+        excel_pool.create_worksheet(name=ws_name_component)
+
+        excel_format = self.get_excel_format(excel_pool)
+
+        # Start writing in the sheet:
+        width = [
+            15, 30,
+            40, 15, 15, 15,
+            15, 15]
+        excel_pool.column_width(ws_name, width)
+        excel_pool.column_width(ws_name_component, width)
+
+        header = [
+            'Data', 'Rif.',
+            'Nome', 'Codice', 'ID prodotto', 'Ricodifica',
+            'Q.', 'Prezzo inventario',
+        ]
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+
+        row_2 = 0
+        excel_pool.write_xls_line(
+            ws_name_component, row_2, header,
+            default_format=excel_format['header'])
+
+        for line in move_pool.browse(
+                cr, uid, line_ids, context=context):
+            picking = line.picking_id
+            product = line.product_id
+            product_id = product.id
+
+            # -----------------------------------------------------------------
+            # Job data: Semi product - Raw material
+            # -----------------------------------------------------------------
+            qty = line.product_uom_qty
+            if qty > 0:
+                use_ws = setup
+                row += 1
+            else:
+                use_ws = 'Materie prime'
+                row_2 += 1
+
+            excel_record = [
+                picking.date,
+                picking.name,
+
+                u'%s' % product.name,
+                product.default_code,
+                product_id,
+                '',  # Re-code
+
+                qty,
+                0.0,
+                ]
+            excel_pool.write_xls_line(
+                use_ws, row, excel_record,
+                default_format=excel_format['white']['text'])
+
+            record = {
+                'date': excel_record[0],
+                'ref': excel_record[1],
+                'name': excel_record[2],
+                'default_code': excel_record[3],
+                'product_id': excel_record[4],
+                'compress_code': excel_record[5],
+                'quantity': excel_record[6],
+                'inventory_price': excel_record[7],
+            }
+            data.append(record)
+
+        pickle.dump(data, open(pickle_file, 'wb'))
+        excel_pool.save_file_as(excel_file)
+        return True
+
     def button_extract_final(self, cr, uid, ids, context=None):
         """ Extract final status
         """
