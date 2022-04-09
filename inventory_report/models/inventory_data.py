@@ -485,6 +485,8 @@ class StockInventoryHistoryYear(orm.Model):
                 ('picking_id.date', '>=', '%s 00:00:00' % from_date),
                 ('picking_id.date', '<=', '%s 23:59:59' % to_date),
                 ('picking_type_id', '=', stock_id),
+                ('picking_id.dep_mode', 'not in', ('cut', 'workshop')),
+
             ], context=context)
 
             # ---------------------------------------------------------------------
@@ -516,11 +518,10 @@ class StockInventoryHistoryYear(orm.Model):
                 product = line.product_id
                 product_id = product.id
 
-                # -----------------------------------------------------------------
-                # Job data: Semi product - Raw material
-                # -----------------------------------------------------------------
+                # -------------------------------------------------------------
+                # Uload SL, Load CL:
+                # -------------------------------------------------------------
                 qty = sign * line.product_qty
-                row += 1
                 excel_record = [
                     picking.date,
                     '%s: %s' % (setup, picking.name),
@@ -533,6 +534,8 @@ class StockInventoryHistoryYear(orm.Model):
                     qty,
                     0.0,
                     ]
+
+                row += 1
                 excel_pool.write_xls_line(
                     ws_name, row, excel_record,
                     default_format=excel_format['white']['text'])
