@@ -223,12 +223,12 @@ class StockInventoryHistoryYear(orm.Model):
             # Start writing in the sheet:
             width = [
                 10, 15, 30,
-                15, 15
+                15, 15, 15
             ]
             excel_pool.column_width(ws_name, width)
 
             header = [
-                'ID', 'Codice', 'Nome', 'Data', 'Prezzo',
+                'ID', 'Codice', 'Nome', 'Data', 'Prezzo', 'Uso std',
             ]
             cols = len(header)
             row = 0
@@ -253,6 +253,9 @@ class StockInventoryHistoryYear(orm.Model):
                 # In new price use as fall back standard price
                 if pickle_name == 'price_now' and not last_price:
                     last_price = product.standard_price
+                    use_std = 'X'
+                else:
+                    use_std = ''
 
                 excel_record = [
                     product_id,
@@ -260,6 +263,7 @@ class StockInventoryHistoryYear(orm.Model):
                     product.name,
                     price.date_quotation,
                     last_price,
+                    use_std,
                     ]
                 price_data[product_id] = last_price
 
