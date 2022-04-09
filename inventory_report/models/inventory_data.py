@@ -102,6 +102,34 @@ class StockInventoryHistoryYear(orm.Model):
             },
         }
 
+    def product_db_update(self, product_db, product_id, qty):
+        """ Load product file
+        """
+        if product_id not in product_db:
+            product_db[product_id] = [0.0, 0.0]  # Load, Unload
+        if qty > 0:
+            product_db[product_id][0] += qty
+        else:
+            product_db[product_id][1] += qty
+
+    def get_product_db(self, base_folder):
+        """ Load product file
+        """
+        _logger.info('Logger product')
+        filename = os.path.join(base_folder, 'pickle', 'product.pickle')
+        try:
+            return pickle.load(open(filename, 'rb'))
+        except:
+            _logger.warning('Product DB was created now')
+            return {}
+
+    def save_product_db(self, base_folder, product_db):
+        """ Load product file
+        """
+        _logger.info('Logger product')
+        filename = os.path.join(base_folder, 'pickle', 'product.pickle')
+        return pickle.dump(product_db, open(filename, 'rb'))
+
     def button_extract_invoice(self, cr, uid, ids, context=None):
         """ Extract invoice and put in pickle file
         """
@@ -120,6 +148,9 @@ class StockInventoryHistoryYear(orm.Model):
             self.write(cr, uid, ids, {
                 'base_folder': base_folder,
             }, context=context)
+
+        # Product management:
+        product_db = self.get_product_db(base_folder)
 
         line_pool = self.pool.get('account.invoice.line')
         modes = {
@@ -168,14 +199,16 @@ class StockInventoryHistoryYear(orm.Model):
                     cr, uid, line_ids, context=context):
                 row += 1
                 invoice = line.invoice_id
+                product_id = line.product_id.id
+                qty = sign * line.quantity
                 excel_record = [
                     invoice.date_invoice,
                     u'%s [%s]' % (
                         invoice.number, invoice.partner_id.name),
-                    line.product_id.id,
+                    product_id,
                     line.product_id.default_code,
                     u'%s' % line.name,
-                    sign * line.quantity,
+                    qty,
                     u'',
                     0.0,
                     ]
@@ -190,6 +223,7 @@ class StockInventoryHistoryYear(orm.Model):
                     'inventory_price': excel_record[7],
                 }
                 data.append(record)
+                self.product_db_update(product_db, product_id, qty)
 
                 excel_pool.write_xls_line(
                     ws_name, row, excel_record,
@@ -197,6 +231,8 @@ class StockInventoryHistoryYear(orm.Model):
 
             pickle.dump(data, open(pickle_file, 'wb'))
             excel_pool.save_file_as(excel_file)
+
+        self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
             'done_invoice':
                 datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
@@ -213,6 +249,9 @@ class StockInventoryHistoryYear(orm.Model):
         from_date = inventory.from_date
         to_date = inventory.to_date
         base_folder = inventory.base_folder
+
+        # Product management:
+        product_db = self.get_product_db(base_folder)
 
         line_pool = self.pool.get('sale.order.line')
 
@@ -264,14 +303,14 @@ class StockInventoryHistoryYear(orm.Model):
         bom_cache = {}
         for line in line_pool.browse(
                 cr, uid, line_ids, context=context):
-            mrp = line.mrp_id
-            product = line.product_id
-            product_id = product.id
-
             # -----------------------------------------------------------------
             # MRP Product:
             # -----------------------------------------------------------------
+            mrp = line.mrp_id
+            product = line.product_id
+            product_id = product.id
             qty = line.product_uom_qty
+
             excel_record = [
                 mrp.date_planned,
                 mrp.name,
@@ -300,6 +339,7 @@ class StockInventoryHistoryYear(orm.Model):
                 'inventory_price': excel_record[7],
             }
             data.append(record)
+            self.product_db_update(product_db, product_id, qty)
 
             # -----------------------------------------------------------------
             # Unload Component:
@@ -310,6 +350,7 @@ class StockInventoryHistoryYear(orm.Model):
 
             for component_line in bom_cache[product_id]:
                 component = component_line.product_id
+                cmp_qty = - line.product_uom_qty * qty
                 excel_record = [
                     mrp.date_planned,
                     mrp.name,
@@ -319,7 +360,7 @@ class StockInventoryHistoryYear(orm.Model):
                     component.id,
                     '',  # Re-code
 
-                    - line.product_uom_qty * qty,
+                    cmp_qty,
                     0.0,
                 ]
                 row_2 += 1
@@ -339,9 +380,12 @@ class StockInventoryHistoryYear(orm.Model):
                 }
                 if not component.bom_placeholder:
                     data.append(record)  # Only if not placeholder
+                    self.product_db_update(
+                        product_db, component.id, cmp_qty)
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
             'done_mrp': datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         }, context=context)
@@ -357,6 +401,9 @@ class StockInventoryHistoryYear(orm.Model):
         from_date = inventory.from_date
         to_date = inventory.to_date
         base_folder = inventory.base_folder
+
+        # Product management:
+        product_db = self.get_product_db(base_folder)
 
         move_pool = self.pool.get('stock.quant')
 
@@ -450,9 +497,12 @@ class StockInventoryHistoryYear(orm.Model):
                 'inventory_price': excel_record[7],
             }
             data.append(record)
+            self.product_db_update(
+                product_db, product_id, qty)
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
             'done_job':
                 datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
@@ -470,6 +520,9 @@ class StockInventoryHistoryYear(orm.Model):
         cl_id = inventory.cl_id.id
         sl_id = inventory.sl_id.id
         base_folder = inventory.base_folder
+
+        # Product management:
+        product_db = self.get_product_db(base_folder)
 
         move_pool = self.pool.get('stock.move')
 
@@ -489,9 +542,9 @@ class StockInventoryHistoryYear(orm.Model):
 
             ], context=context)
 
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             #                          Excel export:
-            # ---------------------------------------------------------------------
+            # -----------------------------------------------------------------
             ws_name = setup
             excel_pool.create_worksheet(name=ws_name)
             excel_format = self.get_excel_format(excel_pool)
@@ -559,9 +612,11 @@ class StockInventoryHistoryYear(orm.Model):
                         'inventory_price': excel_record[7],
                     }
                     data.append(record)
+                    self.product_db_update(product_db, product_id, qty)
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
             'done_picking':
                 datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
@@ -578,6 +633,9 @@ class StockInventoryHistoryYear(orm.Model):
         to_date = inventory.to_date
         purchase_id = inventory.purchase_id.id
         base_folder = inventory.base_folder
+
+        # Product management:
+        product_db = self.get_product_db(base_folder)
 
         move_pool = self.pool.get('stock.move')
 
@@ -658,9 +716,11 @@ class StockInventoryHistoryYear(orm.Model):
                 'inventory_price': excel_record[7],
             }
             data.append(record)
+            self.product_db_update(product_db, product_id, qty)
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
             'done_picking':
                 datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
@@ -684,6 +744,9 @@ class StockInventoryHistoryYear(orm.Model):
         to_date = inventory.to_date
         base_folder = inventory.base_folder
 
+        # Product management:
+        product_db = self.get_product_db(base_folder)
+
         pickle_file = os.path.join(
             base_folder, 'pickle', '%s.pickle' % 'Finale')
         excel_file = os.path.join(
@@ -694,9 +757,9 @@ class StockInventoryHistoryYear(orm.Model):
                 ('mx_start_date', '=', to_date),
             ], context=context)
 
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         #                          Excel export:
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         ws_name = 'Stato finale'
         excel_pool.create_worksheet(name=ws_name)
         excel_format = self.get_excel_format(excel_pool)
@@ -779,9 +842,11 @@ class StockInventoryHistoryYear(orm.Model):
                 'compress_code': default_code,
                 'status': status,
             })
+            self.product_db_update(product_db, product_id, qty)
 
         pickle.dump(pickle_data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
             'done_end': datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         }, context=context)
