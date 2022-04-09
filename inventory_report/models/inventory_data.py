@@ -203,9 +203,9 @@ class StockInventoryHistoryYear(orm.Model):
             'to_date': to_date,
         }
 
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         #                          Excel export:
-        # -----------------------------------------------------------------
+        # ---------------------------------------------------------------------
         ws_name = 'Prezzi MRP'
         excel_pool.create_worksheet(name=ws_name)
         excel_format = self.get_excel_format(excel_pool)
@@ -380,6 +380,7 @@ class StockInventoryHistoryYear(orm.Model):
         """ Extract invoice and put in pickle file
         """
         excel_pool = self.pool.get('excel.writer')
+        product_pool = self.pool.get('product.product')
 
         # Read parameters:
         inventory = self.browse(cr, uid, ids, context=context)[0]
@@ -390,14 +391,9 @@ class StockInventoryHistoryYear(orm.Model):
         price_db = self.get_product_db(base_folder, 'price')  # For price
         semiproduct_db = self.get_product_db(base_folder, 'semiproduct')
         mrp_db = self.get_product_db(base_folder, 'product_mrp')
+        final_db = {}  # Pack per code
 
-        product_pool = self.pool.get('product.product')
-
-        excel_file = os.path.join(
-            base_folder, 'excel', 'Prodotti.xlsx')
-
-        data = []
-        # Collect data from invoices and credit note:
+        excel_file = os.path.join(base_folder, 'excel', 'Prodotti.xlsx')
         products = product_pool.browse(cr, uid, product_db, context=context)
 
         # -----------------------------------------------------------------
@@ -452,6 +448,12 @@ class StockInventoryHistoryYear(orm.Model):
             error = ''
             # Fall back on std price:
             price = price_db.get(product_id, product.standard_price)
+
+            if default_code:
+                inventory_selected = True
+            else:
+                inventory_selected = False
+
             if dynamic_bom:
                 mode = 'Prodotto Fiam'
                 if default_code[:3].isdigit():
@@ -488,6 +490,7 @@ class StockInventoryHistoryYear(orm.Model):
                     error = 'Codice tessuto non trovato'
             elif category in ('Esclusi', 'Lavorazioni'):
                 mode = 'Esclusi'
+                inventory_selected = False
             else:
                 mode = 'Materie prime'
 
@@ -516,7 +519,18 @@ class StockInventoryHistoryYear(orm.Model):
             excel_pool.write_xls_line(
                 ws_name, row, excel_record,
                 default_format=excel_color['text'])
+
+            if inventory_selected:
+                final_db[new_code or default_code] = [
+                    mode,
+                    category,
+                    total_load,
+                    total_unload,
+                    price,
+                ]
+
         excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, final_db, 'final_inventory')
         return True
 
     def button_extract_invoice(self, cr, uid, ids, context=None):
