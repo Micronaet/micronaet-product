@@ -41,8 +41,8 @@
                             <field name="purchase_id" />
                             <newline/>
 
+                            <button name="button_extract_product_price" type="object" string="Estrai prezzi da storico" colspan="2"/>
                             <button name="button_extract_product_move" type="object" string="Estrai movimenti prodotto" colspan="2"/>
-                            <newline/>
 
                             <button name="button_extract_start" type="object" string="Estrai stato iniziale" colspan="2"/>
                             <field name="done_start" />

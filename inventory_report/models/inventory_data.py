@@ -160,24 +160,100 @@ class StockInventoryHistoryYear(orm.Model):
         else:
             product_db[product_id][origin][1] += qty
 
-    def get_product_db(self, base_folder):
+    def get_product_db(self, base_folder, mode='product'):
         """ Load product file
         """
-        _logger.info('Logger product')
-        filename = os.path.join(base_folder, 'pickle', 'product.pickle')
+        _logger.info('Logger %s' % mode)
+        filename = os.path.join(base_folder, 'pickle', '%s.pickle' % mode)
         try:
             return pickle.load(open(filename, 'rb'))
         except:
-            _logger.warning('Product DB was created now')
+            _logger.warning('DB for %s was created now' % mode)
             return {}
 
-    def save_product_db(self, base_folder, product_db):
+    def save_product_db(self, base_folder, data, mode='product'):
         """ Load product file
         """
         _logger.info('Logger product')
-        filename = os.path.join(base_folder, 'pickle', 'product.pickle')
-        _logger.warning('Save # %s products' % len(product_db))
-        return pickle.dump(product_db, open(filename, 'wb'))
+        filename = os.path.join(base_folder, 'pickle', '%s.pickle' % mode)
+        _logger.warning('Save # %s %ss' % (len(data), mode))
+        return pickle.dump(data, open(filename, 'wb'))
+
+    def button_extract_product_price(self, cr, uid, ids, context=None):
+        """ Extract last price in history
+        """
+        excel_pool = self.pool.get('excel.writer')
+
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        base_folder = inventory.base_folder
+        to_date = inventory.to_date
+
+        # Product management:
+        product_db = self.get_product_db(base_folder)
+        price_db = self.get_product_db(base_folder, 'price')
+
+        price_pool = self.pool.get('pricelist.partnerinfo.history')
+
+        excel_file = os.path.join(
+            base_folder, 'excel', 'Prezzi.xlsx')
+
+        # Collect data from invoices and credit note:
+        prices = price_pool.search(cr, uid, [
+            ('product_id', 'in', product_db),
+            ('date_quotation', '<=', to_date)
+        ], context=context)
+
+        # -----------------------------------------------------------------
+        #                          Excel export:
+        # -----------------------------------------------------------------
+        ws_name = 'Prezzi'
+        excel_pool.create_worksheet(name=ws_name)
+        excel_format = self.get_excel_format(excel_pool)
+
+        # Start writing in the sheet:
+        width = [
+            10, 15, 30,
+            15, 15
+        ]
+        excel_pool.column_width(ws_name, width)
+
+        header = [
+            'ID', 'Codice', 'Nome', 'Data', 'Prezzo',
+        ]
+        cols = len(header)
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, cols)
+        excel_pool.freeze_panes(ws_name, row, cols)
+
+        used_ids = []
+        for price in sorted(
+                prices, key=lambda x: x.date_quotation, reverse=True):
+
+            product = price.product_id
+            product_id = product.id
+
+            if product_id in used_ids:  # Last price yet insert
+                continue
+            used_ids.append(product_id)
+            default_code = product.default_code or ''
+            last_price = price.price
+
+            excel_record = [
+                product_id,
+                default_code,
+                product.name,
+                price.date_quotation,
+                last_price,
+                ]
+            row += 1
+            excel_pool.write_xls_line(
+                ws_name, row, excel_record,
+                default_format=excel_format['white']['text'])
+        excel_pool.save_file_as(excel_file)
+        return True
 
     def button_extract_product_move(self, cr, uid, ids, context=None):
         """ Extract invoice and put in pickle file
