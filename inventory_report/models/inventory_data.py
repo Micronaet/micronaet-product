@@ -183,90 +183,70 @@ class StockInventoryHistoryYear(orm.Model):
     def button_extract_product_price(self, cr, uid, ids, context=None):
         """ Extract last price in history
         """
+        product_pool = self.pool.get('product.product')
         excel_pool = self.pool.get('excel.writer')
 
         # Read parameters:
         inventory = self.browse(cr, uid, ids, context=context)[0]
         base_folder = inventory.base_folder
+        from_date = inventory.from_date
         to_date = inventory.to_date
+        excel_file = os.path.join(
+            base_folder, 'excel', 'MRP_Prodotti.xlsx')
 
-        # Product management:
-        price_db = {}  # self.get_product_db(base_folder, 'price')
-        price_now = {}
+        mrp_data = {}  # Collect price
 
-        price_pool = self.pool.get('pricelist.partnerinfo.history')
+        # Call oridinal data structure used in report:
+        datas = {
+            'wizard': True,
+            'from_date': from_date,
+            'to_date': to_date,
+        }
 
-        loops = [
-            # Read all product present!
-            (price_db, 'Prezzi.xlsx', 'price', [
-                ('date_quotation', '<=', to_date),
-                ('price', '>', 0),
-            ]),
-            (price_now, 'PrezziAttuali.xlsx', 'price_now', [
-                ('price', '>', 0),
-            ]),
+        # -----------------------------------------------------------------
+        #                          Excel export:
+        # -----------------------------------------------------------------
+        ws_name = 'Prezzi MRP'
+        excel_pool.create_worksheet(name=ws_name)
+        excel_format = self.get_excel_format(excel_pool)
+
+        # Start writing in the sheet:
+        width = [
+            10, 15, 15, 100
         ]
-        for price_data, filename, pickle_name, domain in loops:
-            excel_file = os.path.join(
-                base_folder, 'excel', filename)
+        excel_pool.column_width(ws_name, width)
 
-            # Collect data from invoices and credit note:
-            price_ids = price_pool.search(cr, uid, domain, context=context)
+        header = [
+            'Modello', 'Min', 'Max', 'Dettaglio',
+        ]
+        cols = len(header)
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, cols)
+        excel_pool.freeze_panes(ws_name, row, cols)
 
-            # -----------------------------------------------------------------
-            #                          Excel export:
-            # -----------------------------------------------------------------
-            ws_name = 'Prezzi'
-            excel_pool.create_worksheet(name=ws_name)
-            excel_format = self.get_excel_format(excel_pool)
+        for report_data in product_pool.report_get_objects_bom_industrial_cost(
+                cr, uid, datas=datas, context=context):
+            price_min = report_data[0]
+            price_max = report_data[1]
+            product_code = (report_data[8].default_code or '')[:6].strip()
 
-            # Start writing in the sheet:
-            width = [
-                10, 15, 30,
-                15, 15, 15
-            ]
-            excel_pool.column_width(ws_name, width)
+            excel_record = [
+                product_code,
+                price_min,
+                price_max,
+                u'%s' % report_data,
+                ]
+            mrp_data[product_code] = min
 
-            header = [
-                'ID', 'Codice', 'Nome', 'Data', 'Prezzo',
-            ]
-            cols = len(header)
-            row = 0
+            row += 1
             excel_pool.write_xls_line(
-                ws_name, row, header, default_format=excel_format['header'])
-            excel_pool.autofilter(ws_name, row, 0, row, cols)
-            excel_pool.freeze_panes(ws_name, row, cols)
+                ws_name, row, excel_record,
+                default_format=excel_format['white']['text'])
 
-            used_ids = []
-            for price in sorted(
-                    price_pool.browse(cr, uid, price_ids, context=context),
-                    key=lambda x: x.date_quotation, reverse=True):
-
-                product = price.product_id
-                product_id = product.id
-
-                if product_id in used_ids:  # Last price yet insert
-                    continue
-                used_ids.append(product_id)
-                default_code = product.default_code or ''
-                last_price = price.price
-
-                excel_record = [
-                    product_id,
-                    default_code,
-                    product.name,
-                    price.date_quotation,
-                    last_price,
-                    ]
-                price_data[product_id] = last_price
-
-                row += 1
-                excel_pool.write_xls_line(
-                    ws_name, row, excel_record,
-                    default_format=excel_format['white']['text'])
-
-            excel_pool.save_file_as(excel_file)
-            self.save_product_db(base_folder, price_data, pickle_name)
+        excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, mrp_data, 'product_mrp')
         return True
 
     def button_extract_semiproduct_price(self, cr, uid, ids, context=None):

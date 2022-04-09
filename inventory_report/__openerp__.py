@@ -36,6 +36,7 @@
         'stock',
         'account',
         'sale',
+        'bom_industrial_cost_report',  # for industrial bom
         ],
     'init_xml': [],
     'demo': [],
