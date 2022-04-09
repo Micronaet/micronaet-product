@@ -355,6 +355,7 @@ class StockInventoryHistoryYear(orm.Model):
                     if not price:
                         price = price_now_db.get(component_id, 0.0)
                         price_new = '*'
+                    if not price:
                         price_new_error = 'X'
                     total = price * component_qty
                     hw_price += total
