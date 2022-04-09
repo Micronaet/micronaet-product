@@ -55,6 +55,7 @@
 
                             <separator string="Stampe finali:" colspan="4"/>
                             <button name="button_extract_product_move" type="object" string="Estrai movimenti prodotto" colspan="2"/>
+                            <newline/>
 
                             <button name="button_extract_start" type="object" string="Estrai stato iniziale" colspan="2"/>
                             <field name="done_start" />
