@@ -228,7 +228,7 @@ class StockInventoryHistoryYear(orm.Model):
             excel_pool.column_width(ws_name, width)
 
             header = [
-                'ID', 'Codice', 'Nome', 'Data', 'Prezzo', 'Uso std',
+                'ID', 'Codice', 'Nome', 'Data', 'Prezzo',
             ]
             cols = len(header)
             row = 0
@@ -250,12 +250,6 @@ class StockInventoryHistoryYear(orm.Model):
                 used_ids.append(product_id)
                 default_code = product.default_code or ''
                 last_price = price.price
-                # In new price use as fall back standard price
-                if pickle_name == 'price_now' and not last_price:
-                    last_price = product.standard_price
-                    use_std = 'X'
-                else:
-                    use_std = ''
 
                 excel_record = [
                     product_id,
@@ -263,7 +257,6 @@ class StockInventoryHistoryYear(orm.Model):
                     product.name,
                     price.date_quotation,
                     last_price,
-                    use_std,
                     ]
                 price_data[product_id] = last_price
 
@@ -362,10 +355,13 @@ class StockInventoryHistoryYear(orm.Model):
                         price = price_now_db.get(component_id, 0.0)
                         price_new = '*'
                     if not price:
+                        price = component.standard_price
+                        price_new = 'STD'  # Fall back on standard
+                    if not price:
                         price_new_error = 'X'
                     total = price * component_qty
                     hw_price += total
-                    price_detail += u'[%s€ >> Q.%s x %s, %s€%s]' % (
+                    price_detail += u'[%s€ >> Q.%s x %s, %s€ %s]' % (
                         total,
                         component_qty,
                         component_code,
@@ -473,7 +469,8 @@ class StockInventoryHistoryYear(orm.Model):
 
             new_code = ''
             error = ''
-            price = price_db.get(product_id)
+            # Fall back on std price:
+            price = price_db.get(product_id, product.standard_price)
             if dynamic_bom:
                 mode = 'Prodotto Fiam'
                 if default_code[:3].isdigit():
