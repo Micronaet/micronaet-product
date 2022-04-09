@@ -191,74 +191,83 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Product management:
         product_db = self.get_product_db(base_folder)
-        price_db = self.get_product_db(base_folder, 'price')
+        price_db = {}  # self.get_product_db(base_folder, 'price')
+        price_now = {}
 
         price_pool = self.pool.get('pricelist.partnerinfo.history')
 
-        excel_file = os.path.join(
-            base_folder, 'excel', 'Prezzi.xlsx')
-
-        # Collect data from invoices and credit note:
-        price_ids = price_pool.search(cr, uid, [
-            ('product_id', 'in', product_db),
-            ('date_quotation', '<=', to_date),
-            ('price', '>', 0),
-        ], context=context)
-
-        # -----------------------------------------------------------------
-        #                          Excel export:
-        # -----------------------------------------------------------------
-        ws_name = 'Prezzi'
-        excel_pool.create_worksheet(name=ws_name)
-        excel_format = self.get_excel_format(excel_pool)
-
-        # Start writing in the sheet:
-        width = [
-            10, 15, 30,
-            15, 15
+        loops = [
+            (price_db, 'Prezzi.xlsx', 'price', [
+                ('product_id', 'in', product_db),
+                ('date_quotation', '<=', to_date),
+                ('price', '>', 0),
+            ]),
+            (price_now, 'PrezziAttuali.xlsx', 'price_now', [
+                ('product_id', 'in', product_db),
+                ('price', '>', 0),
+            ]),
         ]
-        excel_pool.column_width(ws_name, width)
+        for price_data, filename, pickle_name, domain in loops:
+            excel_file = os.path.join(
+                base_folder, 'excel', filename)
 
-        header = [
-            'ID', 'Codice', 'Nome', 'Data', 'Prezzo',
-        ]
-        cols = len(header)
-        row = 0
-        excel_pool.write_xls_line(
-            ws_name, row, header, default_format=excel_format['header'])
-        excel_pool.autofilter(ws_name, row, 0, row, cols)
-        excel_pool.freeze_panes(ws_name, row, cols)
+            # Collect data from invoices and credit note:
+            price_ids = price_pool.search(cr, uid, domain, context=context)
 
-        used_ids = []
-        for price in sorted(
-                price_pool.browse(cr, uid, price_ids, context=context),
-                key=lambda x: x.date_quotation, reverse=True):
+            # -----------------------------------------------------------------
+            #                          Excel export:
+            # -----------------------------------------------------------------
+            ws_name = 'Prezzi'
+            excel_pool.create_worksheet(name=ws_name)
+            excel_format = self.get_excel_format(excel_pool)
 
-            product = price.product_id
-            product_id = product.id
+            # Start writing in the sheet:
+            width = [
+                10, 15, 30,
+                15, 15
+            ]
+            excel_pool.column_width(ws_name, width)
 
-            if product_id in used_ids:  # Last price yet insert
-                continue
-            used_ids.append(product_id)
-            default_code = product.default_code or ''
-            last_price = price.price
-
-            excel_record = [
-                product_id,
-                default_code,
-                product.name,
-                price.date_quotation,
-                last_price,
-                ]
-            price_db[product_id] = last_price
-
-            row += 1
+            header = [
+                'ID', 'Codice', 'Nome', 'Data', 'Prezzo',
+            ]
+            cols = len(header)
+            row = 0
             excel_pool.write_xls_line(
-                ws_name, row, excel_record,
-                default_format=excel_format['white']['text'])
+                ws_name, row, header, default_format=excel_format['header'])
+            excel_pool.autofilter(ws_name, row, 0, row, cols)
+            excel_pool.freeze_panes(ws_name, row, cols)
 
-        excel_pool.save_file_as(excel_file)
-        self.save_product_db(base_folder, price_db, 'price')
+            used_ids = []
+            for price in sorted(
+                    price_pool.browse(cr, uid, price_ids, context=context),
+                    key=lambda x: x.date_quotation, reverse=True):
+
+                product = price.product_id
+                product_id = product.id
+
+                if product_id in used_ids:  # Last price yet insert
+                    continue
+                used_ids.append(product_id)
+                default_code = product.default_code or ''
+                last_price = price.price
+
+                excel_record = [
+                    product_id,
+                    default_code,
+                    product.name,
+                    price.date_quotation,
+                    last_price,
+                    ]
+                price_data[product_id] = last_price
+
+                row += 1
+                excel_pool.write_xls_line(
+                    ws_name, row, excel_record,
+                    default_format=excel_format['white']['text'])
+
+            excel_pool.save_file_as(excel_file)
+            self.save_product_db(base_folder, price_data, pickle_name)
         return True
 
     def button_extract_semiproduct_price(self, cr, uid, ids, context=None):
