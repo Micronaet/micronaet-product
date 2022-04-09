@@ -296,7 +296,7 @@ class StockInventoryHistoryYear(orm.Model):
             'ID', 'Tipo', 'Codice', 'Codice ragg.', 'Nome',
             'Categoria', 'MRP', 'SL',
             'Car.', 'Scar.',
-            'Prezzo', 'Errore'
+            'Prezzo', 'Errore',
             'Dettaglio',
         ]
         cols = len(header)
@@ -310,13 +310,15 @@ class StockInventoryHistoryYear(orm.Model):
             product_id = product.id
             default_code = product.default_code or ''
             row += 1
-            load = unload = 0.0
+            total_load = total_unload = 0.0
             move_detail = ''
             for move in product_db[product_id]:
                 load, unload = product_db[product_id][move]
                 move_detail += '[%s C: %s, S: %s]' % (
                     move, load, unload
                 )
+                total_load += load
+                total_unload += unload
 
             category = product.inventory_category_id.name or ''
             dynamic_bom = product.dynamic_bom_line_ids
@@ -377,8 +379,8 @@ class StockInventoryHistoryYear(orm.Model):
                 category,
                 'X' if dynamic_bom else '',
                 'X' if hw_bom else '',
-                load,
-                unload,
+                total_load,
+                total_unload,
                 price,
                 error,
                 move_detail,
@@ -981,7 +983,7 @@ class StockInventoryHistoryYear(orm.Model):
         excel_pool.save_file_as(excel_file)
         self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
-            'done_picking':
+            'done_purchase':
                 datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         }, context=context)
 
