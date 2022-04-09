@@ -500,13 +500,13 @@ class StockInventoryHistoryYear(orm.Model):
             width = [
                 15, 30,
                 40, 15, 15, 15,
-                15, 15]
+                15, 15, 40]
             excel_pool.column_width(ws_name, width)
 
             header = [
                 'Data', 'Rif.',
                 'Nome', 'Codice', 'ID prodotto', 'Ricodifica',
-                'Q.', 'Prezzo inventario',
+                'Q.', 'Prezzo inventario', 'Note',
             ]
             row = 0
             excel_pool.write_xls_line(
@@ -533,6 +533,7 @@ class StockInventoryHistoryYear(orm.Model):
 
                     qty,
                     0.0,
+                    picking.origin or picking.note or '',
                     ]
 
                 row += 1
@@ -697,6 +698,8 @@ class StockInventoryHistoryYear(orm.Model):
 
         'cl_id': fields.many2one('stock.picking.type', 'CL', required=True),
         'sl_id': fields.many2one('stock.picking.type', 'SL', required=True),
+        'purchase_id': fields.many2one(
+            'stock.picking.type', 'Acquisti', required=True),
     }
 
 

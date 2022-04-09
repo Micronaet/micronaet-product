@@ -37,6 +37,10 @@
 
                             <button name="button_extract_purchase" type="object" string="Estrai acquisti" colspan="2"/>
                             <field name="done_purchase" />
+
+                            <field name="purchase_id" />
+                            <newline/>
+
                             <button name="button_extract_start" type="object" string="Estrai stato iniziale" colspan="2"/>
                             <field name="done_start" />
                             <button name="button_extract_final" type="object" string="Estrai stato finale" colspan="2"/>
