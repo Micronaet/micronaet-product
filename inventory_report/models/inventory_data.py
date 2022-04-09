@@ -201,7 +201,8 @@ class StockInventoryHistoryYear(orm.Model):
         # Collect data from invoices and credit note:
         prices = price_pool.search(cr, uid, [
             ('product_id', 'in', product_db),
-            ('date_quotation', '<=', to_date)
+            ('date_quotation', '<=', to_date),
+            ('price', '>', 0),
         ], context=context)
 
         # -----------------------------------------------------------------
