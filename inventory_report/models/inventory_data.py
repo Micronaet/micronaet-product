@@ -51,6 +51,7 @@ metal_price = {
     'TBFE': 0.78,
     'TBFZ': 0.78,
     'TBFN': 0.78,
+    'TBZN': 0.78,  # todo not present
 }
 
 pipe_codes = {
