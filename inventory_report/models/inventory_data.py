@@ -128,6 +128,7 @@ class StockInventoryHistoryYear(orm.Model):
         """
         _logger.info('Logger product')
         filename = os.path.join(base_folder, 'pickle', 'product.pickle')
+        _logger.warning('Save # %s products' % len(product_db))
         return pickle.dump(product_db, open(filename, 'rb'))
 
     def button_extract_invoice(self, cr, uid, ids, context=None):
