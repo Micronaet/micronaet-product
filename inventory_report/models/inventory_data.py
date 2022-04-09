@@ -381,7 +381,7 @@ class StockInventoryHistoryYear(orm.Model):
                 ]
             semiproduct_db[product_id] = hw_price
 
-            if price_error == 'X' or price_new_error == 'X' :
+            if price_error == 'X' or price_new_error == 'X':
                 excel_color = excel_format['red']
             else:
                 excel_color = excel_format['white']
@@ -523,9 +523,15 @@ class StockInventoryHistoryYear(orm.Model):
                 error,
                 move_detail,
                 ]
+
+            if price<= 0.0000000001:
+                excel_color = excel_format['red']
+            else:
+                excel_color = excel_format['white']
+
             excel_pool.write_xls_line(
                 ws_name, row, excel_record,
-                default_format=excel_format['white']['text'])
+                default_format=excel_color['text'])
         excel_pool.save_file_as(excel_file)
         return True
 
