@@ -500,13 +500,13 @@ class StockInventoryHistoryYear(orm.Model):
             width = [
                 15, 30,
                 40, 15, 15, 15,
-                15, 15, 40]
+                15, 15, 40, 15]
             excel_pool.column_width(ws_name, width)
 
             header = [
                 'Data', 'Rif.',
                 'Nome', 'Codice', 'ID prodotto', 'Ricodifica',
-                'Q.', 'Prezzo inventario', 'Note',
+                'Q.', 'Prezzo inventario', 'Note', 'Stato',
             ]
             row = 0
             excel_pool.write_xls_line(
@@ -522,6 +522,11 @@ class StockInventoryHistoryYear(orm.Model):
                 # Uload SL, Load CL:
                 # -------------------------------------------------------------
                 qty = sign * line.product_qty
+                note = picking.origin or picking.note or ''
+                if note.startswith('MO'):
+                    used = False
+                else:
+                    used = True
                 excel_record = [
                     picking.date,
                     '%s: %s' % (setup, picking.name),
@@ -533,7 +538,8 @@ class StockInventoryHistoryYear(orm.Model):
 
                     qty,
                     0.0,
-                    picking.origin or picking.note or '',
+                    note,
+                    'Usato' if used else 'Non usato',
                     ]
 
                 row += 1
@@ -541,17 +547,18 @@ class StockInventoryHistoryYear(orm.Model):
                     ws_name, row, excel_record,
                     default_format=excel_format['white']['text'])
 
-                record = {
-                    'date': excel_record[0],
-                    'ref': excel_record[1],
-                    'name': excel_record[2],
-                    'default_code': excel_record[3],
-                    'product_id': excel_record[4],
-                    'compress_code': excel_record[5],
-                    'quantity': excel_record[6],
-                    'inventory_price': excel_record[7],
-                }
-                data.append(record)
+                if used:
+                    record = {
+                        'date': excel_record[0],
+                        'ref': excel_record[1],
+                        'name': excel_record[2],
+                        'default_code': excel_record[3],
+                        'product_id': excel_record[4],
+                        'compress_code': excel_record[5],
+                        'quantity': excel_record[6],
+                        'inventory_price': excel_record[7],
+                    }
+                    data.append(record)
 
         pickle.dump(data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
