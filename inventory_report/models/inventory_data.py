@@ -407,6 +407,7 @@ class StockInventoryHistoryYear(orm.Model):
         # Product management:
         product_db = self.get_product_db(base_folder)
         price_db = self.get_product_db(base_folder, 'price')  # For price
+        semiproduct_db = self.get_product_db(base_folder, 'semiproduct')
 
         product_pool = self.pool.get('product.product')
 
@@ -478,7 +479,7 @@ class StockInventoryHistoryYear(orm.Model):
                 price = 0.0  # todo from template!
             elif hw_bom:
                 mode = 'Semilavorato'
-                price = 0.0  # todo form HW
+                price = semiproduct_db.get(product_id)
             elif category == 'Commercializzati':
                 mode = 'Commercializzato'
             elif product.is_pipe:
