@@ -199,7 +199,7 @@ class StockInventoryHistoryYear(orm.Model):
             base_folder, 'excel', 'Prezzi.xlsx')
 
         # Collect data from invoices and credit note:
-        prices = price_pool.search(cr, uid, [
+        price_ids = price_pool.search(cr, uid, [
             ('product_id', 'in', product_db),
             ('date_quotation', '<=', to_date),
             ('price', '>', 0),
@@ -231,7 +231,8 @@ class StockInventoryHistoryYear(orm.Model):
 
         used_ids = []
         for price in sorted(
-                prices, key=lambda x: x.date_quotation, reverse=True):
+                price_pool.browse(cr, uid, price_ids, context=context),
+                key=lambda x: x.date_quotation, reverse=True):
 
             product = price.product_id
             product_id = product.id
