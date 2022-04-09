@@ -1331,7 +1331,7 @@ class StockInventoryHistoryYear(orm.Model):
             ws_name, row, header, default_format=excel_format['header'])
 
         # Old present:
-        for default_code in start_db:
+        for default_code in sorted(start_db):
             previous = start_db[default_code]
             next = inventory_db.get(default_code, ['', '', '', '', '', ''])
             excel_line = [
@@ -1354,7 +1354,7 @@ class StockInventoryHistoryYear(orm.Model):
                 default_format=excel_format['white']['text'])
 
         # New not present:
-        for default_code in inventory_db:
+        for default_code in sorted(inventory_db):
             if default_code in start_db:
                 continue  # yet present
             next = inventory_db[default_code]
