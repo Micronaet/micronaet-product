@@ -282,6 +282,7 @@ class StockInventoryHistoryYear(orm.Model):
         # Product management:
         product_db = self.get_product_db(base_folder)  # List of product
         price_db = self.get_product_db(base_folder, 'price')  # Raw material
+        price_now_db = self.get_product_db(base_folder, 'price_now')
         semiproduct_db = {}  # Clean everytime
 
         product_pool = self.pool.get('product.product')
@@ -306,6 +307,7 @@ class StockInventoryHistoryYear(orm.Model):
 
         header = [
             'ID', 'Codice', 'Nome', 'Prezzo', 'Dettaglio', 'Errore',
+            'Prezzo attuale',
         ]
         cols = len(header)
         row = 0
@@ -323,6 +325,7 @@ class StockInventoryHistoryYear(orm.Model):
 
             price_detail = ''
             price_error = ''
+            price_new_error = ''
             hw_price = 0.0
             for component_line in hw:
                 component = component_line.product_id
@@ -348,13 +351,19 @@ class StockInventoryHistoryYear(orm.Model):
                         price_error = 'X'
                 else:
                     price = price_db.get(component_id, 0.0)
+                    price_new = ''
+                    if not price:
+                        price = price_now_db.get(component_id, 0.0)
+                        price_new = '*'
+                        price_new_error = 'X'
                     total = price * component_qty
                     hw_price += total
-                    price_detail += u'[%s€ >> Q.%s x %s, %s€]' % (
+                    price_detail += u'[%s€ >> Q.%s x %s, %s€%s]' % (
                         total,
                         component_qty,
                         component_code,
                         price,
+                        price_new,
                     )
                     if not total:
                         price_error = 'X'
@@ -366,10 +375,11 @@ class StockInventoryHistoryYear(orm.Model):
                 hw_price,
                 price_detail,
                 price_error,
+                price_new_error,
                 ]
             semiproduct_db[product_id] = hw_price
 
-            if price_error == 'X':
+            if price_error == 'X' or price_new_error == 'X' :
                 excel_color = excel_format['red']
             else:
                 excel_color = excel_format['white']
