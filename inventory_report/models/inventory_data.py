@@ -250,11 +250,15 @@ class StockInventoryHistoryYear(orm.Model):
                 price.date_quotation,
                 last_price,
                 ]
+            price_db[product_id] = last_price
+
             row += 1
             excel_pool.write_xls_line(
                 ws_name, row, excel_record,
                 default_format=excel_format['white']['text'])
+
         excel_pool.save_file_as(excel_file)
+        self.save_product_db(base_folder, price_db, 'price')
         return True
 
     def button_extract_product_move(self, cr, uid, ids, context=None):
@@ -268,6 +272,7 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Product management:
         product_db = self.get_product_db(base_folder)
+        price_db = self.get_product_db(base_folder, 'price')  # For price
 
         product_pool = self.pool.get('product.product')
 
@@ -328,7 +333,7 @@ class StockInventoryHistoryYear(orm.Model):
 
             new_code = ''
             error = ''
-            price = 0.0
+            price = price_db.get(product_id)
             if dynamic_bom:
                 mode = 'Prodotto Fiam'
                 if default_code[:3].isdigit():
@@ -342,7 +347,6 @@ class StockInventoryHistoryYear(orm.Model):
                 price = 0.0  # todo form HW
             elif category == 'Commercializzati':
                 mode = 'Commercializzato'
-                price = 0.0  # todo from purchase
             elif product.is_pipe:
                 mode = 'Tubo'
                 code4 = default_code[:4]
@@ -363,13 +367,10 @@ class StockInventoryHistoryYear(orm.Model):
                             break
                 if not new_code:
                     error = 'Codice tessuto non trovato'
-                price = 0.0  # From check price
             elif category in ('Esclusi', 'Lavorazioni'):
                 mode = 'Esclusi'
-                price = 0.0  # No price
             else:
                 mode = 'Materie prime'
-                price = 0.0  # From check price
 
             excel_record = [
                 product_id,
