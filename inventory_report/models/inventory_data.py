@@ -26,6 +26,7 @@ import pdb
 import sys
 import logging
 import pickle
+import xlrd
 import openerp
 import openerp.netsvc as netsvc
 import openerp.addons.decimal_precision as dp
@@ -1129,6 +1130,49 @@ class StockInventoryHistoryYear(orm.Model):
                 datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         }, context=context)
 
+    def button_extract_begin(self, cr, uid, ids, context=None):
+        """ Extract final status
+        """
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        base_folder = inventory.base_folder
+        row_start = inventory.row_start
+        file_in = os.path.expanduser(inventory.start_filename)
+
+        start_db = {}
+
+        # -----------------------------------------------------------------------------
+        # Load origin name from XLS
+        # -----------------------------------------------------------------------------
+        try:
+            WB = xlrd.open_workbook(file_in)
+        except:
+            raise osv.except_osv(
+                _('No file:'),
+                _('[ERROR] Cannot read XLS file: %s\n%s' % (file_in,
+                  sys.exit()),
+                  ))
+
+        for index in range(3):
+            ws = WB.sheet_by_index(index)
+            for row in range(row_start - 1, ws.nrows):
+                default_code = str(ws.cell(row, 0).value)
+                if default_code.endswith('.0'):
+                    default_code = default_code[:-2]
+                name = ws.cell(row, 1).value
+                uom = ws.cell(row, 2).value
+                qty = ws.cell(row, 3).value
+                price = ws.cell(row, 4).value
+                subtotal = ws.cell(row, 5).value
+
+                start_db[default_code] = {
+                    # Start data:
+                    'qty_start': qty,
+                    'price_start': price,
+                    'name': name,
+                    'uom': uom,
+                }
+        self.save_product_db(base_folder, start_db, 'start')
+
     def button_extract_final(self, cr, uid, ids, context=None):
         """ Extract final status
         """
@@ -1248,6 +1292,9 @@ class StockInventoryHistoryYear(orm.Model):
         }, context=context)
 
     _columns = {
+        'start_filename': fields.char(
+            'File inizio anno', size=180, required=True),
+        'row_start': fields.integer('Riga inizio'),
         'name': fields.char('Anno', size=64, required=True),
         'base_folder': fields.char(
             'Cartella base', size=180,

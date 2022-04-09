@@ -61,6 +61,12 @@
                             <field name="done_start" />
                             <button name="button_extract_final" type="object" string="Estrai stato finale" colspan="2"/>
                             <field name="done_end" />
+
+                            <button name="button_extract_begin" type="object" string="Estrai stato iniziale" colspan="2"/>
+                            <newline/>
+
+                            <field name="start_filename" />
+                            <field name="row_start" />
                         </group>
                     </sheet>
                 </form>
