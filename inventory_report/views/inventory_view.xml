@@ -67,6 +67,9 @@
 
                             <field name="start_filename" />
                             <field name="row_start" />
+
+                            <button name="button_inventory" type="object" string="Inventario" colspan="2"/>
+
                         </group>
                     </sheet>
                 </form>

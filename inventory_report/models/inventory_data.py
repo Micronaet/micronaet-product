@@ -1137,20 +1137,17 @@ class StockInventoryHistoryYear(orm.Model):
         base_folder = inventory.base_folder
         row_start = inventory.row_start
         file_in = os.path.expanduser(inventory.start_filename)
-
         start_db = {}
 
-        # -----------------------------------------------------------------------------
+        # ---------------------------------------------------------------------
         # Load origin name from XLS
-        # -----------------------------------------------------------------------------
+        # ---------------------------------------------------------------------
         try:
             WB = xlrd.open_workbook(file_in)
         except:
             raise osv.except_osv(
                 _('No file:'),
-                _('[ERROR] Cannot read XLS file: %s\n%s' % (file_in,
-                  sys.exit()),
-                  ))
+                _('[ERROR] Cannot read XLS file: %s' % file_in))
 
         for index in range(3):
             ws = WB.sheet_by_index(index)
@@ -1290,6 +1287,93 @@ class StockInventoryHistoryYear(orm.Model):
         return self.write(cr, uid, ids, {
             'done_end': datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         }, context=context)
+
+    def button_inventory(self, cr, uid, ids, context=None):
+        """ Extract final status
+        """
+        product_pool = self.pool.get('product.product.start.history')
+        excel_pool = self.pool.get('excel.writer')
+
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        base_folder = inventory.base_folder
+
+        # Product management:
+        start_db = self.get_product_db(base_folder, 'start')
+        inventory_db = self.get_product_db(base_folder, 'final_inventory')
+
+        excel_file = os.path.join(
+            base_folder, 'excel', 'Finale.xlsx')
+
+        # ---------------------------------------------------------------------
+        #                          Excel export:
+        # ---------------------------------------------------------------------
+        ws_name = 'Inventario'
+        excel_pool.create_worksheet(name=ws_name)
+        excel_format = self.get_excel_format(excel_pool)
+
+        # Start writing in the sheet:
+        width = [
+            15, 15, 40, 35, 10,
+            10, 12, 30]
+        excel_pool.column_width(ws_name, width)
+
+        header = [
+            'Codice',
+            'ID', 'Codice', 'Nome', 'Categoria', 'Ricodifica',
+            'Q.', 'Prezzo inventario', 'Stato',
+        ]
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=excel_format['header'])
+
+        # Old present:
+        for default_code in start_db:
+            previous = start_db[default_code]
+            next = inventory_db.get(default_code, ['', '', '', '', '', ''])
+            excel_line = [
+                default_code,
+                previous['qty_start'],
+                previous['price_start'],
+                previous['name'],
+                previous['uom'],
+
+                next[0],  # mode
+                next[1],  # category
+                next[2],  # total_load
+                next[3],  # total_unload
+                next[4],  # price
+            ]
+            row += 1
+            excel_pool.write_xls_line(
+                ws_name, row, excel_line,
+                default_format=excel_format['white']['text'])
+
+        # New not present:
+        for default_code in inventory_db:
+            if default_code in start_db:
+                continue  # yet present
+            next = inventory_db[default_code]
+            excel_line = [
+                default_code,
+                0,
+                0,
+                '',
+                '',
+
+                next[0],  # mode
+                next[1],  # category
+                next[2],  # total_load
+                next[3],  # total_unload
+                next[4],  # price
+            ]
+
+            row += 1
+            excel_pool.write_xls_line(
+                ws_name, row, excel_line,
+                default_format=excel_format['white']['text'])
+        excel_pool.save_file_as(excel_file)
+        return True
 
     _columns = {
         'start_filename': fields.char(
