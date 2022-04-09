@@ -199,12 +199,12 @@ class StockInventoryHistoryYear(orm.Model):
 
         loops = [
             (price_db, 'Prezzi.xlsx', 'price', [
-                ('product_id', 'in', product_db),
+                # ('product_id', 'in', product_db),
                 ('date_quotation', '<=', to_date),
                 ('price', '>', 0),
             ]),
             (price_now, 'PrezziAttuali.xlsx', 'price_now', [
-                ('product_id', 'in', product_db),
+                # ('product_id', 'in', product_db),
                 ('price', '>', 0),
             ]),
         ]
@@ -524,7 +524,7 @@ class StockInventoryHistoryYear(orm.Model):
                 move_detail,
                 ]
 
-            if price<= 0.0000000001:
+            if price <= 0.0000000001:
                 excel_color = excel_format['red']
             else:
                 excel_color = excel_format['white']
