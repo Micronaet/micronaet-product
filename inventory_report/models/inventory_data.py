@@ -458,6 +458,104 @@ class StockInventoryHistoryYear(orm.Model):
                 datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         }, context=context)
 
+    def button_extract_picking(self, cr, uid, ids, context=None):
+        """ Extract Job
+        """
+        excel_pool = self.pool.get('excel.writer')
+
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        from_date = inventory.from_date
+        to_date = inventory.to_date
+        cl_id = inventory.cl_id.id
+        sl_id = inventory.sl_id.id
+        base_folder = inventory.base_folder
+
+        move_pool = self.pool.get('stock.move')
+
+        data = []
+        pickle_file = os.path.join(
+            base_folder, 'pickle', 'Correzioni.pickle')
+        excel_file = os.path.join(
+            base_folder, 'excel', 'Correzioni.xlsx')
+        for setup, stock_id, sign in (('CL', cl_id, +1), ('SL', sl_id, -1)):
+
+            # Collect data from invoices and credit note:
+            line_ids = move_pool.search(cr, uid, [
+                ('picking_id.date', '>=', '%s 00:00:00' % from_date),
+                ('picking_id.date', '<=', '%s 23:59:59' % to_date),
+                ('picking_type_id', '=', stock_id),
+            ], context=context)
+
+            # ---------------------------------------------------------------------
+            #                          Excel export:
+            # ---------------------------------------------------------------------
+            ws_name = setup
+            excel_pool.create_worksheet(name=ws_name)
+            excel_format = self.get_excel_format(excel_pool)
+
+            # Start writing in the sheet:
+            width = [
+                15, 30,
+                40, 15, 15, 15,
+                15, 15]
+            excel_pool.column_width(ws_name, width)
+
+            header = [
+                'Data', 'Rif.',
+                'Nome', 'Codice', 'ID prodotto', 'Ricodifica',
+                'Q.', 'Prezzo inventario',
+            ]
+            row = 0
+            excel_pool.write_xls_line(
+                ws_name, row, header, default_format=excel_format['header'])
+
+            for line in move_pool.browse(
+                    cr, uid, line_ids, context=context):
+                picking = line.picking_id
+                product = line.product_id
+                product_id = product.id
+
+                # -----------------------------------------------------------------
+                # Job data: Semi product - Raw material
+                # -----------------------------------------------------------------
+                qty = sign * line.product_qty
+                row += 1
+                excel_record = [
+                    picking.date,
+                    '%s: %s' % (setup, picking.name),
+
+                    u'%s' % product.name,
+                    product.default_code,
+                    product_id,
+                    '',  # Re-code
+
+                    qty,
+                    0.0,
+                    ]
+                excel_pool.write_xls_line(
+                    ws_name, row, excel_record,
+                    default_format=excel_format['white']['text'])
+
+                record = {
+                    'date': excel_record[0],
+                    'ref': excel_record[1],
+                    'name': excel_record[2],
+                    'default_code': excel_record[3],
+                    'product_id': excel_record[4],
+                    'compress_code': excel_record[5],
+                    'quantity': excel_record[6],
+                    'inventory_price': excel_record[7],
+                }
+                data.append(record)
+
+        pickle.dump(data, open(pickle_file, 'wb'))
+        excel_pool.save_file_as(excel_file)
+        return self.write(cr, uid, ids, {
+            'done_picking':
+                datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        }, context=context)
+
     def button_extract_final(self, cr, uid, ids, context=None):
         """ Extract final status
         """
@@ -595,7 +693,7 @@ class StockInventoryHistoryYear(orm.Model):
         'done_end': fields.datetime('Stato finale esportato'),
 
         'cl_id': fields.many2one('stock.picking.type', 'CL', required=True),
-        'sl_id': fields.many2one('stock.picking.type', 'SL', required=True,
+        'sl_id': fields.many2one('stock.picking.type', 'SL', required=True),
     }
 
 
