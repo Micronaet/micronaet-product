@@ -75,7 +75,6 @@ fabric_code = {
     'TESPOL': 'TESPOLTU',
     'TESAD': 'TESAD',
 
-    'TESRAFIA': 'TESRAFIA',
 
 }
 fabric_start6 = [
@@ -86,6 +85,7 @@ fabric_start6 = [
     'TSK160',
     'TESCOT',
     'TESRET',
+    'TESRAF',
 ]
 
 half_text = [
@@ -472,7 +472,7 @@ class StockInventoryHistoryYear(orm.Model):
             if dynamic_bom:
                 mode = 'Prodotto Fiam'
                 if default_code[:3].isdigit():
-                    new_code = default_code[:6]
+                    new_code = default_code[:6].strip()
                 elif not default_code[:2].isdigit() and \
                         default_code[2:5].isdigit():
                     new_code = default_code[:8].strip()
