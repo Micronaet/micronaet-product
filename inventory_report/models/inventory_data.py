@@ -1354,12 +1354,12 @@ class StockInventoryHistoryYear(orm.Model):
             'Q. iniz.', 'Prezzo iniz.', 'Nome', 'UM',
             ]
         old_col = len(header)
-        empty = ['' for i in range(old_col)]
         header.extend([
             'Modo', 'Categoria', 'Carico', 'Scarico', 'Prezzo',
             'Inventario', 'Valore',
             'Differenza',
             ])
+        empty = ['' for i in range(len(header) - old_col)]
 
         row = 0
         excel_pool.write_xls_line(
