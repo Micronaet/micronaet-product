@@ -1403,7 +1403,8 @@ class StockInventoryHistoryYear(orm.Model):
                 0,
                 '',
                 '',
-
+                ]
+            excel_line_new = [
                 next[0],  # mode
                 next[1],  # category
                 next[2],  # total_load
@@ -1414,7 +1415,12 @@ class StockInventoryHistoryYear(orm.Model):
             row += 1
             excel_pool.write_xls_line(
                 ws_name, row, excel_line,
-                default_format=excel_format['white']['text'])
+                default_format=excel_format['red']['text'])
+
+            excel_pool.write_xls_line(
+                ws_name, row, excel_line,
+                default_format=excel_format['white']['text'], col=old_col)
+
         excel_pool.save_file_as(excel_file)
         return True
 
