@@ -205,6 +205,122 @@ class StockInventoryHistoryYear(orm.Model):
         _logger.warning('Save # %s %ss' % (len(data), mode))
         return pickle.dump(data, open(filename, 'wb'))
 
+    def button_extract_all(self, cr, uid, ids, context=None):
+        """ Extract all
+        """
+        # Read parameters:
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        # from_date = inventory.from_date
+        # to_date = inventory.to_date
+        base_folder = inventory.base_folder
+
+        # todo Clean Pickle folder
+        path = os.path.join(base_folder, 'pickle')
+        # clean = os.system('rm %s/*.pickle' % path)
+
+        # todo Clean Excel folder
+        path = os.path.join(base_folder, 'excel')
+        # clean = os.system('rm %s/*.xlsx' % path)
+
+        # ---------------------------------------------------------------------
+        #                          Export Document:
+        # ---------------------------------------------------------------------
+        # Invoice:
+        self.button_extract_invoice(cr, uid, ids, context=context)
+        _logger.info(  # done_date
+            'Generate: [Fatture.pickle NC.pickle] [Invoice.xlsx NC.xlsx]\n'
+            'Generate total: product.pickle')
+
+        # Production MRP:
+        self.button_extract_mrp(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Generate: [MRP.pickle] [MRP.xlsx: MRP, Componenti]\n'
+            'Generate total: product.pickle')
+
+        # Production Job:
+        self.button_extract_job(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Generate: [Semilavorati.pickle] [Semilavorati.xlsx: '
+            '    Semilavorati, Materie prime]\n'
+            'Generate total: product.pickle')
+
+        # Picking (CL, SL):
+        self.button_extract_picking(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Generate: [Correzioni.pickle] [Correzioni.xlsx: CL, SL]\n'
+            'Generate total: product.pickle')
+
+        # Purchase:
+        self.button_extract_purchase(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Generate: [Acquisti.pickle] [Acquisti.xlsx: CL, SL]\n'
+            'Generate total: product.pickle')
+
+        # ---------------------------------------------------------------------
+        #                          Export Price:
+        # ---------------------------------------------------------------------
+        # Product price:
+        self.button_extract_raw_material_price(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Generate: '
+            '    [raw_price.pickle, raw_price_now.pickle] '
+            '    [PrezziMP.xlsx: Periodo, Attuali]')
+
+        # Semiproduct price:
+        self.button_extract_semiproduct_price(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Input: raw_price.pickle, raw_price_now.pickle'
+            'Output: '
+            '    [semiproduct.pickle] '
+            '    [Prezzi_semilavorati.xlsx]\n')
+
+        # Product price:
+        self.button_extract_product_price(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Generate: '
+            '    [product_template.pickle] '
+            '    [MRP_Prodotti.xlsx]')
+
+        # ---------------------------------------------------------------------
+        # Inventory status:
+        # ---------------------------------------------------------------------
+        # Excel last year end inventory (manually):
+        self.button_extract_begin(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Generate: '
+            '    [start.pickle] ')
+
+        # ODOO end of period inventory (for check totals):
+        # todo check procedure!
+        self.button_extract_final(cr, uid, ids, context=context)
+        _logger.info(
+            'Generate: ')
+
+        # Export product list:
+        self.button_extract_product_move(cr, uid, ids, context=context)
+        _logger.info(
+            'Input: '
+            '    [raw_price.pickle] '
+            '    [semiproduct.pickle] '
+            '    [product_mrp.final_inventory] '
+            ' '
+            '     Prodotti.xlsx'
+            'Output: '
+            '    [final_inventory.pickle]'
+        )
+
+        # ---------------------------------------------------------------------
+        #                             Inventory:
+        # ---------------------------------------------------------------------
+        # Excel last year end inventory (manually):
+        self.button_inventory(cr, uid, ids, context=context)
+        _logger.info(  #
+            'Generate: '
+            '    [start.pickle] ')
+
+
+
+
     def button_extract_product_price(self, cr, uid, ids, context=None):
         """ Extract last price in history
         """
@@ -221,7 +337,7 @@ class StockInventoryHistoryYear(orm.Model):
 
         mrp_data = {}  # Collect price
 
-        # Call oridinal data structure used in report:
+        # Call original data structure used in report:
         datas = {
             'wizard': True,
             'from_date': from_date,
@@ -271,7 +387,7 @@ class StockInventoryHistoryYear(orm.Model):
                 default_format=excel_format['white']['text'])
 
         excel_pool.save_file_as(excel_file)
-        self.save_product_db(base_folder, mrp_data, 'product_mrp')
+        self.save_product_db(base_folder, mrp_data, 'product_template')
         return True
 
     def button_extract_semiproduct_price(self, cr, uid, ids, context=None):
@@ -285,8 +401,8 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Product management:
         product_db = self.get_product_db(base_folder)  # List of product
-        price_db = self.get_product_db(base_folder, 'price')  # Raw material
-        price_now_db = self.get_product_db(base_folder, 'price_now')
+        price_db = self.get_product_db(base_folder, 'raw_price')  # Raw
+        price_now_db = self.get_product_db(base_folder, 'raw_price_now')
         semiproduct_db = {}  # Clean everytime
 
         product_pool = self.pool.get('product.product')
@@ -322,7 +438,7 @@ class StockInventoryHistoryYear(orm.Model):
 
         for product in products:
             product_id = product.id
-            default_code = product.default_code or ''
+            default_code = self.clean_code(product.default_code)
             hw = product.half_bom_ids
             if not hw:
                 continue
@@ -334,7 +450,7 @@ class StockInventoryHistoryYear(orm.Model):
             for component_line in hw:
                 component = component_line.product_id
                 component_id = component.id
-                component_code = component.default_code
+                component_code = self.clean_code(component.default_code)
                 component_qty = component_line.product_qty
                 if component.is_pipe:  # Prezzo tubo
                     code4 = component_code[:4]
@@ -413,10 +529,11 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Product management:
         product_db = self.get_product_db(base_folder)
-        price_db = self.get_product_db(base_folder, 'price')  # For price
+        price_db = self.get_product_db(base_folder, 'raw_price')  # For price
         semiproduct_db = self.get_product_db(base_folder, 'semiproduct')
         mrp_db = self.get_product_db(base_folder, 'product_mrp')
-        final_db = {}  # Pack per code
+
+        final_db = {}  # Pack per code for final report
 
         excel_file = os.path.join(base_folder, 'excel', 'Prodotti.xlsx')
         products = product_pool.browse(cr, uid, product_db, context=context)
@@ -482,13 +599,20 @@ class StockInventoryHistoryYear(orm.Model):
 
             if dynamic_bom:
                 mode = 'Prodotto Fiam'
+
+                # Recoded Normal product:
                 if default_code[:3].isdigit():
                     new_code = default_code[:6].strip()
+
+                # Recoded Semiproduct:
                 elif not default_code[:2].isdigit() and \
                         default_code[2:5].isdigit():
                     new_code = default_code[:8].strip()
+
+                # Price from template:
                 code6 = default_code[:6].strip()
                 price = mrp_db.get(code6, product.standard_price)
+
             elif hw_bom:
                 mode = 'Semilavorato'
 
@@ -498,8 +622,10 @@ class StockInventoryHistoryYear(orm.Model):
                     new_code = default_code[:8].strip()
 
                 price = semiproduct_db.get(product_id)
+
             elif category == 'Commercializzati':
                 mode = 'Commercializzato'
+
             elif product.is_pipe:
                 mode = 'Tubo'
                 code4 = default_code[:4].strip()
@@ -524,6 +650,7 @@ class StockInventoryHistoryYear(orm.Model):
                             break
                 if not new_code:
                     error = 'Codice tessuto non trovato'
+
             elif category in ('Esclusi', 'Lavorazioni'):
                 mode = 'Esclusi'
                 inventory_selected = False
@@ -589,7 +716,7 @@ class StockInventoryHistoryYear(orm.Model):
             }, context=context)
 
         # Product management:
-        product_db = self.get_product_db(base_folder)
+        product_db = self.get_product_db(base_folder)  # product.pickle file
 
         line_pool = self.pool.get('account.invoice.line')
         modes = {
@@ -693,7 +820,6 @@ class StockInventoryHistoryYear(orm.Model):
         product_db = self.get_product_db(base_folder)
 
         line_pool = self.pool.get('sale.order.line')
-
         pickle_file = os.path.join(
             base_folder, 'pickle', '%s.pickle' % setup)
         excel_file = os.path.join(
@@ -709,9 +835,11 @@ class StockInventoryHistoryYear(orm.Model):
         # ---------------------------------------------------------------------
         #                          Excel export:
         # ---------------------------------------------------------------------
+        # Sheet 1:
         ws_name = setup
         excel_pool.create_worksheet(name=ws_name)
 
+        # Sheet 2:
         ws_name_component = 'Componenti'
         excel_pool.create_worksheet(name=ws_name_component)
 
@@ -1209,6 +1337,76 @@ class StockInventoryHistoryYear(orm.Model):
                 }
         self.save_product_db(base_folder, start_db, 'start')
 
+    def button_extract_raw_material_price(self, cr, uid, ids, context=None):
+        """ Extract product price
+        """
+        price_pool = self.pool.get('pricelist.partnerinfo.history')
+        excel_pool = self.pool.get('excel.writer')
+
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        base_folder = inventory.base_folder
+        to_date = inventory.to_date
+
+        excel_file = os.path.join(
+            base_folder, 'excel', 'PrezziMP.xlsx')
+        loops = [
+            [{}, [
+                ('date_quotation', '<=', to_date),
+            ], 'raw_price', 'Periodo'],
+            [{}, [], 'raw_price_now', 'Attuali'],
+        ]
+        excel_format = False
+        # ---------------------------------------------------------------------
+        #                         Excel export:
+        # ---------------------------------------------------------------------
+        for data, domain, pickle_name, ws_name in loops:
+            excel_pool.create_worksheet(name=ws_name)
+            if not excel_format:
+                excel_format = self.get_excel_format(excel_pool)
+
+            # Start writing in the sheet:
+            width = [
+                5, 15, 40, 25, 10, 5,
+                ]
+            excel_pool.column_width(ws_name, width)
+            header = [
+                'ID', 'Codice', 'Nome', 'Data', 'Prezzo', 'Uso std',
+            ]
+            row = 0
+            excel_pool.write_xls_line(
+                ws_name, row, header, default_format=excel_format['header'])
+
+            price_ids = price_pool.search(cr, uid, domain, context=context)
+            prices = price_pool.browse(cr, uid, price_ids, context=context)
+            for price in sorted(
+                    prices, key=lambda x: x.date_quotation or x.create_date,
+                    reverse=True,
+                    ):
+                product = price.product_id
+                product_id = product.id
+                default_code = self.clean_code(product.default_code)
+                date = price.date_quotation
+                last_price = price.price
+
+                if product_id in data:
+                    continue  # yet present
+                data[product_id] = last_price
+
+                row += 1
+                excel_pool.write_xls_line(
+                    ws_name, row, [
+                        product.id,
+                        default_code,
+                        product.name,
+                        date,
+                        last_price,
+                        ''
+                    ],
+                    default_format=excel_format['white']['text'])
+
+            self.save_product_db(base_folder, data, pickle_name)
+        excel_pool.save_file_as(excel_file)
+
     def button_extract_final(self, cr, uid, ids, context=None):
         """ Extract final status
         """
@@ -1221,12 +1419,12 @@ class StockInventoryHistoryYear(orm.Model):
         base_folder = inventory.base_folder
 
         # Product management:
-        product_db = self.get_product_db(base_folder)
+        # product_db = self.get_product_db(base_folder)
 
         pickle_file = os.path.join(
-            base_folder, 'pickle', 'ODOO_Finale.pickle')
+            base_folder, 'pickle', 'check_final.pickle')
         excel_file = os.path.join(
-            base_folder, 'excel', 'ODOO_Finale.xlsx')
+            base_folder, 'excel', 'Check_Finale.xlsx')
 
         product_ids = product_pool.search(
             cr, uid, [
@@ -1259,7 +1457,7 @@ class StockInventoryHistoryYear(orm.Model):
         for line in product_pool.browse(cr, uid, product_ids, context=context):
             product = line.product_id
             product_id = product.id
-            default_code = product.default_code or ''
+            default_code = self.clean_code(product.default_code)
             real_code = default_code
             name = product.name
             qty = line.mx_start_qty
@@ -1301,9 +1499,13 @@ class StockInventoryHistoryYear(orm.Model):
                 default_code, qty, 0, status,
             ]
             row += 1
+            if qty <= 0:
+                excel_color = excel_format['red']
+            else:
+                excel_color = excel_format['white']
             excel_pool.write_xls_line(
                 ws_name, row, excel_line,
-                default_format=excel_format['white']['text'])
+                default_format=excel_color['text'])
 
             if jump:
                 continue
@@ -1318,11 +1520,11 @@ class StockInventoryHistoryYear(orm.Model):
                 'compress_code': default_code,
                 'status': status,
             })
-            self.product_db_update(product_db, product_id, qty, 'Finale')
+            # self.product_db_update(product_db, product_id, qty, 'Finale')
 
         pickle.dump(pickle_data, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
-        self.save_product_db(base_folder, product_db)
+        # self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
             'done_end': datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         }, context=context)
@@ -1339,7 +1541,9 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Product management:
         start_db = self.get_product_db(base_folder, 'start')
+        # From product report packed data:
         inventory_db = self.get_product_db(base_folder, 'final_inventory')
+        check_db = self.get_product_db(base_folder, 'check_final')
 
         excel_file = os.path.join(
             base_folder, 'excel', 'Finale.xlsx')
@@ -1357,7 +1561,7 @@ class StockInventoryHistoryYear(orm.Model):
             10, 10, 30, 5,
 
             25, 35, 10, 10, 15,
-            15, 15, 40,
+            15, 15, 15, 40,
         ]
         excel_pool.column_width(ws_name, width)
 
@@ -1369,7 +1573,7 @@ class StockInventoryHistoryYear(orm.Model):
         old_col = len(header)
         header.extend([
             'Modo', 'Categoria', 'Carico', 'Scarico', 'Prezzo',
-            'Inventario', 'Valore',
+            'Inv. ODOO', 'Inventario', 'Valore',
             'Differenza',
             ])
         empty = ['' for i in range(len(header) - old_col)]
@@ -1407,6 +1611,7 @@ class StockInventoryHistoryYear(orm.Model):
                     load_qty,
                     unload_qty,
                     price,
+                    '',  # Final from ODOO
                     end_qty,
                     price * end_qty,
 
@@ -1445,6 +1650,7 @@ class StockInventoryHistoryYear(orm.Model):
                 unload_qty,
                 price,  # price
 
+                '',  # Final from ODOO
                 end_qty,
                 price * end_qty,
 

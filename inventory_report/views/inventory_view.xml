@@ -25,7 +25,9 @@
                             <field name="from_date" />
                             <field name="to_date" />
 
-                            <separator string="Documenti:" colspan="4"/>
+                            <separator string="Documenti:" colspan="3"/>
+                            <button name="button_extract_all" type="object" string="Estrai tutto" colspan="1"/>
+
                             <button name="button_extract_invoice" type="object" string="Estrai fatturato" colspan="2"/>
                             <field name="done_invoice" />
 
@@ -48,19 +50,20 @@
                             <newline/>
 
                             <separator string="Prezzi:" colspan="4"/>
-                            <button name="button_extract_product_price" type="object" string="Estrai prezzi materie prime" colspan="2"/>
+                            <button name="button_extract_raw_material_price" type="object" string="Estrai prezzi materie prime" colspan="2"/>
                             <newline/>
                             <button name="button_extract_semiproduct_price" type="object" string="Estrai prezzi semilavorati" colspan="2"/>
                             <button name="button_extract_product_price" type="object" string="Estrai prezzi MRP" colspan="2"/>
 
                             <separator string="Stampe finali:" colspan="4"/>
-                            <button name="button_extract_begin" type="object" string="Importa stato iniziale" colspan="2"/>
+                            <button name="button_extract_begin" type="object" string="Importa stato iniziale XLS" colspan="2"/>
                             <button name="button_extract_product_move" type="object" string="Estrai movimenti prodotto" colspan="2"/>
 
-                            <button name="button_extract_start" type="object" string="Estrai stato iniziale" colspan="2"/>
-                            <field name="done_start" />
-                            <button name="button_extract_final" type="object" string="Estrai stato finale" colspan="2"/>
+                            <!--<button name="button_extract_start" type="object" string="ODOO stato iniziale (controllo)" colspan="2"/>
+                            <field name="done_start" />-->
+                            <button name="button_extract_final" type="object" string="ODOO stato finale (controllo)" colspan="2"/>
                             <field name="done_end" />
+                            <newline/>
 
                             <field name="start_filename" />
                             <field name="row_start" />
