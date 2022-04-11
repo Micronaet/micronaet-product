@@ -115,6 +115,13 @@ class StockInventoryHistoryYear(orm.Model):
     _rec_name = 'name'
     _order = 'name'
 
+    def clean_code(self, default_code):
+        """ Code problem
+        """
+        if 'NON USARE ' in (default_code or ''):
+            default_code = default_code.replace('NON USARE ', '').strip()
+        return default_code
+
     def generate_folder_structure(self, cr, uid, year, context=None):
         """ Generate folder structure
         """
@@ -443,7 +450,8 @@ class StockInventoryHistoryYear(orm.Model):
 
         for product in sorted(products, key=lambda x: x.default_code):
             product_id = product.id
-            default_code = product.default_code or ''
+            default_code = self.clean_code(product.default_code or '')
+
             row += 1
             total_load = total_unload = 0.0
             move_detail = ''
