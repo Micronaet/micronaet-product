@@ -890,7 +890,7 @@ class StockInventoryHistoryYear(orm.Model):
                 # MS, PO, MT
                 if default_code[:2] in half_text and \
                         default_code[2:5].isdigit():
-                    new_code = default_code[8].strip()
+                    new_code = default_code[:8].strip()
             else:
                 use_ws = 'Materie prime'
                 row_2 += 1
