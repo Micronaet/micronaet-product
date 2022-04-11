@@ -1465,7 +1465,7 @@ class StockInventoryHistoryYear(orm.Model):
             ws_name, row, header, default_format=excel_format['header'])
 
         jump = False
-        pickle_data = []
+        pickle_data = {}
         for line in product_pool.browse(cr, uid, product_ids, context=context):
             product = line.product_id
             product_id = product.id
@@ -1523,15 +1523,16 @@ class StockInventoryHistoryYear(orm.Model):
                 continue
 
             # Save in pickle only used data:
-            pickle_data.append({
-                'product_id': product_id,
-                'name': name,
-                'category': category,
-                'qty': qty,
-                'default_code': real_code,
-                'compress_code': default_code,
-                'status': status,
-            })
+            pickle_data[product_id] = qty
+            #{
+            #    'product_id': product_id,
+            #    'name': name,
+            #    'category': category,
+            #    'qty': qty,
+            #    'default_code': real_code,
+            #    'compress_code': default_code,
+            #    'status': status,
+            #})
             # self.product_db_update(product_db, product_id, qty, 'Finale')
 
         pickle.dump(pickle_data, open(pickle_file, 'wb'))
