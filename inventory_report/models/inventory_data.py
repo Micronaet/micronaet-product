@@ -1369,7 +1369,7 @@ class StockInventoryHistoryYear(orm.Model):
         for default_code in sorted(start_db):
             previous = start_db[default_code]
             next = inventory_db.get(default_code)
-            start_qty = previous['qty_start']
+            start_qty = previous['qty_start'] or 0.0
             excel_line = [
                 '',
                 default_code,
