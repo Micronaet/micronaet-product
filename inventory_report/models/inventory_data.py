@@ -90,7 +90,8 @@ fabric_start6 = [
 
 half_text = [
     'MS', 'PO', 'TS',
-    'MT', 'TL',
+    'MT', 'PA', 'TL',
+    'TP',
 ]
 
 total_mode = [
