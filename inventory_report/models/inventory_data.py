@@ -480,19 +480,29 @@ class StockInventoryHistoryYear(orm.Model):
                 price = mrp_db.get(code6, product.standard_price)
             elif hw_bom:
                 mode = 'Semilavorato'
+
+                # Recoded:
+                if default_code[:2] in half_text and \
+                        default_code[2:5].isdigit():
+                    new_code = default_code[:8].strip()
+
                 price = semiproduct_db.get(product_id)
             elif category == 'Commercializzati':
                 mode = 'Commercializzato'
             elif product.is_pipe:
                 mode = 'Tubo'
                 code4 = default_code[:4]
+
                 new_code = pipe_codes.get(code4)
                 if not new_code:
                     error = 'Codice tubo non trovato'
+
                 price = metal_price.get(code4, 0.0) * product.weight
 
             elif category == 'Tessuti':
                 mode = 'Tessuto'
+
+                # Recoded:
                 code6 = default_code[:6]
                 if code6 in fabric_start6:
                     new_code = code6
@@ -886,12 +896,6 @@ class StockInventoryHistoryYear(orm.Model):
             if qty > 0:
                 use_ws = setup
                 row += 1
-
-                # Recoded:
-                # MS, PO, MT
-                if default_code[:2] in half_text and \
-                        default_code[2:5].isdigit():
-                    new_code = default_code[:8].strip()
             else:
                 use_ws = 'Materie prime'
                 row_2 += 1
