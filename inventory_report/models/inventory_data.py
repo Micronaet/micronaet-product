@@ -88,6 +88,11 @@ fabric_start6 = [
     'TESRET',
 ]
 
+half_text = [
+    'MS', 'PO', 'TS',
+    'MT', 'TL',
+]
+
 total_mode = [
     'Fatture',
     'NC',
@@ -869,7 +874,9 @@ class StockInventoryHistoryYear(orm.Model):
                 cr, uid, line_ids, context=context):
             picking = line.lavoration_link_id
             product = line.product_id
+            default_code = product.default_code or ''
             product_id = product.id
+            new_code = ''
 
             # -----------------------------------------------------------------
             # Job data: Semi product - Raw material
@@ -878,6 +885,12 @@ class StockInventoryHistoryYear(orm.Model):
             if qty > 0:
                 use_ws = setup
                 row += 1
+
+                # Recoded:
+                # MS, PO, MT
+                if default_code[:2] in half_text and \
+                        default_code[2:5].isdigit():
+                    new_code = default_code[8].strip()
             else:
                 use_ws = 'Materie prime'
                 row_2 += 1
@@ -889,7 +902,7 @@ class StockInventoryHistoryYear(orm.Model):
                 u'%s' % product.name,
                 product.default_code,
                 product_id,
-                '',  # Re-code
+                new_code,
 
                 qty,
                 0.0,
