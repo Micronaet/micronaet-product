@@ -1178,7 +1178,9 @@ class StockInventoryHistoryYear(orm.Model):
         for index in range(3):
             ws = WB.sheet_by_index(index)
             for row in range(row_start - 1, ws.nrows):
-                default_code = str(ws.cell(row, 0).value)
+                default_code = str(ws.cell(row, 0).value) or ''
+                default_code = default_code.replace('/', '-')
+
                 if default_code.endswith('.0'):
                     default_code = default_code[:-2]
                 name = ws.cell(row, 1).value
@@ -1340,8 +1342,8 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Start writing in the sheet:
         width = [
-            5, 15,
-            15, 15, 35, 5,
+            5, 12,
+            10, 10, 30, 5,
 
             25, 35, 10, 10, 15,
             15, 15, 40,
