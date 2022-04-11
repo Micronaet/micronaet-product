@@ -1213,7 +1213,7 @@ class StockInventoryHistoryYear(orm.Model):
         pickle_file = os.path.join(
             base_folder, 'pickle', '%s.pickle' % 'Finale')
         excel_file = os.path.join(
-            base_folder, 'excel', 'Finale.xlsx')
+            base_folder, 'excel', 'ODOO_Finale.xlsx')
 
         product_ids = product_pool.search(
             cr, uid, [
@@ -1340,32 +1340,40 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Start writing in the sheet:
         width = [
-            5,
-            15,
+            5, 15,
             15, 15, 35, 5,
-            25, 35, 10, 10, 15]
+
+            25, 35, 10, 10, 15,
+            15, 15, 40,
+        ]
         excel_pool.column_width(ws_name, width)
 
+        # Write header:
         header = [
-            'Nuovo',
-            'Codice',
+            'Nuovo', 'Codice',
             'Q. iniz.', 'Prezzo iniz.', 'Nome', 'UM',
+            ]
+        old_col = len(header)
+        empty = ['' for i in range(old_col)]
+        header.extend([
             'Modo', 'Categoria', 'Carico', 'Scarico', 'Prezzo',
-        ]
-        old_col = 6  # Parameter
+            'Inventario', 'Valore',
+            'Differenza',
+            ])
+
         row = 0
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
         # Old present:
-        empty = ('', '', '', '', '', '')
         for default_code in sorted(start_db):
             previous = start_db[default_code]
             next = inventory_db.get(default_code)
+            start_qty = previous['qty_start']
             excel_line = [
                 '',
                 default_code,
-                previous['qty_start'],
+                start_qty,
                 previous['price_start'],
                 previous['name'],
                 previous['uom'],
@@ -1376,12 +1384,20 @@ class StockInventoryHistoryYear(orm.Model):
                 default_format=excel_format['white']['text'])
 
             if next:
+                load_qty = next[2]
+                unload_qty = next[3]
+                end_qty = start_db + load_qty - unload_qty
+                price = next[4]
                 excel_line_new = [
                     next[0],  # mode
                     next[1],  # category
-                    next[2],  # total_load
-                    next[3],  # total_unload
-                    next[4],  # price
+                    load_qty,
+                    unload_qty,
+                    price,
+                    end_qty,
+                    price * end_qty,
+
+                    '',  # todo write difference
                 ]
                 excel_pool.write_xls_line(
                     ws_name, row, excel_line_new,
@@ -1396,20 +1412,30 @@ class StockInventoryHistoryYear(orm.Model):
             if default_code in start_db:
                 continue  # yet present
             next = inventory_db[default_code]
+            start_qty = 0.0
             excel_line = [
                 'X',
                 default_code,
-                0,
+                start_qty,
                 0,
                 '',
                 '',
                 ]
+            load_qty = next[2]
+            unload_qty = next[3]
+            end_qty = start_db + load_qty - unload_qty
+            price = next[4]
             excel_line_new = [
                 next[0],  # mode
                 next[1],  # category
-                next[2],  # total_load
-                next[3],  # total_unload
-                next[4],  # price
+                load_qty,
+                unload_qty,
+                price,  # price
+
+                end_qty,
+                price * end_qty,
+
+                '',  # todo write difference
             ]
 
             row += 1
@@ -1418,7 +1444,7 @@ class StockInventoryHistoryYear(orm.Model):
                 default_format=excel_format['red']['text'])
 
             excel_pool.write_xls_line(
-                ws_name, row, excel_line,
+                ws_name, row, excel_line_new,
                 default_format=excel_format['white']['text'], col=old_col)
 
         excel_pool.save_file_as(excel_file)
