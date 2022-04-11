@@ -532,6 +532,7 @@ class StockInventoryHistoryYear(orm.Model):
         price_db = self.get_product_db(base_folder, 'raw_price')  # For price
         semiproduct_db = self.get_product_db(base_folder, 'semiproduct')
         mrp_db = self.get_product_db(base_folder, 'product_mrp')
+        check_db = self.get_product_db(base_folder, 'check_final')
 
         final_db = {}  # Pack per code for final report
 
@@ -684,13 +685,24 @@ class StockInventoryHistoryYear(orm.Model):
                 default_format=excel_color['text'])
 
             if inventory_selected:
-                final_db[new_code or default_code] = [
-                    mode,
-                    category,
-                    total_load,
-                    total_unload,
-                    price,
-                ]
+                inventory_code = new_code or default_code
+                check_qty = check_db.get(product_id, 0.0)
+                if inventory_code in final_db:
+                    final_db[inventory_code][2] += total_load
+                    final_db[inventory_code][3] += total_unload
+                    if not final_db[inventory_code][3]:
+                        final_db[inventory_code][3] = price
+                        # todo check if different?
+                    final_db[inventory_code][5] += check_qty
+                else:
+                    final_db[inventory_code] = [
+                        mode,
+                        category,
+                        total_load,
+                        total_unload,
+                        price,
+                        check_qty,
+                    ]
 
         excel_pool.save_file_as(excel_file)
         self.save_product_db(base_folder, final_db, 'final_inventory')
@@ -1623,7 +1635,7 @@ class StockInventoryHistoryYear(orm.Model):
                     end_qty,
                     price * end_qty,
 
-                    error,  # todo write difference
+                    error,
                 ]
                 excel_pool.write_xls_line(
                     ws_name, row, excel_line_new,
