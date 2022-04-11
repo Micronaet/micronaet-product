@@ -1408,7 +1408,7 @@ class StockInventoryHistoryYear(orm.Model):
         excel_pool.save_file_as(excel_file)
 
     def button_extract_final(self, cr, uid, ids, context=None):
-        """ Extract final status
+        """ Extract final status for check
         """
         product_pool = self.pool.get('product.product.start.history')
         excel_pool = self.pool.get('excel.writer')
@@ -1532,7 +1532,6 @@ class StockInventoryHistoryYear(orm.Model):
     def button_inventory(self, cr, uid, ids, context=None):
         """ Extract final status
         """
-        product_pool = self.pool.get('product.product.start.history')
         excel_pool = self.pool.get('excel.writer')
 
         # Read parameters:
@@ -1543,7 +1542,8 @@ class StockInventoryHistoryYear(orm.Model):
         start_db = self.get_product_db(base_folder, 'start')
         # From product report packed data:
         inventory_db = self.get_product_db(base_folder, 'final_inventory')
-        check_db = self.get_product_db(base_folder, 'check_final')
+        # todo not here:
+        #  check_db = self.get_product_db(base_folder, 'check_final')
 
         excel_file = os.path.join(
             base_folder, 'excel', 'Finale.xlsx')
@@ -1574,7 +1574,7 @@ class StockInventoryHistoryYear(orm.Model):
         header.extend([
             'Modo', 'Categoria', 'Carico', 'Scarico', 'Prezzo',
             'Inv. ODOO', 'Inventario', 'Valore',
-            'Differenza',
+            'Errore',
             ])
         empty = ['' for i in range(len(header) - old_col)]
 
@@ -1584,9 +1584,11 @@ class StockInventoryHistoryYear(orm.Model):
 
         # Old present:
         for default_code in sorted(start_db):
+            error = ''
             previous = start_db[default_code]
             next = inventory_db.get(default_code)
             start_qty = previous['qty_start'] or 0.0
+
             excel_line = [
                 '',
                 default_code,
@@ -1605,6 +1607,12 @@ class StockInventoryHistoryYear(orm.Model):
                 unload_qty = next[3]
                 end_qty = start_qty + load_qty + unload_qty
                 price = next[4]
+
+                if end_qty < 0:
+                    error += '[NEGATIVO] '
+                if price <= 0.0:
+                    error += '[PREZZO A ZERO] '
+
                 excel_line_new = [
                     next[0],  # mode
                     next[1],  # category
@@ -1615,7 +1623,7 @@ class StockInventoryHistoryYear(orm.Model):
                     end_qty,
                     price * end_qty,
 
-                    '',  # todo write difference
+                    error,  # todo write difference
                 ]
                 excel_pool.write_xls_line(
                     ws_name, row, excel_line_new,
@@ -1629,6 +1637,7 @@ class StockInventoryHistoryYear(orm.Model):
         for default_code in sorted(inventory_db):
             if default_code in start_db:
                 continue  # yet present
+            error = ''
             next = inventory_db[default_code]
             start_qty = 0.0
             excel_line = [
@@ -1643,6 +1652,12 @@ class StockInventoryHistoryYear(orm.Model):
             unload_qty = next[3]
             end_qty = start_qty + load_qty + unload_qty
             price = next[4]
+
+            if end_qty < 0.0:
+                error += '[NEGATIVO] '
+            if price <= 0.0:
+                error += '[PREZZO A ZERO] '
+
             excel_line_new = [
                 next[0],  # mode
                 next[1],  # category
@@ -1654,7 +1669,7 @@ class StockInventoryHistoryYear(orm.Model):
                 end_qty,
                 price * end_qty,
 
-                '',  # todo write difference
+                error,  # todo write difference
             ]
 
             row += 1
