@@ -1480,6 +1480,7 @@ class StockInventoryHistoryYear(orm.Model):
                 category = ''
 
             status = 'Usato'
+            jump = False
             if not default_code:
                 # pickle_data = u'Prodotto non usato %s' % name
                 jump = True
@@ -1519,13 +1520,13 @@ class StockInventoryHistoryYear(orm.Model):
             excel_pool.write_xls_line(
                 ws_name, row, excel_line,
                 default_format=excel_color['text'])
-
             if jump:
                 continue
 
             # Save in pickle only used data:
             check_data_pickle[product_id] = qty
-            #{
+
+            # {
             #    'product_id': product_id,
             #    'name': name,
             #    'category': category,
@@ -1533,7 +1534,7 @@ class StockInventoryHistoryYear(orm.Model):
             #    'default_code': real_code,
             #    'compress_code': default_code,
             #    'status': status,
-            #})
+            # })
             # self.product_db_update(product_db, product_id, qty, 'Finale')
 
         pickle.dump(check_data_pickle, open(pickle_file, 'wb'))
