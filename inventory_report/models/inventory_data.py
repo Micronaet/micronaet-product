@@ -1399,7 +1399,7 @@ class StockInventoryHistoryYear(orm.Model):
             if next:
                 load_qty = next[2]
                 unload_qty = next[3]
-                end_qty = start_qty + load_qty - unload_qty
+                end_qty = start_qty + load_qty + unload_qty
                 price = next[4]
                 excel_line_new = [
                     next[0],  # mode
@@ -1436,7 +1436,7 @@ class StockInventoryHistoryYear(orm.Model):
                 ]
             load_qty = next[2]
             unload_qty = next[3]
-            end_qty = start_qty + load_qty - unload_qty
+            end_qty = start_qty + load_qty + unload_qty
             price = next[4]
             excel_line_new = [
                 next[0],  # mode
