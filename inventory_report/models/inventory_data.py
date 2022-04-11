@@ -1352,14 +1352,16 @@ class StockInventoryHistoryYear(orm.Model):
             'Q. iniz.', 'Prezzo iniz.', 'Nome', 'UM',
             'Modo', 'Categoria', 'Carico', 'Scarico', 'Prezzo',
         ]
+        old_col = 6  # Parameter
         row = 0
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=excel_format['header'])
 
         # Old present:
+        empty = ('', '', '', '', '', '')
         for default_code in sorted(start_db):
             previous = start_db[default_code]
-            next = inventory_db.get(default_code, ['', '', '', '', '', ''])
+            next = inventory_db.get(default_code)
             excel_line = [
                 '',
                 default_code,
@@ -1367,17 +1369,27 @@ class StockInventoryHistoryYear(orm.Model):
                 previous['price_start'],
                 previous['name'],
                 previous['uom'],
-
-                next[0],  # mode
-                next[1],  # category
-                next[2],  # total_load
-                next[3],  # total_unload
-                next[4],  # price
-            ]
+                ]
             row += 1
             excel_pool.write_xls_line(
                 ws_name, row, excel_line,
                 default_format=excel_format['white']['text'])
+
+            if next:
+                excel_line_new = [
+                    next[0],  # mode
+                    next[1],  # category
+                    next[2],  # total_load
+                    next[3],  # total_unload
+                    next[4],  # price
+                ]
+                excel_pool.write_xls_line(
+                    ws_name, row, excel_line_new,
+                    default_format=excel_format['white']['text'], col=old_col)
+            else:
+                excel_pool.write_xls_line(
+                    ws_name, row, empty,
+                    default_format=excel_format['red']['text'], col=old_col)
 
         # New not present:
         for default_code in sorted(inventory_db):
