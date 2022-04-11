@@ -1631,7 +1631,7 @@ class StockInventoryHistoryYear(orm.Model):
                     load_qty,
                     unload_qty,
                     price,
-                    '',  # Final from ODOO
+                    next[5],  # Final from ODOO
                     end_qty,
                     price * end_qty,
 
@@ -1677,7 +1677,7 @@ class StockInventoryHistoryYear(orm.Model):
                 unload_qty,
                 price,  # price
 
-                '',  # Final from ODOO
+                next[5],  # Final from ODOO
                 end_qty,
                 price * end_qty,
 
