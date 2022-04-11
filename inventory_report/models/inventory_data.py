@@ -66,10 +66,16 @@ fabric_code = {
     'TEX': 'TESTEX',
     'TXM': 'TESTEX',
     'TJO': 'TESTEX',
+    'TXI': 'TESTEX',
+    'TXR': 'TESTEX',
     'T3D': 'TES3D',
+    'TNT': 'TESTNT',
 
     'TESCOING': 'TESCOING',
     'TESPOL': 'TESPOLTU',
+    'TESAD': 'TESAD',
+
+    'TESRAFIA': 'TESRAFIA',
 
 }
 fabric_start6 = [
@@ -78,6 +84,8 @@ fabric_start6 = [
     'TESJUT',
     'TESTNT',
     'TSK160',
+    'TESCOT',
+    'TESRET',
 ]
 
 total_mode = [
