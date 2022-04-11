@@ -47,6 +47,8 @@ _logger = logging.getLogger(__name__)
 
 
 # todo save in Form:
+excluded_category = ('Esclusi', 'Lavorazioni')
+
 metal_price = {
     'TBAL': 3.30,
     'TBFE': 0.78,
@@ -88,7 +90,7 @@ fabric_start6 = [
     'TESRAF',
 ]
 
-half_text = [
+semiproduct_code = [
     'MS', 'PO', 'TS',
     'MT', 'PA', 'TL',
     'TP',
@@ -490,7 +492,7 @@ class StockInventoryHistoryYear(orm.Model):
                 mode = 'Semilavorato'
 
                 # Recoded:
-                if default_code[:2] in half_text and \
+                if default_code[:2] in semiproduct_code and \
                         default_code[2:5].isdigit():
                     new_code = default_code[:8].strip()
 
@@ -1274,7 +1276,7 @@ class StockInventoryHistoryYear(orm.Model):
                 # Clean pipe:
                 default_code = pipe_codes[default_code[:4]]
                 product_id = ''
-            elif default_code[:2] in ('PO', 'MS', 'MT', 'TL', 'TS'):
+            elif default_code[:2] in semiproduct_code:
                 # Clean HW packed:
                 default_code = default_code[:8].strip()
                 product_id = ''
@@ -1283,7 +1285,7 @@ class StockInventoryHistoryYear(orm.Model):
                 if not default_code[:3].isdigit():
                     default_code = default_code[:6].strip()
                     product_id = ''
-            elif category in ('Esclusi', 'Lavorazioni'):
+            elif category in excluded_category:
                 # Remove category:
                 status = 'Categoria non in inventario: %s' % category
                 jump = True
