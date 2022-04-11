@@ -120,8 +120,9 @@ class StockInventoryHistoryYear(orm.Model):
     def clean_code(self, default_code):
         """ Code problem
         """
-        if 'NON USARE ' in (default_code or ''):
-            default_code = default_code.replace('NON USARE ', '').strip()
+        default_code = default_code or ''
+        default_code = default_code.replace('NON USARE ', '').strip()
+        default_code = default_code.replace('/', '-')
         return default_code
 
     def generate_folder_structure(self, cr, uid, year, context=None):
