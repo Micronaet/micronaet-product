@@ -491,7 +491,7 @@ class StockInventoryHistoryYear(orm.Model):
                 mode = 'Commercializzato'
             elif product.is_pipe:
                 mode = 'Tubo'
-                code4 = default_code[:4]
+                code4 = default_code[:4].strip()
 
                 new_code = pipe_codes.get(code4)
                 if not new_code:
@@ -503,7 +503,7 @@ class StockInventoryHistoryYear(orm.Model):
                 mode = 'Tessuto'
 
                 # Recoded:
-                code6 = default_code[:6]
+                code6 = default_code[:6].strip()
                 if code6 in fabric_start6:
                     new_code = code6
                 else:
