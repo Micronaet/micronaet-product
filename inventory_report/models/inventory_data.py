@@ -450,7 +450,7 @@ class StockInventoryHistoryYear(orm.Model):
 
         for product in sorted(products, key=lambda x: x.default_code):
             product_id = product.id
-            default_code = self.clean_code(product.default_code or '')
+            default_code = self.clean_code(product.default_code)
 
             row += 1
             total_load = total_unload = 0.0
@@ -1187,10 +1187,10 @@ class StockInventoryHistoryYear(orm.Model):
             ws = WB.sheet_by_index(index)
             for row in range(row_start - 1, ws.nrows):
                 default_code = str(ws.cell(row, 0).value) or ''
-                default_code = default_code.replace('/', '-')
-
                 if default_code.endswith('.0'):
                     default_code = default_code[:-2]
+                default_code = self.clean_code(default_code)
+
                 name = ws.cell(row, 1).value
                 uom = ws.cell(row, 2).value
                 qty = ws.cell(row, 3).value
