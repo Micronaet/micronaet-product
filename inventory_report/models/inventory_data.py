@@ -1442,6 +1442,7 @@ class StockInventoryHistoryYear(orm.Model):
             cr, uid, [
                 ('mx_start_date', '=', to_date),
             ], context=context)
+        _logger.info('Found %s product' % len(product_ids))
 
         # ---------------------------------------------------------------------
         #                          Excel export:
@@ -1465,7 +1466,7 @@ class StockInventoryHistoryYear(orm.Model):
             ws_name, row, header, default_format=excel_format['header'])
 
         jump = False
-        pickle_data = {}
+        check_data_pickle = {}
         for line in product_pool.browse(cr, uid, product_ids, context=context):
             product = line.product_id
             product_id = product.id
@@ -1480,7 +1481,7 @@ class StockInventoryHistoryYear(orm.Model):
 
             status = 'Usato'
             if not default_code:
-                pickle_data = u'Prodotto non usato %s' % name
+                # pickle_data = u'Prodotto non usato %s' % name
                 jump = True
 
             if default_code[:4] in pipe_codes:
@@ -1523,7 +1524,7 @@ class StockInventoryHistoryYear(orm.Model):
                 continue
 
             # Save in pickle only used data:
-            pickle_data[product_id] = qty
+            check_data_pickle[product_id] = qty
             #{
             #    'product_id': product_id,
             #    'name': name,
@@ -1535,7 +1536,7 @@ class StockInventoryHistoryYear(orm.Model):
             #})
             # self.product_db_update(product_db, product_id, qty, 'Finale')
 
-        pickle.dump(pickle_data, open(pickle_file, 'wb'))
+        pickle.dump(check_data_pickle, open(pickle_file, 'wb'))
         excel_pool.save_file_as(excel_file)
         # self.save_product_db(base_folder, product_db)
         return self.write(cr, uid, ids, {
