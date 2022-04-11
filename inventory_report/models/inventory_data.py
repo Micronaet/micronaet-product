@@ -1221,7 +1221,7 @@ class StockInventoryHistoryYear(orm.Model):
         product_db = self.get_product_db(base_folder)
 
         pickle_file = os.path.join(
-            base_folder, 'pickle', '%s.pickle' % 'Finale')
+            base_folder, 'pickle', 'ODOO_Finale.pickle')
         excel_file = os.path.join(
             base_folder, 'excel', 'ODOO_Finale.xlsx')
 
