@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# ODOO (ex OpenERP) 
+# ODOO (ex OpenERP)
 # Open Source Management Solution
 # Copyright (C) 2001-2015 Micronaet S.r.l. (<https://micronaet.com>)
 # Developer: Nicola Riolini @thebrush (<https://it.linkedin.com/in/thebrush>)
@@ -13,7 +13,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
@@ -33,9 +33,9 @@ from dateutil.relativedelta import relativedelta
 from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.tools.translate import _
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
@@ -43,54 +43,70 @@ _logger = logging.getLogger(__name__)
 
 
 class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
-    ''' Wizard for extract product invoice wizard
-    '''
+    """ Wizard for extract product invoice wizard
+    """
     _name = 'account.invoice.extract.codebar.wizard'
 
     # --------------------
     # Wizard button event:
     # --------------------
     def action_done(self, cr, uid, ids, context=None):
-        ''' Event for button done
-        '''
+        """ Event for button done
+        """
         def safe_eval_field(browse, field):
-            ''' Return save eval for field (if not present)
-            '''
-            try: 
+            """ Return save eval for field (if not present)
+            """
+            try:
                 return browse.__getattribute__(field) or ''
             except:
                 return ''
-            
-            
-        if context is None: 
-            context = {}        
-        
+
+        if context is None:
+            context = {}
+
         wiz_browse = self.browse(cr, uid, ids, context=context)[0]
+        object_mode = wiz_browse.object_mode
 
         # Pool used:
-        line_pool = self.pool.get('account.invoice.line')
+        if object_mode == 'invoice':
+            line_pool = self.pool.get('account.invoice.line')
+        else:
+            line_pool = self.pool.get('sale.order.line')
+
         excel_pool = self.pool.get('excel.writer')
 
         # Generate domain:
         domain = []
-        filter_name = ''
+        filter_name = '[Documenti: %s] ' % (
+            'Fatture' if object_mode == 'invoice' else 'Ordini')
         mode = wiz_browse.mode
         partner = wiz_browse.partner_id
         if partner:
-            domain.append(('invoice_id.partner_id', '=', partner.id))
+            if object_mode == 'invoice':
+                domain.append(('invoice_id.partner_id', '=', partner.id))
+            else:
+                domain.append(('order_id.partner_id', '=', partner.id))
             filter_name += ' Partner: %s' % partner.name
 
         if wiz_browse.from_date:
-            domain.append(
-                ('invoice_id.date_invoice', '>=', wiz_browse.from_date))
+            if object_mode == 'invoice':
+                domain.append(
+                    ('invoice_id.date_invoice', '>=', wiz_browse.from_date))
+            else:
+                domain.append(
+                    ('order_id.date_invoice', '>=', wiz_browse.from_date))
             filter_name += ' From date >= %s' % wiz_browse.from_date
 
         if wiz_browse.to_date:
-            domain.append(
-                ('invoice_id.date_invoice', '<=', wiz_browse.to_date))
+            if object_mode == 'invoice':
+                domain.append(
+                    ('invoice_id.date_invoice', '<=', wiz_browse.to_date))
+            else:
+                domain.append(
+                    ('order_id.date_invoice', '<=', wiz_browse.to_date))
             filter_name += ' To date <= %s' % wiz_browse.to_date
-                
-        line_ids = line_pool.search(cr, uid, domain, context=context)        
+
+        line_ids = line_pool.search(cr, uid, domain, context=context)
         product_db = []
         for line in line_pool.browse(cr, uid, line_ids, context=context):
             product = line.product_id
@@ -98,13 +114,13 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
                 product_db.append(product)
 
         # ---------------------------------------------------------------------
-        # Start Excel file:        
+        # Start Excel file:
         # ---------------------------------------------------------------------
         ws_name = 'EAN'
         if mode == 'detailed':
             header = [
-                'Articolo', 
-                'Descrizione', 
+                'Articolo',
+                'Descrizione',
                 'Descrizione dettagliata',
                 'Telaio',
                 'Tessuto',
@@ -123,16 +139,16 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
             width = [20, 40, 40, 25, 25, 7, 7, 7, 7, 7, 15, 7, 15, 10, 15, 15]
         else:
             header = [
-                'Articolo', 
-                'Descrizione', 
+                'Articolo',
+                'Descrizione',
                 'EAN Pack',
                 'EAN Singolo',
                 ]
             width = [20, 40, 15, 15]
-        
+
         ws = excel_pool.create_worksheet(name=ws_name)
         excel_pool.column_width(ws_name, width)
-        #excel_pool.row_height(ws_name, row_list, height=10)
+        # excel_pool.row_height(ws_name, row_list, height=10)
         title = _('Filtro: %s') % filter_name
 
         # ---------------------------------------------------------------------
@@ -145,7 +161,7 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
         f_number = excel_pool.get_format(key='number')
 
         # ---------------------------------------------------------------------
-        # Write title / header    
+        # Write title / header
         # ---------------------------------------------------------------------
         row = 0
         excel_pool.write_xls_line(
@@ -154,7 +170,7 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
         row += 1
         excel_pool.write_xls_line(
             ws_name, row, header, default_format=f_header)
-        
+
         row += 1
         for product in sorted(product_db, key=lambda x: x.default_code):
             if mode == 'detailed':
@@ -170,14 +186,14 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
                     safe_eval_field(product, 'item_x_pallet'),
                     safe_eval_field(product, 'item_x_camion'),
                     ('%s x %s x %s' % (
-                        safe_eval_field(product, 'height'), 
-                        safe_eval_field(product, 'width'), 
+                        safe_eval_field(product, 'height'),
+                        safe_eval_field(product, 'width'),
                         safe_eval_field(product, 'length'),
                         )).replace(' x  x ', ''),
-                    '', #TODO 'Altezza seduta',
+                    '', # todo 'Altezza seduta',
                     ('%s x %s x %s' % (
-                        safe_eval_field(product, 'pack_l'), 
-                        safe_eval_field(product, 'pack_h'), 
+                        safe_eval_field(product, 'pack_l'),
+                        safe_eval_field(product, 'pack_h'),
                         safe_eval_field(product, 'pack_p'),
                         )).replace(' x  x ', ''),
                     safe_eval_field(product, 'volume'),
@@ -199,16 +215,20 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
     _columns = {
         'partner_id': fields.many2one(
             'res.partner', 'Partner', help='Partner selected', required=True),
-        'from_date': fields.date('From date >='),    
+        'from_date': fields.date('From date >='),
         'to_date': fields.date('To date <='),
+        'object_mode': fields.selection([
+            ('order', 'Ordini'),
+            ('invoice', 'Fatture'),
+            ], u'Documento', required=True),
         'mode': fields.selection([
             ('ean', 'Solo EAN'),
             ('detailed', 'Dettagliata'),
-            ], u'Modalità'),
+            ], u'Modalità', required=True),
         }
 
     _defaults = {
         # Default value:
+        'object_mode': lambda *x: 'invoice',
         'mode': lambda *x: 'detailed',
-        }        
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+        }

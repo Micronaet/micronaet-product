@@ -30,19 +30,20 @@ from openerp import SUPERUSER_ID, api
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
 _logger = logging.getLogger(__name__)
 
+
 class ProductProduct(orm.Model):
-    ''' Link product to inventory purchase order
-    '''
+    """ Link product to inventory purchase order
+    """
     _inherit = 'product.product'
-    
+
     _columns = {
         'inventory_cost_only_buy': fields.float(
             'Inventario costo solo acq.', digits=(16, 3),
@@ -54,33 +55,34 @@ class ProductProduct(orm.Model):
             'Transport cost', digits=(16, 3),
             help='Transport cost from last delivery'),
         'inventory_cost_exchange': fields.float(
-            'Buy exchange', digits=(16, 3), 
+            'Buy exchange', digits=(16, 3),
             help='USD exchange from last delivery'),
         }
+
 
 class StockPicking(orm.Model):
     """ Model name: Stock picking
     """
-    
+
     _inherit = 'stock.picking'
-    
+
     # Button event:
     def force_purchase_data_in_product(self, cr, uid, ids, context=None):
-        ''' Save in product the transport and USD exchange when created
-        '''
+        """ Save in product the transport and USD exchange when created
+        """
         # Pool used:
         product_pool = self.pool.get('product.product')
-        
+
         status = ''
         for picking in self.browse(cr, uid, ids, context=context):
-            # TODO split cost!
+            # todo split cost!
             total_transport = picking.inventory_cost_transport
             inventory_cost_exchange = picking.inventory_cost_exchange
             transport_id = picking.container_id.id
-            
+
             for line in picking.move_lines:
                 product = line.product_id
-                
+
                 # XXX not check if is present, write with button!
                 container_q = 0
                 for container in product.transport_ids:
@@ -88,16 +90,16 @@ class StockPicking(orm.Model):
                         container_q = container.quantity
                         break
 
-                background = 'red'                    
-                if container_q: # XXX consider 0
+                background = 'red'
+                if container_q:  # XXX consider 0
                     inventory_cost_transport = total_transport / container_q
                     if abs(inventory_cost_transport) < 0.0001:
-                        inventory_cost_transport = 0.0 # consider zero                        
-                    else:    
+                        inventory_cost_transport = 0.0  # consider zero
+                    else:
                         background = 'green'
                 else:
-                    inventory_cost_transport = 0.0 # reset! TODO save a warning?
-                    
+                    inventory_cost_transport = 0.0  # reset! todo save a warn.?
+
                 product_pool.write(cr, uid, product.id, {
                     'inventory_cost_transport': inventory_cost_transport,
                     'inventory_cost_exchange': inventory_cost_exchange,
@@ -150,16 +152,15 @@ class StockPicking(orm.Model):
             'inventory_status': status,
             }, context=context)
         return True
-        
+
     _columns = {
         'inventory_cost_transport': fields.float(
             'Transport cost', digits=(16, 3),
             help='Transport cost total for this order'),
         'inventory_cost_exchange': fields.float(
-            'USD exchange', digits=(16, 3), 
+            'USD exchange', digits=(16, 3),
             help='USD exchange for this order'),
         'container_id': fields.many2one(
             'product.cost.transport', 'Container / Camion'),
         'inventory_status': fields.text('Status'),
         }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
