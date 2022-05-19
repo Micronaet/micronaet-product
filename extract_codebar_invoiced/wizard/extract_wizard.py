@@ -81,11 +81,14 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
             'Fatture' if object_mode == 'invoice' else 'Ordini')
         mode = wiz_browse.mode
         partner = wiz_browse.partner_id
-        if partner:
+        if partner:  # Mandatory
             if object_mode == 'invoice':
                 domain.append(('invoice_id.partner_id', '=', partner.id))
-            else:
-                domain.append(('order_id.partner_id', '=', partner.id))
+            else:  # Only confirmed:
+                domain.extend([
+                    ('order_id.partner_id', '=', partner.id),
+                    ('order_id.state', 'not in', ('cancel', 'draft', 'sent')),
+                ])
             filter_name += ' Partner: %s' % partner.name
 
         if wiz_browse.from_date:
