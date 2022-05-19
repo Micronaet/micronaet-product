@@ -97,7 +97,8 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
                     ('invoice_id.date_invoice', '>=', wiz_browse.from_date))
             else:
                 domain.append(
-                    ('order_id.date_invoice', '>=', wiz_browse.from_date))
+                    ('order_id.date_order', '>=',
+                     '%s 00:00:00' % wiz_browse.from_date))
             filter_name += ' From date >= %s' % wiz_browse.from_date
 
         if wiz_browse.to_date:
@@ -106,7 +107,8 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
                     ('invoice_id.date_invoice', '<=', wiz_browse.to_date))
             else:
                 domain.append(
-                    ('order_id.date_invoice', '<=', wiz_browse.to_date))
+                    ('order_id.date_order', '<=',
+                     '%s 23:59:59' % wiz_browse.to_date))
             filter_name += ' To date <= %s' % wiz_browse.to_date
 
         line_ids = line_pool.search(cr, uid, domain, context=context)
