@@ -10,11 +10,14 @@
                 <xpath expr="//notebook/page[2]" position="after">
                     <page name="duty_extra_detail" string="Dettagli extra">
                         <group col="4">
-                            <separator string="Blocco doganale:" colspan="3"/>
                             <button name="generate_purchase_duty_block" type="object" string="Aggiorna blocco" colspan="1"/>
-                            <field name="duty_block" nolabel="1"/>
-                            <separator string="Errori dogana:" colspan="4" attrs="{'invisible': [('duty_error', '=', False)]}"/>
-                            <field name="duty_error" attrs="{'invisible': [('duty_error', '=', False)]}" nolabel="1"/>
+                            <newline/>
+
+                            <separator string="Dettaglio doganale:" colspan="2"/>
+                            <separator string="Errori (se presenti):" colspan="2" />
+
+                            <field name="duty_block" nolabel="1" colspan="2" readonly="1"/>
+                            <field name="duty_error" attrs="{'invisible': [('duty_error', '=', False)]}" nolabel="1" colspan="2" readonly="1"/>
                         </group>
                     </page>
                 </xpath>
