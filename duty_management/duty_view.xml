@@ -1,25 +1,44 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    
+        <!-- purchase.order -->
+        <record model="ir.ui.view" id="view_purchase_order_duty_block_form">
+            <field name="name">purchase.order.duty.block</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[2]" position="after">
+                    <page name="duty_extra_detail" string="Dettagli extra">
+                        <group col="4">
+                            <separator string="Blocco doganale:" colspan="3"/>
+                            <button name="generate_purchase_duty_block" type="object" string="Aggiorna blocco" colspan="1"/>
+                            <field name="duty_block"/>
+                            <separator string="Errori dogana:" colspan="4" attrs="{'invisible': [('duty_error', '=', False)]}"/>
+                            <field name="duty_error" attrs="{'invisible': [('duty_error', '=', False)]}"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
     <record model="ir.ui.view" id="view_account_fiscal_position_duty_form">
         <field name="name">account.fiscal.position.duty.form</field>
         <field name="model">account.fiscal.position</field>
         <field name="inherit_id" ref="account.view_account_position_form" />
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <field name="duty_print" />                
+                <field name="duty_print" />
             </field>
         </field>
     </record>
-    
+
     <!--product.product-->
     <record model="ir.ui.view" id="view_product_duty_search">
         <field name="name">product.product.search</field>
         <field name="model">product.product</field>
         <field name="priority" eval="40" />
         <field name="arch" type="xml">
-            <search string="String" version="7.0">        
+            <search string="String" version="7.0">
                 <field name="name" />
                 <field name="default_code" />
                 <field name="duty_id" />
@@ -27,7 +46,7 @@
                 <filter name="yes_duty" string="With duty" domain="[('duty_id','!=',False')]"/>
                <group expand="0" string="Group By...">
                     <filter name="group_duty" string="Duty" context="{'group_by': 'duty_id'}"/>
-                </group>                
+                </group>
             </search>
         </field>
     </record>
@@ -65,7 +84,7 @@
         <field name="context">{}</field>
         <field name="domain">[]</field>
     </record>
-    
+
     <!-- product.custom.duty: -->
     <record id='product_custom_duty_search' model='ir.ui.view'>
         <field name='name'>Product custom duty search</field>
@@ -77,7 +96,7 @@
                <!--<field name="start" />-->
             </search>
         </field>
-    </record>    
+    </record>
     <record id="product_custom_duty_tree" model="ir.ui.view">
         <field name="name">Product custom duty tree</field>
         <field name="model">product.custom.duty</field>
@@ -97,7 +116,7 @@
                 <sheet>
                    <group colspan="4" col="4">
                        <field name="code" />
-                       <field name="name" />                  
+                       <field name="name" />
 
                        <!--<separator string="Start code" colspan="4"/>
                        <field name="start" colspan="4" nolabel="1"/>-->
@@ -107,33 +126,33 @@
                            <tree string="Country tax:" editable="bottom">
                               <field name="country_id" />
                               <field name="tax" />
-                           </tree>   
+                           </tree>
                            <form string="Country tax:">
                               <field name="country_id" />
                               <field name="tax" />
-                           </form>   
+                           </form>
                        </field>
-                   </group>    
-                </sheet>   
+                   </group>
+                </sheet>
             </form>
         </field>
     </record>
     <record id="product_custom_duty_action" model="ir.actions.act_window">
         <field name="name">Product custom duty</field>
         <field name="res_model">product.custom.duty</field>
-        <field name="view_type">form</field>        
-        <field name="view_mode">tree,form</field>        
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
         <field name="help">List of product custom duty</field>
         <field name="search_view_id" ref="product_custom_duty_search"/>
     </record>
-    <menuitem 
-        id="product_custom_duty_action_menu" 
-        parent="product.menu_products" 
+    <menuitem
+        id="product_custom_duty_action_menu"
+        parent="product.menu_products"
         action="product_custom_duty_action"
-        sequence="60" />            
-        <menuitem 
-            parent="product_custom_duty_action_menu" 
-            id="menu_product_duty_list" 
+        sequence="60" />
+        <menuitem
+            parent="product_custom_duty_action_menu"
+            id="menu_product_duty_list"
             action="action_product_duty_list"
             sequence="10"
             />
