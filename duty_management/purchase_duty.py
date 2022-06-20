@@ -68,15 +68,13 @@ class PurchaseOrder(orm.Model):
             if not gross:
                 error += '%s >> Peso lordo mancante\n' % product.default_code
 
-        res = 'Tabella doganale:\n'
+        res = ''
         for duty_code in sorted(table):
             res += u'Codice %s: %.2f € [Netto: %s Kg - Lordo %s Kg]\n' % (
                 duty_code, table[duty_code][0],
                 table[duty_code][1], table[duty_code][2]
                 )
 
-        if error:
-            error = 'ERRORI:\n%s' % error
         return self.write(cr, uid, ids, {
             'duty_block': res,
             'duty_error': error,
