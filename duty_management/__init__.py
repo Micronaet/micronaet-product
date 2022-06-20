@@ -18,6 +18,4 @@
 #
 ###############################################################################
 from . import duty
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+from . import purchase_duty
