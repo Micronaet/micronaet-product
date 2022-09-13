@@ -30,42 +30,43 @@ from openerp import SUPERUSER_ID, api
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
 _logger = logging.getLogger(__name__)
 
+
 class ProductProduct(orm.Model):
     """ Model name: ProductProduct
     """
-    
+
     _inherit = 'product.product'
-    
+
     def get_range_inventory_date(self, cr, uid, context=None):
-        ''' Overridable function for get the from date
-        '''
+        """ Overridable function for get the from date
+        """
         # Company 1 standard:
         now = datetime.now()
-        if now.month >= 9: # 9 - 12
-            season_year = now.year    
-        else: # 1 - 8    
-            season_year = now.year - 1 
+        if now.month >= 9:  # 9 - 12
+            season_year = now.year
+        else:  # 1 - 8
+            season_year = now.year - 1
 
-        from_date = '%s-09-01 00:00:00' % season_year
-        # from_date = '2020-09-01 00:00:00' # XXX REMOVE!!
+        # from_date = '%s-09-01 00:00:00' % season_year  # todo restore this
+        from_date = '2021-09-01 00:00:00'  # todo REMOVE THIS!!
 
         # Limit up date parameter:
-        limit_up_date = context.get('limit_up_date', False) # limit for invent.
+        limit_up_date = context.get('limit_up_date', False)  # limit for invent
         if limit_up_date:
             to_date = limit_up_date
             _logger.warning('Limite date: %s' % limit_up_date)
-        else:    
-            to_date = '%s-08-31 23:59:59' % (season_year + 1) 
+        else:
+            to_date = '%s-08-31 23:59:59' % (season_year + 1)
         _logger.warning('>>> START INVENTORY [%s - %s] <<<' % (
             from_date, to_date))
-        return from_date, to_date    
+        return from_date, to_date
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
