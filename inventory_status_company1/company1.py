@@ -55,8 +55,8 @@ class ProductProduct(orm.Model):
         else:  # 1 - 8
             season_year = now.year - 1
 
-        # from_date = '%s-09-01 00:00:00' % season_year  # todo restore this
-        from_date = '2021-09-01 00:00:00'  # todo REMOVE THIS!!
+        from_date = '%s-09-01 00:00:00' % season_year  # todo restore this
+        # from_date = '2021-09-01 00:00:00'  # todo REMOVE THIS!!
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False)  # limit for invent
@@ -68,5 +68,3 @@ class ProductProduct(orm.Model):
         _logger.warning('>>> START INVENTORY [%s - %s] <<<' % (
             from_date, to_date))
         return from_date, to_date
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
