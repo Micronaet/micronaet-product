@@ -173,9 +173,11 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             # -----------------------------------------------------------------
             if invoice.type == 'out_invoice':
                 sign = +1.0
+                mode = 'FT'
                 color_format = format_db['white']
             else:
                 sign = -1.0
+                mode = 'NC'
                 color_format = format_db['red']
             if not duty_code:
                 color_format = format_db['grey']
@@ -186,7 +188,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             # -----------------------------------------------------------------
             # Subtotal data (next sheet):
             # -----------------------------------------------------------------
-            if duty_code and sign > 0:  # With code and only FT
+            if duty_code and mode == 'FT':
                 key = (partner, duty_code)
                 if key not in subtotal:
                     subtotal[key] = {
@@ -202,7 +204,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             # Data:
             # -----------------------------------------------------------------
             line = [
-                'FT' if sign > 0 else 'NC',
+                mode,
                 invoice.date_invoice,
                 invoice.number,
                 partner.name,
