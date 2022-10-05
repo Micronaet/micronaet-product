@@ -150,6 +150,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             else:
                 sign = -1.0
 
+            quantity = sign * line.quantity
             line = [
                 'FT' if sign > 0 else 'NC',
                 invoice.date_invoice,
@@ -161,8 +162,8 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
                 product.default_code or '',
                 line.name or '',
                 product.duty_id.code or '',
-                (sign * extra_data.weight_net, f_number),
-                (sign * line.quantity, f_number),
+                (quantity * extra_data.weight_net, f_number),
+                (quantity, f_number),
                 (sign * line.price_subtotal, f_number),
             ]
             excel_pool.write_xls_line(
