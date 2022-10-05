@@ -85,6 +85,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
         ws_name = 'Dettaglio'
         header = [
             # Header:
+            'Tipo',
             'Data',
             'Fattura',
             'Cliente',
@@ -102,7 +103,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             'Importo',
             ]
         width = [
-            15, 15, 40, 15, 25,
+            5, 15, 15, 40, 15, 25,
             25, 40, 15, 15, 10, 10,
         ]
 
@@ -144,8 +145,13 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             invoice = line.invoice_id
             partner = invoice.partner_id
             extra_data = product.extra_data_id
+            if invoice.type == 'out_invoice':
+                sign = +1.0
+            else:
+                sign = -1.0
 
             line = [
+                'FT' if sign > 0 else 'NC',
                 invoice.date_invoice,
                 invoice.number,
                 partner.name,
@@ -155,9 +161,9 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
                 product.default_code or '',
                 line.name or '',
                 product.duty_id.code or '',
-                (extra_data.weight_net, f_number),
-                (line.quantity, f_number),
-                (line.price_subtotal, f_number),
+                (sign * extra_data.weight_net, f_number),
+                (sign * line.quantity, f_number),
+                (sign * line.price_subtotal, f_number),
             ]
             excel_pool.write_xls_line(
                 ws_name, row, line, default_format=f_text)
