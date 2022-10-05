@@ -132,7 +132,14 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             ws_name, row, header, default_format=f_header)
 
         row += 1
-        for line in sorted(lines, key=lambda x: x.product_id.default_code):
+        for line in sorted(
+                lines,
+                key=lambda x: (
+                    x.invoice_id.partner_id.name,
+                    x.invoice_id.date_invoice,
+                    x.product_id.duty_id.code,
+                    x.product_id.default_code,
+                    )):
             product = line.product_id
             invoice = line.invoice_id
             partner = invoice.partner_id
