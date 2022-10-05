@@ -66,7 +66,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             ('invoice_id.date_invoice', '<=', to_date),
             ('invoice_id.fiscal_position', '=', fiscal_position_id),
         ]
-        filter_name = 'Movimenti periodo [%s-%s] posizione fiscale: %s ' % (
+        filter_name = 'Movimenti periodo [%s : %s] posizione fiscale: %s ' % (
             from_date, to_date, wizard.fiscal_position_id.name)
 
         line_ids = line_pool.search(cr, uid, domain, context=context)
@@ -82,22 +82,27 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
         # ---------------------------------------------------------------------
         # Start Excel file:
         # ---------------------------------------------------------------------
-        ws_name = 'EAN'
+        ws_name = 'Dettaglio'
         header = [
+            # Header:
             'Data',
             'Fattura',
             'Cliente',
+            'P. IVA',
             'Posizione fiscale',
 
+            # Detail:
             'Codice',
             'Prodotto',
             'Codice doganale',
+
+            # Total:
             'Peso netto',
             'Q.',
             'Importo',
             ]
         width = [
-            20, 15, 40, 25,
+            15, 15, 40, 15, 25,
             25, 40, 15, 15, 10, 10,
         ]
 
@@ -130,13 +135,15 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
         for line in sorted(lines, key=lambda x: x.product_id.default_code):
             product = line.product_id
             invoice = line.invoice_id
+            partner = invoice.partner_id
             extra_data = product.extra_data_id
 
             line = [
                 invoice.date_invoice,
                 invoice.number,
-                invoice.partner_id.name,
-                invoice.fiscal_position.name,
+                partner.name,
+                partner.vat or '',
+                invoice.fiscal_position.name or '',
 
                 product.default_code or '',
                 product.name,
