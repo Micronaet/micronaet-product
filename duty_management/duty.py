@@ -43,7 +43,7 @@ class ProductProductDutyExtraData(orm.Model):
         ], context=context)
 
         for rule in self.browse(cr, uid, rule_ids, context=context):
-            rule_id = role.id
+            rule_id = rule.id
             mask = rule.mask
             cr.execute('''
                 SELECT id FROM product_product 
