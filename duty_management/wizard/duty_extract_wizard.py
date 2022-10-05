@@ -62,8 +62,8 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
 
         # Generate domain:
         domain = [
-            ('invoice_id.date_invoice', '>=', 'from_date'),
-            ('invoice_id.date_invoice', '<=', 'to_date'),
+            ('invoice_id.date_invoice', '>=', from_date),
+            ('invoice_id.date_invoice', '<=', to_date),
             ('invoice_id.fiscal_position', '=', fiscal_position_id),
         ]
         filter_name = 'Movimenti periodo [%s-%s] posizione fiscale: %s ' % (
@@ -127,7 +127,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             ws_name, row, header, default_format=f_header)
 
         row += 1
-        for line in sorted(lines, key=lambda x: x.default_code):
+        for line in sorted(lines, key=lambda x: x.product_id.default_code):
             product = line.product_id
             invoice = line.invoice_id
             extra_data = product.extra_data_id
@@ -151,7 +151,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
         return excel_pool.return_attachment(cr, uid, 'Intrastat')
 
     _columns = {
-        'partner_id': fields.many2one(
+        'fiscal_position_id': fields.many2one(
             'account.fiscal.position', 'Posizione fiscale', required=True),
         'from_date': fields.date('From date >='),
         'to_date': fields.date('To date <='),
