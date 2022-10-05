@@ -9,6 +9,7 @@
                     <field name="unused"/>
 
                     <field name="mask"/>
+                    <button name="current_masked" type="object" string="Prodotti con questa maschera" icon="gtk-index"/>
                     <field name="name"/>
                     <field name="price"/>
 
@@ -36,7 +37,6 @@
                     <field name="pallet_height"/>
 
                     <button name="current_linked" type="object" string="Collegati" icon="gtk-connect"/>
-                    <button name="current_masked" type="object" string="Prodotti con questa maschera" icon="gtk-index"/>
                     <button name="linked_all" type="object" string="Collega tutti" confirm="Associo a tutti i prodotti la corretta regola per i dati extra?" icon="gtk-refresh"/>
                 </tree>
             </field>
