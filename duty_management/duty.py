@@ -50,6 +50,7 @@ class ProductProductDutyExtraData(orm.Model):
             'Maschera codice', size=20,
             help='Maschera per abbinare il dato ai prodotti'),
         'name': fields.char('Name', size=50),
+        'price': fields.float('Prezzo', digits=(10, 2)),
 
         'width': fields.float('W', digits=(10, 2)),
         'length_from': fields.float('L (da)', digits=(10, 2)),
