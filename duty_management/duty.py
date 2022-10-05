@@ -73,7 +73,12 @@ class ProductProductDutyExtraData(orm.Model):
             ''' % mask)
         product_ids = [p[0] for p in cr.fetchall()]
 
-        # model_pool = self.pool.get('ir.model.data')
+        if not product_ids:
+            raise osv.except_osv(
+                _('Attenzione'),
+                _('Non trovati prodotti con questa maschera'),
+            )
+            # model_pool = self.pool.get('ir.model.data')
         # view_id = model_pool.get_object_reference(
         # 'module_name', 'view_name')[1]
 
