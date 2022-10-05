@@ -43,7 +43,65 @@ class ProductProductDutyExtraData(orm.Model):
     """
     _name = 'product.product.duty.extra.data'
     _description = 'Product Extra data'
-    _order = 'name, mask'
+    _order = 'mask'
+
+    def linked_all(self, cr, uid, ids, context=None):
+        """ Current record linked
+        """
+        return True
+
+    def current_linked(self, cr, uid, ids, context=None):
+        """ Current record linked
+        """
+        product_pool = self.pool.get('product.product')
+        product_ids = product_pool.search(cr, uid, [
+            ('extra_data_id', '=', ids[0]),
+            ], context=context)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Prodotti abbinati'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            # 'res_id': 1,
+            'res_model': 'product.product',
+            'view_id': False
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', product_ids)],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }
+
+    def current_masked(self, cr, uid, ids, context=None):
+        """ Current record masked with this selection
+        """
+        extra_data = self.browse(cr, uid, ids, context=context)[0]
+        mask = extra_data.mask
+
+        cr.execute(
+            'SELECT id FROM product_product WHERE default_code ilike %s' % \
+            mask)
+        product_ids = [p[0] for p in cr.fetchall()]
+
+        # model_pool = self.pool.get('ir.model.data')
+        # view_id = model_pool.get_object_reference(
+        # 'module_name', 'view_name')[1]
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Prodotti con maschera'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            # 'res_id': 1,
+            'res_model': 'product.product',
+            'view_id': False
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', product_ids)],
+            'context': context,
+            'target': 'current',
+            'nodestroy': False,
+            }
 
     _columns = {
         'mask': fields.char(
@@ -76,6 +134,18 @@ class ProductProductDutyExtraData(orm.Model):
         'pallet_width': fields.float('W (pallet)', digits=(10, 2)),
         'pallet_height': fields.float('H (pallet)', digits=(10, 2)),
     }
+
+
+class ProductProduct(orm.Model):
+    """ Duty extra data
+    """
+    _inherit = 'product.product'
+
+    _columns = {
+        'extra_data_id': fields.Many2one(
+            comodel_name='product.product.duty.extra.data',
+            string='Extra data')
+        }
 
 
 class AccountFiscalPosition(orm.Model):
@@ -219,4 +289,3 @@ class ProductProductExtra(orm.Model):
         #    type='float', string='Dazi (EUR)', digits=(16, 2), store=False,
         #    multi="total_cost"),
         }
-
