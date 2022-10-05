@@ -251,7 +251,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             ws_name, row, header, default_format=format_db['header'])
         excel_pool.autofilter(ws_name, row, 0, row, len(header) - 1)
 
-        for key in subtotal:
+        for key in sorted(subtotal, key=lambda k: (k[0].name, k[1])):
             row += 1
             partner, duty_code = key
             data = subtotal[key]
