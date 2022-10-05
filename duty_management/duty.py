@@ -43,6 +43,7 @@ class ProductProductDutyExtraData(orm.Model):
         ], context=context)
 
         for rule in self.browse(cr, uid, rule_ids, context=context):
+            rule_id = role.id
             mask = rule.mask
             cr.execute('''
                 SELECT id FROM product_product 
@@ -56,11 +57,14 @@ class ProductProductDutyExtraData(orm.Model):
                     mask,
                 ))
                 product_pool.write(cr, uid, product_ids, {
-                    'extra_data_id': rule.id,
+                    'extra_data_id': rule_id,
                 }, context=context)
             else:
                 _logger.info('Not found product with mask: %s' % mask)
-                continue
+            # Update totals:
+            self.write(cr, uid, [rule_id], {
+                'total': total,
+            }, context)
         return True
 
     def current_linked(self, cr, uid, ids, context=None):
