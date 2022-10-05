@@ -67,9 +67,10 @@ class ProductProductDutyExtraData(orm.Model):
         extra_data = self.browse(cr, uid, ids, context=context)[0]
         mask = extra_data.mask
 
-        cr.execute(
-            'SELECT id FROM product_product WHERE default_code ilike %s' % \
-            mask)
+        cr.execute('''
+            SELECT id FROM product_product 
+            WHERE default_code ilike '%s';
+            ''' % mask)
         product_ids = [p[0] for p in cr.fetchall()]
 
         # model_pool = self.pool.get('ir.model.data')
@@ -131,8 +132,7 @@ class ProductProduct(orm.Model):
 
     _columns = {
         'extra_data_id': fields.many2one(
-            comodel_name='product.product.duty.extra.data',
-            string='Extra data')
+            'product.product.duty.extra.data', 'Extra data')
         }
 
 
