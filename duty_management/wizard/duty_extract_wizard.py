@@ -182,7 +182,9 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             if not duty_code:
                 color_format = format_db['grey']
             quantity = sign * line.quantity
-            weight = quantity * extra_data.weight_net  # quantity has yet sign
+            # quantity has yet sign
+            weight = quantity * (
+                     extra_data.weight_net or product.weight_net)
             total = sign * line.price_subtotal
 
             # -----------------------------------------------------------------
