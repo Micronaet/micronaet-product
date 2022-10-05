@@ -5,7 +5,7 @@
             <field name="name">Product Extra data</field>
             <field name="model">product.product.duty.extra.data</field>
             <field name="arch" type="xml">
-                <tree string="Dati extra prodotto" editable="bottom" colors="grey: total == 0; red:unused==True">
+                <tree string="Dati extra prodotto" editable="bottom" colors="red:unused==True; grey: total == 0">
                     <field name="unused"/>
 
                     <field name="mask"/>
