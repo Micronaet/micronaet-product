@@ -36,6 +36,29 @@ class ProductProductDutyExtraData(orm.Model):
     def linked_all(self, cr, uid, ids, context=None):
         """ Current record linked
         """
+        product_pool = self.pool.get('product.product')
+
+        rule_ids = self.search(cr, uid, [
+            ('unused', '=', False),
+        ], context=context)
+
+        for rule in self.browse(cr, uid, rule_ids, context=context):
+            mask = rule.mask
+            cr.execute('''
+                SELECT id FROM product_product 
+                WHERE default_code ilike '%s';
+                ''' % mask)
+            product_ids = [p[0] for p in cr.fetchall()]
+            if not product_ids:
+                _logger.info('Not found product with mask: %s' % mask)
+                continue
+            _logger.info('Updating %s product with rule: %s' % (
+                len(product_ids),
+                mask,
+            ))
+            product_pool.write(cr, uid, product_ids, {
+                'extra_data_id': rule.id,
+            }, context=context)
         return True
 
     def current_linked(self, cr, uid, ids, context=None):
@@ -45,6 +68,12 @@ class ProductProductDutyExtraData(orm.Model):
         product_ids = product_pool.search(cr, uid, [
             ('extra_data_id', '=', ids[0]),
             ], context=context)
+
+        if not product_ids:
+            raise osv.except_osv(
+                _('Attenzione'),
+                _('Non trovati prodotti abbinati a questa regola'),
+            )
 
         return {
             'type': 'ir.actions.act_window',
@@ -78,7 +107,7 @@ class ProductProductDutyExtraData(orm.Model):
                 _('Attenzione'),
                 _('Non trovati prodotti con questa maschera'),
             )
-            # model_pool = self.pool.get('ir.model.data')
+        # model_pool = self.pool.get('ir.model.data')
         # view_id = model_pool.get_object_reference(
         # 'module_name', 'view_name')[1]
 
