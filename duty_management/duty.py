@@ -98,6 +98,7 @@ class ProductProductDutyExtraData(orm.Model):
             help='Maschera per abbinare il dato ai prodotti'),
         'name': fields.char('Name', size=50, required=True),
         'price': fields.float('Prezzo', digits=(10, 2), required=True),
+        'unused': fields.boolean('Non usare'),
 
         'width': fields.float('W', digits=(10, 2)),
         'length_from': fields.float('L (da)', digits=(10, 2)),

@@ -5,7 +5,9 @@
             <field name="name">Product Extra data</field>
             <field name="model">product.product.duty.extra.data</field>
             <field name="arch" type="xml">
-                <tree string="Dati extra prodotto" editable="bottom">
+                <tree string="Dati extra prodotto" editable="bottom" colors="red:unused==True">
+                    <field name="unused"/>
+
                     <field name="mask"/>
                     <field name="name"/>
                     <field name="price"/>
@@ -55,7 +57,8 @@
                             <field name="mask"/>
                             <field name="name"/>
                             <field name="price"/>
-                            <newline/>
+                            <field name="unused"/>
+
 
                             <field name="width"/>
                             <newline/>
