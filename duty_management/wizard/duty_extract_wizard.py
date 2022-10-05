@@ -168,7 +168,6 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             extra_data = product.extra_data_id
 
             duty_code = product.duty_id.code or ''
-            quantity = sign * line.quantity
 
             # -----------------------------------------------------------------
             # Color setup:
@@ -181,6 +180,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
                 color_format = format_db['red']
             if not duty_code:
                 color_format = format_db['grey']
+            quantity = sign * line.quantity
 
             # -----------------------------------------------------------------
             # Data:
