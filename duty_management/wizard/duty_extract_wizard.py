@@ -116,6 +116,26 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
         # Generate format used:
         # ---------------------------------------------------------------------
         excel_pool.set_format()
+        format_db = {
+            'title': excel_pool.get_format(key='title'),
+            'header': excel_pool.get_format(key='header'),
+            'white': {
+                'text': excel_pool.get_format(key='text'),
+                'number': excel_pool.get_format(key='number'),
+                },
+            'red': {
+                'text': excel_pool.get_format(key='bg_red'),
+                'number': excel_pool.get_format(key='bg_red_number'),
+                },
+            'green': {
+                'text': excel_pool.get_format(key='bg_green'),
+                'number': excel_pool.get_format(key='bg_green_number'),
+                },
+            'grey': {
+                'text': excel_pool.get_format(key='bg_grey'),
+                'number': excel_pool.get_format(key='bg_grey_number'),
+                },
+            }
         f_title = excel_pool.get_format(key='title')
         f_header = excel_pool.get_format(key='header')
         f_text = excel_pool.get_format(key='text')
@@ -133,6 +153,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             ws_name, row, header, default_format=f_header)
 
         row += 1
+        subtotal = {}
         for line in sorted(
                 lines,
                 key=lambda x: (
@@ -147,12 +168,14 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             extra_data = product.extra_data_id
             if invoice.type == 'out_invoice':
                 sign = +1.0
+                color_format = format_db['white']
             else:
                 sign = -1.0
+                color_format = format_db['red']
 
             quantity = sign * line.quantity
             line = [
-                'FT' if sign > 0 else 'NC',
+                ('FT' if sign > 0 else 'NC', color_format['text']),
                 invoice.date_invoice,
                 invoice.number,
                 partner.name,
@@ -162,12 +185,12 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
                 product.default_code or '',
                 line.name or '',
                 product.duty_id.code or '',
-                (quantity * extra_data.weight_net, f_number),
-                (quantity, f_number),
-                (sign * line.price_subtotal, f_number),
+                (quantity * extra_data.weight_net, color_format['number']),
+                (quantity, color_format['number']),
+                (sign * line.price_subtotal, color_format['number']),
             ]
             excel_pool.write_xls_line(
-                ws_name, row, line, default_format=f_text)
+                ws_name, row, line, default_format=format_db['white']['text'])
             row += 1
         return excel_pool.return_attachment(cr, uid, 'Intrastat')
 
