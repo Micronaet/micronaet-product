@@ -257,16 +257,23 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             row += 1
             partner, duty_code = key
             data = subtotal[key]
+
+            # Color setup:
+            if not all(data.values()):
+                color_format = format_db['red']
+            else:
+                color_format = format_db['white']
+
             excel_pool.write_xls_line(
                 ws_name, row, [
                     partner.name,
                     partner.vat,
 
                     duty_code,
-                    (data['weight'], format_db['white']['number']),
-                    (data['quantity'], format_db['white']['number']),
-                    (data['total'], format_db['white']['number']),
-                ], default_format=format_db['white']['text'])
+                    (data['weight'], color_format['number']),
+                    (data['quantity'], color_format['number']),
+                    (data['total'], color_format['number']),
+                ], default_format=color_format['text'])
 
         return excel_pool.return_attachment(cr, uid, 'Intrastat')
 
