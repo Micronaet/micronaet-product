@@ -80,7 +80,9 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             #     product_db.append(product)
 
         # ---------------------------------------------------------------------
-        # Start Excel file:
+        #                         Start Excel file:
+        # ---------------------------------------------------------------------
+        # Page: Detail:
         # ---------------------------------------------------------------------
         ws_name = 'Dettaglio'
         header = [
@@ -136,21 +138,18 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
                 'number': excel_pool.get_format(key='bg_grey_number'),
                 },
             }
-        f_title = excel_pool.get_format(key='title')
-        f_header = excel_pool.get_format(key='header')
-        f_text = excel_pool.get_format(key='text')
-        f_number = excel_pool.get_format(key='number')
 
         # ---------------------------------------------------------------------
         # Write title / header
         # ---------------------------------------------------------------------
         row = 0
         excel_pool.write_xls_line(
-            ws_name, row, [title], default_format=f_title)
+            ws_name, row, [title], default_format=format_db['title'])
 
         row += 1
         excel_pool.write_xls_line(
-            ws_name, row, header, default_format=f_header)
+            ws_name, row, header, default_format=format_db['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, len(header))
 
         row += 1
         subtotal = {}
@@ -181,6 +180,23 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             if not duty_code:
                 color_format = format_db['grey']
             quantity = sign * line.quantity
+            weight = quantity * extra_data.weight_net
+            total = sign * line.price_subtotal
+
+            # -----------------------------------------------------------------
+            # Subtotal data (next sheet):
+            # -----------------------------------------------------------------
+            if duty_code:
+                key = (partner, duty_code)
+                if key not in subtotal:
+                    subtotal[key] = {
+                        'quantity': 0.0,
+                        'weight': 0.0,
+                        'total': 0.0,
+                    }
+                subtotal[key]['quantity'] += quantity
+                subtotal[key]['weight'] += weight
+                subtotal[key]['total'] += total
 
             # -----------------------------------------------------------------
             # Data:
@@ -196,13 +212,61 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
                 product.default_code or '',
                 line.name or '',
                 duty_code,
-                (quantity * extra_data.weight_net, color_format['number']),
+                (weight, color_format['number']),
                 (quantity, color_format['number']),
-                (sign * line.price_subtotal, color_format['number']),
+                (total, color_format['number']),
             ]
             excel_pool.write_xls_line(
                 ws_name, row, line, default_format= color_format['text'])
             row += 1
+
+        # ---------------------------------------------------------------------
+        # Page: Summary
+        # ---------------------------------------------------------------------
+        ws_name = 'Riepilogo'
+        header = [
+            # Header:
+            'Cliente',
+            'P. IVA',
+
+            # Detail:
+            'Codice doganale',
+            'Peso netto',
+            'Q.',
+            'Importo',
+            ]
+        width = [
+            40, 15,
+            15, 15, 10, 10,
+        ]
+
+        excel_pool.create_worksheet(name=ws_name)
+        excel_pool.column_width(ws_name, width)
+
+        # ---------------------------------------------------------------------
+        # Write title / header
+        # ---------------------------------------------------------------------
+        row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=format_db['header'])
+        excel_pool.autofilter(ws_name, row, 0, row, len(header))
+
+        row += 1
+        for key in subtotal:
+            row += 1
+            partner, duty_code = key
+            data = subtotal[key]
+            excel_pool.write_xls_line(
+                ws_name, row, [
+                    partner.name,
+                    partner.vat,
+
+                    duty_code,
+                    (data['weight'], format_db['white']['number']),
+                    (data['quantity'], format_db['white']['number']),
+                    (data['total'], format_db['white']['number']),
+                ], default_format=format_db['white']['text'])
+
         return excel_pool.return_attachment(cr, uid, 'Intrastat')
 
     _columns = {
