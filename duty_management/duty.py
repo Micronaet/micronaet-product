@@ -49,16 +49,18 @@ class ProductProductDutyExtraData(orm.Model):
                 WHERE default_code ilike '%s';
                 ''' % mask)
             product_ids = [p[0] for p in cr.fetchall()]
-            if not product_ids:
+            total = len(product_ids)
+            if product_ids:
+                _logger.info('Updating %s product with rule: %s' % (
+                    total,
+                    mask,
+                ))
+                product_pool.write(cr, uid, product_ids, {
+                    'extra_data_id': rule.id,
+                }, context=context)
+            else:
                 _logger.info('Not found product with mask: %s' % mask)
                 continue
-            _logger.info('Updating %s product with rule: %s' % (
-                len(product_ids),
-                mask,
-            ))
-            product_pool.write(cr, uid, product_ids, {
-                'extra_data_id': rule.id,
-            }, context=context)
         return True
 
     def current_linked(self, cr, uid, ids, context=None):
@@ -133,6 +135,7 @@ class ProductProductDutyExtraData(orm.Model):
         'name': fields.char('Name', size=50, required=True),
         'price': fields.float('Prezzo', digits=(10, 2), required=True),
         'unused': fields.boolean('Non usare'),
+        'total': fields.integer('Totale', help='Totale di prodotti trovati'),
 
         'width': fields.float('W', digits=(10, 2)),
         'length_from': fields.float('L (da)', digits=(10, 2)),
