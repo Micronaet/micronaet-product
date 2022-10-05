@@ -17,5 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
+
 from . import duty
 from . import purchase_duty
+from . import wizard

@@ -39,6 +39,8 @@
         'security/ir.model.access.csv',
         'duty_view.xml',
         'product_extra_data.xml',
+
+        'wizard/duty_extract_wizard_view.xml',
         ],
     'active': False,
     'installable': True,

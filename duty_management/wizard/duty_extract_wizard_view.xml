@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <!-- account.duty.invoice.extract.wizard -->
+       <record id="account_duty_invoice_extract_wizard_view" model="ir.ui.view">
+            <field name="name">Intrastat report</field>
+            <field name="model">account.duty.invoice.extract.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Wizard Intrastat" version="7.0">
+                   <header>
+                       <button string="Cancel" special="cancel" />
+                       <button name="action_print" string="Stampa" type="object" icon="gtk-print" class="oe_highlight" />
+                   </header>
+                   <group colspan="4" col="4">
+                        <field name="fiscal_position_id" />
+                        <newline/>
+                        <field name="from_date" />
+                        <field name="to_date" />
+                   </group>
+                </form>
+            </field>
+      </record>
+
+      <record model="ir.actions.act_window" id="action_account_duty_invoice_extract_wizard_view">
+          <field name="name">Report Intrastat</field>
+          <field name="res_model">account.duty.invoice.extract.wizard</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">form</field>
+          <field name="target">new</field>
+          <field name="view_id" ref="account_duty_invoice_extract_wizard_view"/>
+      </record>
+      <menuitem
+          parent="account.menu_finance_receivables"
+          id="menu_account_duty_invoice_extract_wizard_view"
+          action="action_account_duty_invoice_extract_wizard_view"
+          sequence="30"
+          />
+    </data>
+</openerp>
