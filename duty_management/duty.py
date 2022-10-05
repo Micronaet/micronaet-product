@@ -47,10 +47,10 @@ class ProductProductDutyExtraData(orm.Model):
 
     _columns = {
         'mask': fields.char(
-            'Maschera codice', size=20,
+            'Maschera codice', size=20, required=True,
             help='Maschera per abbinare il dato ai prodotti'),
-        'name': fields.char('Name', size=50),
-        'price': fields.float('Prezzo', digits=(10, 2)),
+        'name': fields.char('Name', size=50, required=True),
+        'price': fields.float('Prezzo', digits=(10, 2), required=True),
 
         'width': fields.float('W', digits=(10, 2)),
         'length_from': fields.float('L (da)', digits=(10, 2)),
