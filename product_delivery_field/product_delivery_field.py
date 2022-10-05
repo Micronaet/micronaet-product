@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution    
+#    OpenERP, Open Source Management Solution
 #    Copyright (C) 2010 Micronaet srl (<http://www.micronaet.it>) and the
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -32,14 +32,15 @@ from openerp import SUPERUSER_ID, api
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
+
 class ProductProduct(osv.osv):
-    ''' Add extra field in product
-    '''
+    """ Add extra field in product
+    """
     _inherit = 'product.product'
 
     _columns = {
@@ -47,5 +48,3 @@ class ProductProduct(osv.osv):
         'diameter': fields.float('Diameter'),
         'pz_x_container': fields.float('Pieces per container'),
     }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

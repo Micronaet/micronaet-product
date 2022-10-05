@@ -38,6 +38,7 @@
     'data': [
         'security/ir.model.access.csv',
         'duty_view.xml',
+        'product_extra_data.xml',
         ],
     'active': False,
     'installable': True,

@@ -356,5 +356,3 @@ class ProductProduct(orm.Model):
         'structure_error': fields.text(
             'Structure error', readonly=True),
         }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

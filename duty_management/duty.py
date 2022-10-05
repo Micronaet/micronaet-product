@@ -38,8 +38,47 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 _logger = logging.getLogger(__name__)
 
 
+class ProductProductDutyExtraData(orm.Model):
+    """ Duty extra data
+    """
+    _name = 'product.product.duty.extra.data'
+    _description = 'Product Extra data'
+    _order = 'name, mask'
+
+    _columns = {
+        'mask': fields.char(
+            'Maschera codice', size=20,
+            help='Maschera per abbinare il dato ai prodotti'),
+        'name': fields.char('Name', size=50),
+
+        'width': fields.float('W', digits=(10, 2)),
+        'length_from': fields.float('L (da)', digits=(10, 2)),
+        'length_to': fields.float('L (a)', digits=(10, 2)),
+        'height_from': fields.float('H (da)', digits=(10, 2)),
+        'height_to': fields.float('H (a)', digits=(10, 2)),
+
+        'seat': fields.float('Seduta', digits=(10, 2)),
+        'harm': fields.float('Bracciolo', digits=(10, 2)),
+        'pipe_diameter': fields.float('Diam. tubo', digits=(10, 2)),
+
+        'box_length': fields.float('L (scatola)', digits=(10, 2)),
+        'box_width': fields.float('W (scatola)', digits=(10, 2)),
+        'box_height': fields.float('H (scatola)', digits=(10, 2)),
+
+        'weight_net': fields.float('Peso netto', digits=(10, 2)),
+        'weight': fields.float('Peso lordo', digits=(10, 2)),
+
+        'pallet_piece': fields.integer('Pz (pallet)'),
+        'track_piece': fields.integer('Pz (camion)'),
+
+        'pallet_length': fields.float('L (pallet)', digits=(10, 2)),
+        'pallet_width': fields.float('W (pallet)', digits=(10, 2)),
+        'pallet_height': fields.float('H (pallet)', digits=(10, 2)),
+    }
+
+
 class AccountFiscalPosition(orm.Model):
-    """Cost for country to import in Italy
+    """ Cost for country to import in Italy
     """
     _inherit = 'account.fiscal.position'
 
