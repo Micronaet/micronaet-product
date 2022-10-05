@@ -84,7 +84,10 @@
             <field name="domain">[]</field>
         </record>
 
-        <menuitem id="menu_view_product_product_duty_extra_data" parent="base.menu_base_config" action="action_view_product_product_duty_extra_data" sequence="90"/>
+        <menuitem id="menu_view_product_product_duty_extra_data_list"
+                  parent="product.menu_products"
+                  action="action_view_product_product_duty_extra_data" sequence="90"/>
+        <!--base.menu_base_config-->
 
     </data>
 </openerp>
