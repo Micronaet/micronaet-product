@@ -60,7 +60,7 @@ class ProductProductDutyExtraData(orm.Model):
 
         'seat': fields.float('Seduta', digits=(10, 2)),
         'harm': fields.float('Bracciolo', digits=(10, 2)),
-        'pipe_diameter': fields.float('Diam. tubo', digits=(10, 2)),
+        'pipe_diameter': fields.char('Diam. tubo', size=30),
 
         'box_length': fields.float('L (scatola)', digits=(10, 2)),
         'box_width': fields.float('W (scatola)', digits=(10, 2)),
