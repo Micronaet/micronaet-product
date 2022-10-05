@@ -166,14 +166,25 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             invoice = line.invoice_id
             partner = invoice.partner_id
             extra_data = product.extra_data_id
+
+            duty_code = product.duty_id.code or ''
+            quantity = sign * line.quantity
+
+            # -----------------------------------------------------------------
+            # Color setup:
+            # -----------------------------------------------------------------
             if invoice.type == 'out_invoice':
                 sign = +1.0
                 color_format = format_db['white']
             else:
                 sign = -1.0
                 color_format = format_db['red']
+            if not duty_code:
+                color_format = format_db['grey']
 
-            quantity = sign * line.quantity
+            # -----------------------------------------------------------------
+            # Data:
+            # -----------------------------------------------------------------
             line = [
                 'FT' if sign > 0 else 'NC',
                 invoice.date_invoice,
@@ -184,7 +195,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
 
                 product.default_code or '',
                 line.name or '',
-                product.duty_id.code or '',
+                duty_code,
                 (quantity * extra_data.weight_net, color_format['number']),
                 (quantity, color_format['number']),
                 (sign * line.price_subtotal, color_format['number']),
