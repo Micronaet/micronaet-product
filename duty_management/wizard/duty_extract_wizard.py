@@ -140,7 +140,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
 
                 product.default_code or '',
                 product.name,
-                product.duty_id.name or '',
+                product.duty_id.code or '',
                 (extra_data.weight_net, f_number),
                 (line.quantity, f_number),
                 (line.price_subtotal, f_number),
