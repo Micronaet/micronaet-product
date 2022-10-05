@@ -180,13 +180,13 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             if not duty_code:
                 color_format = format_db['grey']
             quantity = sign * line.quantity
-            weight = quantity * extra_data.weight_net
+            weight = quantity * extra_data.weight_net  # quantity has yet sign
             total = sign * line.price_subtotal
 
             # -----------------------------------------------------------------
             # Subtotal data (next sheet):
             # -----------------------------------------------------------------
-            if duty_code and sign > 0:
+            if duty_code and sign > 0:  # With code and only FT
                 key = (partner, duty_code)
                 if key not in subtotal:
                     subtotal[key] = {
