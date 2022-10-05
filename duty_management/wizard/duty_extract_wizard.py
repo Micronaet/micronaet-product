@@ -106,7 +106,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             ]
         width = [
             5, 15, 15, 40, 15, 25,
-            25, 40, 15, 15, 10, 10,
+            20, 50, 15, 15, 10, 10,
         ]
 
         excel_pool.create_worksheet(name=ws_name)
