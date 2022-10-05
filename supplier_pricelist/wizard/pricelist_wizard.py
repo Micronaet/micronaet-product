@@ -43,16 +43,16 @@ _logger = logging.getLogger(__name__)
 
 
 class ProductProductExtractWizard(orm.TransientModel):
-    ''' Product product extract wizard
-    '''
+    """ Product product extract wizard
+    """
     _name = 'product.product.extract.wizard'
 
     # --------------------
     # Wizard button event:
     # --------------------
     def action_export(self, cr, uid, ids, context=None):
-        ''' Event for button done
-        '''
+        """ Event for button done
+        """
         if context is None:
             context = {}
 
@@ -183,5 +183,3 @@ class ProductProductExtractWizard(orm.TransientModel):
         'from_date': fields.date('From date'),
         'to_date': fields.date('To date'),
         }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
