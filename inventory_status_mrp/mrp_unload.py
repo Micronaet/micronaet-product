@@ -31,52 +31,53 @@ from openerp import SUPERUSER_ID, api
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
 _logger = logging.getLogger(__name__)
 
+
 class MrpProduction(orm.Model):
     """ Model name: MRP PRoduction
     """
-    
+
     _inherit = 'mrp.production'
-    
-    def schedule_unload_mrp_material(self, cr, uid, from_date=False, 
+
+    def schedule_unload_mrp_material(self, cr, uid, from_date=False,
             context=None):
-        ''' Update product field with unloaded elements
-        '''
+        """ Update product field with unloaded elements
+        """
         # ---------------------------------------------------------------------
         # Utility function:
         # ---------------------------------------------------------------------
         def write_xls_log(log):
-            ''' Write log in WS updating counter
-            '''
+            """ Write log in WS updating counter
+            """
             col = 0
             for item in log:
                 self.WS.write(self.counter, col, item)
                 col += 1
             self.counter += 1
             return
-            
+
         if not from_date:
             _logger.error('Pass from date to the procedure!!!')
             return False
-        _logger.info('Start inventory MRP used from %s' % from_date)    
+        _logger.info('Start inventory MRP used from %s' % from_date)
         # ---------------------------------------------------------------------
-        # XLS log export:        
+        # XLS log export:
         # ---------------------------------------------------------------------
         filename = '/home/administrator/photo/log/mrp_unload.xlsx'
         WB = xlsxwriter.Workbook(filename)
 
-        self.WS = WB.add_worksheet('Unload') # Work Sheet:        
-        self.counter = 0 # Row counters:
+        self.WS = WB.add_worksheet('Unload')  # Work Sheet:
+        self.counter = 0  # Row counters:
         # Write header
         write_xls_log([
-            'MRP', 
+            'MRP',
             'Date',
             'Order',
             'Product',
@@ -85,39 +86,39 @@ class MrpProduction(orm.Model):
             'Component',
             'Maked',
             'State',
-            ])        
-        
+            ])
+
         # After inventory date:
-        # TODO TODO get_range_inventory_date(self, cr, uid, context=None)
-        
-        mrp_ids = self.search(cr, uid, [        
+        # todo get_range_inventory_date(self, cr, uid, context=None)
+
+        mrp_ids = self.search(cr, uid, [
             # State filter:
-            #('state', 'not in', ('done', 'cancel')),
-            
+            # ('state', 'not in', ('done', 'cancel')),
+
             # Period filter (only up not down limit)
             ('date_planned', '>=', from_date),
             ], context=context)
-            
-        product_pool = self.pool.get('product.product')   
-        cr.execute('UPDATE product_product set mx_mrp_out=0;')                        
+
+        product_pool = self.pool.get('product.product')
+        cr.execute('UPDATE product_product set mx_mrp_out=0;')
 
         # Generate MRP total componet report with totals:
         unload_db = {}
         for mrp in self.browse(cr, uid, mrp_ids, context=context):
             for sol in mrp.order_line_ids:
                 # Total elements:
-                maked = sol.product_uom_maked_sync_qty                                
-                if not maked: 
+                maked = sol.product_uom_maked_sync_qty
+                if not maked:
                     continue
-                for component in sol.product_id.dynamic_bom_line_ids:                    
+                for component in sol.product_id.dynamic_bom_line_ids:
                     product = component.product_id
-                                            
+
                     cmpt_maked = maked * component.product_qty
-                    if product.id in unload_db: 
+                    if product.id in unload_db:
                         unload_db[product.id] += cmpt_maked
-                    else:    
+                    else:
                         unload_db[product.id] = cmpt_maked
-                    
+
                     write_xls_log([
                         mrp.name, mrp.date_planned, sol.order_id.name,
                         # Product
@@ -126,10 +127,9 @@ class MrpProduction(orm.Model):
                         product.id, product.default_code, cmpt_maked,
                         mrp.state,
                         ])
-                        
-        WB.close()  
+
+        WB.close()
         for product_id, unload in unload_db.iteritems():
             product_pool.write(cr, uid, product_id, {
                 'mx_mrp_out': unload,
-                }, context=context)                
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+                }, context=context)
