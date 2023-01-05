@@ -30,17 +30,17 @@ from openerp import SUPERUSER_ID, api
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
 _logger = logging.getLogger(__name__)
 
 class ProductMultiPackaging(orm.Model):
-    ''' Object for manage multi pack in product
-    '''
+    """ Object for manage multi pack in product
+    """
     _name = 'product.multi.packaging'
     _description = 'Multi packaging'
     _rec_name = 'sequence'
@@ -48,24 +48,24 @@ class ProductMultiPackaging(orm.Model):
 
     # On change event:
     def onchange_ul_multidimension(self, cr, uid, ids, ul, context=None):
-        ''' Load dimension from ul
-        '''
+        """ Load dimension from ul
+        """
         ul_pool = self.pool.get('product.ul')
         res = {}
         if not ul:
-           return 
+           return
         ul_proxy = ul_pool.browse(cr, uid, ul, context=context)
         res['value'] = {
             'length': ul_proxy.length,
             'height': ul_proxy.height,
-            'width': ul_proxy.width,            
+            'width': ul_proxy.width,
             }
-        return res           
-           
+        return res
+
     # Button event:
     def load_from_multipack(self, cr, uid, ids, context=None):
-        ''' Load pack measure from box
-        '''
+        """ Load pack measure from box
+        """
         assert len(ids) == 1, 'Works only with one record a time'
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
         return self.write(cr, uid, ids, {
@@ -73,22 +73,23 @@ class ProductMultiPackaging(orm.Model):
             'height': current_proxy.ul.height,
             'width': current_proxy.ul.width,
             }, context=context)
-    
+
     _columns = {
-        'sequence': fields.integer('Seq.', 
+        'sequence': fields.integer('Seq.',
             help='Sequence order when displaying a list of packaging.'),
         'name': fields.char('Description', size=80),
-        'number': fields.integer('Tot.',
+        'number': fields.integer(
+            'Tot.',
             help='The total number of this package.'),
-        'ul_id': fields.many2one('product.ul', 'Package', 
+        'ul_id': fields.many2one('product.ul', 'Package',
             required=True),
-        #'product_tmpl_id': fields.many2one('product.template', 
+        # 'product_tmpl_id': fields.many2one('product.template',
         #    'Product', select=1, ondelete='cascade'),
-        'product_id': fields.many2one('product.template', 
+        'product_id': fields.many2one('product.template',
             'Product', select=1, ondelete='cascade'),
-        #'ean': fields.char('EAN', size=14, 
+        # 'ean': fields.char('EAN', size=14,
         #    help='The EAN code of the package unit.'),
-        'code': fields.char('Code', 
+        'code': fields.char('Code',
             help='The code of the transport unit.'),
 
         'height': fields.float('Height', help='Height of the pack'),
@@ -98,18 +99,19 @@ class ProductMultiPackaging(orm.Model):
         'weight': fields.float('Weight',
             help='The weight of a full package, pallet or box.'),
         }
-        
+
     _defaults = {
         'number': lambda *x: 1,
-        }    
+        }
+
 
 class ProductTemplate(orm.Model):
-    ''' Add relation fields
-    '''
+    """ Add relation fields
+    """
     _inherit = 'product.template'
-    
+
     _columns = {
-        'has_multipackage': fields.boolean('Has multipackage', 
+        'has_multipackage': fields.boolean('Has multipackage',
             help='If product has multipackage not use pack variant mode'),
         'multi_pack_ids': fields.one2many(
             'product.multi.packaging', 'product_id', 'Multipack',
