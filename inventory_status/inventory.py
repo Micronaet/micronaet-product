@@ -38,6 +38,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+
 class StockMove(orm.Model):
     """ Model name: Stock move ref.
     """
@@ -59,6 +60,17 @@ class StockMove(orm.Model):
             'target': 'new',
             }
 
+    def _get_stock_move_detail(self, cr, uid, ids, fields, args, context=None):
+        """ Fields function for calculate
+        """
+        res = {}
+        for move in self.browse(cr, uid, ids, context=context):
+            try:
+                res[move.id] = move.purchase_line_id.date_planned
+            except:
+                res[move.id] = False
+        return res
+
     _columns = {
         'ddt_id': fields.related(
             'picking_id', 'ddt_id',
@@ -68,7 +80,11 @@ class StockMove(orm.Model):
             'picking_id', 'partner_id',
             type='many2one', relation='res.partner',
             string='Partner', store=False),
-        }
+        'stock_move_detail': fields.function(
+            _get_stock_move_detail, method=True, size=100,
+            type='char', string='Dettaglio'),
+    }
+
 
 class ProductProduct(orm.Model):
     """ Model name: ProductProduct
@@ -426,7 +442,7 @@ class ProductProduct(orm.Model):
         # Create empty dict:
         # ------------------
         for product in self.browse(cr, uid, product_ids, context=context):
-           # Extra data used
+            # Extra data used
             res_extra[product.id] = {
                 'mx_mrp_out': product.mx_mrp_out, # TODO remove when stock move
                 'mx_start_qty': product.mx_start_qty,
@@ -510,7 +526,7 @@ class ProductProduct(orm.Model):
         line_ids = move_pool.search(cr, uid, [
             # Line:
             ('product_id', 'in', product_ids),
-            ('state', '!=', 'cancel'), # actived 22/11/2017
+            ('state', '!=', 'cancel'),  # actived 22/11/2017
 
             # Header:
             # XXX date_done, min_date, date?
