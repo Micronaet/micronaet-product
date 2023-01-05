@@ -32,7 +32,8 @@
         'product',
         'account',  # For duty block
         'purchase',  # For duty block
-        ],
+        # todo needed:'base_accounting_program',  # extra fields
+    ],
     'init_xml': [],
     'demo': [],
     'data': [
