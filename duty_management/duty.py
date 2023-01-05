@@ -224,19 +224,20 @@ class AccountInvoice(orm.Model):
         for line in invoice.invoice_line:
             product = line.product_id
             duty_code = product.duty_code
-            quantity = line.quantity
-
-            # -----------------------------------------------------------------
-            # Weight management:
-            # -----------------------------------------------------------------
-            net = product.force_weight_net or product.weight_net
-            gross = product.force_weight or product.weight
-            # todo manage force_package_weight
 
             if not duty_code:
                 continue
             if duty_code not in table:
                 table[duty_code] = [0.0, 0.0, 0.0]  # Amount, net, gross
+
+            # -----------------------------------------------------------------
+            # Weight management:
+            # -----------------------------------------------------------------
+            quantity = line.quantity
+            net = product.force_weight_net or product.weight_net
+            gross = product.force_weight or product.weight
+            # todo manage force_package_weight
+
             table[duty_code][0] += line.price_subtotal  # Subtotal amount
             table[duty_code][1] += net * quantity  # W. net
             table[duty_code][2] += gross * quantity  # W. gross
