@@ -97,11 +97,11 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('ean13', 'EAN 13'),
             ('supplier_ean13', 'Supplier EAN 13'),
 
-            ('default_code', 'Product code (key field)'), # Key field
-            ('description_sale', 'Sale description'), # Lang
+            ('default_code', 'Product code (key field)'),  # Key field
+            ('description_sale', 'Sale description'),  # Lang
 
             ('default_supplier_code', 'Purchase product code'),
-            ('description_purchase', 'Purchase description'), # Lang
+            ('description_purchase', 'Purchase description'),  # Lang
             ('large_description', 'Extended description for web'),
             ('statistic_category', 'Cat. Statistica'),
 
@@ -118,7 +118,7 @@ class ProductProductImportationTraceColumn(orm.Model):
 
             ('volume', 'Volume'),
             ('pack', 'Package'),
-            #('item_per_box', 'Item x pack'),
+            # ('item_per_box', 'Item x pack'),
             ('q_x_pack', 'Q. x pack'),
             ('colls', 'Colls'),
             ('pz_x_container', 'Pieces per container'),
