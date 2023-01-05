@@ -30,17 +30,18 @@ from openerp import SUPERUSER_ID, api
 from openerp import tools
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT, 
-    DEFAULT_SERVER_DATETIME_FORMAT, 
-    DATETIME_FORMATS_MAP, 
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DATETIME_FORMATS_MAP,
     float_compare)
 
 
 _logger = logging.getLogger(__name__)
 
+
 class ProductProductImportationTrace(orm.Model):
-    ''' Importation log element trace of fields
-    ''' 
+    """ Importation log element trace of fields
+    """
     _name = 'product.product.importation.trace'
     _description = 'File trace'
 
@@ -49,7 +50,7 @@ class ProductProductImportationTrace(orm.Model):
         'filename': fields.char('Default filename', size=80),
         'format': fields.selection([
             ('xls', 'XLS (old file)'),
-            ], 'format'),            
+            ], 'format'),
         'note': fields.char('Note'),
         }
 
@@ -57,17 +58,18 @@ class ProductProductImportationTrace(orm.Model):
         'format': lambda *x: 'xls',
         }
 
+
 class ProductProductImportationTraceColumn(orm.Model):
-    ''' Importation log element trace of fields
-    ''' 
+    """ Importation log element trace of fields
+    """
     _name = 'product.product.importation.trace.column'
     _description = 'Columns to import'
     _order = 'name'
 
     def get_float_list(self, ):
-        ''' Transformed in function (Ex _float_list field)
-        '''
-        
+        """ Transformed in function (Ex _float_list field)
+        """
+
         return [
             'length', 'width', 'height',
             'diameter', 'volume',
@@ -78,13 +80,18 @@ class ProductProductImportationTraceColumn(orm.Model):
             'cost_in_stock',
             'cost_for_sale',
             'lst_price',
-            #'item_per_box', 'colls', 
-            #'weight', 'weight_net',
-            ]
-            
+
+            'force_weight',
+            'force_weight_net',
+            'force_package_weight',
+
+            # 'item_per_box', 'colls',
+            # 'weight', 'weight_net',
+        ]
+
     def _get_field_list(self, cr, uid, context=None):
-        ''' Keep list in function for update in other modules
-        '''
+        """ Keep list in function for update in other modules
+        """
         return [
             ('name', 'Name'),
             ('ean13', 'EAN 13'),
@@ -92,10 +99,10 @@ class ProductProductImportationTraceColumn(orm.Model):
 
             ('default_code', 'Product code (key field)'), # Key field
             ('description_sale', 'Sale description'), # Lang
-            
+
             ('default_supplier_code', 'Purchase product code'),
             ('description_purchase', 'Purchase description'), # Lang
-            ('large_description', 'Extended description for web'),        
+            ('large_description', 'Extended description for web'),
             ('statistic_category', 'Cat. Statistica'),
 
             ('colour_code', 'Supplier color code'),
@@ -108,7 +115,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('seat_height', 'Seat Height'),
             ('diameter', 'Diameter'),
             # Weight?
-            
+
             ('volume', 'Volume'),
             ('pack', 'Package'),
             #('item_per_box', 'Item x pack'),
@@ -116,7 +123,7 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('colls', 'Colls'),
             ('pz_x_container', 'Pieces per container'),
             ('item_per_camion', 'Pieces per camion'),
-           
+
             ('package_type', 'Package type'),
             ('pack_l', 'Package length'),
             ('pack_p', 'Package width'),
@@ -128,13 +135,17 @@ class ProductProductImportationTraceColumn(orm.Model):
             ('cost_for_sale', 'Cost for sale'),
 
             # Not used now:
+            ('force_weight', 'Forza peso lordo'),
+            ('force_weight_net', 'Forza peso netto'),
+            ('force_package_weight', 'Forza peso imballo'),
+
             ('weight', 'Weight'),
-            ('weight_net', 'Weight net'),       
+            ('weight_net', 'Weight net'),
             ]
 
     def _get_user_lang(self, cr, uid, context=None):
-        ''' Get user language
-        '''
+        """ Get user language
+        """
         try:
             lang_code = self.pool.get('res.users').browse(
                 cr, uid, uid, context=context).lang
@@ -142,7 +153,7 @@ class ProductProductImportationTraceColumn(orm.Model):
                 ('code', '=', lang_code)], context=context)[0]
         except:
             return 1
-        
+
     _columns = {
         'name': fields.integer('Column #', required=True),
         'description': fields.char('Description', size=80),
@@ -150,59 +161,63 @@ class ProductProductImportationTraceColumn(orm.Model):
         'type': fields.selection([
             ('string', 'String'),
             ('float', 'Float'),
-            #('int', 'Integer'),
+            # ('int', 'Integer'),
             ], 'Type', required=True),
         'from_line': fields.integer('From line'),
         'max_line': fields.integer('Max line'),
         'lang_id': fields.many2one('res.lang', 'Language', required=True),
-        'need_exchange': fields.boolean('Need exchange', 
+        'need_exchange': fields.boolean('Need exchange',
             help='Requested in import wizard  (* exchange = company curr.)'),
         'field': fields.selection(_get_field_list, 'Field linked'),
-        'trace_id': fields.many2one('product.product.importation.trace',
+        'trace_id': fields.many2one(
+            'product.product.importation.trace',
             'Trace', ondelete='cascade'),
         }
-        
+
     _defaults = {
         'lang_id': lambda s, cr, uid, ctx: s._get_user_lang(cr, uid, ctx),
         'type': lambda *x: 'string',
-        }    
+        }
+
 
 class ProductProductImportationTrace(orm.Model):
-    ''' Importation log element trace of fields
-    ''' 
+    """ Importation log element trace of fields
+    """
     _inherit = 'product.product.importation.trace'
 
     _columns = {
         'column_ids': fields.one2many(
-            'product.product.importation.trace.column', 
+            'product.product.importation.trace.column',
             'trace_id', 'Columns'),
         }
 
+
 class ProductProduct(orm.Model):
-    ''' Product for link import log
-    '''    
+    """ Product for link import log
+    """
     _inherit = 'product.product'
-    
+
     _columns = {
         'csv_import_id': fields.many2one('log.importation',
             'Log import', ondelete='set null'),
         }
 
+
 # -----------------------------------------------------------------------------
 #                                Add extra part for log:
 # -----------------------------------------------------------------------------
 class LogImportation(orm.Model):
-    ''' Importation log element
-    ''' 
+    """ Importation log element
+    """
     _inherit = 'log.importation'
 
     # Button event:
     def open_product_tree(self, cr, uid, ids, context=None):
-        ''' Open list product for importation selected
-        '''
+        """ Open list product for importation selected
+        """
         log_proxy = self.browse(cr, uid, ids, context=context)[0]
         item_ids = [item.id for item in log_proxy.product_ids]
-        return {        
+        return {
             'type': 'ir.actions.act_window',
             'name': 'Product ',
             'res_model': 'product.product',
@@ -210,17 +225,16 @@ class LogImportation(orm.Model):
             'domain': [('id', 'in', item_ids)],
             'view_type': 'form',
             'view_mode': 'tree,form',
-            #'view_id': view_id, # product.product_product_tree_view
-            #'target': 'new',
-            #'nodestroy': True,
+            # 'view_id': view_id, # product.product_product_tree_view
+            # 'target': 'new',
+            # 'nodestroy': True,
         }
-        
+
     _columns = {
         'partner_id': fields.many2one('res.partner', 'Supplier'),
         'trace_id': fields.many2one('product.product.importation.trace',
             'Trace', ondelete='set null'),
-        'exchange': fields.float('Exchange', digits=(16, 3)), 
-        'product_ids': fields.one2many('product.product', 
+        'exchange': fields.float('Exchange', digits=(16, 3)),
+        'product_ids': fields.one2many('product.product',
             'csv_import_id', 'Products'),
         }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
