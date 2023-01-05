@@ -87,7 +87,7 @@ class ProductProductImportationTraceColumn(orm.Model):
 
             # 'item_per_box', 'colls',
             # 'weight', 'weight_net',
-        ]
+            ]
 
     def _get_field_list(self, cr, uid, context=None):
         """ Keep list in function for update in other modules
