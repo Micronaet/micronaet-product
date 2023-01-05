@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import logging
 from openerp.osv import fields, osv, expression, orm
@@ -221,6 +222,7 @@ class AccountInvoice(orm.Model):
 
         table = {}
         error = ''
+        pdb.set_trace()
         for line in invoice.invoice_line:
             product = line.product_id
             duty_code = product.duty_code
