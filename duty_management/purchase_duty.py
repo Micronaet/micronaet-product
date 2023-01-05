@@ -50,8 +50,13 @@ class PurchaseOrder(orm.Model):
 
             duty_code = product.duty_code
             quantity = line.product_qty
-            net = product.weight_net
-            gross = product.weight
+
+            # -----------------------------------------------------------------
+            # Weight management:
+            # -----------------------------------------------------------------
+            net = product.force_weight_net or product.weight_net
+            gross = product.force_weight or product.weight
+            # todo manage force_package_weight
 
             if not duty_code:
                 continue

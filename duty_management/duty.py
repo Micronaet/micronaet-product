@@ -222,7 +222,6 @@ class AccountInvoice(orm.Model):
 
         table = {}
         error = ''
-        pdb.set_trace()
         for line in invoice.invoice_line:
             product = line.product_id
             duty_code = product.duty_code
