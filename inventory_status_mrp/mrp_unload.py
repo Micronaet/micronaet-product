@@ -102,7 +102,7 @@ class MrpProduction(orm.Model):
         product_pool = self.pool.get('product.product')
         cr.execute('UPDATE product_product set mx_mrp_out=0;')
 
-        # Generate MRP total componet report with totals:
+        # Generate MRP total component report with totals:
         unload_db = {}
         for mrp in self.browse(cr, uid, mrp_ids, context=context):
             for sol in mrp.order_line_ids:
