@@ -125,12 +125,17 @@ class StockInventoryHistoryYear(orm.Model):
         default_code = default_code.replace('/', '-')
         return default_code
 
-    def generate_folder_structure(self, cr, uid, year, context=None):
+    def generate_folder_structure(self, cr, uid, root_path=False, year=False, context=None):
         """ Generate folder structure
         """
-        root_path = os.path.expanduser('~/inventory')
+        if not root_path:
+            root_path = '~/inventory'
+
+        root_path = os.path.expanduser(root_path)
 
         # Create folder structure
+        if not year:
+            year = str(datetime.now().year)
         base_folder = os.path.join(root_path, year)
         os.system('mkdir -p %s' % base_folder)
         folder = os.path.join(base_folder, 'pickle')
