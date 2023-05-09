@@ -54,7 +54,7 @@
                             <newline/>
                             <button name="button_extract_semiproduct_price" type="object" string="Estrai prezzi semilavorati" colspan="2"/>
                             <button name="button_extract_product_price" type="object" string="Estrai prezzi MRP" colspan="2"/>
-                            <button name="button_update_product_price" type="object" string="Ricaric prezzi da MRP" colspan="2" confirm="Confermi l'aggiornamento prezzo standard da file appena esportato?"/>
+                            <button name="button_update_product_price" type="object" string="Ricarica prezzi da MRP" colspan="2" confirm="Confermi l'aggiornamento prezzo standard da file appena esportato?"/>
                             <newline/>
 
                             <separator string="Stampe finali:" colspan="4"/>
