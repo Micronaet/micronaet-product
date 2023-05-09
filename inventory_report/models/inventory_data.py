@@ -722,14 +722,9 @@ class StockInventoryHistoryYear(orm.Model):
         to_date = inventory.to_date
 
         pdb.set_trace()
-        #if inventory.base_folder:
-        #    base_folder = inventory.base_folder
-        #else:
-        base_folder = self.generate_folder_structure(
-            cr, uid, inventory.name, context=context)
-        self.write(cr, uid, ids, {
-            'base_folder': base_folder,
-        }, context=context)
+        base_folder = inventory.base_folder
+        self.generate_folder_structure(
+            cr, uid, base_folder, context=context)
 
         # Product management:
         product_db = self.get_product_db(base_folder)  # product.pickle file
