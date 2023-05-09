@@ -361,7 +361,8 @@ class StockInventoryHistoryYear(orm.Model):
                 ('default_code', '=ilike', '%s%%' % mask),
             ], context=context)
             if product_ids:
-                _logger.info('Update %s with %s' % (mask, price))
+                _logger.info('Update %s with %s # %s' % (
+                    mask, price, len(product_ids)))
                 product_pool.write(cr, uid, product_ids, {
                     'standard_price': price,
                 }, context=context)
