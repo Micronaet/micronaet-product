@@ -125,18 +125,16 @@ class StockInventoryHistoryYear(orm.Model):
         default_code = default_code.replace('/', '-')
         return default_code
 
-    def generate_folder_structure(self, cr, uid, root_path=False, year=False, context=None):
+    def generate_folder_structure(
+            self, cr, uid, root_path=False, context=None):
         """ Generate folder structure
         """
         if not root_path:
             root_path = '~/inventory'
 
-        root_path = os.path.expanduser(root_path)
-
         # Create folder structure
-        if not year:
-            year = str(datetime.now().year)
-        base_folder = os.path.join(root_path, year)
+        # base_folder = os.path.join(root_path, year)
+        base_folder = os.path.expanduser(root_path)
         os.system('mkdir -p %s' % base_folder)
         folder = os.path.join(base_folder, 'pickle')
         os.system('mkdir -p %s' % folder)
@@ -723,14 +721,15 @@ class StockInventoryHistoryYear(orm.Model):
         from_date = inventory.from_date
         to_date = inventory.to_date
 
-        if inventory.base_folder:
-            base_folder = inventory.base_folder
-        else:
-            base_folder = self.generate_folder_structure(
-                cr, uid, inventory.name, context=context)
-            self.write(cr, uid, ids, {
-                'base_folder': base_folder,
-            }, context=context)
+        pdb.set_trace()
+        #if inventory.base_folder:
+        #    base_folder = inventory.base_folder
+        #else:
+        base_folder = self.generate_folder_structure(
+            cr, uid, inventory.name, context=context)
+        self.write(cr, uid, ids, {
+            'base_folder': base_folder,
+        }, context=context)
 
         # Product management:
         product_db = self.get_product_db(base_folder)  # product.pickle file
