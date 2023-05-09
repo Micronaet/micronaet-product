@@ -322,7 +322,53 @@ class StockInventoryHistoryYear(orm.Model):
             '    [start.pickle] ')
 
 
+    def button_update_product_price(self, cr, uid, ids, context=None):
+        """ Update price from MRP
+        """
+        product_pool = self.pool.get('product.product')
 
+        inventory = self.browse(cr, uid, ids, context=context)[0]
+        base_folder = inventory.base_folder
+        file_in = os.path.join(base_folder, 'excel', 'MRP_Prodotti.xlsx')
+
+        # ---------------------------------------------------------------------
+        # Load origin name from XLS
+        # ---------------------------------------------------------------------
+        try:
+            wb = xlrd.open_workbook(file_in)
+        except:
+            raise osv.except_osv(
+                _('No file:'),
+                _('[ERROR] Cannot read XLS file: %s' % file_in))
+
+        # Code | Name | UOM | QTY | SUBTOTAL
+        # 3 pages
+        ws = wb.sheet_by_index(0)
+        row_start = 1
+        product_price = {}
+        for row in range(row_start - 1, ws.nrows):
+            default_code = str(ws.cell(row, 0).value) or ''
+            if default_code.endswith('.0'):
+                default_code = default_code[:-2]
+            default_code = self.clean_code(default_code)
+            price = ws.cell(row, 2).value
+            product_price[default_code] = price
+
+        pdb.set_trace()
+        for mask in sorted(product_price):
+            price = product_price[mask]
+            product_ids = product_pool.search(cr, uid, [
+                ('default_code', '=ilike', '%s%%' % mask),
+            ], context=context)
+            if product_ids:
+                _logger.info('Update %s with %s' % (mask, price))
+                product_pool.write(cr, uid, product_ids, {
+                    'standard_price': price,
+                }, context=context)
+            else:
+                _logger.warning('Not found %s' % mask)
+
+        return True
 
     def button_extract_product_price(self, cr, uid, ids, context=None):
         """ Extract last price in history
@@ -1323,6 +1369,8 @@ class StockInventoryHistoryYear(orm.Model):
                 _('No file:'),
                 _('[ERROR] Cannot read XLS file: %s' % file_in))
 
+        # Code | Name | UOM | QTY | SUBTOTAL
+        # 3 pages
         for index in range(3):
             ws = WB.sheet_by_index(index)
             for row in range(row_start - 1, ws.nrows):
