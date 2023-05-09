@@ -354,7 +354,6 @@ class StockInventoryHistoryYear(orm.Model):
             price = ws.cell(row, 2).value
             product_price[default_code] = price
 
-        pdb.set_trace()
         for mask in sorted(product_price):
             price = product_price[mask]
             product_ids = product_pool.search(cr, uid, [
