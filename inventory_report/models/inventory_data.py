@@ -321,7 +321,6 @@ class StockInventoryHistoryYear(orm.Model):
             'Generate: '
             '    [start.pickle] ')
 
-
     def button_update_product_price(self, cr, uid, ids, context=None):
         """ Update price from MRP
         """
