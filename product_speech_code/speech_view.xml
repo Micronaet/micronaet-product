@@ -26,13 +26,14 @@
                 <search string="Block value" version="7.0">
                     <field name="structure_id" />
                     <field name="block_id" />
-                    <field name="rely_id" />
+                    <field name="rely_value_id" />
                     <field name="code" />
                     <field name="name" />
 
                     <group expand="0" string="Group By...">
                         <filter name="group_structure" string="Struttura" context="{'group_by': 'structure_id'}"/>
                         <filter name="group_block" string="Blocco" context="{'group_by': 'block_id'}" />
+                        <filter name="group_rely" string="Valore collegato" context="{'group_by': 'rely_value_id'}" />
                     </group>
                 </search>
             </field>
