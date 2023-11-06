@@ -19,6 +19,25 @@
             </field>
         </record>
         <!--structure.block.value-->
+        <record model="ir.ui.view" id="view_structure_block_value_search">
+            <field name="name">structure.block.value.form</field>
+            <field name="model">structure.block.value</field>
+            <field name="arch" type="xml">
+                <search string="Block value" version="7.0">
+                    <field name="structure_id" />
+                    <field name="block_id" />
+                    <field name="rely_id" />
+                    <field name="code" />
+                    <field name="name" />
+
+                    <group expand="0" string="Group By...">
+                        <filter name="group_structure" string="Struttura" context="{'group_by': 'structure_id'}"/>
+                        <filter name="group_block" string="Blocco" context="{'group_by': 'block_id'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="view_structure_block_value_form">
             <field name="name">structure.block.value.form</field>
             <field name="model">structure.block.value</field>
@@ -55,6 +74,7 @@
             <field name="priority" eval="40"/>
             <field name="arch" type="xml">
                 <tree string="Structure" editable="bottom">
+                    <field name="structure_id" readonly="1"/>
                     <field name="block_id" readonly="1"/>
                     <field name="code" readonly="1" />
                     <field name="rely_value_id" readonly="1" />

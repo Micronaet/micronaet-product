@@ -123,6 +123,10 @@ class StructureBlockValue(orm.Model):
         'code': fields.char('Code', size=10, required=True),
         'name': fields.char('Name', size=64, required=True, translate=True),
         'block_id': fields.many2one('structure.block', 'Block'),
+        'structure_id': fields.related(
+            'block_id', 'structure_id', string='Struttura', store=True,
+            type='many2one', relation='structure.structure',
+            ),
         'rely_value_id': fields.many2one(
             'structure.block.value', 'Rely value'),
         'note': fields.text('Note'),
