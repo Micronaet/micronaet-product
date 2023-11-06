@@ -14,7 +14,7 @@
                     <group colspan="4" col="3">
                         <field name="structure_id" />
                         <button name="generate_name_from_code" string="Generate name" type="object" confirm="Name will be overwrite with structure name calculated, confirm?" colspan="1"/>
-                    </group>   
+                    </group>
                 </field>
             </field>
         </record>
@@ -23,17 +23,17 @@
             <field name="name">structure.block.value.form</field>
             <field name="model">structure.block.value</field>
             <field name="arch" type="xml">
-                <form string="Block value" version="7.0">        
+                <form string="Block value" version="7.0">
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="code" />
                             <field name="name" />
                             <field name="rely_value_id" />
-                            
+
                             <separator string="Note" colspan="4"/>
-                            <field name="note" nolabel="1" colspan="4"/>                            
+                            <field name="note" nolabel="1" colspan="4"/>
                         </group>
-                    </sheet>        
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -41,7 +41,7 @@
             <field name="name">structure.block.value.tree</field>
             <field name="model">structure.block.value</field>
             <field name="arch" type="xml">
-                <tree string="Structure" editable="bottom">        
+                <tree string="Structure" editable="bottom">
                     <field name="code" />
                     <field name="rely_value_id" />
                     <field name="name" />
@@ -49,40 +49,49 @@
                 </tree>
             </field>
         </record>
+        <record model="ir.actions.act_window" id="action_view_structure_block_value">
+            <field name="name">Product value</field>
+            <field name="res_model">structure.block.value</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_structure_block_value_tree"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
 
         <!--structure.block-->
         <record model="ir.ui.view" id="view_structure_block_form">
             <field name="name">structure.block.form</field>
             <field name="model">structure.block</field>
             <field name="arch" type="xml">
-                <form string="Structure block" version="7.0">        
+                <form string="Structure block" version="7.0">
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="name" colspan="4"/>
                             <field name="code" />
                             <field name="mandatory" />
-                            
+
                             <field name="mirror_structure_id" domain="[('id','!=',structure_id)]"/>
                             <field name="rely_id" attrs="{'invisible':[('mirror_structure_id','!=',False)]}" domain="[('structure_id','=',structure_id),('id','!=',active_id)]"/>
-                            
+
                             <field name="from_char" />
                             <field name="to_char" />
-                            
-                            <field name="output_field_id" 
+
+                            <field name="output_field_id"
                                 domain="[('model','=','product.product'),('ttype','in',('char', 'text'))]" widget="selection"/>
                             <field name="output_mask" />
-                            
+
                             <notebook colspan="4">
                                 <page string="Value">
                                     <group col="4" colspan="4">
                                         <separator string="Value" colspan="4" attrs="{'invisible':[('mirror_structure_id','!=',False)]}"/>
                                         <field name="value_ids" colspan="4" nolabel="1" attrs="{'invisible':[('mirror_structure_id','!=',False)]}">
-                                            <tree string="Structure" editable="bottom">        
+                                            <tree string="Structure" editable="bottom">
                                                 <field name="code" />
                                                 <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]" /><!--TODO attrs="{'readonly': [(parent.rely_id, '=', False)], 'required': [(parent.rely_id, '!=', False)]}"/>-->
                                                 <field name="name" />
                                                 <field name="note" />
-                                            </tree>                            
+                                            </tree>
                                         </field>
                                     </group>
                                 </page>
@@ -98,13 +107,13 @@
                                     </group>
                                 </page>
                             </notebook>
-                            
+
                             <separator string="Note" colspan="4"/>
-                            <field name="note" nolabel="1" colspan="4"/>                            
+                            <field name="note" nolabel="1" colspan="4"/>
 
                             <field name="structure_id" invisible="1"/>
                         </group>
-                    </sheet>        
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -112,7 +121,7 @@
             <field name="name">structure.block.tree</field>
             <field name="model">structure.block</field>
             <field name="arch" type="xml">
-                <tree string="Structure block" colors="brown:rely_id!=False;blue:mirror_structure_id!=False">        
+                <tree string="Structure block" colors="brown:rely_id!=False;blue:mirror_structure_id!=False">
                     <!--<field name="structure_id" />-->
                     <field name="mandatory" />
                     <field name="name" />
@@ -121,31 +130,31 @@
                     <field name="rely_id" />
                     <field name="from_char" />
                     <field name="to_char" />
-                    <field name="output_field_id" 
+                    <field name="output_field_id"
                                 domain="[('model','=','product.product'),('ttype','in',('char', 'text'))]"/>
                     <field name="output_mask" />
                     <field name="note" />
                 </tree>
             </field>
         </record>
-    
+
         <!--structure.structure-->
         <record model="ir.ui.view" id="view_structure_structure_form">
             <field name="name">structure.structure.form</field>
             <field name="model">structure.structure</field>
             <field name="arch" type="xml">
-                <form string="Product code structure" version="7.0">        
+                <form string="Product code structure" version="7.0">
                     <sheet>
                         <group col="4" colspan="4">
                             <field name="name" />
-                            
+
                             <separator string="Block" colspan="4"/>
                             <field name="block_ids" colspan="4" nolabel="1"/>
-                            
+
                             <separator string="Note" colspan="4"/>
-                            <field name="note" nolabel="1" colspan="4"/>                            
+                            <field name="note" nolabel="1" colspan="4"/>
                         </group>
-                    </sheet>        
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -153,7 +162,7 @@
             <field name="name">structure.structure.tree</field>
             <field name="model">structure.structure</field>
             <field name="arch" type="xml">
-                <tree string="Structure">        
+                <tree string="Structure">
                     <field name="name" />
                     <field name="note" />
                 </tree>
@@ -168,15 +177,18 @@
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
-        <menuitem 
-            parent="base.menu_base_config" 
-            id="menu_structure_structure" 
+        <menuitem
+            parent="base.menu_base_config"
+            id="menu_structure_structure"
             action="action_structure_structure"
             sequence="60"
             />
-        
-
-
+        <menuitem
+            parent="menu_structure_structure"
+            id="menu_view_structure_block_valuee"
+            action="action_view_structure_block_value"
+            sequence="10"
+            />
     </data>
 </openerp>
 

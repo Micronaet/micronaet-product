@@ -39,6 +39,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 _logger = logging.getLogger(__name__)
 
+
 class StructureStructure(orm.Model):
     """ Model name: StructureStructure
     """
@@ -50,6 +51,7 @@ class StructureStructure(orm.Model):
         'note': fields.text('Note'),
         }
 
+
 class StructureBlock(orm.Model):
     """ Model name: StructureBlock
     """
@@ -57,9 +59,39 @@ class StructureBlock(orm.Model):
     _description = 'Structure block'
     _order = 'from_char'
 
+    def open_tree_detail_list(self, cr, uid, ids, context=None):
+        """ Open color for this fabric
+        """
+        model_pool = self.pool.get('ir.model.data')
+
+        this_block = self.browse(cr, uid, ids, context=context)[0]
+        structure_id = this_block.structure_id.id
+
+        tree_view = model_pool.get_object_reference(
+            cr, uid, 'product_speech_code',
+            'view_structure_block_value_tree')[1]
+
+        pdb.set_trace()
+        item_ids = self.search(cr, uid, [
+            ('structure_id', '=', structure_id),
+        ], context=context)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Setup colori per tessuto',
+            'res_model': 'structure.block',
+            'view_type': 'form',
+            'view_mode': 'tree',
+            'views': [
+                (tree_view or False, 'tree'),
+                ],
+            'domain': [('id', 'in', item_ids)],
+            }
+
     _columns = {
         'name': fields.char('Name', size=64, required=True, translate=True),
-        'code': fields.char('Code', size=10, required=True,
+        'code': fields.char(
+            'Code', size=10, required=True,
             help='Used for future ref (name is translated)'),
         'structure_id': fields.many2one(
             'structure.structure', 'Code structure'),
@@ -70,13 +102,15 @@ class StructureBlock(orm.Model):
         'to_char': fields.integer('To char', required=True),
         'output_field_id': fields.many2one(
             'ir.model.fields', 'Output field', help='Text will write here',
-            required=True, # XXX manage default
+            required=True,  # XXX manage default
             ),
-        'output_mask': fields.boolean('Output mask',
+        'output_mask': fields.boolean(
+            'Output mask',
             help='Text with title and return'),
         'mandatory': fields.boolean('Mandatory'),
         'note': fields.text('Note'),
         }
+
 
 class StructureBlockValore(orm.Model):
     """ Model name: StructureBlockValue
@@ -94,6 +128,7 @@ class StructureBlockValore(orm.Model):
         'note': fields.text('Note'),
         }
 
+
 class StructureBlockEmptyValore(orm.Model):
     """ Model name: StructureBlockValue
     """
@@ -102,14 +137,18 @@ class StructureBlockEmptyValore(orm.Model):
     _order = 'empty_name'
 
     _columns = {
-        'empty_case': fields.text('Empty value parent',
+        'empty_case': fields.text(
+            'Empty value parent',
             help='Example: 030|031|032', required=True),
-        'empty_name': fields.char('Empty name', size=64, translate=True,
+        'empty_name': fields.char(
+            'Empty name', size=64, translate=True,
             required=True),
-        'empty_test': fields.char('Empty rule', size=64,
+        'empty_test': fields.char(
+            'Empty rule', size=64,
             help='Example: default_code[0:3]', required=True),
         'block_id': fields.many2one('structure.block', 'Block'),
         }
+
 
 class StructureBlock(orm.Model):
     """ Model name: StructureBlock inherited for add 2many relation fields
@@ -125,6 +164,7 @@ class StructureBlock(orm.Model):
             'structure.block.empty.value', 'block_id', 'Empty Value'),
         }
 
+
 class StructureStructure(orm.Model):
     """ Model name: StructureStructure inherited for add 2many relation fields
     """
@@ -134,6 +174,7 @@ class StructureStructure(orm.Model):
         'block_ids': fields.one2many(
             'structure.block', 'structure_id', 'Block'),
         }
+
 
 class ProductProduct(orm.Model):
     """ Model name: Add extra fields to product
@@ -251,7 +292,7 @@ class ProductProduct(orm.Model):
                 if output not in name_db:
                     name_db[output] = ''
                 if v in value:
-                    #if output not in name_db:
+                    # if output not in name_db:
                     #    name_db[output] = ''
                     name_db[output] += output_mask % value[v]
                     all_db[block.code] = value[v]
@@ -272,7 +313,7 @@ class ProductProduct(orm.Model):
 
         if error:
             _logger.error('Code error: [%s]' % error)
-        return (name_db, all_db, error)
+        return name_db, all_db, error
 
     # -------------------------------------------------------------------------
     # Button event:
