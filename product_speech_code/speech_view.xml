@@ -185,10 +185,9 @@
             />
         <menuitem
             parent="menu_structure_structure"
-            id="menu_view_structure_block_valuee"
+            id="menu_view_structure_block_value"
             action="action_view_structure_block_value"
             sequence="10"
             />
     </data>
 </openerp>
-
