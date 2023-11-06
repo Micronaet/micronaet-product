@@ -112,7 +112,7 @@ class StructureBlock(orm.Model):
         }
 
 
-class StructureBlockValore(orm.Model):
+class StructureBlockValue(orm.Model):
     """ Model name: StructureBlockValue
     """
     _name = 'structure.block.value'

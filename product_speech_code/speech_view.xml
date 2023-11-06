@@ -49,12 +49,26 @@
                 </tree>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_structure_block_value_target_parent_tree">
+            <field name="name">structure.block.value.tree</field>
+            <field name="model">structure.block.value</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <tree string="Structure" editable="bottom">
+                    <field name="block_id" readonly="1"/>
+                    <field name="code" readonly="1" />
+                    <field name="rely_value_id" readonly="1" />
+                    <field name="name" />
+                    <field name="note" readonly="1" />
+                </tree>
+            </field>
+        </record>
         <record model="ir.actions.act_window" id="action_view_structure_block_value">
             <field name="name">Product value</field>
             <field name="res_model">structure.block.value</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="view_structure_block_value_tree"/>
+            <field name="view_id" ref="view_structure_block_value_target_parent_tree"/>
             <field name="context">{}</field>
             <field name="domain">[]</field>
         </record>
@@ -88,7 +102,7 @@
                                         <field name="value_ids" colspan="4" nolabel="1" attrs="{'invisible':[('mirror_structure_id','!=',False)]}">
                                             <tree string="Structure" editable="bottom">
                                                 <field name="code" />
-                                                <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]" /><!--TODO attrs="{'readonly': [(parent.rely_id, '=', False)], 'required': [(parent.rely_id, '!=', False)]}"/>-->
+                                                <field name="rely_value_id" domain="[('block_id', '=', parent.rely_id)]" /><!--todo attrs="{'readonly': [(parent.rely_id, '=', False)], 'required': [(parent.rely_id, '!=', False)]}"/>-->
                                                 <field name="name" />
                                                 <field name="note" />
                                             </tree>
