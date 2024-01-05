@@ -62,36 +62,43 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
 
         wiz_browse = self.browse(cr, uid, ids, context=context)[0]
         object_mode = wiz_browse.object_mode
-
-        # Pool used:
-        if object_mode == 'invoice':
-            line_pool = self.pool.get('account.invoice.line')
-        else:
-            line_pool = self.pool.get('sale.order.line')
-
-        excel_pool = self.pool.get('excel.writer')
-
-        # Generate domain:
-        domain = []
-        filter_name = '[Documenti: %s] ' % (
-            'Fatture' if object_mode == 'invoice' else 'Ordini')
         mode = wiz_browse.mode
         partner = wiz_browse.partner_id
-        if partner:  # Mandatory
-            if object_mode == 'invoice':
-                domain.append(('invoice_id.partner_id', '=', partner.id))
-            else:  # Only confirmed:
+
+        # Pool used:
+        excel_pool = self.pool.get('excel.writer')
+
+        # ---------------------------------------------------------------------
+        # Generate domain:
+        # ---------------------------------------------------------------------
+        domain = []
+        if object_mode == 'invoice':
+            line_pool = self.pool.get('account.invoice.line')
+            mode_text = 'Fatture'
+            domain.append(('invoice_id.partner_id', '=', partner.id))
+
+        else:  # quotation, order
+            line_pool = self.pool.get('sale.order.line')
+            domain.append(('order_id.partner_id', '=', partner.id))
+            if object_mode == 'order':
+                mode_text = 'Ordini'
+                domain.append(
+                    ('order_id.state', 'not in', ('cancel', 'draft', 'sent')))
+            else:
+                mode_text = 'Offerte'
                 domain.extend([
-                    ('order_id.partner_id', '=', partner.id),
-                    ('order_id.state', 'not in', ('cancel', 'draft', 'sent')),
+                    ('order_id.state', 'in', ('draft', 'sent')),
                 ])
+
+        filter_name = '[Documenti: %s] ' % mode_text
+        if partner:  # Mandatory
             filter_name += ' Partner: %s' % partner.name
 
         if wiz_browse.from_date:
             if object_mode == 'invoice':
                 domain.append(
                     ('invoice_id.date_invoice', '>=', wiz_browse.from_date))
-            else:
+            else:  # Order / Quotation
                 domain.append(
                     ('order_id.date_order', '>=',
                      '%s 00:00:00' % wiz_browse.from_date))
@@ -101,7 +108,7 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
             if object_mode == 'invoice':
                 domain.append(
                     ('invoice_id.date_invoice', '<=', wiz_browse.to_date))
-            else:
+            else:  # Order / Quotation
                 domain.append(
                     ('order_id.date_order', '<=',
                      '%s 23:59:59' % wiz_browse.to_date))
@@ -219,6 +226,7 @@ class AccountInvoiceExtractCodebarWizard(orm.TransientModel):
         'from_date': fields.date('From date >='),
         'to_date': fields.date('To date <='),
         'object_mode': fields.selection([
+            ('quotation', 'Offerte'),
             ('order', 'Ordini'),
             ('invoice', 'Fatture'),
             ], u'Documento', required=True),
