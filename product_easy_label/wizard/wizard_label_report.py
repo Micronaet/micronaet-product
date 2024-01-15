@@ -63,8 +63,6 @@ class SaleOrderGeneralReportWizard(orm.TransientModel):
         else:  # 'line'
             report_name = 'mx_order_list_line_report'
 
-        datas['statistic_category'] = \
-            wiz_proxy.statistic_category_id or False
         datas['partner_id'] = wiz_proxy.partner_id.id or False
         datas['fiscal_position'] = wiz_proxy.fiscal_position
         datas['from_date'] = wiz_proxy.from_date or False
@@ -90,8 +88,6 @@ class SaleOrderGeneralReportWizard(orm.TransientModel):
             ('line', 'Order line deadline'),
             # ('grouped', 'Order grouped by frame'),
             ], 'Report type', required=True),
-        'statistic_category_id': fields.many2one(
-            'statistic.category', 'Categoria statistica'),
         'partner_id': fields.many2one('res.partner', 'Partner'),
         'only_remain': fields.boolean(
             'Only remain',
