@@ -63,8 +63,8 @@ class SaleOrderGeneralReportWizard(orm.TransientModel):
         else:  # 'line'
             report_name = 'mx_order_list_line_report'
 
-        datas['statistic_category_id'] = \
-            wiz_proxy.statistic_category_id.id or False
+        datas['statistic_category'] = \
+            wiz_proxy.statistic_category_id or False
         datas['partner_id'] = wiz_proxy.partner_id.id or False
         datas['fiscal_position'] = wiz_proxy.fiscal_position
         datas['from_date'] = wiz_proxy.from_date or False
