@@ -16,8 +16,8 @@
                             <field name="report_type" />
                             <field name="fiscal_position" />
 
-                            <field name="statistic_category_id" />
                             <field name="partner_id" />
+                            <newline />
 
                             <separator string="Date filter:" colspan="4" />
                             <field name="from_date" />
