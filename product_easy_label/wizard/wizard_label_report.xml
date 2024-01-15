@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="Analytic report" version="7.0">
                     <head>
-                        <button string="Cancel" special="cancel" colspan="2" />                   
+                        <button string="Cancel" special="cancel" colspan="2" />
                         <button name="print_report" type="object" string="Print" icon="gtk-print" colspan="2" class="oe_highlight"/>
                     </head>
                     <sheet>
@@ -16,9 +16,9 @@
                             <field name="report_type" />
                             <field name="fiscal_position" />
 
+                            <field name="statistic_category_id" />
                             <field name="partner_id" />
-                            <newline />
-                              
+
                             <separator string="Date filter:" colspan="4" />
                             <field name="from_date" />
                             <field name="to_date" />
@@ -30,7 +30,7 @@
                 </form>
             </field>
       </record>
-      
+
       <record id="action_sale_order_general_report_wizard" model="ir.actions.act_window">
         <field name="name">General report wizard</field>
         <field name="type">ir.actions.act_window</field>
@@ -41,10 +41,10 @@
       </record>
 
    <menuitem name="Order report"
-          parent="sale.menu_sale_order" 
-          id="menu_sale_order_general_report" 
-          action="action_sale_order_general_report_wizard" 
-          sequence="20" 
+          parent="sale.menu_sale_order"
+          id="menu_sale_order_general_report"
+          action="action_sale_order_general_report_wizard"
+          sequence="20"
           />
   </data>
 </openerp>
