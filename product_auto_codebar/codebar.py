@@ -220,7 +220,7 @@ class ProductProduct(orm.Model):
 
         force_field = context.get('force_field', 'ean13')
         current_proxy = self.browse(cr, uid, ids, context=context)[0]
-        if current_proxy.ean13:
+        if eval('current_proxy.%s' % force_field):
             raise osv.except_osv(
                 _('Error'),
                 _('EAN yet present, delete and press button again'))
