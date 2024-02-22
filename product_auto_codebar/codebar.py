@@ -230,10 +230,12 @@ class ProductProduct(orm.Model):
         ean13 = self.pool.get('product.codebar.unused').get_ean13(
             cr, uid, context=context)
         if ean13:
-            return self.write(cr, uid, ids, {
+            self.write(cr, uid, ids, {
                 force_field: ean13,
                 }, context=context)
-        return True
+            return ean13
+        else:
+            return False
 
     _columns = {
         'ean13_auto': fields.boolean('Auto EAN'),
