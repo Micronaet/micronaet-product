@@ -14,6 +14,19 @@
                 </xpath>
             </field>
         </record>
+        <!--<record model="ir.ui.view" id="view_product_product_ean_view">
+            <field name="name">product.product.ean.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="ean13" position="before">
+                    <button name="generate_barcode_ean13" string="Genera EAN principale" type="object" attrs="{'invisible':[('ean13','=',True)]}" colspan="2" />
+                    <newline/>
+                    <field name="ean13_auto" />
+                </field>
+            </field>
+        </record>-->
+
         <record model="ir.ui.view" id="view_product_product_form">
             <field name="name">product.product.form</field>
             <field name="model">product.product</field>

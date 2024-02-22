@@ -18,6 +18,7 @@
 #
 ###############################################################################
 import os
+import pdb
 import sys
 import logging
 import openerp
@@ -37,6 +38,7 @@ from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
 
 
 _logger = logging.getLogger(__name__)
+
 
 class ProductProduct(orm.Model):
     """ Model name: ProductProduct
