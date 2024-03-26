@@ -46,7 +46,8 @@ class MrpProduction(orm.Model):
 
     _inherit = 'mrp.production'
 
-    def schedule_unload_mrp_material(self, cr, uid, from_date=False,
+    def schedule_unload_mrp_material(
+            self, cr, uid, from_date=False,
             context=None):
         """ Update product field with unloaded elements
         """
