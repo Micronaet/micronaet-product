@@ -61,7 +61,7 @@ def generate_mail(partner, product_ids, verbose=True):
 
     for product_id in product_ids:
         for mode in ean_db[product_id]:
-            ean_old, ean_new = ean_db[product_id]
+            ean_old, ean_new = ean_db[partner][product_id]
             text += '%s|Da %s|A %s\n' % (
                 mode_label.get(mode),
                 ean_old,
