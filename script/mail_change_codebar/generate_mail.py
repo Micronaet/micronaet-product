@@ -57,8 +57,9 @@ def generate_mail(mail_db, partner, verbose=True):
     """
     product_ids = mail_db[partner]
 
+    email = partner.email_confirmation_address or partner.email or '???'
     text = 'Cliente %s mail: %s\n' % (
-        partner.name, partner.email,
+        partner.name, email,
         )
 
     for product_id in product_ids:
