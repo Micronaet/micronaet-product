@@ -52,16 +52,18 @@ port = config.get('dbaccess', 'port')   # verify if it's necessary: getint
 # -----------------------------------------------------------------------------
 #                                      Utility:
 # -----------------------------------------------------------------------------
-def generate_mail(partner, product_ids, verbose=True):
+def generate_mail(mail_db, partner, verbose=True):
     """ Generate mail
     """
+    product_ids = mail_db[partner]
+
     text = 'Cliente %s mail: %s\n' % (
         partner.name, partner.email,
         )
 
     for product_id in product_ids:
         for mode in ean_db[product_id]:
-            ean_old, ean_new = ean_db[partner][product_id]
+            ean_old, ean_new = ean_db[product_id][mode]
             text += '%s|Da %s|A %s\n' % (
                 mode_label.get(mode),
                 ean_old,
@@ -133,8 +135,7 @@ for line in line_pool.browse(line_ids):
 import pdb; pdb.set_trace()
 # Mail generator (report)
 for partner in sorted(mail_db, key=lambda p: p.name):
-    product_ids = mail_db[partner]
-    mail = generate_mail(partner, product_ids)
+    mail = generate_mail(mail_db, partner)
 
 
 
