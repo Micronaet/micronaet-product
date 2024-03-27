@@ -63,9 +63,10 @@ def generate_mail(mail_db, partner, verbose=True):
 
     for product_id in product_ids:
         for mode in ean_db[product_id]:
-            ean_old, ean_new = ean_db[product_id][mode]
-            text += '%s|Da %s|A %s\n' % (
+            code, ean_old, ean_new = ean_db[product_id][mode]
+            text += '%s|Codice %s|Da %s|A %s\n' % (
                 mode_label.get(mode),
+                code,
                 ean_old,
                 ean_new,
                 )
@@ -110,7 +111,7 @@ for line in open(filename, 'r'):
     if product_id not in ean_db:
         ean_db[product_id] = {}
     if mode not in ean_db[product_id]:
-        ean_db[product_id][mode] = [ean_old, ean_new]
+        ean_db[product_id][mode] = [code, ean_old, ean_new]
 
 
 # -----------------------------------------------------------------------------
