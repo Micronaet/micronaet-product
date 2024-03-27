@@ -35,10 +35,10 @@ mode_label = {
     }
 
 from_date = '2023-01-01'
-filename = './data/OUT.EAN_rimappati_Fiam.csv'
+filename = './data/EAN_rimappati.csv'
 
 # B. Read configuration parameter:
-cfg_file = os.path.expanduser('../openerp.cfg')
+cfg_file = os.path.expanduser('../openerp.fia')
 
 config = ConfigParser.ConfigParser()
 config.read([cfg_file])
