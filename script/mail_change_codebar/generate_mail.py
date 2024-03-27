@@ -133,7 +133,6 @@ for line in line_pool.browse(line_ids):
     if product_id not in mail_db[partner]:
         mail_db[partner].append(product_id)
 
-import pdb; pdb.set_trace()
 # Mail generator (report)
 for partner in sorted(mail_db, key=lambda p: p.name):
     mail = generate_mail(mail_db, partner)
