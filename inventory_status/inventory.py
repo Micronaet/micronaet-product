@@ -146,7 +146,7 @@ class ProductProduct(orm.Model):
                 'domain': [('id', 'in', item_ids)],
                 }
 
-        elif move == 'inv': # INV
+        elif move == 'inv':  # INV
             product_proxy = self.browse(cr, uid, ids, context=context)[0]
             item_ids = [item.id for item in product_proxy.mx_inv_ids]
 
@@ -169,7 +169,7 @@ class ProductProduct(orm.Model):
                 'domain': [('id', 'in', item_ids)],
                 }
 
-        elif move == 'out': # BC
+        elif move == 'out':  # BC
             product_proxy = self.browse(cr, uid, ids, context=context)[0]
             item_ids = [item.id for item in product_proxy.mx_bc_ids]
 
@@ -647,7 +647,7 @@ class ProductProduct(orm.Model):
                 res[key]['mx_net_qty'] - \
                 res[key]['mx_oc_out'] + \
                 res[key]['mx_of_in']
-            # TODO - campaign
+            # todo - campaign
 
             # With MRP (unload MP):
             res[key]['mx_net_mrp_qty'] = res[key]['mx_net_qty'] - \
