@@ -20,6 +20,8 @@
 #
 ###############################################################################
 import os
+import pdb
+
 import erppeek
 import ConfigParser
 
@@ -52,20 +54,20 @@ port = config.get('dbaccess', 'port')   # verify if it's necessary: getint
 # -----------------------------------------------------------------------------
 #                                      Utility:
 # -----------------------------------------------------------------------------
-def generate_mail(mail_db, partner, verbose=True):
+def generate_mail(mail_db, partner_id, verbose=True):
     """ Generate mail
     """
-    product_ids = mail_db[partner]
+    product_ids, partner = mail_db[partner_id]
 
     email = partner.email_confirmation_address or partner.email or '???'
-    text = 'Cliente %s mail: %s\n' % (
+    text = u'Cliente %s mail: %s\n' % (
         partner.name, email,
         )
 
     for product_id in product_ids:
         for mode in ean_db[product_id]:
             code, ean_old, ean_new = ean_db[product_id][mode]
-            text += '%s|Codice %s|Da %s|A %s\n' % (
+            text += u'%s|Codice %s|Da %s|A %s\n' % (
                 mode_label.get(mode),
                 code,
                 ean_old,
@@ -127,16 +129,18 @@ mail_db = {}
 for line in line_pool.browse(line_ids):
     invoice = line.invoice_id
     partner = invoice.partner_id
+    partner_id = partner.id
     product = line.product_id
+    product_id = product.id
 
-    if partner not in mail_db:
-        mail_db[partner] = []
-    if product_id not in mail_db[partner]:
-        mail_db[partner].append(product_id)
+    if partner_id not in mail_db:
+        mail_db[partner_id] = [[], partner]
+    if product_id not in mail_db[partner_id][0]:
+        mail_db[partner_id][0].append(product_id)
 
 # Mail generator (report)
-for partner in sorted(mail_db, key=lambda p: p.name):
-    mail = generate_mail(mail_db, partner)
+for partner_id in sorted(mail_db, key=lambda p_id: mail_db[p_id][1].name):
+    mail = generate_mail(mail_db, partner_id)
 
 
 

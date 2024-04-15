@@ -94,8 +94,8 @@ class ProductProduct(orm.Model):
     # -------------------------------------------------------------------------
     # Utility:
     # -------------------------------------------------------------------------
-    def get_stock_movement_from_in_to_out(self, cr, uid, product_id, loc_in,
-            loc_out, context=None):
+    def get_stock_movement_from_in_to_out(
+            self, cr, uid, product_id, loc_in, loc_out, context=None):
         """ Return movement for product and move type passed
         """
         return []
@@ -118,8 +118,8 @@ class ProductProduct(orm.Model):
         # Get parameter from company:
         company_pool = self.pool.get('res.company')
         company_ids = company_pool.search(cr, uid, [], context=context)
-        company_proxy = company_pool.browse(cr, uid, company_ids,
-            context=context)[0]
+        company_proxy = company_pool.browse(
+            cr, uid, company_ids, context=context)[0]
         model_pool = self.pool.get('ir.model.data')
 
         if move == 'in': # BF
@@ -230,11 +230,11 @@ class ProductProduct(orm.Model):
                 'res_model': 'sale.order.line',
                 'view_type': 'form',
                 'views': [
-                    #(form_view or False, 'form'),
+                    # (form_view or False, 'form'),
                     (tree_view or False, 'tree'),
-                    #(False, 'kanban'),
-                    #(False, 'calendar'),
-                    #(False, 'graph'),
+                    # (False, 'kanban'),
+                    # (False, 'calendar'),
+                    # (False, 'graph'),
                     ],
                 'view_mode': 'tree,form',
                 'domain': [('id', 'in', item_ids)],
@@ -255,11 +255,11 @@ class ProductProduct(orm.Model):
                 'res_model': 'sale.order.line',
                 'view_type': 'form',
                 'views': [
-                    #(form_view or False, 'form'),
+                    # (form_view or False, 'form'),
                     (tree_view or False, 'tree'),
-                    #(False, 'kanban'),
-                    #(False, 'calendar'),
-                    #(False, 'graph'),
+                    # (False, 'kanban'),
+                    # (False, 'calendar'),
+                    # (False, 'graph'),
                     ],
                 'view_mode': 'tree,form',
                 'domain': [('id', 'in', item_ids)],
@@ -284,7 +284,6 @@ class ProductProduct(orm.Model):
 
     def get_locked_qty_list(self, cr, uid, ids, context=None):
         return self.get_movements_type(cr, uid, ids, 'lock', context=context)
-
 
     def dummy_temp(self, cr, uid, ids, context=None):
         """ Temp button for associate event till no correct association
@@ -311,13 +310,13 @@ class ProductProduct(orm.Model):
         product_ids = self.search(cr, uid, [
             ('web_published', '=', True)], context=context)
         for product in self.browse(cr, uid, product_ids, context=context):
-            of_status = '/' # TODO check date and publish
-            #for of in product.mx_of_ids:
+            of_status = '/'  # todo check date and publish
+            # for of in product.mx_of_ids:
             #    of_status += '%s %s\n' % (
             #        int(of.product_uom_qty),
             #        (of.picking_id.min_date or '?')[:10],
             #        )
-            value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % ( #|%s
+            value = clean_ascii('%s|%s|%s|%s|%s|%s|%s|%s|%s\n' % (  # |%s
                 product.default_code,
                 # product.statistic_category, # TODO remove
                 product.name,
@@ -399,8 +398,7 @@ class ProductProduct(orm.Model):
         return from_date, to_date
 
     def _get_inventory_values(
-            self, cr, uid, product_ids, fields, args,
-            context=None):
+            self, cr, uid, product_ids, fields, args, context=None):
         """ Get information
         """
         res = {}
@@ -423,9 +421,9 @@ class ProductProduct(orm.Model):
         _logger.warning('USER: %s' % user_id)
 
         # pool used:
-        pick_pool = self.pool.get('stock.picking')
-        sale_pool = self.pool.get('sale.order') # XXX maybe not used
-        sol_pool = self.pool.get('sale.order.line') # XXX maybe not used
+        # pick_pool = self.pool.get('stock.picking')
+        # sale_pool = self.pool.get('sale.order')  # XXX maybe not used
+        sol_pool = self.pool.get('sale.order.line')  # XXX maybe not used
         move_pool = self.pool.get('stock.move')
         company_pool = self.pool.get('res.company')
 
@@ -445,9 +443,10 @@ class ProductProduct(orm.Model):
         for product in self.browse(cr, uid, product_ids, context=context):
             # Extra data used
             res_extra[product.id] = {
-                'mx_mrp_out': product.mx_mrp_out, # TODO remove when stock move
+                # todo remove when stock move:
+                'mx_mrp_out': product.mx_mrp_out,
                 'mx_start_qty': product.mx_start_qty,
-                #'mx_start_date': product.mx_start_date,
+                # 'mx_start_date': product.mx_start_date,
                 }
 
             # Field data:
@@ -486,7 +485,7 @@ class ProductProduct(orm.Model):
             return res
 
         # ---------------------------------------------------------------------
-        # Inventory adjustement
+        # INV. Inventory adjustement
         # ---------------------------------------------------------------------
         if stock_location_id:
             line_ids = move_pool.search(cr, uid, [
@@ -494,7 +493,7 @@ class ProductProduct(orm.Model):
                 ('product_id', 'in', product_ids),
                 ('date', '>=', from_date),
                 ('date', '<=', to_date),
-                ('state', '!=', 'cancel'),  # actived 22/11/2017
+                ('state', '!=', 'cancel'),  # activated 22/11/2017
                 ])
             for line in move_pool.browse(cr, uid, line_ids, context=context):
                 product_id = line.product_id.id
@@ -527,19 +526,19 @@ class ProductProduct(orm.Model):
         line_ids = move_pool.search(cr, uid, [
             # Line:
             ('product_id', 'in', product_ids),
-            ('state', '!=', 'cancel'),  # actived 22/11/2017
+            ('state', '!=', 'cancel'),  # activated 22/11/2017
 
             # Header:
             # XXX date_done, min_date, date?
             ('picking_id.date', '>=', from_date),
             ('picking_id.date', '<=', to_date),
             ('picking_id.picking_type_id', 'in', out_picking_type_ids),
-            # TODO add state filter?
+            # todo add state filter?
             ], context=context)
 
         for line in move_pool.browse(cr, uid, line_ids, context=context):
             res[line.product_id.id]['mx_bc_out'] += line.product_uom_qty
-            res[line.product_id.id]['mx_bc_ids'].append(line.id) # one2many:
+            res[line.product_id.id]['mx_bc_ids'].append(line.id)  # one2many:
 
         # ---------------------------------------------------------------------
         # OF. Get load picking
@@ -560,7 +559,7 @@ class ProductProduct(orm.Model):
 
             # Header:
             ('picking_id.picking_type_id', 'in', in_picking_type_ids),
-            #('picking_id.date', '>=', from_date), # XXX Open bottom search:
+            # ('picking_id.date', '>=', from_date), # XXX Open bottom search:
             ('picking_id.date', '<=', to_date),
             ], context=context)
 
@@ -582,13 +581,13 @@ class ProductProduct(orm.Model):
         # ---------------------------------------------------------------------
         sol_ids = sol_pool.search(cr, uid, [
             ('product_id', 'in', product_ids),
-            ('mx_closed', '=', False), # Forced as closed
+            ('mx_closed', '=', False),  # Forced as closed
             ('order_id.state', 'not in', ('cancel', 'draft', 'sent')),
             # XXX Note: No date filter
             ])
 
-        for line in sol_pool.browse(cr, uid, sol_ids): # Check delivered:
-            # TODO manage mx_close?!?
+        for line in sol_pool.browse(cr, uid, sol_ids):  # Check delivered:
+            # todo manage mx_close?!?
             delivered_qty = line.delivered_qty
             remain = line.product_uom_qty - delivered_qty
             if remain <= 0.0:
@@ -599,20 +598,20 @@ class ProductProduct(orm.Model):
 
             if line.order_id.previsional:
                 # -------------------------------------------------------------
-                # Previsional order:
+                # Forecast order:
                 # -------------------------------------------------------------
                 res[product_id]['mx_oc_out_prev'] += remain
-                # TODO manage B for previsional
-                if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
+                # todo manage B for previsional
+                if 'product_uom_maked_sync_qty' in line._columns:  # MRP DB:
                     res[product_id]['mx_mrp_b_prev'] += \
                         line.product_uom_maked_sync_qty
 
-                # Note: No assigned qty for previsional:
+                # Note: No assigned to partner qty for Forecast order:
             else:
                 # -------------------------------------------------------------
-                # B to be delivered (no previsional) TEST: DB without MRP:
+                # B to be delivered (no Forecast) TEST: DB without MRP:
                 # -------------------------------------------------------------
-                if 'product_uom_maked_sync_qty' in line._columns: # MRP DB:
+                if 'product_uom_maked_sync_qty' in line._columns:  # MRP DB:
                     mrp_qty = line.product_uom_maked_sync_qty
                 else:
                     mrp_qty = 0.0
@@ -631,7 +630,7 @@ class ProductProduct(orm.Model):
                 # Raise negative (over assigned)?
 
             # XXX put in else OC ?
-            res[product_id]['mx_oc_ids'].append(line.id) # one2many
+            res[product_id]['mx_oc_ids'].append(line.id)  # one2many
 
         # ---------------------------------------------------------------------
         # Update with calculated fields
@@ -659,17 +658,18 @@ class ProductProduct(orm.Model):
         return res
 
     _columns = {
-        #'status_ordered': fields.function(
+        # 'status_ordered': fields.function(
         #     _get_status_ordered, method=True, type='float', string='Ordered',
         #     store=False),
         'web_published': fields.boolean('Web published'),
 
         # Quantity
         'mx_start_date': fields.date('Start date'),
-        'mx_start_qty': fields.float('Inventory start qty',
+        'mx_start_qty': fields.float(
+            'Inventory start qty',
             digits=(16, 2), # TODO parametrize
             help='Inventory at 1/1 for current year'),
-        #'mx_delta_qty': fields.float('Inventory start qty',
+        # 'mx_delta_qty': fields.float('Inventory start qty',
         #    digits=(16, 3), # TODO parametrize
         #    help='Inventory at 1/1 for current year'),
 
@@ -704,8 +704,7 @@ class ProductProduct(orm.Model):
             string='B (locked)', store=False, multi=True,
             help='Prodotti per un cliente non consegnati (no prev.)'),
 
-
-        # TODO o2m fields necessary?
+        # todo o2m fields necessary?
         'mx_net_qty': fields.function(
             _get_inventory_values, method=True, type='float',
             string='Total Net', store=False, multi=True),
@@ -719,8 +718,9 @@ class ProductProduct(orm.Model):
             _get_inventory_values, method=True, type='float',
             string='Total Lord with MRP', store=False, multi=True),
 
-        # TODO temporary field for unload in production this season.
-        'mx_mrp_out': fields.float('(MRP out)', digits=(16, 2),
+        # todo temporary field for unload in production this season.
+        'mx_mrp_out': fields.float(
+            '(MRP out)', digits=(16, 2),
             help='Not included in net or lord qty, just a data placeholder'),
 
         # Many2one
@@ -771,6 +771,7 @@ class ProductProduct(orm.Model):
         'web_published': lambda *x: True,
         }
 
+
 class ResUsers(orm.Model):
     """ Model name: SaleOrder
     """
@@ -794,6 +795,7 @@ class ResUsers(orm.Model):
     _columns = {
         'no_inventory_status': fields.boolean('No inventory status'),
         }
+
 
 class SaleOrderLine(orm.Model):
     """ Model name: SaleOrder
@@ -829,10 +831,11 @@ class SaleOrderLine(orm.Model):
             _get_mx_locked_qty, method=True,
             type='float', string='Bloccata'),
 
-        # TODO real assigned net (function field):
+        # todo real assigned net (function field):
         }
 
-# TODO move away:
+
+# todo move away:
 class SaleOrder(orm.Model):
     """ Model name: SaleOrder
     """
@@ -856,6 +859,7 @@ class SaleOrder(orm.Model):
             }, context=context)
         return
 
+
 class ProductProductStartInventory(orm.Model):
     """ Model name: Product Product
     """
@@ -871,18 +875,18 @@ class ProductProductStartInventory(orm.Model):
         """ Create empty inventory load and save new_date as start value
         """
         # TODO activate (very risky)
-        #query = '''
+        # query = '''
         #    UPDATE product_product
         #    SET
         #        mx_start_qty = 0.0,
         #        mx_start_date = '%s'
         #    ''' % new_date
         #
-        #cr.execute(query)
+        # cr.execute(query)
         return True
 
-    def history_all_product_inventory(self, cr, uid, current_date,
-            context=None):
+    def history_all_product_inventory(
+            self, cr, uid, current_date, context=None):
         """ Save all product status now
         """
         if not current_date:
@@ -923,14 +927,15 @@ class ProductProductStartInventory(orm.Model):
     _columns = {
         'product_id': fields.many2one('product.product', 'Product'),
         'date': fields.date('Start date'),
-        'product_qty': fields.float('Inventory start qty',
+        'product_qty': fields.float(
+            'Inventory start qty',
             digits=(16, 2), help='Inventory at 1/1 for current year'),
 
         # Not used for now:
-        'load_qty': fields.float('Load qty',
+        'load_qty': fields.float(
+            'Load qty',
             digits=(16, 2), help='Load q. in the year'),
-        'unload_qty': fields.float('Unload qty',
+        'unload_qty': fields.float(
+            'Unload qty',
             digits=(16, 2), help='Unload q. in the year'),
         }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
