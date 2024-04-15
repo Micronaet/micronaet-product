@@ -100,7 +100,8 @@ class ProductProduct(orm.Model):
         """
         return []
 
-    def get_stock_movement_from_type(self, cr, uid, product_id, type_id,
+    def get_stock_movement_from_type(
+            self, cr, uid, product_id, type_id,
             context=None):
         """ Return movement for product and move type passed
         """
@@ -122,7 +123,7 @@ class ProductProduct(orm.Model):
             cr, uid, company_ids, context=context)[0]
         model_pool = self.pool.get('ir.model.data')
 
-        if move == 'in': # BF
+        if move == 'in':  # BF
             product_proxy = self.browse(cr, uid, ids, context=context)[0]
             item_ids = [item.id for item in product_proxy.mx_bf_ids]
 
