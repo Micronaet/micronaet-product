@@ -63,21 +63,28 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
         to_invoice = wizard.to_invoice
         fiscal_position_id = wizard.fiscal_position_id.id
 
+        # ---------------------------------------------------------------------
         # Generate domain:
+        # ---------------------------------------------------------------------
         domain = [
             ('invoice_id.fiscal_position', '=', fiscal_position_id),
-        ]
-
+            ]
         filter_name = 'Posizione fiscale: %s ' % (
             wizard.fiscal_position_id.name)
 
+        # ---------------------------------------------------------------------
+        # Date
+        # ---------------------------------------------------------------------
         if from_date:
             domain.append(('invoice_id.date_invoice', '>=', from_date))
             filter_name += ', Dalla data %s' % from_date
         if to_date:
-            domain.append(('invoice_id.date_invoice', '>=', to_date))
+            domain.append(('invoice_id.date_invoice', '<=', to_date))
             filter_name += ', Alla data %s' % to_date
 
+        # ---------------------------------------------------------------------
+        # Number invoice
+        # ---------------------------------------------------------------------
         if from_invoice:
             domain.append(('invoice_id.number', '>=', from_invoice))
             filter_name += ', Dalla fattura %s' % from_invoice
