@@ -58,6 +58,9 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
         wizard = self.browse(cr, uid, ids, context=context)[0]
         from_date = wizard.from_date
         to_date = wizard.to_date
+
+        from_invoice = wizard.from_invoice
+        to_invoice = wizard.to_invoice
         fiscal_position_id = wizard.fiscal_position_id.id
 
         # Generate domain:
@@ -66,8 +69,16 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             ('invoice_id.date_invoice', '<=', to_date),
             ('invoice_id.fiscal_position', '=', fiscal_position_id),
         ]
+
         filter_name = 'Movimenti periodo [%s : %s] posizione fiscale: %s ' % (
             from_date, to_date, wizard.fiscal_position_id.name)
+
+        if from_invoice:
+            domain.append(('invoice_id.number', '>=', from_invoice))
+            filter_name += ', Dalla fattura %s' % from_invoice
+        if to_invoice:
+            domain.append(('invoice_id.number', '<=', to_invoice))
+            filter_name += ', Alla fattura %s' % to_invoice
 
         line_ids = line_pool.search(cr, uid, domain, context=context)
         # product_db = {}
@@ -284,4 +295,6 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             'account.fiscal.position', 'Posizione fiscale', required=True),
         'from_date': fields.date('From date >='),
         'to_date': fields.date('To date <='),
+        'from_invoice': fields.char('Dalla fattura <=', size=20),
+        'to_invoice': fields.char('Alla fattura <=', size=20),
         }
