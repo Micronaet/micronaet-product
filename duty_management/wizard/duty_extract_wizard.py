@@ -298,8 +298,8 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
     _columns = {
         'fiscal_position_id': fields.many2one(
             'account.fiscal.position', 'Posizione fiscale', required=True),
-        'from_date': fields.date('From date >='),
-        'to_date': fields.date('To date <='),
+        'from_date': fields.date('Dalla data >='),
+        'to_date': fields.date('Alla data <='),
         'from_invoice': fields.char('Dalla fattura <=', size=20),
         'to_invoice': fields.char('Alla fattura <=', size=20),
         }
