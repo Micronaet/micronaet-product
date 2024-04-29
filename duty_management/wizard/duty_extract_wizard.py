@@ -93,6 +93,7 @@ class AccountDutyInvoiceExtractWizard(orm.TransientModel):
             filter_name += ', Alla fattura %s' % to_invoice
 
         line_ids = line_pool.search(cr, uid, domain, context=context)
+        _logger.warning('Searcing invoice with domain %s' % (domain, ))
         # product_db = {}
 
         lines = []
