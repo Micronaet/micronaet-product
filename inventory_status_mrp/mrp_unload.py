@@ -41,7 +41,7 @@ _logger = logging.getLogger(__name__)
 
 
 class MrpProduction(orm.Model):
-    """ Model name: MRP PRoduction
+    """ Model name: MRP Production
     """
 
     _inherit = 'mrp.production'
@@ -73,7 +73,6 @@ class MrpProduction(orm.Model):
         # ---------------------------------------------------------------------
         filename = '/home/administrator/photo/log/mrp_unload.xlsx'
         WB = xlsxwriter.Workbook(filename)
-
         self.WS = WB.add_worksheet('Unload')  # Work Sheet:
         self.counter = 0  # Row counters:
         # Write header
