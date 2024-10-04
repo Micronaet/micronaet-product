@@ -66,11 +66,15 @@ class EDIPartner(orm.Model):
     def EDI_order(self, cr, uid, ids, context=None):
         """ Export Order for partner Company 1
         """
+        # Pool used:
+        excel_pool = self.pool.get('excel.writer')
+        order_pool = self.pool.get('sale.order')
+
         if context is None:
             context = {}
         document_id = context['document_id']
 
-        document = self.browse(cr, uid, document_id, context=context)
+        document = order_pool.browse(cr, uid, document_id, context=context)
         partner = document.partner_id
         edi_partner = partner.edi_partner_id
 
@@ -83,8 +87,6 @@ class EDIPartner(orm.Model):
         # ---------------------------------------------------------------------
         _logger.info('START EDI Confirm Order company 1')
 
-        # Pool used:
-        excel_pool = self.pool.get('excel.writer')
         ws_name = 'Conferma ordine'
         header = []
         width = [40, ]
@@ -108,11 +110,16 @@ class EDIPartner(orm.Model):
     def EDI_invoice(self, cr, uid, ids, context=None):
         """ Export Order for partner Company 1
         """
+        # Pool used:
+        excel_pool = self.pool.get('excel.writer')
+        invoice_pool = self.pool.get('account.invoice')
+
         if context is None:
             context = {}
         document_id = context['document_id']
 
-        document = self.browse(cr, uid, document_id, context=context)
+        document = invoice_pool.browse(
+            cr, uid, document_id, context=context)
         partner = document.partner_id
         edi_partner = partner.edi_partner_id
 
@@ -125,6 +132,4 @@ class EDIPartner(orm.Model):
         # ---------------------------------------------------------------------
         _logger.info('START EDI Confirm Order company 1')
 
-        # Pool used:
-        excel_pool = self.pool.get('excel.writer')
         return True
