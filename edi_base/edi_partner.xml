@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!-- Inherit sale.order -->
+        <record id="view_order_EDI_partnerform" model="ir.ui.view">
+            <field name="name">EDI Sale order</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <field name="has_edi_partner" invisible="1"/>
+                    <button name="EDI_order" string="EDI" groups="edi_base.group_EDI" attrs="{'invisible: [('has_edi_partner', '=', False)]}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
