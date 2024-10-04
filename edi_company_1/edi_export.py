@@ -228,22 +228,32 @@ class EDIPartner(orm.Model):
             ]
         detail_col = len(header_line)
 
+        position = 0
         for line in document.order_line:
+            position += 1
             row += 1
+
+            # Header part:
             excel_pool.write_xls_line(
                 ws_name, row, header_line, default_format=f_text)
 
+            # Data:
+            product = line.product_id
+            # todo ean13 or ean13_mono
+            vat = line.vat_id[0].code or ''
+
+            # Detail part:
             detail_line = [
-                '',  # L-Posizione
-                '',  # L-EAN
-                '',  # L-Nr. Articolo Fornitore
-                '',  # L-Nr. Articolo Interno
-                '',  # L-Descrizione
-                '',  # L-Quantità
-                '',  # L-Unità di Misura
-                '',  # L-Quantità UdM
-                '',  # L-Costo Lordo
-                '',  # L-IVA %
+                position,  # L-Posizione
+                product.ean13 or '',  # L-EAN
+                product.default_code or '',  # L-Nr. Articolo Fornitore
+                '',  # L-Nr. Articolo Interno  # OPTIONAL
+                line.name or '',  # L-Descrizione
+                line.product_uom_qty or 0.0,  # L-Quantità
+                '',  # L-Unità di Misura  OPTIONAL (they use custom code!)
+                line.product_uom_qty or 0.0,  # L-Quantità UdM
+                line.price_unit or 0.0,  # L-Costo Lordo  # todo unit?
+                vat,  # L-IVA %
                 '',  # L-Sconto 1%
                 '',  # L-Sconto 2%
                 '',  # L-Sconto 3%
