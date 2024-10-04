@@ -272,13 +272,13 @@ class EDIPartner(orm.Model):
                 0.0,  # L-Sconto Promo 3%
                 0.0,  # L-Sconto Promo 4%
                 0.0,  # L-Sconto Promo 5%
-                line.subtotal,  # L-Importo Riga
+                line.price_subtotal,  # L-Importo Riga
                 0.0,  # L-Prezzo Etichette
                 0.0,  # L-Quantità Etichette
                 '',  # L-Intra Cod. Tariffa
-                '',  # L-Intra Peso Lordo
-                '',  # L-Intra Peso Netto
-                '',  # L-Intra Numero Colli
+                0.0,  # L-Intra Peso Lordo
+                0.0,  # L-Intra Peso Netto
+                0.0,  # L-Intra Numero Colli
                 '',  # L-Passp. Nr. RUOP
                 '',  # L-Passp. Lotto
                 '',  # L-Quantità per Kit
