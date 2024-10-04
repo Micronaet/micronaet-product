@@ -33,15 +33,15 @@
                 <form string="EDI Partner" version="7.0">
                     <sheet>
                         <group col="4" colspan="4">
-                            <field name="code"/>
+                            <field name="code" readonly="1"/>
                             <field name="name"/>
 
                             <field name="email"/>
                             <field name="folder"/>
 
-                            <field name="quotation"/>
-                            <field name="order"/>
-                            <field name="invoice"/>
+                            <field name="quotation" readonly="1"/>
+                            <field name="order" readonly="1"/>
+                            <field name="invoice" readonly="1"/>
                         </group>
                     </sheet>
                 </form>
