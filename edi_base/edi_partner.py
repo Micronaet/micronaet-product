@@ -81,6 +81,10 @@ class ResPartner(orm.Model):
             help='Se il cliente EDI abbinato è partner di esportazione per '
                  'fatture, ordini o offerte',
         ),
+        'edi_code': fields.char(
+            'Codice EDI', size=10,
+            help='Codice EDI utilizzato per indicare a volte un centro di '
+                 'costo o una destsinazione')
     }
 
 

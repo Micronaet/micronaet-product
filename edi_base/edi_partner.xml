@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <field name="email" position="after">
                     <field name="edi_partner_id" />
+                    <field name="edi_code" />
                 </field>
             </field>
         </record>
