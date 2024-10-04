@@ -56,9 +56,9 @@ class EDIPartner(orm.Model):
         )
 
     _columns = {
-        'name': fields.char('Nome EDI', size=50),
+        'name': fields.char('Nome EDI', size=50, required=True),
         'code': fields.char(
-            'Codice', size=4,
+            'Codice', size=4, required=True,
             help='Codice usato per differenziare le procedure'),
         'email': fields.char('E-mail', help='Invia per E-mail'),
         'folder': fields.char('Folder', help='Esporta in cartella'),
