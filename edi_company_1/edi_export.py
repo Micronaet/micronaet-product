@@ -192,7 +192,7 @@ class EDIPartner(orm.Model):
             edi_code or '',  # H-Dest. Codice Punto Vendita
             '',  # RecordID BLANK
             document.name,  # H-Nr. Documento
-            str(document.date_order)[:10],  # H-Data Documento
+            self.edi_date(document.date_order),  # H-Data Documento
             '',  # H-Nazione Fornitore
             '',  # H-CF Fornitore
             '',  # H-Partita IVA Cliente

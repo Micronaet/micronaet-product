@@ -38,6 +38,28 @@ class EDIPartner(orm.Model):
     _order = 'code'
 
     # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
+    def edi_date(self, value, format='IT'):
+        """ Convert date in Text
+        """
+        value = (value or '').strip()[:10]
+        if not value:
+            return ''
+        if format == 'IT':
+            return '{}/{}/{}'.format(
+                value[-2:],
+                value[5:7],
+                value[:4],
+            )
+        elif format == 'ISO':
+            return value
+        else:  # Error?
+            _logger.warning('Date missing format: {} >> {}'.format(
+                value, format,
+            ))
+            return value
+
+    # -------------------------------------------------------------------------
     # Button action for all objects:
     # -------------------------------------------------------------------------
     def EDI_quotation(self, cr, uid, ids, context=None):
