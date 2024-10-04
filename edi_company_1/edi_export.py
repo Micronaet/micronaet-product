@@ -159,7 +159,7 @@ class EDIPartner(orm.Model):
             u'L-Ean Padre',
             u'L-Codice Famiglia',
         ]
-        width = [5, 10]
+        width = [20 for l in range(len(header))]
 
         excel_pool.create_worksheet(name=ws_name)
         excel_pool.column_width(ws_name, width)
