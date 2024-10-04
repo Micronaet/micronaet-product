@@ -4,6 +4,10 @@
         <record id="edi_partner_1" model="edi.partner">
             <field name="code">1</field>
             <field name="name">EDI parter 1</field>
+
+            <!--<field name="quotation">1</field>-->
+            <field name="order" eval="1"/>
+            <field name="invoice" eval=""/>
         </record>
     </data>
 </openerp>

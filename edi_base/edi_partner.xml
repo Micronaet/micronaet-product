@@ -32,15 +32,17 @@
             <field name="arch" type="xml">
                 <form string="EDI Partner" version="7.0">
                     <sheet>
-                        <field name="code"/>
-                        <field name="name"/>
+                        <group col="4" colspan="4">
+                            <field name="code"/>
+                            <field name="name"/>
 
-                        <field name="email"/>
-                        <field name="folder"/>
+                            <field name="email"/>
+                            <field name="folder"/>
 
-                        <field name="quotation"/>
-                        <field name="order"/>
-                        <field name="invoice"/>
+                            <field name="quotation"/>
+                            <field name="order"/>
+                            <field name="invoice"/>
+                        </group>
                     </sheet>
                 </form>
             </field>
