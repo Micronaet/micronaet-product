@@ -262,19 +262,19 @@ class EDIPartner(orm.Model):
                 line.product_uom_qty or 0.0,  # L-Quantità UdM
                 line.price_unit or 0.0,  # L-Costo Lordo  # todo unit?
                 vat,  # L-IVA %
-                float(discount_value.get(0, 0.0),  # L-Sconto 1%
-                '',  # L-Sconto 2%
-                '',  # L-Sconto 3%
-                '',  # L-Sconto 4%
-                '',  # L-Sconto 5%
-                '',  # L-Sconto Promo 1%
-                '',  # L-Sconto Promo 2%
-                '',  # L-Sconto Promo 3%
-                '',  # L-Sconto Promo 4%
-                '',  # L-Sconto Promo 5%
-                '',  # L-Importo Riga
-                '',  # L-Prezzo Etichette
-                '',  # L-Quantità Etichette
+                float(discount_value.get(0, 0.0)),  # L-Sconto 1%
+                float(discount_value.get(1, 0.0)),  # L-Sconto 2%
+                float(discount_value.get(2, 0.0)),  # L-Sconto 3%
+                float(discount_value.get(3, 0.0)),  # L-Sconto 4%
+                float(discount_value.get(4, 0.0)),  # L-Sconto 5%
+                0.0,  # L-Sconto Promo 1%
+                0.0,  # L-Sconto Promo 2%
+                0.0,  # L-Sconto Promo 3%
+                0.0,  # L-Sconto Promo 4%
+                0.0,  # L-Sconto Promo 5%
+                line.subtotal,  # L-Importo Riga
+                0.0,  # L-Prezzo Etichette
+                0.0,  # L-Quantità Etichette
                 '',  # L-Intra Cod. Tariffa
                 '',  # L-Intra Peso Lordo
                 '',  # L-Intra Peso Netto
