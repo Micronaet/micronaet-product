@@ -240,7 +240,7 @@ class EDIPartner(orm.Model):
             # Data:
             product = line.product_id
             # todo ean13 or ean13_mono
-            vat = line.vat_id[0].code or ''
+            vat = line.tax_id[0].code or ''
 
             # Detail part:
             detail_line = [
