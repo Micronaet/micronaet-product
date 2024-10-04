@@ -220,7 +220,7 @@ class EDIPartner(orm.Model):
             0,  # H-Nr. Pianali
             0,  # H-Nr. Prolunghe Corte
             0,  # H-Nr. Prolunghe Lunghe
-            0,  # H-Nr. Colli
+            document.parcels or 0,  # H-Nr. Colli
             0,  # H-Nr. Pallet EPAL
             0,  # H-Nr. Pallet a Perdere
             '',  # H-Nome Corriere Incaricato
