@@ -103,12 +103,16 @@ class SaleOrder(orm.Model):
                 _('Partner non impostato per gestione EDI'),
             )
 
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx['document_id'] = ids
         if order.state in ('cancel', 'sent', 'draft'):
             return edi_partner_pool.EDI_quotation(
-                cr, uid, [edi_partner.id], context=context)
+                cr, uid, [edi_partner.id], context=ctx)
         else:
             return edi_partner_pool.EDI_order(
-                cr, uid, [edi_partner.id], context=context)
+                cr, uid, [edi_partner.id], context=ctx)
 
     # Function field:
     def _get_has_edi_partner(
@@ -150,8 +154,12 @@ class AccountInvoice(orm.Model):
                 _('Partner non impostato per gestione EDI'),
             )
 
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx['document_id'] = ids
         return edi_partner_pool.EDI_invoice(
-            cr, uid, [edi_partner.id], context=context)
+            cr, uid, [edi_partner.id], context=ctx)
 
     # Function field:
     def _get_has_edi_partner(

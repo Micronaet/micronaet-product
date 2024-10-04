@@ -40,11 +40,16 @@ class EDIPartner(orm.Model):
     # -------------------------------------------------------------------------
     # Override method for export Order confirm:
     # -------------------------------------------------------------------------
+    '''
     def EDI_quotation(self, cr, uid, ids, context=None):
         """ Export Order for partner Company 1
         """
-        order = self.browse(cr, uid, ids, context=context)[0]
-        partner = order.partner_id
+        if context is None:
+            context = {}
+        document_id = context['document_id']
+
+        document = self.browse(cr, uid, document_id, context=context)
+        partner = document.partner_id
         edi_partner = partner.edi_partner_id
         if edi_partner.code != edi_code:
             return super(EDIPartner, self).EDI_quotation(
@@ -53,6 +58,7 @@ class EDIPartner(orm.Model):
         _logger.info('START EDI Quotation Order company 1')
         # Note: No Quotation management for this EDI
         return True
+    '''
 
     # -------------------------------------------------------------------------
     # Override method for export Order confirm:
@@ -60,16 +66,40 @@ class EDIPartner(orm.Model):
     def EDI_order(self, cr, uid, ids, context=None):
         """ Export Order for partner Company 1
         """
-        order = self.browse(cr, uid, ids, context=context)[0]
-        partner = order.partner_id
+        if context is None:
+            context = {}
+        document_id = context['document_id']
+
+        document = self.browse(cr, uid, document_id, context=context)
+        partner = document.partner_id
         edi_partner = partner.edi_partner_id
 
         if edi_partner.code != edi_code:
             return super(EDIPartner, self).EDI_quotation(
                 cr, uid, ids, context=context)
 
+        # ---------------------------------------------------------------------
+        # Procedure for this Company
+        # ---------------------------------------------------------------------
         _logger.info('START EDI Confirm Order company 1')
-        # todo
+
+        # Pool used:
+        excel_pool = self.pool.get('excel.writer')
+        ws_name = 'Conferma ordine'
+        header = []
+        width = [40, ]
+
+        excel_pool.create_worksheet(name=ws_name)
+        excel_pool.column_width(ws_name, width)
+
+        # Format
+        f_text = excel_pool.get_format(key='text')
+        f_number = excel_pool.get_format(key='number')
+
+        row = 0
+        line = ['Prova']
+        excel_pool.write_xls_line(
+            ws_name, row, line, default_format=f_text)
         return True
 
     # -------------------------------------------------------------------------
@@ -78,14 +108,23 @@ class EDIPartner(orm.Model):
     def EDI_invoice(self, cr, uid, ids, context=None):
         """ Export Order for partner Company 1
         """
-        order = self.browse(cr, uid, ids, context=context)[0]
-        partner = order.partner_id
+        if context is None:
+            context = {}
+        document_id = context['document_id']
+
+        document = self.browse(cr, uid, document_id, context=context)
+        partner = document.partner_id
         edi_partner = partner.edi_partner_id
 
         if edi_partner.code != edi_code:
             return super(EDIPartner, self).EDI_quotation(
                 cr, uid, ids, context=context)
 
+        # ---------------------------------------------------------------------
+        # Procedure for this Company
+        # ---------------------------------------------------------------------
         _logger.info('START EDI Confirm Order company 1')
-        # todo
+
+        # Pool used:
+        excel_pool = self.pool.get('excel.writer')
         return True
