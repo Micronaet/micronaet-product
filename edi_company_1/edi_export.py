@@ -102,7 +102,8 @@ class EDIPartner(orm.Model):
         line = ['Prova']
         excel_pool.write_xls_line(
             ws_name, row, line, default_format=f_text)
-        return True
+        return excel_pool.return_attachment(
+            cr, uid, 'Order confirm')
 
     # -------------------------------------------------------------------------
     # Override method for export Invoice:
