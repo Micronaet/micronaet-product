@@ -29,7 +29,7 @@ from openerp.tools.translate import _
 _logger = logging.getLogger(__name__)
 
 # This module code:
-edi_code = '1'
+module_edi_code = '1'
 
 
 class EDIPartner(orm.Model):
@@ -76,9 +76,11 @@ class EDIPartner(orm.Model):
 
         document = order_pool.browse(cr, uid, document_id, context=context)
         partner = document.partner_id
+        destination = document.destination_partner_id
+        invoice = document.invoice_partner_id
         edi_partner = partner.edi_partner_id
 
-        if edi_partner.code != edi_code:
+        if edi_partner.code != module_edi_code:
             return super(EDIPartner, self).EDI_quotation(
                 cr, uid, ids, context=context)
 
@@ -179,13 +181,18 @@ class EDIPartner(orm.Model):
         # ---------------------------------------------------------------------
         # B. Data lines:
         # ---------------------------------------------------------------------
+        if destination:
+            edi_code = destination.edi_code or partner.edi_code or ''
+        else:
+            edi_code = partner.edi_code or ''
+
         header_line = [
             1,  # RecordType
             document.company_id.vat[-11:],  # H-Partita IVA Fornitore
-            '',  # H-Dest. Codice Punto Vendita
-            '',  # RecordID
-            '',  # H-Nr. Documento
-            '',  # H-Data Documento
+            edi_code or '',  # H-Dest. Codice Punto Vendita
+            '',  # RecordID BLANK
+            document.name,  # H-Nr. Documento
+            str(document.date_order)[:10],  # H-Data Documento
             '',  # H-Nazione Fornitore
             '',  # H-CF Fornitore
             '',  # H-Partita IVA Cliente
