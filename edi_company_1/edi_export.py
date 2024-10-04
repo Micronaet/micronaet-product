@@ -185,13 +185,15 @@ class EDIPartner(orm.Model):
             document.company_id.vat,
         ]
         detail_col = len(header_line)
+
         for line in document.order_line:
+            row += 1
             excel_pool.write_xls_line(
                 ws_name, row, header_line, default_format=f_text)
 
-            detail_line = []
+            detail_line = ['', ]
             excel_pool.write_xls_line(
-                ws_name, row, header_line, default_format=f_text,
+                ws_name, row, detail_line, default_format=f_text,
                 col=detail_col)
 
         return excel_pool.return_attachment(
