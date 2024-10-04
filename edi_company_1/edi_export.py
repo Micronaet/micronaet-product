@@ -247,7 +247,7 @@ class EDIPartner(orm.Model):
                 vat = 22
 
             multi_discount_rates = line.multi_discount_rates or ''
-            discount = dict([a for a in enumerate(
+            discount_value = dict([a for a in enumerate(
                 multi_discount_rates.split('+'))])
 
             # Detail part:
@@ -262,7 +262,7 @@ class EDIPartner(orm.Model):
                 line.product_uom_qty or 0.0,  # L-Quantità UdM
                 line.price_unit or 0.0,  # L-Costo Lordo  # todo unit?
                 vat,  # L-IVA %
-                float(discount.get(0, 0.0),  # L-Sconto 1%
+                float(discount_value.get(0, 0.0),  # L-Sconto 1%
                 '',  # L-Sconto 2%
                 '',  # L-Sconto 3%
                 '',  # L-Sconto 4%
