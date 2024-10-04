@@ -76,8 +76,8 @@ class EDIPartner(orm.Model):
 
         document = order_pool.browse(cr, uid, document_id, context=context)
         partner = document.partner_id
-        destination = document.destination_partner_id
-        invoice = document.invoice_partner_id
+        destination = document.destination_partner_id or partner
+        invoice = document.invoice_partner_id or partner
         company = document.company_id
 
         edi_partner = partner.edi_partner_id
@@ -183,45 +183,48 @@ class EDIPartner(orm.Model):
         # ---------------------------------------------------------------------
         # B. Data lines:
         # ---------------------------------------------------------------------
-        edi_code = destination.edi_code or partner.edi_code or ''
+        edi_code = destination.edi_code or ''  # if not destination is partner!
         header_line = [
             1,  # RecordType
-            company.vat[-11:],  # H-Partita IVA Fornitore
+            (company.vat or '')[-11:],  # H-Partita IVA Fornitore
             edi_code or '',  # H-Dest. Codice Punto Vendita
             '',  # RecordID BLANK
             document.name,  # H-Nr. Documento
             self.edi_date(document.date_order),  # H-Data Documento
             company.country_id.code or 'IT',  # H-Nazione Fornitore
-            company.fiscalcode or '',  # H-CF Fornitore
-            '',  # H-Partita IVA Cliente
-            '',  # H-NazioneCliente
-            '',  # H-CF Cliente
-            '',  # H-Dest. Indirizzo
-            '',  # H-Dest. Città
-            '',  # H-Dest. Data Cons. Prevista
-            '',  # H-Nr. Ordine GT
-            '',  # H-Data Ordine GT
+            '',  # H-CF Fornitore  (only if VAT not present)
+
+            # todo Chi è il cliente?
+            (partner.vat or '')[-11],  # H-Partita IVA Cliente  ???
+            partner.country_id.code or 'IT',  # H-NazioneCliente  ???
+            '',  # H-CF Cliente  ???
+            destination.street or '',  # H-Dest. Indirizzo  ???
+            destination.city or '',  # H-Dest. Città
+            self.edi_date(
+                document.date_deadline),  # H-Dest. Data Cons. Prevista
+            document.client_order_code or '',  # H-Nr. Ordine GT
+            '',  # H-Data Ordine GT  OPTIONAL
             '',  # H-Nr. Ordine Fornitore
-            '',  # H-Metodo di Pagamento
-            '',  # H-Condizioni di Pagamento
+            3,  # H-Metodo di Pagamento  # todo manage in payment
+            0,  # H-Condizioni di Pagamento  # todo manage in paymeny
             '',  # H-IBAN Pagamento
             '',  # H-Nr. Fornitore Origine
-            '',  # H-Percentuale Commissione
-            '',  # H-Costo Commissioni
-            '',  # H-Costo Trasporto
-            '',  # H-Costo Etichettatura
-            '',  # H-Costo Imballi
-            '',  # H-Nr. Carrelli CC
-            '',  # H-Nr. Carrello c/Placca
-            '',  # H-Nr. Carrelli senza Placca
-            '',  # H-Nr. Pianali
-            '',  # H-Nr. Prolunghe Corte
-            '',  # H-Nr. Prolunghe Lunghe
-            '',  # H-Nr. Colli
-            '',  # H-Nr. Pallet EPAL
-            '',  # H-Nr. Pallet a Perdere
+            0.0,  # H-Percentuale Commissione
+            0.0,  # H-Costo Commissioni
+            0.0,  # H-Costo Trasporto
+            0.0,  # H-Costo Etichettatura
+            0.0,  # H-Costo Imballi
+            0,  # H-Nr. Carrelli CC
+            0,  # H-Nr. Carrello c/Placca
+            0,  # H-Nr. Carrelli senza Placca
+            0,  # H-Nr. Pianali
+            0,  # H-Nr. Prolunghe Corte
+            0,  # H-Nr. Prolunghe Lunghe
+            0,  # H-Nr. Colli
+            0,  # H-Nr. Pallet EPAL
+            0,  # H-Nr. Pallet a Perdere
             '',  # H-Nome Corriere Incaricato
-            '',  # H-Stato
+            '1',  # H-Stato  # '1' Definitivo
             ]
         detail_col = len(header_line)
 
