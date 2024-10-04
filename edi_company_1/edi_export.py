@@ -180,9 +180,19 @@ class EDIPartner(orm.Model):
         # B. Data lines:
         # ---------------------------------------------------------------------
         row += 1
-        line = ['Prova']
-        excel_pool.write_xls_line(
-            ws_name, row, line, default_format=f_text)
+        header_line = [
+            1,  # Order confirmation
+            document.company_id.vat,
+        ]
+        detail_col = len(header_line)
+        for line in document.order_line:
+            excel_pool.write_xls_line(
+                ws_name, row, header_line, default_format=f_text)
+
+            detail_line = []
+            excel_pool.write_xls_line(
+                ws_name, row, header_line, default_format=f_text,
+                col=detail_col)
 
         return excel_pool.return_attachment(
             cr, uid, 'Order confirm')
