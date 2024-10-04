@@ -78,6 +78,8 @@ class EDIPartner(orm.Model):
         partner = document.partner_id
         destination = document.destination_partner_id
         invoice = document.invoice_partner_id
+        company = document.company_id
+
         edi_partner = partner.edi_partner_id
 
         if edi_partner.code != module_edi_code:
@@ -181,20 +183,16 @@ class EDIPartner(orm.Model):
         # ---------------------------------------------------------------------
         # B. Data lines:
         # ---------------------------------------------------------------------
-        if destination:
-            edi_code = destination.edi_code or partner.edi_code or ''
-        else:
-            edi_code = partner.edi_code or ''
-
+        edi_code = destination.edi_code or partner.edi_code or ''
         header_line = [
             1,  # RecordType
-            document.company_id.vat[-11:],  # H-Partita IVA Fornitore
+            company.vat[-11:],  # H-Partita IVA Fornitore
             edi_code or '',  # H-Dest. Codice Punto Vendita
             '',  # RecordID BLANK
             document.name,  # H-Nr. Documento
             self.edi_date(document.date_order),  # H-Data Documento
-            '',  # H-Nazione Fornitore
-            '',  # H-CF Fornitore
+            company.country_id.code or 'IT',  # H-Nazione Fornitore
+            company.fiscalcode or '',  # H-CF Fornitore
             '',  # H-Partita IVA Cliente
             '',  # H-NazioneCliente
             '',  # H-CF Cliente
