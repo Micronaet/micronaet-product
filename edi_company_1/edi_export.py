@@ -179,7 +179,6 @@ class EDIPartner(orm.Model):
         # ---------------------------------------------------------------------
         # B. Data lines:
         # ---------------------------------------------------------------------
-        row += 1
         header_line = [
             1,  # Order confirmation
             document.company_id.vat,
