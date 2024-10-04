@@ -88,20 +88,102 @@ class EDIPartner(orm.Model):
         _logger.info('START EDI Confirm Order company 1')
 
         ws_name = 'Conferma ordine'
-        header = []
-        width = [40, ]
+        header = [
+            'RecordType',
+            'H-Partita IVA Fornitore',
+            'H-Dest. Codice Punto Vendita',
+            'RecordID',
+            'H-Nr. Documento',
+            'H-Data Documento',
+            'H-Nazione Fornitore',
+            'H-CF Fornitore',
+            'H-Partita IVA Cliente',
+            'H-NazioneCliente',
+            'H-CF Cliente',
+            'H-Dest. Indirizzo',
+            'H-Dest. Città',
+            'H-Dest. Data Cons. Prevista',
+            'H-Nr. Ordine GT',
+            'H-Data Ordine GT',
+            'H-Nr. Ordine Fornitore',
+            'H-Metodo di Pagamento',
+            'H-Condizioni di Pagamento',
+            'H-IBAN Pagamento',
+            'H-Nr. Fornitore Origine',
+            'H-Percentuale Commissione',
+            'H-Costo Commissioni',
+            'H-Costo Trasporto',
+            'H-Costo Etichettatura',
+            'H-Costo Imballi',
+            'H-Nr. Carrelli CC',
+            'H-Nr. Carrello c/Placca',
+            'H-Nr. Carrelli senza Placca',
+            'H-Nr. Pianali',
+            'H-Nr. Prolunghe Corte',
+            'H-Nr. Prolunghe Lunghe',
+            'H-Nr. Colli',
+            'H-Nr. Pallet EPAL',
+            'H-Nr. Pallet a Perdere',
+            'H-Nome Corriere Incaricato',
+            'H-Stato',
+            'L-Posizione',
+            'L-EAN',
+            'L-Nr. Articolo Fornitore',
+            'L-Nr. Articolo Interno',
+            'L-Descrizione',
+            'L-Quantità',
+            'L-Unità di Misura',
+            'L-Quantità UdM',
+            'L-Costo Lordo',
+            'L-IVA %',
+            'L-Sconto 1%',
+            'L-Sconto 2%',
+            'L-Sconto 3%',
+            'L-Sconto 4%',
+            'L-Sconto 5%',
+            'L-Sconto Promo 1%',
+            'L-Sconto Promo 2%',
+            'L-Sconto Promo 3%',
+            'L-Sconto Promo 4%',
+            'L-Sconto Promo 5%',
+            'L-Importo Riga',
+            'L-Prezzo Etichette',
+            'L-Quantità Etichette',
+            'L-Intra Cod. Tariffa',
+            'L-Intra Peso Lordo',
+            'L-Intra Peso Netto',
+            'L-Intra Numero Colli',
+            'L-Passp. Nr. RUOP',
+            'L-Passp. Lotto',
+            'L-Quantità per Kit',
+            'L-Ean Padre',
+            'L-Codice Famiglia',
+        ]
+        width = [5, 10]
 
         excel_pool.create_worksheet(name=ws_name)
         excel_pool.column_width(ws_name, width)
 
         # Format
+        f_header = excel_pool.get_format(key='header')
         f_text = excel_pool.get_format(key='text')
         f_number = excel_pool.get_format(key='number')
 
+        # ---------------------------------------------------------------------
+        # A. Header line:
+        # ---------------------------------------------------------------------
         row = 0
+        excel_pool.write_xls_line(
+            ws_name, row, header, default_format=f_header)
+
+        # ---------------------------------------------------------------------
+        # B. Data lines:
+        # ---------------------------------------------------------------------
+        row += 1
         line = ['Prova']
         excel_pool.write_xls_line(
             ws_name, row, line, default_format=f_text)
+
         return excel_pool.return_attachment(
             cr, uid, 'Order confirm')
 
