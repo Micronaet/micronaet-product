@@ -240,7 +240,15 @@ class EDIPartner(orm.Model):
             # Data:
             product = line.product_id
             # todo ean13 or ean13_mono
-            vat = line.tax_id[0].code or ''
+            try:
+                vat = int(100.0 * line.tax_id[0].amount)
+            except:
+                _logger.error('Vat error, used 22')
+                vat = 22
+
+            multi_discount_rates = line.multi_discount_rates or ''
+            discount = dict([a for a in enumerate(
+                multi_discount_rates.split('+'))])
 
             # Detail part:
             detail_line = [
@@ -254,7 +262,7 @@ class EDIPartner(orm.Model):
                 line.product_uom_qty or 0.0,  # L-Quantità UdM
                 line.price_unit or 0.0,  # L-Costo Lordo  # todo unit?
                 vat,  # L-IVA %
-                '',  # L-Sconto 1%
+                float(discount.get(0, 0.0),  # L-Sconto 1%
                 '',  # L-Sconto 2%
                 '',  # L-Sconto 3%
                 '',  # L-Sconto 4%
