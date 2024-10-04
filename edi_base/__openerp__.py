@@ -33,7 +33,7 @@
     'depends': [
         'base',
         'sale',
-        'invoice',
+        'account',
         'excel_export',  # Export report
         ],
     'init_xml': [],
