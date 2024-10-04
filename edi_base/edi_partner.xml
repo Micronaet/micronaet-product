@@ -20,7 +20,7 @@
             <field name="arch" type="xml">
                 <field name="state" position="before">
                     <field name="has_edi_partner" invisible="1"/>
-                    <button name="EDI_order" type="object" string="EDI" groups="edi_base.group_EDI" attrs="{'invisible': [('has_edi_partner', '=', False)]}" icon="STOCK_DIRECTORY_MENU"/>
+                    <button name="EDI_order" type="object" string="EDI" groups="edi_base.group_EDI" attrs="{'invisible': [('has_edi_partner', '=', False)]}" icon="STOCK_DIRECTORY_MENU"/> <!--terp-stage-->
                 </field>
             </field>
         </record>
