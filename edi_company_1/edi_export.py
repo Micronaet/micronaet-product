@@ -180,9 +180,44 @@ class EDIPartner(orm.Model):
         # B. Data lines:
         # ---------------------------------------------------------------------
         header_line = [
-            1,  # Order confirmation
-            document.company_id.vat,
-        ]
+            1,  # RecordType
+            document.company_id.vat[-11:],  # H-Partita IVA Fornitore
+            '',  # H-Dest. Codice Punto Vendita
+            '',  # RecordID
+            '',  # H-Nr. Documento
+            '',  # H-Data Documento
+            '',  # H-Nazione Fornitore
+            '',  # H-CF Fornitore
+            '',  # H-Partita IVA Cliente
+            '',  # H-NazioneCliente
+            '',  # H-CF Cliente
+            '',  # H-Dest. Indirizzo
+            '',  # H-Dest. Città
+            '',  # H-Dest. Data Cons. Prevista
+            '',  # H-Nr. Ordine GT
+            '',  # H-Data Ordine GT
+            '',  # H-Nr. Ordine Fornitore
+            '',  # H-Metodo di Pagamento
+            '',  # H-Condizioni di Pagamento
+            '',  # H-IBAN Pagamento
+            '',  # H-Nr. Fornitore Origine
+            '',  # H-Percentuale Commissione
+            '',  # H-Costo Commissioni
+            '',  # H-Costo Trasporto
+            '',  # H-Costo Etichettatura
+            '',  # H-Costo Imballi
+            '',  # H-Nr. Carrelli CC
+            '',  # H-Nr. Carrello c/Placca
+            '',  # H-Nr. Carrelli senza Placca
+            '',  # H-Nr. Pianali
+            '',  # H-Nr. Prolunghe Corte
+            '',  # H-Nr. Prolunghe Lunghe
+            '',  # H-Nr. Colli
+            '',  # H-Nr. Pallet EPAL
+            '',  # H-Nr. Pallet a Perdere
+            '',  # H-Nome Corriere Incaricato
+            '',  # H-Stato
+            ]
         detail_col = len(header_line)
 
         for line in document.order_line:
@@ -190,7 +225,40 @@ class EDIPartner(orm.Model):
             excel_pool.write_xls_line(
                 ws_name, row, header_line, default_format=f_text)
 
-            detail_line = ['', ]
+            detail_line = [
+                '',  # L-Posizione
+                '',  # L-EAN
+                '',  # L-Nr. Articolo Fornitore
+                '',  # L-Nr. Articolo Interno
+                '',  # L-Descrizione
+                '',  # L-Quantità
+                '',  # L-Unità di Misura
+                '',  # L-Quantità UdM
+                '',  # L-Costo Lordo
+                '',  # L-IVA %
+                '',  # L-Sconto 1%
+                '',  # L-Sconto 2%
+                '',  # L-Sconto 3%
+                '',  # L-Sconto 4%
+                '',  # L-Sconto 5%
+                '',  # L-Sconto Promo 1%
+                '',  # L-Sconto Promo 2%
+                '',  # L-Sconto Promo 3%
+                '',  # L-Sconto Promo 4%
+                '',  # L-Sconto Promo 5%
+                '',  # L-Importo Riga
+                '',  # L-Prezzo Etichette
+                '',  # L-Quantità Etichette
+                '',  # L-Intra Cod. Tariffa
+                '',  # L-Intra Peso Lordo
+                '',  # L-Intra Peso Netto
+                '',  # L-Intra Numero Colli
+                '',  # L-Passp. Nr. RUOP
+                '',  # L-Passp. Lotto
+                '',  # L-Quantità per Kit
+                '',  # L-Ean Padre
+                '',  # L-Codice Famiglia
+                ]
             excel_pool.write_xls_line(
                 ws_name, row, detail_line, default_format=f_text,
                 col=detail_col)
