@@ -37,23 +37,23 @@ class EDIPartner(orm.Model):
     _order = 'name'
     _order = 'code'
 
+    # -------------------------------------------------------------------------
+    # Button action for all objects:
+    # -------------------------------------------------------------------------
+    def EDI_quotation(self, cr, uid, ids, context=None):
+        """ Export Quotation for partner Company 1
+        """
+        _logger.error('This function must be overridden')
+
     def EDI_order(self, cr, uid, ids, context=None):
         """ Export Order for partner Company 1
         """
         _logger.error('This function must be overridden')
-        raise osv.except_osv(
-            _('Errore EDI'),
-            _('Partner non impostato per gestione EDI'),
-        )
 
     def EDI_invoice(self, cr, uid, ids, context=None):
         """ Export Invoice for partner Company 1
         """
         _logger.error('This function must be overridden')
-        raise osv.except_osv(
-            _('Errore EDI'),
-            _('Partner non impostato per gestione EDI'),
-        )
 
     _columns = {
         'name': fields.char('Nome EDI', size=50, required=True),
@@ -90,13 +90,38 @@ class SaleOrder(orm.Model):
 
     _inherit = 'sale.order'
 
+    def EDI_order(self, cr, uid, ids, context=None):
+        """ Call EDI partner Order action
+        """
+        edi_partner_pool = self.pool.get('edi.partner')
+
+        order = self.browse(cr, uid, ids, context=context)[0]
+        edi_partner = order.partner_id.edi_partner_id
+        if not edi_partner:
+            raise osv.except_osv(
+                _('Errore EDI'),
+                _('Partner non impostato per gestione EDI'),
+            )
+
+        if order.state in ('cancel', 'sent', 'draft'):
+            return edi_partner_pool.EDI_quotation(
+                cr, uid, [edi_partner.id], context=context)
+        else:
+            return edi_partner_pool.EDI_order(
+                cr, uid, [edi_partner.id], context=context)
+
+    # Function field:
     def _get_has_edi_partner(
             self, cr, uid, ids, fields, args, context=None):
         """ Fields function for calculate
         """
         res = {}
         for order in self.browse(cr, uid, ids, context=context):
-            res[order.id] = order.partner_id.edi_partner_id
+            edi_partner = order.partner_id.edi_partner_id
+            if order.state in ('cancel', 'sent', 'draft'):
+                res[order.id] = edi_partner and edi_partner.quotation
+            else:
+                res[order.id] = edi_partner and edi_partner.order
         return res
 
     _columns = {
@@ -112,13 +137,31 @@ class AccountInvoice(orm.Model):
 
     _inherit = 'account.invoice'
 
+    def EDI_invoice(self, cr, uid, ids, context=None):
+        """ Call EDI partner Invoice action
+        """
+        edi_partner_pool = self.pool.get('edi.partner')
+
+        invoice = self.browse(cr, uid, ids, context=context)[0]
+        edi_partner = invoice.partner_id.edi_partner_id
+        if not edi_partner:
+            raise osv.except_osv(
+                _('Errore EDI'),
+                _('Partner non impostato per gestione EDI'),
+            )
+
+        return edi_partner_pool.EDI_invoice(
+            cr, uid, [edi_partner.id], context=context)
+
+    # Function field:
     def _get_has_edi_partner(
             self, cr, uid, ids, fields, args, context=None):
         """ Fields function for calculate
         """
         res = {}
-        for order in self.browse(cr, uid, ids, context=context):
-            res[order.id] = order.partner_id.edi_partner_id
+        for invoice in self.browse(cr, uid, ids, context=context):
+            edi_partner = invoice.partner_id.edi_partner_id
+            res[invoice.id] = edi_partner and edi_partner.invoice
         return res
 
     _columns = {

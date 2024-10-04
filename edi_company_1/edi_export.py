@@ -40,20 +40,36 @@ class EDIPartner(orm.Model):
     # -------------------------------------------------------------------------
     # Override method for export Order confirm:
     # -------------------------------------------------------------------------
+    def EDI_quotation(self, cr, uid, ids, context=None):
+        """ Export Order for partner Company 1
+        """
+        order = self.browse(cr, uid, ids, context=context)[0]
+        partner = order.partner_id
+        edi_partner = partner.edi_partner_id
+        if edi_partner.code != edi_code:
+            return super(EDIPartner, self).EDI_quotation(
+                cr, uid, ids, context=context)
+
+        _logger.info('START EDI Quotation Order company 1')
+        # Note: No Quotation management for this EDI
+        return True
+
+    # -------------------------------------------------------------------------
+    # Override method for export Order confirm:
+    # -------------------------------------------------------------------------
     def EDI_order(self, cr, uid, ids, context=None):
         """ Export Order for partner Company 1
         """
         order = self.browse(cr, uid, ids, context=context)[0]
-
         partner = order.partner_id
-
         edi_partner = partner.edi_partner_id
-        if not edi_partner or edi_partner.code != edi_code:
-            return super(EDIPartner, self).export_order(
+
+        if edi_partner.code != edi_code:
+            return super(EDIPartner, self).EDI_quotation(
                 cr, uid, ids, context=context)
 
-        _logger.info('EDI Confirm Order company 1')
-
+        _logger.info('START EDI Confirm Order company 1')
+        # todo
         return True
 
     # -------------------------------------------------------------------------
@@ -63,14 +79,13 @@ class EDIPartner(orm.Model):
         """ Export Order for partner Company 1
         """
         order = self.browse(cr, uid, ids, context=context)[0]
-
         partner = order.partner_id
-
         edi_partner = partner.edi_partner_id
-        if not edi_partner or edi_partner.code != edi_code:
-            return super(EDIPartner, self).export_order(
+
+        if edi_partner.code != edi_code:
+            return super(EDIPartner, self).EDI_quotation(
                 cr, uid, ids, context=context)
 
-        _logger.info('EDI Confirm Order company 1')
-
+        _logger.info('START EDI Confirm Order company 1')
+        # todo
         return True
