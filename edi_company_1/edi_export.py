@@ -246,7 +246,7 @@ class EDIPartner(orm.Model):
                 _logger.error('Vat error, used 22')
                 vat = 22
 
-            multi_discount_rates = line.multi_discount_rates or ''
+            multi_discount_rates = line.multi_discount_rates or '0'
             discount_value = dict([a for a in enumerate(
                 multi_discount_rates.split('+'))])
 
