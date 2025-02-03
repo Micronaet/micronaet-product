@@ -202,11 +202,11 @@ class EDIPartner(orm.Model):
             destination.city or '',  # H-Dest. Città
             self.edi_date(
                 document.date_deadline),  # H-Dest. Data Cons. Prevista
-            document.client_order_code or '',  # H-Nr. Ordine GT
+            document.client_order_ref or '',  # H-Nr. Ordine GT
             '',  # H-Data Ordine GT  OPTIONAL
             '',  # H-Nr. Ordine Fornitore
             3,  # H-Metodo di Pagamento  # todo manage in payment
-            0,  # H-Condizioni di Pagamento  # todo manage in paymeny
+            0,  # H-Condizioni di Pagamento  # todo manage in payment
             '',  # H-IBAN Pagamento
             '',  # H-Nr. Fornitore Origine
             0.0,  # H-Percentuale Commissione
@@ -259,7 +259,7 @@ class EDIPartner(orm.Model):
                 line.name or '',  # L-Descrizione
                 line.product_uom_qty or 0.0,  # L-Quantità
                 '',  # L-Unità di Misura  OPTIONAL (they use custom code!)
-                line.product_uom_qty or 0.0,  # L-Quantità UdM
+                product.q_x_pack or 1,  # L-Quantità UdM
                 line.price_unit or 0.0,  # L-Costo Lordo  # todo unit?
                 vat,  # L-IVA %
                 float(discount_value.get(0, 0.0)),  # L-Sconto 1%

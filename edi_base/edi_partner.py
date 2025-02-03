@@ -34,8 +34,7 @@ class EDIPartner(orm.Model):
     """
     _name = 'edi.partner'
     _description = 'EDI Partner'
-    _order = 'name'
-    _order = 'code'
+    _order = 'code,name'
 
     # -------------------------------------------------------------------------
     # -------------------------------------------------------------------------
