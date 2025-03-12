@@ -159,6 +159,7 @@ class ProductProduct(orm.Model):
 
             return {
                 'type': 'ir.actions.act_window',
+                'type': 'ir.actions.act_window',
                 'name': 'Stock move status',
                 'res_model': 'stock.move',
                 'view_type': 'form',
@@ -384,8 +385,8 @@ class ProductProduct(orm.Model):
         season_year = now.year
 
         # Update inventory from:
-        # from_date = '%s-01-01 00:00:00' % season_year
-        from_date = '2024-01-01 00:00:00'  # todo temporary for load invent!
+        from_date = '%s-01-01 00:00:00' % season_year
+        # from_date = '2024-01-01 00:00:00'  # todo temporary for load invent!
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False)  # limit x invent.
