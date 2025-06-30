@@ -46,17 +46,13 @@ class ProductProduct(orm.Model):
 
     _columns = {
         'inventory_cost_only_buy': fields.float(
-            'Inventario costo solo acq.', digits=(16, 3),
-            help='Init cost for no move product'),
+            'Inventario costo solo acq.', digits=(16, 3), help='Init cost for no move product'),
         'inventory_cost_no_move': fields.float(
-            'Cost no move', digits=(16, 3),
-            help='Init cost for no move product'),
+            'Cost no move', digits=(16, 3), help='Init cost for no move product'),
         'inventory_cost_transport': fields.float(
-            'Transport cost', digits=(16, 3),
-            help='Transport cost from last delivery'),
+            'Transport cost', digits=(16, 3), help='Transport cost from last delivery'),
         'inventory_cost_exchange': fields.float(
-            'Buy exchange', digits=(16, 3),
-            help='USD exchange from last delivery'),
+            'Buy exchange', digits=(16, 3), help='USD exchange from last delivery'),
         }
 
 
