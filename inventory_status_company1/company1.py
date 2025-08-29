@@ -65,5 +65,5 @@ class ProductProduct(orm.Model):
             _logger.warning('Limite date: %s' % limit_up_date)
         else:
             to_date = '%s-08-31 23:59:59' % (season_year + 1)
-        _logger.warning('>>> START INVENTORY [%s - %s] <<<' % (from_date, to_date))
+        # _logger.warning('>>> START INVENTORY [%s - %s] <<<' % (from_date, to_date))
         return from_date, to_date
