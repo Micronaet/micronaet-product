@@ -46,7 +46,8 @@ class ProductProduct(orm.Model):
     _inherit = 'product.product'
 
     def get_range_inventory_date(self, cr, uid, context=None):
-        """ Overridable function for get the from date
+        """ Season management:
+            Overridable function for get the from date
         """
         # Company 1 standard:
         now = datetime.now()
@@ -55,8 +56,8 @@ class ProductProduct(orm.Model):
         else:  # 1 - 8
             season_year = now.year - 1
 
-        # from_date = '%s-09-01 00:00:00' % season_year  # todo restore this
-        from_date = '2024-09-01 00:00:00'  # todo REMOVE THIS!!
+        from_date = '%s-09-01 00:00:00' % season_year  # todo restore this
+        # from_date = '2024-09-01 00:00:00'  # todo REMOVE THIS!!
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False)  # limit for invent
