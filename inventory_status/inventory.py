@@ -385,8 +385,8 @@ class ProductProduct(orm.Model):
         season_year = now.year
 
         # Update inventory from:
-        # from_date = '%s-01-01 00:00:00' % season_year
-        from_date = '2025-01-01 00:00:00'  # todo temporary for load invent!
+        from_date = '%s-01-01 00:00:00' % season_year
+        # from_date = '2025-01-01 00:00:00'  # todo temporary for load invent!
 
         # Limit up date parameter:
         limit_up_date = context.get('limit_up_date', False)  # limit x invent.
@@ -395,7 +395,6 @@ class ProductProduct(orm.Model):
             _logger.warning('Limite date: %s' % limit_up_date)
         else:
             to_date = '%s-12-31 23:59:59' % season_year
-        # _logger.warning('>>> START INVENTORY [%s - %s] <<<' % (from_date, to_date))
         return from_date, to_date
 
     def _get_inventory_values(
