@@ -92,8 +92,8 @@ class MrpProduction(orm.Model):
         # todo get_range_inventory_date(self, cr, uid, context=None)
 
         mrp_ids = self.search(cr, uid, [
-            # MRP type:
-            ('mrp_type', '=', 'real'),  # Only real production (not group!)
+            # MRP type ( Only real production, not group!):
+            ('mrp_type', '=', 'real'),
 
             # Period filter (only up not down limit)
             ('date_planned', '>=', from_date),
