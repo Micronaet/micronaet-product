@@ -68,9 +68,9 @@ class MrpProduction(orm.Model):
             _logger.error('Pass from date to the procedure!!!')
             return False
         _logger.info('Start inventory MRP used from %s' % from_date)
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         # XLS log export:
-        # ---------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         filename = '/home/administrator/photo/log/mrp_unload.xlsx'
         WB = xlsxwriter.Workbook(filename)
         self.WS = WB.add_worksheet('Unload')  # Work Sheet:
@@ -92,11 +92,14 @@ class MrpProduction(orm.Model):
         # todo get_range_inventory_date(self, cr, uid, context=None)
 
         mrp_ids = self.search(cr, uid, [
-            # State filter:
-            # ('state', 'not in', ('done', 'cancel')),
+            # MRP type:
+            ('mrp_type', '=', 'real'),  # Only real production (not group!)
 
             # Period filter (only up not down limit)
             ('date_planned', '>=', from_date),
+
+            # State filter:
+            # ('state', 'not in', ('done', 'cancel')),
             ], context=context)
 
         product_pool = self.pool.get('product.product')
@@ -129,6 +132,7 @@ class MrpProduction(orm.Model):
                         ])
 
         WB.close()
+
         for product_id, unload in unload_db.iteritems():
             product_pool.write(cr, uid, product_id, {
                 'mx_mrp_out': unload,
