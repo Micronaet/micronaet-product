@@ -415,8 +415,7 @@ class ProductProduct(orm.Model):
         # Read parameter for inventory:
         # ---------------------------------------------------------------------
         user_id = context.get('uid', uid)
-        user = self.pool.get('res.users').browse(
-            cr, uid, user_id, context=context)
+        user = self.pool.get('res.users').browse(cr, uid, user_id, context=context)
         no_inventory_status = user.no_inventory_status
         _logger.warning('USER: %s' % user_id)
 
@@ -431,8 +430,7 @@ class ProductProduct(orm.Model):
         # Parameter for filters:
         # ---------------------------------------------------------------------
         company_ids = company_pool.search(cr, uid, [], context=context)
-        company_proxy = company_pool.browse(
-            cr, uid, company_ids, context=context)[0]
+        company_proxy = company_pool.browse(cr, uid, company_ids, context=context)[0]
 
         # XXX 2019-02-12 Exclude partner list no more used:
         stock_location_id = company_proxy.stock_location_id.id
